@@ -12,7 +12,7 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-18T23:40:18.580Z"
+        "updatedAt": "2026-07-18T23:43:34.268Z"
       },
       "currentSeason": {
         "name": "Mirage",
@@ -31,10 +31,10 @@
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "features": [
-        "The Reliquarian Ascendancy for the Scion, which changes unique properties every league",
-        "ExileCon 2026 competitive race qualifiers for Path of Exile 1 and Path of Exile 2",
-        "Abyssal Soul Shatter Rare Finisher Effect",
-        "Curse of the Allflame-themed changes for the Reliquarian Ascendancy"
+        "Curse of the Allflame expansion launch",
+        "Dynamic Reliquarian Ascendancy changes for the Scion class that shift every league",
+        "ExileCon 2026 competitive race qualifier events for Path of Exile 1 and 2",
+        "Abyssal Soul Shatter Rare Finisher Effect Twitch and and rewards"
       ],
       "links": {
         "official": "https://www.pathofexile.com/",
@@ -62,7 +62,7 @@
       "status": {
         "code": "early-access",
         "label": "Ранний доступ",
-        "updatedAt": "2026-07-18T23:40:12.291Z"
+        "updatedAt": "2026-07-18T23:43:28.079Z"
       },
       "currentSeason": {
         "name": "0.5.0: Return of the Ancients",
@@ -113,7 +113,7 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-18T23:40:17.810Z"
+        "updatedAt": "2026-07-18T23:43:32.675Z"
       },
       "currentSeason": {
         "name": "Season of Death Awakening",
@@ -132,11 +132,11 @@
         "sourceUrl": "https://diablo4.blizzard.com/"
       },
       "features": [
-        "Tear open Ruptures to face seasonal challenges",
+        "Tear open Ruptures to face new seasonal threats",
         "Conquer completely redesigned Realmwalkers",
-        "Confront a corrupted Reaper for a chance at earning Mythic Unique rewards",
-        "Hunt the Death Cult in the Seasonal Realm",
-        "Explore the Lord of Hatred expansion featuring the ancient islands of Skovos and two new playable classes"
+        "Confront a corrupted Reaper for your best chance at earning Mythic Unique rewards",
+        "Hunt the Death Cult throughout Sanctuary",
+        "Access to seasonal-exclusive features like The Tower and Leaderboards"
       ],
       "links": {
         "official": "https://diablo4.blizzard.com/",
@@ -167,7 +167,7 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-18T23:40:18.177Z"
+        "updatedAt": "2026-07-18T23:43:34.457Z"
       },
       "currentSeason": {
         "name": "Season 4",
@@ -186,11 +186,11 @@
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "features": [
-        "Aberroth Boss Fight",
-        "Nemesis Encounters",
-        "Shattering Omens and Item Corruption",
-        "Evade Mechanic",
-        "The Bazaar Player Trade"
+        "Shattering Omens",
+        "Item Corruption and Nemesis System",
+        "Aberroth Boss Encounter",
+        "Idol Altars and Refracted Slots",
+        "Evade Mechanics and Cosmetics"
       ],
       "links": {
         "official": "https://www.lastepoch.com/",
@@ -220,7 +220,7 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-18T23:40:17.809Z"
+        "updatedAt": "2026-07-18T23:43:32.520Z"
       },
       "currentSeason": {
         "name": "Afterlight",
@@ -239,11 +239,11 @@
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "features": [
-        "New seasonal mechanic: Afterlight, involving the Guiding Lantern, purifying Wraiths, and gathering relics",
-        "New Hero Trait: Dance of the Deep for Tide Whisper Selena, focusing on Terra skills",
-        "New progression system: Nether King's Divinity, introducing a new kind of Divinity Slate to brand Divine Remnants",
-        "New challenge mode: Divine Ascent, a timed climb against a three-minute timer featuring floor bosses and random events",
-        "System and visual upgrades, including Lunaria going core and new Trade House QoL options"
+        "New Seasonal Mechanic: Afterlight, featuring Guiding Lantern purification and Wraith encounters",
+        "New Hero Trait: Dance of the Deep for Tide Whisper Selena focusing on Terra skills",
+        "New Progression System: Nether King's Divinity using Divinity Slates to customize build paths",
+        "New Challenge Mode: Divine Ascent, a timed floor-climbing survival experience",
+        "Major visual and QoL upgrades, including Lunaria integration into the core game and a trade house revamp"
       ],
       "links": {
         "official": "https://torchlightinfinite.com/",

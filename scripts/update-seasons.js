@@ -61,7 +61,7 @@ async function main() {
     } catch (error) {
       console.error(`[Orchestrator] Error running adapter for ${gameConfig.name}:`, error.message);
       
-      // Fallback to cache if possible
+      // 1. Fallback to cache if possible
       const cachePath = path.join(cacheDir, `${gameConfig.id}.json`);
       if (fs.existsSync(cachePath)) {
         console.log(`[Orchestrator] Found cache fallback for ${gameConfig.name}`);
@@ -72,6 +72,26 @@ async function main() {
           data: cachedData,
           error: error.message
         };
+      }
+
+      // 2. Fallback to existing seasons.json if possible
+      const seasonsPath = path.join(dataDir, 'seasons.json');
+      if (fs.existsSync(seasonsPath)) {
+        try {
+          const oldSeasons = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
+          const oldGameData = (oldSeasons.games || []).find(g => g.id === gameConfig.id);
+          if (oldGameData) {
+            console.log(`[Orchestrator] Found seasons.json fallback for ${gameConfig.name}`);
+            return {
+              gameId: gameConfig.id,
+              status: 'fallback',
+              data: oldGameData,
+              error: `Adapter error: ${error.message}. Recovered from previous seasons.json.`
+            };
+          }
+        } catch (e) {
+          // ignore
+        }
       }
 
       return {

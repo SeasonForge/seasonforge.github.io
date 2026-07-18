@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SeasonForge</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="app-header__logo-block">
+        <span class="app-header__icon">⚔️</span>
+        <div>
+          <h1 class="app-header__title">SeasonForge</h1>
+          <p class="app-header__subtitle">Мониторинг текущих и будущих сезонов главных ролевых экшенов</p>
+        </div>
+      </div>
+      <div class="app-header__meta">
+        <div class="app-header__meta-item">
+          <span class="app-header__meta-label">Последнее обновление</span>
+          <strong id="last-updated-time">18 Июля 2026 • 14:40 UTC</strong>
+        </div>
+        <div class="app-header__meta-item">
+          <span class="app-header__meta-label">Источник данных</span>
+          <strong>Official Game Feeds</strong>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-layout">
+      <aside id="navbar"></aside>
+      <main id="content"></main>
+    </div>
+
+    <footer class="app-footer">
+      <span>© 2026 SeasonForge. Локальная оффлайн-страница.</span>
+      <button id="reset-data-btn" class="app-footer__reset-btn">Сбросить данные к исходным</button>
+    </footer>
+
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

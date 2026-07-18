@@ -1,0 +1,43 @@
+name: Update Seasons
+
+on:
+  schedule:
+    - cron: '0 */12 * * *' # Run every 12 hours
+  workflow_dispatch: # Enable manual triggers
+
+permissions:
+  contents: write # Needed to commit and push changes back to the repo
+
+jobs:
+  update-seasons:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Update Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/update-seasons.js
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Check if there are changes in data/
+          git add data/seasons.json data/cache/ data/logs/
+          
+          if git diff --cached --quiet; then
+            echo "No data changes detected. Skipping commit."
+          else
+            echo "Content changes detected. Committing..."
+            git commit -m "chore: auto-update seasons data and cache [skip ci]"
+            git push
+          fi

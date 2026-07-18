@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+data/cache/*
+data/logs/*
+!data/cache/.gitkeep
+!data/logs/.gitkeep
+.gemini/
+.env
+package-lock.json

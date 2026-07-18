@@ -1,0 +1,262 @@
+{
+  "games": [
+    {
+      "id": "path-of-exile",
+      "name": "Path of Exile 1",
+      "developer": "Grinding Gear Games",
+      "logo": "",
+      "color": "#f5c342",
+      "icon": "💀",
+      "website": "https://www.pathofexile.com/",
+      "latestNewsTitle": "ExileCon 2026 Path of Exile 1 Race Qualifier Events",
+      "status": {
+        "code": "ending",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-18T22:15:55.347Z"
+      },
+      "currentSeason": {
+        "name": "3.28: Necropolis Finale",
+        "startDate": "2026-03-28",
+        "endDate": "2026-07-19",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
+      },
+      "nextSeason": {
+        "name": "3.29: Curse of the Allflame",
+        "startDate": "2026-07-23",
+        "endDate": "",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
+      },
+      "features": [
+        "Тематика глубоководных экспедиций («Вояжи»)",
+        "Альтернативная система гнезд в предметах",
+        "Глобальный реворк механик Бездны (Abyss) и Легиона",
+        "Новые классы восхождения и балансировка умений"
+      ],
+      "links": {
+        "official": "https://www.pathofexile.com/",
+        "wiki": "",
+        "community": ""
+      },
+      "metadata": {
+        "region": "Global",
+        "platforms": [
+          "PC"
+        ],
+        "tags": [
+          "ARPG",
+          "Live Service"
+        ]
+      }
+    },
+    {
+      "id": "path-of-exile-2",
+      "name": "Path of Exile 2",
+      "developer": "Grinding Gear Games",
+      "logo": "",
+      "color": "#4b6e9c",
+      "website": "https://www.pathofexile.com/",
+      "status": {
+        "code": "early-access",
+        "label": "Ранний доступ",
+        "updatedAt": "2026-07-18T22:15:54.791Z"
+      },
+      "currentSeason": {
+        "name": "0.5.0: Return of the Ancients",
+        "startDate": "2026-05-29",
+        "endDate": "",
+        "isActive": false,
+        "verification": "official",
+        "sourceUrl": "https://www.pathofexile.com/"
+      },
+      "nextSeason": {
+        "name": "Версия 1.0 (Релиз)",
+        "startDate": "2026-12-15",
+        "endDate": "",
+        "isActive": false,
+        "verification": "official",
+        "sourceUrl": "https://www.pathofexile.com/"
+      },
+      "features": [
+        "Тестирование лиги Runes of Aldur",
+        "Переработка механики Атласа Миров под сиквел",
+        "Новое древо пассивных умений для раннего доступа",
+        "Полный релиз и новые акты кампании в декабре"
+      ],
+      "links": {
+        "official": "https://www.pathofexile.com/",
+        "wiki": "",
+        "community": ""
+      },
+      "metadata": {
+        "region": "Global",
+        "platforms": [
+          "PC"
+        ],
+        "tags": [
+          "ARPG"
+        ]
+      }
+    },
+    {
+      "id": "diablo-iv",
+      "name": "Diablo IV",
+      "developer": "Blizzard Entertainment",
+      "logo": "",
+      "color": "#8b1f1f",
+      "icon": "🔥",
+      "website": "https://diablo4.blizzard.com/",
+      "textSignature": "Diablo IV New Expansion Available Now Action RPG Purchase Expansion Learn More New to Diablo IV? Welcome to Hell Discover the critically acclaimed franchise that defined the Action RPG genre. As the battle between the High Heavens and Burning Hells rages on, so too does your chance to fight for good to prevail. Hatred devours Sanctuary as evil spreads and a new wave of cultists and worshippers arise to embrace Lilith’s coming. Only a brave few dare to face this threat and bring light to the all-consuming darkness. Latest Updates What’s New in Sanctuary LORD OF HATRED™ New Expansion Confront Mephisto, the Prime Evil and Lord of Hatred, in the all-new expansion Lord of Hatred. Battle across the ancient islands of Skovos, uncover two new playable classes, and face the final reckoning in Diablo IV’s most ambitious chapter yet. Discover new dungeons, and endgame activities that will make you risk it all for Sanctuary. View Expansion New Season: Season of Death Awakening New Season Tear open",
+      "status": {
+        "code": "in-progress",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-18T22:15:55.658Z"
+      },
+      "currentSeason": {
+        "name": "Сезон 14: Season of Death Awakening",
+        "startDate": "2026-06-29",
+        "endDate": "2026-07-23",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://diablo4.blizzard.com/"
+      },
+      "nextSeason": {
+        "name": "Season 15",
+        "startDate": "2026-09-17",
+        "endDate": "",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://diablo4.blizzard.com/"
+      },
+      "features": [
+        "Тематика «Пробуждения Смерти»",
+        "Новое подземелье-испытание «Катакомбы Мучений»",
+        "Система напарников-наемников нового поколения",
+        "Изменение баланса классов после BlizzCon 2026"
+      ],
+      "links": {
+        "official": "https://diablo4.blizzard.com/",
+        "wiki": "",
+        "community": ""
+      },
+      "metadata": {
+        "region": "Global",
+        "platforms": [
+          "PC",
+          "Console"
+        ],
+        "tags": [
+          "ARPG",
+          "Action"
+        ]
+      }
+    },
+    {
+      "id": "last-epoch",
+      "name": "Last Epoch",
+      "developer": "Eleventh Hour Games",
+      "logo": "",
+      "color": "#6b3fa0",
+      "icon": "⏳",
+      "website": "https://www.lastepoch.com/",
+      "latestNewsId": "1836506165565853",
+      "status": {
+        "code": "active",
+        "label": "Active",
+        "updatedAt": "2026-07-18T22:15:55.157Z"
+      },
+      "currentSeason": {
+        "name": "Цикл 4: Shattered Omens",
+        "startDate": "2026-03-25",
+        "endDate": "2026-07-19",
+        "isActive": true,
+        "verification": "ai",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
+      },
+      "nextSeason": {
+        "name": "Cycle 5 & Расширение Orobyss",
+        "startDate": "2026-09-09",
+        "endDate": "",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
+      },
+      "features": [
+        "Случайные энкаунтеры с Предзнаменованиями (Omens)",
+        "Реворк системы крафта и фракций торговли",
+        "Второе крупное дополнение с новыми подклассами",
+        "Расширенный эндгейм-контент монолитов судьбы"
+      ],
+      "links": {
+        "official": "https://www.lastepoch.com/",
+        "wiki": "",
+        "community": ""
+      },
+      "metadata": {
+        "region": "Global",
+        "platforms": [
+          "PC"
+        ],
+        "tags": [
+          "ARPG",
+          "Crafting"
+        ]
+      }
+    },
+    {
+      "id": "torchlight-infinite",
+      "name": "Torchlight: Infinite",
+      "developer": "Perfect World Entertainment",
+      "logo": "",
+      "color": "#c27a2b",
+      "icon": "⚡",
+      "website": "https://torchlightinfinite.com/",
+      "latestNewsId": "1838407329258272",
+      "status": {
+        "code": "just-started",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-18T22:15:55.205Z"
+      },
+      "currentSeason": {
+        "name": "SS13: Afterlight",
+        "startDate": "2026-07-16",
+        "endDate": "2026-07-23",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
+      },
+      "nextSeason": {
+        "name": "SS14",
+        "startDate": "2026-10-22",
+        "endDate": "",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
+      },
+      "features": [
+        "Механика Ночных Стражей: проводы душ усопших",
+        "Новый сверхсложный эндгейм-режим Divine Ascent",
+        "Новый играбельный герой-маг Кронос",
+        "Автоматизация лут-фильтра нового поколения"
+      ],
+      "links": {
+        "official": "https://torchlightinfinite.com/",
+        "wiki": "",
+        "community": ""
+      },
+      "metadata": {
+        "region": "Global",
+        "platforms": [
+          "PC"
+        ],
+        "tags": [
+          "ARPG",
+          "Free-to-play"
+        ]
+      }
+    }
+  ]
+}

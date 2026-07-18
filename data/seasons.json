@@ -10,31 +10,31 @@
       "website": "https://www.pathofexile.com/",
       "latestNewsTitle": "ExileCon 2026 Path of Exile 1 Race Qualifier Events",
       "status": {
-        "code": "ending",
-        "label": "Maintenance",
-        "updatedAt": "2026-07-18T23:20:49.231Z"
+        "code": "active",
+        "label": "Active",
+        "updatedAt": "2026-07-18T23:40:18.580Z"
       },
       "currentSeason": {
-        "name": "3.28: Necropolis Finale",
-        "startDate": "2026-03-29",
-        "endDate": "2026-07-19",
-        "isActive": false,
-        "verification": "ai",
+        "name": "Mirage",
+        "startDate": "",
+        "endDate": "2026-07-24",
+        "isActive": true,
+        "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "nextSeason": {
-        "name": "3.29: Curse of the Allflame",
-        "startDate": "2026-07-23",
+        "name": "Curse of the Allflame",
+        "startDate": "2026-07-24",
         "endDate": "",
         "isActive": false,
         "verification": "ai",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "features": [
-        "Тематика глубоководных экспедиций («Вояжи»)",
-        "Альтернативная система гнезд в предметах",
-        "Глобальный реворк механик Бездны (Abyss) и Легиона",
-        "Новые классы восхождения и балансировка умений"
+        "The Reliquarian Ascendancy for the Scion, which changes unique properties every league",
+        "ExileCon 2026 competitive race qualifiers for Path of Exile 1 and Path of Exile 2",
+        "Abyssal Soul Shatter Rare Finisher Effect",
+        "Curse of the Allflame-themed changes for the Reliquarian Ascendancy"
       ],
       "links": {
         "official": "https://www.pathofexile.com/",
@@ -62,7 +62,7 @@
       "status": {
         "code": "early-access",
         "label": "Ранний доступ",
-        "updatedAt": "2026-07-18T23:20:48.699Z"
+        "updatedAt": "2026-07-18T23:40:12.291Z"
       },
       "currentSeason": {
         "name": "0.5.0: Return of the Ancients",
@@ -111,31 +111,32 @@
       "website": "https://diablo4.blizzard.com/",
       "textSignature": "Diablo IV New Expansion Available Now Action RPG Purchase Expansion Learn More New to Diablo IV? Welcome to Hell Discover the critically acclaimed franchise that defined the Action RPG genre. As the battle between the High Heavens and Burning Hells rages on, so too does your chance to fight for good to prevail. Hatred devours Sanctuary as evil spreads and a new wave of cultists and worshippers arise to embrace Lilith’s coming. Only a brave few dare to face this threat and bring light to the all-consuming darkness. Latest Updates What’s New in Sanctuary LORD OF HATRED™ New Expansion Confront Mephisto, the Prime Evil and Lord of Hatred, in the all-new expansion Lord of Hatred. Battle across the ancient islands of Skovos, uncover two new playable classes, and face the final reckoning in Diablo IV’s most ambitious chapter yet. Discover new dungeons, and endgame activities that will make you risk it all for Sanctuary. View Expansion New Season: Season of Death Awakening New Season Tear open",
       "status": {
-        "code": "in-progress",
-        "label": "Maintenance",
-        "updatedAt": "2026-07-18T23:20:50.040Z"
+        "code": "active",
+        "label": "Active",
+        "updatedAt": "2026-07-18T23:40:17.810Z"
       },
       "currentSeason": {
-        "name": "Сезон 14: Season of Death Awakening",
-        "startDate": "2026-06-29",
-        "endDate": "2026-07-23",
-        "isActive": false,
-        "verification": "ai",
+        "name": "Season of Death Awakening",
+        "startDate": "",
+        "endDate": "",
+        "isActive": true,
+        "verification": "official",
         "sourceUrl": "https://diablo4.blizzard.com/"
       },
       "nextSeason": {
-        "name": "Season 15",
-        "startDate": "2026-09-17",
+        "name": "TBA",
+        "startDate": "",
         "endDate": "",
         "isActive": false,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://diablo4.blizzard.com/"
       },
       "features": [
-        "Тематика «Пробуждения Смерти»",
-        "Новое подземелье-испытание «Катакомбы Мучений»",
-        "Система напарников-наемников нового поколения",
-        "Изменение баланса классов после BlizzCon 2026"
+        "Tear open Ruptures to face seasonal challenges",
+        "Conquer completely redesigned Realmwalkers",
+        "Confront a corrupted Reaper for a chance at earning Mythic Unique rewards",
+        "Hunt the Death Cult in the Seasonal Realm",
+        "Explore the Lord of Hatred expansion featuring the ancient islands of Skovos and two new playable classes"
       ],
       "links": {
         "official": "https://diablo4.blizzard.com/",
@@ -166,29 +167,30 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-18T23:20:49.089Z"
+        "updatedAt": "2026-07-18T23:40:18.177Z"
       },
       "currentSeason": {
-        "name": "Цикл 4: Shattered Omens",
-        "startDate": "2026-03-26",
-        "endDate": "2026-07-19",
+        "name": "Season 4",
+        "startDate": "",
+        "endDate": "",
         "isActive": true,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "nextSeason": {
-        "name": "Cycle 5 & Расширение Orobyss",
-        "startDate": "2026-09-09",
+        "name": "Season 5",
+        "startDate": "",
         "endDate": "",
         "isActive": false,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "features": [
-        "Случайные энкаунтеры с Предзнаменованиями (Omens)",
-        "Реворк системы крафта и фракций торговли",
-        "Второе крупное дополнение с новыми подклассами",
-        "Расширенный эндгейм-контент монолитов судьбы"
+        "Aberroth Boss Fight",
+        "Nemesis Encounters",
+        "Shattering Omens and Item Corruption",
+        "Evade Mechanic",
+        "The Bazaar Player Trade"
       ],
       "links": {
         "official": "https://www.lastepoch.com/",
@@ -216,31 +218,32 @@
       "website": "https://torchlightinfinite.com/",
       "latestNewsId": "1838407329258272",
       "status": {
-        "code": "just-started",
-        "label": "Maintenance",
-        "updatedAt": "2026-07-18T23:20:49.083Z"
+        "code": "active",
+        "label": "Active",
+        "updatedAt": "2026-07-18T23:40:17.809Z"
       },
       "currentSeason": {
-        "name": "SS13: Afterlight",
+        "name": "Afterlight",
         "startDate": "2026-07-16",
-        "endDate": "2026-07-23",
-        "isActive": false,
+        "endDate": "",
+        "isActive": true,
         "verification": "ai",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "nextSeason": {
-        "name": "SS14",
-        "startDate": "2026-10-22",
+        "name": "TBA",
+        "startDate": "",
         "endDate": "",
         "isActive": false,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "features": [
-        "Механика Ночных Стражей: проводы душ усопших",
-        "Новый сверхсложный эндгейм-режим Divine Ascent",
-        "Новый играбельный герой-маг Кронос",
-        "Автоматизация лут-фильтра нового поколения"
+        "New seasonal mechanic: Afterlight, involving the Guiding Lantern, purifying Wraiths, and gathering relics",
+        "New Hero Trait: Dance of the Deep for Tide Whisper Selena, focusing on Terra skills",
+        "New progression system: Nether King's Divinity, introducing a new kind of Divinity Slate to brand Divine Remnants",
+        "New challenge mode: Divine Ascent, a timed climb against a three-minute timer featuring floor bosses and random events",
+        "System and visual upgrades, including Lunaria going core and new Trade House QoL options"
       ],
       "links": {
         "official": "https://torchlightinfinite.com/",

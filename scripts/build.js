@@ -27,7 +27,7 @@ globalThis.window = globalThis;
 const { render: renderGameCard } = await import('../src/components/GameCard.js');
 const { render: renderProgressBar } = await import('../src/components/ProgressBar.js');
 const { getVal } = await import('../src/i18n/index.js');
-const { getProgressPercent, calculateCountdown } = await import('../src/utils/helpers.js');
+const { getProgressPercent, calculateCountdown, escapeAttr } = await import('../src/utils/helpers.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +40,7 @@ const templatePath = path.join(__dirname, '../src/templates/game.html');
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');
 
-  const BASE_URL = 'https://seasonforge.com';
+  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.com';
 
   const seasonsPath = path.join(dataDir, 'seasons.json');
   if (!fs.existsSync(seasonsPath)) {
@@ -121,7 +121,7 @@ async function build() {
           const formattedStart = start ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
           const formattedEnd = end ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
           const linkHtml = item.sourceUrl 
-            ? `<a href="${item.sourceUrl}" target="_blank" class="history-table__link">Read ↗</a>` 
+            ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link">Read ↗</a>` 
             : '—';
             
           rows.push(`
@@ -159,7 +159,7 @@ async function build() {
             boxes.push(`
               <div class="game-card__link-item">
                 <span class="game-card__link-category">${category}</span>
-                <a href="${url}" target="_blank" class="game-card__link-anchor">${label}</a>
+                <a href="${escapeAttr(url)}" target="_blank" class="game-card__link-anchor">${label}</a>
               </div>
             `);
           }

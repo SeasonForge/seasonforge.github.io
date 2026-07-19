@@ -4,7 +4,7 @@ import { getState, setLanguage, setGames } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
-import { getProgressPercent, formatLastUpdated, calculateCountdown } from './utils/helpers.js';
+import { getProgressPercent, formatLastUpdated, calculateCountdown, escapeAttr } from './utils/helpers.js';
 
 // Re-route the seasons database fetch relative to detail subpage
 CONFIG.data.seasonsPath = '../../data/seasons.json';
@@ -144,7 +144,7 @@ function renderApp() {
         const formattedStart = start ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
         const formattedEnd = end ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
         const linkHtml = item.sourceUrl 
-          ? `<a href="${item.sourceUrl}" target="_blank" class="history-table__link">${t('card.readUrl')}</a>` 
+          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link">${t('card.readUrl')}</a>` 
           : '—';
           
         rows.push(`
@@ -183,7 +183,7 @@ function renderApp() {
         boxes.push(`
           <div class="game-card__link-item">
             <span class="game-card__link-category">${categoryLabel}</span>
-            <a href="${url}" target="_blank" class="game-card__link-anchor">${label}</a>
+            <a href="${escapeAttr(url)}" target="_blank" class="game-card__link-anchor">${label}</a>
           </div>
         `);
       }

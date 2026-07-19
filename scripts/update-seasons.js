@@ -32,6 +32,28 @@ function isFeaturesEmpty(feat) {
   return false;
 }
 
+/**
+ * Removes log files older than keepDays from the logs directory.
+ * Prevents unbounded log accumulation over time.
+ * @param {string} dir - Absolute path to the logs directory
+ * @param {number} keepDays - Number of days of logs to retain (default: 30)
+ */
+function cleanOldLogs(dir, keepDays = 30) {
+  const cutoff = Date.now() - keepDays * 24 * 60 * 60 * 1000;
+  try {
+    const files = fs.readdirSync(dir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f));
+    for (const file of files) {
+      const fileDate = new Date(file.replace('.json', '')).getTime();
+      if (!Number.isNaN(fileDate) && fileDate < cutoff) {
+        fs.unlinkSync(path.join(dir, file));
+        console.log(`[Orchestrator] Cleaned old log: ${file}`);
+      }
+    }
+  } catch (e) {
+    console.warn('[Orchestrator] Could not clean old logs:', e.message);
+  }
+}
+
 function mergeGameData(existingGame, newGame) {
   if (!existingGame) return newGame;
   
@@ -433,6 +455,7 @@ async function main() {
   existingLogs.push(logSummary);
   fs.writeFileSync(logFile, JSON.stringify(existingLogs, null, 2), 'utf-8');
   console.log(`[Orchestrator] Log written to ${logFile}`);
+  cleanOldLogs(logsDir); // Remove logs older than 30 days
 
   // 6. Run static site generator to rebuild pages
   console.log('[Orchestrator] Running static site generator build...');

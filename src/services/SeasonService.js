@@ -2,8 +2,18 @@
 import { CONFIG } from '../config.js';
 
 export class SeasonService {
+  /**
+   * @param {string} [seasonsPath] - Optional override for the data path.
+   *   Used by detail pages (game-page.js) that live in a subdirectory and need
+   *   a relative path different from the default CONFIG value.
+   *   Avoids mutating the shared CONFIG object.
+   */
+  constructor(seasonsPath) {
+    this.seasonsPath = seasonsPath || CONFIG.data.seasonsPath;
+  }
+
   async loadSeasons() {
-    const response = await fetch(CONFIG.data.seasonsPath);
+    const response = await fetch(this.seasonsPath);
 
     if (!response.ok) {
       throw new Error(`Unable to load season data: ${response.status}`);

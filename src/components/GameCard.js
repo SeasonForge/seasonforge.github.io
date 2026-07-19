@@ -106,10 +106,10 @@ export function render(game = {}, options = {}) {
   } else {
     countdownHtml = `
       <div class="game-card__countdown">
-        <div class="game-card__countdown-item"><strong>${countdown.days ?? 0}</strong><span>${t('card.days')}</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.hours ?? 0}</strong><span>${t('card.hours')}</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.minutes ?? 0}</strong><span>${t('card.minutes')}</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.seconds ?? 0}</strong><span>${t('card.seconds')}</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="days">${countdown.days ?? 0}</strong><span>${t('card.days')}</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="hours">${countdown.hours ?? 0}</strong><span>${t('card.hours')}</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="minutes">${countdown.minutes ?? 0}</strong><span>${t('card.minutes')}</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="seconds">${countdown.seconds ?? 0}</strong><span>${t('card.seconds')}</span></div>
       </div>
     `;
   }

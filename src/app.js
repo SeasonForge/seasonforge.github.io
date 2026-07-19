@@ -14,12 +14,12 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
-import { render as renderCountdown } from './components/Countdown.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
-import { getProgressPercent, formatLastUpdated } from './utils/helpers.js';
+import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
+import { formatLastUpdated } from './utils/date.js';
 
 const seasonService = new SeasonService();
 let countdownTimer = null;
@@ -167,7 +167,7 @@ function renderApp() {
     if (state.activeView === 'timeline') {
       contentRoot.innerHTML = renderTimeline(state.games);
     } else {
-      const countdown = renderCountdown(state.activeGame?.nextSeason?.startDate || state.activeGame?.currentSeason?.startDate);
+      const countdown = calculateCountdown(state.activeGame?.nextSeason?.startDate || state.activeGame?.currentSeason?.startDate);
       const progressBar = renderProgressBar(getProgressPercent(state.activeGame), state.activeGame?.color);
       const statusBadge = renderStatusBadge(state.activeGame?.status);
 
@@ -229,18 +229,38 @@ function attachFooterEvents() {
   // Reset button removed from footer
 }
 
-function startCountdownLoop() {
-  if (countdownTimer) {
+/**
+ * Updates only the countdown number elements in the DOM without a full re-render.
+ * Falls back to a full renderApp() when the countdown expires (state change).
+ */
+function tickCountdown() {
+  const state = getState();
+  if (state.activeView !== 'card' || !state.activeGame) return;
+
+  const targetDateStr = state.activeGame.nextSeason?.startDate;
+  if (!targetDateStr) return; // TBA — no live countdown to maintain
+
+  const targetDate = new Date(targetDateStr);
+  if (targetDate <= new Date()) {
+    // Countdown just expired — full re-render to show "Just Launched" state
+    renderApp();
     return;
   }
 
-  countdownTimer = window.setInterval(() => {
-    // Only re-render countdowns if we are in card view to avoid layout shifts in timeline view
-    const state = getState();
-    if (state.activeView === 'card') {
-      renderApp();
-    }
-  }, 1000);
+  const total = targetDate.getTime() - Date.now();
+  const update = (attr, val) => {
+    const el = document.querySelector(`[data-countdown="${attr}"]`);
+    if (el) el.textContent = val;
+  };
+  update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
+  update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
+  update('minutes', Math.floor((total / (1000 * 60)) % 60));
+  update('seconds', Math.floor((total / 1000) % 60));
+}
+
+function startCountdownLoop() {
+  if (countdownTimer) return;
+  countdownTimer = window.setInterval(tickCountdown, 1000);
 }
 
 async function initializeApp() {

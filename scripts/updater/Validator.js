@@ -69,6 +69,14 @@ export class Validator {
       throw new Error('Features must be an array or an object (bilingual)');
     }
 
+    // Validate status code against the whitelist used by the frontend i18n dictionary
+    if (data.status?.code) {
+      const validStatusCodes = ['active', 'in-progress', 'in-development', 'maintenance', 'early-access', 'ending', 'just-started'];
+      if (!validStatusCodes.includes(data.status.code)) {
+        throw new Error(`Invalid status code: "${data.status.code}". Must be one of: ${validStatusCodes.join(', ')}`);
+      }
+    }
+
     return true;
   }
 }

@@ -27,7 +27,8 @@ globalThis.window = globalThis;
 const { render: renderGameCard } = await import('../src/components/GameCard.js');
 const { render: renderProgressBar } = await import('../src/components/ProgressBar.js');
 const { getVal } = await import('../src/i18n/index.js');
-const { getProgressPercent, calculateCountdown, escapeAttr } = await import('../src/utils/helpers.js');
+const { getProgressPercent, calculateCountdown } = await import('../src/utils/countdown.js');
+const { escapeAttr } = await import('../src/utils/helpers.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

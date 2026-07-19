@@ -1,15 +1,14 @@
-import { CONFIG } from './config.js';
 import { SeasonService } from './services/SeasonService.js';
 import { getState, setLanguage, setGames } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
-import { getProgressPercent, formatLastUpdated, calculateCountdown, escapeAttr } from './utils/helpers.js';
+import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
+import { formatLastUpdated } from './utils/date.js';
+import { escapeAttr } from './utils/helpers.js';
 
-// Re-route the seasons database fetch relative to detail subpage
-CONFIG.data.seasonsPath = '../../data/seasons.json';
-
-const seasonService = new SeasonService();
+// SeasonService receives the path directly to avoid mutating the shared CONFIG object
+const seasonService = new SeasonService('../../data/seasons.json');
 let activeGame = null;
 let countdownTimer = null;
 
@@ -247,6 +246,34 @@ function renderApp() {
   }
 }
 
+/**
+ * Updates only the countdown number elements in the DOM without a full re-render.
+ * Falls back to a full renderApp() when the countdown expires (state change).
+ */
+function tickCountdown() {
+  if (!activeGame) return;
+
+  const targetDateStr = activeGame.nextSeason?.startDate;
+  if (!targetDateStr) return; // TBA — no live countdown to maintain
+
+  const targetDate = new Date(targetDateStr);
+  if (targetDate <= new Date()) {
+    // Countdown just expired — full re-render to show "Just Launched" state
+    renderApp();
+    return;
+  }
+
+  const total = targetDate.getTime() - Date.now();
+  const update = (attr, val) => {
+    const el = document.querySelector(`[data-countdown="${attr}"]`);
+    if (el) el.textContent = val;
+  };
+  update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
+  update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
+  update('minutes', Math.floor((total / (1000 * 60)) % 60));
+  update('seconds', Math.floor((total / 1000) % 60));
+}
+
 async function init() {
   try {
     const rootEl = document.getElementById('game-page-root');
@@ -266,11 +293,9 @@ async function init() {
 
     renderApp();
 
-    // Start timer ticking loop
+    // Start targeted countdown ticker — updates only the 4 number nodes per second
     if (countdownTimer) clearInterval(countdownTimer);
-    countdownTimer = setInterval(() => {
-      renderApp();
-    }, 1000);
+    countdownTimer = setInterval(tickCountdown, 1000);
 
   } catch (error) {
     console.error('[Detail Page] Initialization failed:', error.message);

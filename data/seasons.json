@@ -16,20 +16,20 @@
         "source": "Path of Exile RSS"
       },
       "status": {
-        "code": "active",
-        "label": "Active",
-        "updatedAt": "2026-07-19T00:15:31.355Z"
+        "code": "ending",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-19T00:29:17.109Z"
       },
       "currentSeason": {
-        "name": "Mirage",
-        "startDate": "",
-        "endDate": "2026-07-24",
-        "isActive": true,
-        "verification": "official",
+        "name": "3.28: Necropolis Finale",
+        "startDate": "2026-03-29",
+        "endDate": "2026-07-20",
+        "isActive": false,
+        "verification": "ai",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "nextSeason": {
-        "name": "Curse of the Allflame",
+        "name": "3.29: Curse of the Allflame",
         "startDate": "2026-07-24",
         "endDate": "",
         "isActive": false,
@@ -37,10 +37,10 @@
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "features": [
-        "Curse of the Allflame expansion",
-        "Reliquarian Ascendancy changes for the Scion",
-        "ExileCon 2026 competitive live stage race qualifiers",
-        "Abyssal Soul Shatter Rare Finisher Effect"
+        "Тематика глубоководных экспедиций («Вояжи»)",
+        "Альтернативная система гнезд в предметах",
+        "Глобальный реворк механик Бездны (Abyss) и Легиона",
+        "Новые классы восхождения и балансировка умений"
       ],
       "links": {
         "official": "https://www.pathofexile.com/",
@@ -64,18 +64,18 @@
       "developer": "Grinding Gear Games",
       "logo": "",
       "color": "#4b6e9c",
-      "website": "https://www.pathofexile.com/",
+      "website": "https://pathofexile2.com",
       "latestNews": {
         "id": "static-config",
         "title": "Официальный анонс Path of Exile 2",
-        "url": "https://www.pathofexile.com/",
+        "url": "https://pathofexile2.com",
         "publishDate": "2026-05-29",
         "source": "Grinding Gear Games"
       },
       "status": {
         "code": "early-access",
         "label": "Ранний доступ",
-        "updatedAt": "2026-07-19T00:17:21.490Z"
+        "updatedAt": "2026-07-19T00:29:16.585Z"
       },
       "currentSeason": {
         "name": "0.5.0: Return of the Ancients",
@@ -83,7 +83,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/"
+        "sourceUrl": "https://pathofexile2.com"
       },
       "nextSeason": {
         "name": "Версия 1.0 (Релиз)",
@@ -91,7 +91,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/"
+        "sourceUrl": "https://pathofexile2.com"
       },
       "features": [
         "Тестирование лиги Runes of Aldur",
@@ -100,7 +100,7 @@
         "Полный релиз и новые акты кампании в декабре"
       ],
       "links": {
-        "official": "https://www.pathofexile.com/",
+        "official": "https://pathofexile2.com",
         "wiki": "",
         "community": ""
       },
@@ -123,38 +123,38 @@
       "icon": "🔥",
       "website": "https://diablo4.blizzard.com/",
       "latestNews": {
-        "id": "e69a38aa7918e08b4653d3744be474c731cf6538ff8b4bf075655baab31b205f",
+        "id": "24268702",
         "title": "Hunt the Death Cult in Season of Death Awakening",
-        "url": "https://diablo4.blizzard.com/",
-        "publishDate": "2026-07-19",
+        "url": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening",
+        "publishDate": "2026-06-23T17:00:00Z",
         "source": "Official Diablo IV News"
       },
       "status": {
-        "code": "active",
-        "label": "Active",
-        "updatedAt": "2026-07-19T00:17:28.161Z"
+        "code": "in-progress",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-19T00:29:17.939Z"
       },
       "currentSeason": {
-        "name": "Season of Death Awakening",
-        "startDate": "",
-        "endDate": "",
-        "isActive": true,
-        "verification": "official",
-        "sourceUrl": "https://diablo4.blizzard.com/"
+        "name": "Сезон 14: Season of Death Awakening",
+        "startDate": "2026-06-30",
+        "endDate": "2026-07-24",
+        "isActive": false,
+        "verification": "ai",
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening"
       },
       "nextSeason": {
-        "name": "TBA",
-        "startDate": "",
+        "name": "Season 15",
+        "startDate": "2026-09-18",
         "endDate": "",
         "isActive": false,
-        "verification": "official",
-        "sourceUrl": "https://diablo4.blizzard.com/"
+        "verification": "ai",
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening"
       },
       "features": [
-        "Tear open Ruptures and conquer redesigned Realmwalkers",
-        "Confront a corrupted Reaper for Mythic Unique rewards",
-        "Explore the ancient islands of Skovos and play two new classes in the Lord of Hatred expansion",
-        "New seasonal features including The Tower and Leaderboards"
+        "Тематика «Пробуждения Смерти»",
+        "Новое подземелье-испытание «Катакомбы Мучений»",
+        "Система напарников-наемников нового поколения",
+        "Изменение баланса классов после BlizzCon 2026"
       ],
       "links": {
         "official": "https://diablo4.blizzard.com/",
@@ -191,30 +191,29 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-19T00:15:33.091Z"
+        "updatedAt": "2026-07-19T00:29:16.936Z"
       },
       "currentSeason": {
-        "name": "Season 4",
-        "startDate": "",
-        "endDate": "",
+        "name": "Цикл 4: Shattered Omens",
+        "startDate": "2026-03-26",
+        "endDate": "2026-07-20",
         "isActive": true,
-        "verification": "official",
+        "verification": "ai",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "nextSeason": {
-        "name": "Season 5",
-        "startDate": "",
+        "name": "Cycle 5 & Расширение Orobyss",
+        "startDate": "2026-09-10",
         "endDate": "",
         "isActive": false,
-        "verification": "official",
+        "verification": "ai",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "features": [
-        "Shattering Omens and Item Corruption",
-        "New Unique Items including Ash Wake boots and Nihilis",
-        "Splinter Nova node for Marrow Shards",
-        "Feedback and Suggestions Tracker updates",
-        "Upcoming Last Epoch: Orobyss update"
+        "Случайные энкаунтеры с Предзнаменованиями (Omens)",
+        "Реворк системы крафта и фракций торговли",
+        "Второе крупное дополнение с новыми подклассами",
+        "Расширенный эндгейм-контент монолитов судьбы"
       ],
       "links": {
         "official": "https://www.lastepoch.com/",
@@ -248,32 +247,31 @@
         "source": "Torchlight Infinite Steam News"
       },
       "status": {
-        "code": "active",
-        "label": "Active",
-        "updatedAt": "2026-07-19T00:15:31.496Z"
+        "code": "just-started",
+        "label": "Maintenance",
+        "updatedAt": "2026-07-19T00:29:16.944Z"
       },
       "currentSeason": {
-        "name": "Afterlight",
-        "startDate": "2026-07-16",
-        "endDate": "",
-        "isActive": true,
+        "name": "SS13: Afterlight",
+        "startDate": "2026-07-17",
+        "endDate": "2026-07-24",
+        "isActive": false,
         "verification": "ai",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "nextSeason": {
-        "name": "TBA",
-        "startDate": "",
+        "name": "SS14",
+        "startDate": "2026-10-23",
         "endDate": "",
         "isActive": false,
-        "verification": "official",
+        "verification": "ai",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "features": [
-        "New Seasonal Mechanic: Afterlight, featuring Wraith purification, relics, and mysterious bosses",
-        "New Hero Trait: Dance of the Deep for Selena, built around Terra skills and the Crimson Tide",
-        "New Progression System: Nether King's Divinity, introducing a new Divinity Slate and branding mechanics",
-        "New Challenge Mode: Divine Ascent, a timed tower-climbing mode with random events and leaderboards",
-        "System and Visual Upgrades, including streamlined core mechanics, Trade House optimizations, and graphical refreshes"
+        "Механика Ночных Стражей: проводы душ усопших",
+        "Новый сверхсложный эндгейм-режим Divine Ascent",
+        "Новый играбельный герой-маг Кронос",
+        "Автоматизация лут-фильтра нового поколения"
       ],
       "links": {
         "official": "https://torchlightinfinite.com/",

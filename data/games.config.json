@@ -15,7 +15,7 @@
       "developer": "Grinding Gear Games",
       "color": "#4b6e9c",
       "icon": "✨",
-      "website": "https://www.pathofexile.com/",
+      "website": "https://pathofexile2.com",
       "status": {
         "code": "early-access",
         "label": "Ранний доступ"
@@ -25,14 +25,14 @@
         "startDate": "2026-05-29",
         "endDate": "",
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/"
+        "sourceUrl": "https://pathofexile2.com"
       },
       "nextSeason": {
         "name": "Версия 1.0 (Релиз)",
         "startDate": "2026-12-15",
         "endDate": "",
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/"
+        "sourceUrl": "https://pathofexile2.com"
       },
       "features": [
         "Тестирование лиги Runes of Aldur",
@@ -47,7 +47,7 @@
     "name": "Diablo IV",
     "adapter": "DiabloAdapter",
     "enabled": true,
-    "sourceUrl": "https://diablo4.blizzard.com/"
+    "sourceUrl": "https://news.blizzard.com/en-us/diablo4"
   },
   {
     "id": "last-epoch",

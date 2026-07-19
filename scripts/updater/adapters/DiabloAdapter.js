@@ -7,30 +7,20 @@ export class DiabloAdapter extends BaseAdapter {
 
   async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
-    const url = gameConfig.sourceUrl || 'https://news.blizzard.com/en-us/diablo4';
+    const url = 'https://news.blizzard.com/api/news/diablo-4';
 
     try {
-      console.log(`[Diablo IV] Fetching official Blizzard news page: ${url}`);
-      const rawHtml = await this.fetchUrl(url);
-      const cleanedText = this.cleanHtml(rawHtml);
+      console.log(`[Diablo IV] Fetching official Blizzard news JSON: ${url}`);
+      const rawJson = await this.fetchUrl(url);
+      const data = JSON.parse(rawJson);
+      const items = data.feed?.contentItems || [];
 
-      if (!cleanedText) {
-        throw new Error('Fetched HTML content is empty after cleaning');
+      if (items.length === 0) {
+        throw new Error('No news items found in Blizzard News API');
       }
 
-      // Extract the first article link using regex
-      const articleLinkMatch = rawHtml.match(/href="([^"]*?diablo4\/\d+[^"]*?)"/i) || 
-                            rawHtml.match(/href="([^"]*?diablo-iv\/\d+[^"]*?)"/i);
-      let latestUrl = url;
-      if (articleLinkMatch) {
-        let path = articleLinkMatch[1];
-        if (path.startsWith('/')) {
-          path = 'https://news.blizzard.com' + path;
-        }
-        latestUrl = path;
-      }
-      
-      const latestNewsId = this.hashString(latestUrl);
+      const firstItem = items[0];
+      const latestNewsId = firstItem.properties?.newsId || this.hashString(firstItem.properties?.title + firstItem.properties?.lastUpdated);
 
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
         console.log(`[Orchestrator] [Diablo IV] Latest news unchanged (id=${latestNewsId}). Skipping Gemini call.`);
@@ -39,14 +29,17 @@ export class DiabloAdapter extends BaseAdapter {
 
       console.log(`[Orchestrator] [Diablo IV] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season details from the provided text of Diablo IV Blizzard news list.
+      const newsText = items.slice(0, 5).map(item => 
+        `Title: ${item.properties.title}\nDate: ${item.properties.lastUpdated}\nSummary: ${item.properties.summary}`
+      ).join('\n\n---\n\n');
+
+      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season details from the provided Diablo IV Blizzard news titles and summaries.
 Currently, the year is ${new Date().getFullYear()}. Determine:
 1. Current Season name (e.g. "Season of the Hatred"). If none, use empty string.
 2. Current Season start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
 3. Next Season name, start date (YYYY-MM-DD), and end date (YYYY-MM-DD). Use empty string if unknown.
 4. Game status: "active" (if a season is running), "in-development" (if between seasons), "maintenance" (if offline).
 5. A list of 3-5 key features introduced or planned.
-6. The title (latestNewsTitle) and publication date (latestNewsDate, formatted strictly as YYYY-MM-DD or empty string) of the most recent news article listed in the text.
 
 Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. Reference news headlines and publication dates in the text to understand when events happen.`;
 
@@ -63,14 +56,12 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           features: {
             type: 'ARRAY',
             items: { type: 'STRING' }
-          },
-          latestNewsTitle: { type: 'STRING' },
-          latestNewsDate: { type: 'STRING' }
+          }
         },
-        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'status', 'features', 'latestNewsTitle', 'latestNewsDate']
+        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'status', 'features']
       };
 
-      const extracted = await this.callGemini(cleanedText.substring(0, 10000), systemInstruction, schema);
+      const extracted = await this.callGemini(newsText, systemInstruction, schema);
 
       const normalized = {
         id: this.gameId,
@@ -82,9 +73,9 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         website: 'https://diablo4.blizzard.com/',
         latestNews: {
           id: latestNewsId,
-          title: extracted.latestNewsTitle || 'Official Diablo IV News',
-          url: latestUrl,
-          publishDate: extracted.latestNewsDate || new Date().toISOString().split('T')[0],
+          title: firstItem.properties.title,
+          url: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/',
+          publishDate: firstItem.properties.lastUpdated || '',
           source: 'Official Diablo IV News'
         },
         status: {
@@ -98,7 +89,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           endDate: extracted.currentSeasonEndDate || '',
           isActive: extracted.status === 'active',
           verification: extracted.currentSeasonStartDate ? 'ai' : 'official',
-          sourceUrl: url
+          sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         nextSeason: {
           name: extracted.nextSeasonName || 'TBA',
@@ -106,7 +97,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
           verification: extracted.nextSeasonStartDate ? 'ai' : 'official',
-          sourceUrl: url
+          sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         features: extracted.features || [],
         links: {

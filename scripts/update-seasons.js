@@ -130,7 +130,7 @@ async function main() {
       const adapter = new AdapterClass();
 
       // Fetch and normalize
-      let gameData = await adapter.fetchAndNormalize(gameConfig);
+      let gameData = await adapter.fetchAndNormalize(gameConfig, existingGame);
 
       // Merge with existing data to preserve dates/features if scraper returned TBA
       gameData = mergeGameData(existingGame, gameData);
@@ -138,11 +138,15 @@ async function main() {
       // Validate
       Validator.validateGame(gameData);
 
+      // Save to local cache folder ONLY after successful validation!
+      const cachePath = path.join(cacheDir, `${gameConfig.id}.json`);
+      fs.writeFileSync(cachePath, JSON.stringify(gameData, null, 2), 'utf-8');
+
       return {
         gameId: gameConfig.id,
         status: 'success',
         data: gameData,
-        source: gameData.latestNewsId ? 'steam_api' : 'rss'
+        source: gameData.latestNews?.source || 'rss'
       };
     } catch (error) {
       console.error(`[Orchestrator] Error running adapter for ${gameConfig.name}:`, error.message);

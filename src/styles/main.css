@@ -1325,3 +1325,50 @@ body::after {
   margin-right: 0.25rem;
   font-size: 0.85rem;
 }
+
+/* Official Source styling under title */
+.game-card__source-info {
+  margin-top: 0.65rem;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.game-card__source-badge {
+  color: #a5b4fc;
+  font-weight: 600;
+  background: rgba(165, 180, 252, 0.08);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(165, 180, 252, 0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.game-card__source-title {
+  color: var(--text);
+  font-weight: 600;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.game-card__source-link {
+  color: var(--game-color, var(--accent));
+  text-decoration: none;
+  font-weight: 600;
+  transition: opacity 0.2s ease, text-decoration 0.2s ease;
+}
+
+.game-card__source-link:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}

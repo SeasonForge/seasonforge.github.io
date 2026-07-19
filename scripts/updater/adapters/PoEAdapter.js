@@ -5,7 +5,7 @@ export class PoEAdapter extends BaseAdapter {
     super('path-of-exile');
   }
 
-  async fetchAndNormalize(gameConfig) {
+  async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
     const url = gameConfig.sourceUrl || 'https://www.pathofexile.com/news/rss';
 
@@ -23,29 +23,33 @@ export class PoEAdapter extends BaseAdapter {
         
         const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/i);
         const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/i);
+        const guidMatch = itemContent.match(/<guid[^>]*?>([\s\S]*?)<\/guid>/i);
         const descMatch = itemContent.match(/<description>([\s\S]*?)<\/description>/i);
         const dateMatch = itemContent.match(/<pubDate>([\s\S]*?)<\/pubDate>/i);
 
         const title = titleMatch ? cleanCdata(titleMatch[1]) : '';
         const link = linkMatch ? cleanCdata(linkMatch[1]) : '';
+        const guid = guidMatch ? cleanCdata(guidMatch[1]) : '';
         const description = descMatch ? cleanCdata(descMatch[1]) : '';
         const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
 
-        items.push({ title, link, description, pubDate });
+        items.push({ title, link, guid, description, pubDate });
       }
 
       if (items.length === 0) {
         throw new Error('No items found in Path of Exile RSS feed');
       }
 
-      // Check if the latest news title is the same as the cached one
-      const latestTitle = items[0].title;
-      if (cache && cache.latestNewsTitle === latestTitle) {
-        console.log(`[Path of Exile] No new RSS items detected ("${latestTitle}"). Using cached data.`);
-        return cache;
+      // Check if the latest news GUID/link is the same as the cached/existing one
+      const firstItem = items[0];
+      const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
+      
+      if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
+        console.log(`[Orchestrator] [PoE] Latest news unchanged (id=${latestNewsId}). Skipping Gemini call.`);
+        return existingGame;
       }
 
-      console.log(`[Path of Exile] New league announcements detected! Analyzing with Gemini...`);
+      console.log(`[Orchestrator] [PoE] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
       const feedContent = items
         .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)
@@ -89,7 +93,13 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         color: '#f5c342',
         icon: '💀',
         website: 'https://www.pathofexile.com/',
-        latestNewsTitle: latestTitle,
+        latestNews: {
+          id: latestNewsId,
+          title: firstItem.title,
+          url: firstItem.link || 'https://www.pathofexile.com/',
+          publishDate: firstItem.pubDate || '',
+          source: 'Path of Exile RSS'
+        },
         status: {
           code: extracted.status || 'active',
           label: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
@@ -124,7 +134,6 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         }
       };
 
-      await this.writeCache(normalized);
       return normalized;
     } catch (e) {
       console.warn(`[Path of Exile] Update failed: ${e.message}. Using cache fallback.`);

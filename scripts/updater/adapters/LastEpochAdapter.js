@@ -5,7 +5,7 @@ export class LastEpochAdapter extends BaseAdapter {
     super('last-epoch');
   }
 
-  async fetchAndNormalize(gameConfig) {
+  async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
     const appId = gameConfig.appId || 899770;
     const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=3&maxlength=4000&format=json`;
@@ -22,12 +22,12 @@ export class LastEpochAdapter extends BaseAdapter {
       // Track the latest news item ID for caching to avoid calling Gemini when there is no new news
       const latestNewsId = newsitems[0].gid;
 
-      if (cache && cache.latestNewsId === latestNewsId) {
-        console.log(`[Last Epoch] No new news detected (ID: ${latestNewsId}). Using cached data.`);
-        return cache;
+      if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
+        console.log(`[Orchestrator] [Last Epoch] Latest news unchanged (gid=${latestNewsId}). Skipping Gemini call.`);
+        return existingGame;
       }
 
-      console.log(`[Last Epoch] New news detected! Analyzing with Gemini...`);
+      console.log(`[Orchestrator] [Last Epoch] New article detected (gid=${latestNewsId}). Calling Gemini...`);
 
       // Combine headlines and body text to extract info
       const newsText = newsitems
@@ -72,7 +72,13 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         color: '#6b3fa0',
         icon: '⏳',
         website: 'https://www.lastepoch.com/',
-        latestNewsId: latestNewsId,
+        latestNews: {
+          id: latestNewsId,
+          title: newsitems[0].title || 'Last Epoch Steam Update',
+          url: newsitems[0].url || 'https://www.lastepoch.com/',
+          publishDate: new Date(newsitems[0].date * 1000).toISOString(),
+          source: 'Last Epoch Steam News'
+        },
         status: {
           code: extracted.status || 'active',
           label: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
@@ -107,7 +113,6 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         }
       };
 
-      await this.writeCache(normalized);
       return normalized;
     } catch (e) {
       console.warn(`[Last Epoch] Update failed: ${e.message}. Using cache fallback.`);

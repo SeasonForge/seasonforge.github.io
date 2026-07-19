@@ -5,7 +5,7 @@ export class TorchlightAdapter extends BaseAdapter {
     super('torchlight-infinite');
   }
 
-  async fetchAndNormalize(gameConfig) {
+  async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
     const appId = gameConfig.appId || 1974050;
     const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=3&maxlength=4000&format=json`;
@@ -21,12 +21,12 @@ export class TorchlightAdapter extends BaseAdapter {
 
       const latestNewsId = newsitems[0].gid;
 
-      if (cache && cache.latestNewsId === latestNewsId) {
-        console.log(`[Torchlight Infinite] No new news detected (ID: ${latestNewsId}). Using cached data.`);
-        return cache;
+      if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
+        console.log(`[Orchestrator] [Torchlight Infinite] Latest news unchanged (gid=${latestNewsId}). Skipping Gemini call.`);
+        return existingGame;
       }
 
-      console.log(`[Torchlight Infinite] New news detected! Analyzing with Gemini...`);
+      console.log(`[Orchestrator] [Torchlight Infinite] New article detected (gid=${latestNewsId}). Calling Gemini...`);
 
       const newsText = newsitems
         .map(item => `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nContent: ${this.cleanHtml(item.contents)}`)
@@ -70,7 +70,13 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         color: '#c27a2b',
         icon: '⚡',
         website: 'https://torchlightinfinite.com/',
-        latestNewsId: latestNewsId,
+        latestNews: {
+          id: latestNewsId,
+          title: newsitems[0].title || 'Torchlight: Infinite Steam Update',
+          url: newsitems[0].url || 'https://torchlightinfinite.com/',
+          publishDate: new Date(newsitems[0].date * 1000).toISOString(),
+          source: 'Torchlight Infinite Steam News'
+        },
         status: {
           code: extracted.status || 'active',
           label: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
@@ -105,7 +111,6 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         }
       };
 
-      await this.writeCache(normalized);
       return normalized;
     } catch (e) {
       console.warn(`[Torchlight Infinite] Update failed: ${e.message}. Using cache fallback.`);

@@ -135,6 +135,23 @@ export function render(game = {}, options = {}) {
   const moreDetailsUrl = game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website;
   const uppercaseStatusPill = `Active Status: ${statusLabel}`.toUpperCase();
 
+  let sourceHtml = '';
+  if (game.latestNews && game.latestNews.url) {
+    const newsTitle = escapeHtml(game.latestNews.title || 'анонс');
+    const newsUrl = escapeAttr(game.latestNews.url);
+    const rawDate = game.latestNews.publishDate;
+    const formattedNewsDate = rawDate ? formatLocalDate(rawDate) : '';
+    const dateText = formattedNewsDate ? ` от ${formattedNewsDate}` : '';
+    const sourceLabel = escapeHtml(game.latestNews.source || 'Official Source');
+    sourceHtml = `
+      <p class="game-card__source-info">
+        Источник: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
+        <span class="game-card__source-title" title="${newsTitle}">${newsTitle}</span>${dateText} • 
+        <a href="${newsUrl}" target="_blank" class="game-card__source-link">Читать оригинал ↗</a>
+      </p>
+    `;
+  }
+
   return `
     <article class="game-card" data-game-id="${escapeAttr(game.id || '')}" style="--game-color: ${color};">
       <div class="game-card__glow"></div>
@@ -143,6 +160,7 @@ export function render(game = {}, options = {}) {
           <span class="game-card__pill${pillModifier}">${uppercaseStatusPill}</span>
           <h2 class="game-card__title">${name}</h2>
           <p class="game-card__subtitle">Текущий сезон: ${currentSeason}</p>
+          ${sourceHtml}
         </div>
         <div class="game-card__next-season">
           <span class="game-card__label">Следующий сезон</span>

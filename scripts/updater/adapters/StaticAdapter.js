@@ -17,6 +17,13 @@ export class StaticAdapter extends BaseAdapter {
       logo: staticData.logo || '',
       color: staticData.color || '#4b5563',
       website: staticData.website || '#',
+      latestNews: {
+        id: 'static-config',
+        title: 'Официальный анонс Path of Exile 2',
+        url: staticData.website || 'https://www.pathofexile.com/',
+        publishDate: staticData.currentSeason?.startDate || new Date().toISOString(),
+        source: 'Grinding Gear Games'
+      },
       status: {
         code: staticData.status?.code || 'in-development',
         label: staticData.status?.label || 'In Development',

@@ -1,9 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 
 export class BaseAdapter {
   constructor(gameId) {
     this.gameId = gameId;
+  }
+
+  hashString(str) {
+    return crypto.createHash('sha256').update(str || '').digest('hex');
   }
 
   // Fetch text/HTML from a URL with custom headers

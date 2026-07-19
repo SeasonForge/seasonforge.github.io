@@ -1,0 +1,29 @@
+[
+  {
+    "season": {
+      "en": "Season 5: Clockwork Ballet",
+      "ru": "Сезон 5: Заводной Балет"
+    },
+    "startDate": "2026-07-04",
+    "endDate": null,
+    "sourceUrl": "https://torchlight.xd.com/"
+  },
+  {
+    "season": {
+      "en": "Season 4: Whispering Mist",
+      "ru": "Сезон 4: Шепчущий Туман"
+    },
+    "startDate": "2026-04-18",
+    "endDate": "2026-07-04",
+    "sourceUrl": "https://torchlight.xd.com/"
+  },
+  {
+    "season": {
+      "en": "Season 3: Twinightmare",
+      "ru": "Сезон 3: Кошмар-Близнец"
+    },
+    "startDate": "2026-01-18",
+    "endDate": "2026-04-18",
+    "sourceUrl": "https://torchlight.xd.com/"
+  }
+]

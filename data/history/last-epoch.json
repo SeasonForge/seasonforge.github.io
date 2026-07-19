@@ -1,0 +1,20 @@
+[
+  {
+    "season": {
+      "en": "Cycle 1.1: Harbingers of Ruin",
+      "ru": "Цикл 1.1: Предвестники Погибели"
+    },
+    "startDate": "2026-07-09",
+    "endDate": null,
+    "sourceUrl": "https://forum.lastepoch.com/t/harbingers-of-ruin-patch-notes/71618"
+  },
+  {
+    "season": {
+      "en": "Cycle 1.0: Imperial Uprising",
+      "ru": "Цикл 1.0: Имперское Восстание"
+    },
+    "startDate": "2026-02-21",
+    "endDate": "2026-07-09",
+    "sourceUrl": "https://forum.lastepoch.com/"
+  }
+]

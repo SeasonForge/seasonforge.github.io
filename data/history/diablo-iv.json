@@ -1,0 +1,29 @@
+[
+  {
+    "season": {
+      "en": "Season 14: Season of Death Awakening",
+      "ru": "Сезон 14: Сезон Пробуждения Смерти"
+    },
+    "startDate": "2026-06-30",
+    "endDate": null,
+    "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening"
+  },
+  {
+    "season": {
+      "en": "Season 13: Loot Reborn",
+      "ru": "Сезон 13: Возрождение Добычи"
+    },
+    "startDate": "2026-03-14",
+    "endDate": "2026-06-30",
+    "sourceUrl": "https://news.blizzard.com/en-us/article/24096024/diablo-iv-season-4-loot-reborn-now-live"
+  },
+  {
+    "season": {
+      "en": "Season 12: Season of the Construct",
+      "ru": "Сезон 12: Сезон Конструкта"
+    },
+    "startDate": "2026-01-23",
+    "endDate": "2026-03-14",
+    "sourceUrl": "https://news.blizzard.com/en-us/diablo4"
+  }
+]

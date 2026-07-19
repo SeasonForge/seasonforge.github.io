@@ -1,0 +1,29 @@
+[
+  {
+    "season": {
+      "en": "League 3.25: Settlers of Kalguur",
+      "ru": "Лига 3.25: Поселенцы Калгуура"
+    },
+    "startDate": "2026-07-26",
+    "endDate": null,
+    "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
+  },
+  {
+    "season": {
+      "en": "League 3.24: Necropolis",
+      "ru": "Лига 3.24: Некрополь"
+    },
+    "startDate": "2026-03-29",
+    "endDate": "2026-07-26",
+    "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3496666"
+  },
+  {
+    "season": {
+      "en": "League 3.23: Affliction",
+      "ru": "Лига 3.23: Заклятие"
+    },
+    "startDate": "2025-12-08",
+    "endDate": "2026-03-29",
+    "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3451457"
+  }
+]

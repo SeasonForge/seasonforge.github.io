@@ -39,7 +39,15 @@ export const en = {
     minutes: "min",
     seconds: "sec",
     estimatedBadge: "Forecast",
-    estimatedBadgeTitle: "This date is calculated by an algorithm based on historical cycles and is not an official announcement"
+    estimatedBadgeTitle: "This date is calculated by an algorithm based on historical cycles and is not an official announcement",
+    historyTitle: "Season Timeline",
+    thSeason: "Season",
+    thStart: "Start Date",
+    thEnd: "End Date",
+    thDuration: "Duration",
+    thLink: "Announcement",
+    ongoing: "Ongoing",
+    readUrl: "Read ↗"
   },
   timeline: {
     title: "Chronological map",

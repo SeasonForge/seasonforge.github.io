@@ -1409,3 +1409,20 @@ body::after {
   color: #fff;
   box-shadow: 0 0 10px var(--accent-glow);
 }
+
+/* History Table styling */
+.history-table th, .history-table td {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #1f2937;
+}
+.history-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+.history-table__link {
+  color: var(--color-primary, #6366f1);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+.history-table__link:hover {
+  opacity: 0.8;
+}

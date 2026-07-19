@@ -135,8 +135,8 @@
       <div class="game-card__countdown">
         <div class="game-card__countdown-item"><strong>4</strong><span>days</span></div>
         <div class="game-card__countdown-item"><strong>19</strong><span>hours</span></div>
-        <div class="game-card__countdown-item"><strong>57</strong><span>min</span></div>
-        <div class="game-card__countdown-item"><strong>30</strong><span>sec</span></div>
+        <div class="game-card__countdown-item"><strong>54</strong><span>min</span></div>
+        <div class="game-card__countdown-item"><strong>46</strong><span>sec</span></div>
       </div>
     
           <div class="game-card__developer">
@@ -191,6 +191,58 @@
 
       <!-- Embedded bilingual content for zero-fetch translation -->
       <script type="application/json" id="about-translations-data">{"en":"Path of Exile is a free-to-play action RPG developed and published by Grinding Gear Games. The game features a dark fantasy world, deep character customization, and a complex passive skill tree. Seasons (known as Leagues) run for approximately 3 to 4 months, introducing fresh league mechanics, balance updates, and economy resets.","ru":"Path of Exile — это бесплатная ролевая игра в жанре action RPG, разработанная и выпущенная Grinding Gear Games. Игра отличается мрачным фэнтезийным миром, глубокой кастомизацией персонажей и сложным древом пассивных умений. Сезоны (известные как Лиги) длятся примерно 3-4 месяца, предлагая новые механики лиг, обновления баланса и перезапуск экономики."}</script>
+
+      <!-- Season Timeline Section -->
+      <section class="game-card__panel game-card__panel--history" id="history-section" style="margin-top: 1rem; width: 100%;">
+        <div class="game-card__features-header">
+          <span class="game-card__label"><span class="game-card__features-compass">📅</span> <span id="lbl-history-title">Season Timeline</span></span>
+        </div>
+        <div class="game-card__history-table-container" style="overflow-x: auto; padding: 0.5rem 0;">
+          <table class="history-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; color: #d1d5db;">
+            <thead>
+              <tr style="border-bottom: 2px solid #374151;">
+                <th id="lbl-th-season" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Season</th>
+                <th id="lbl-th-start" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Start Date</th>
+                <th id="lbl-th-end" style="padding: 0.75rem 0.5rem; color: #9ca3af;">End Date</th>
+                <th id="lbl-th-duration" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Duration</th>
+                <th id="lbl-th-link" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Announcement</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">League 3.25: Settlers of Kalguur</td>
+              <td style="padding: 0.75rem 0.5rem;">Jul 26, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">—</td>
+              <td style="padding: 0.75rem 0.5rem;">Ongoing</td>
+              <td style="padding: 0.75rem 0.5rem;"><a href="https://www.pathofexile.com/forum/view-thread/3985393" target="_blank" class="history-table__link">Read ↗</a></td>
+            </tr>
+          
+
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">League 3.24: Necropolis</td>
+              <td style="padding: 0.75rem 0.5rem;">Mar 29, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">Jul 26, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">119 days</td>
+              <td style="padding: 0.75rem 0.5rem;"><a href="https://www.pathofexile.com/forum/view-thread/3496666" target="_blank" class="history-table__link">Read ↗</a></td>
+            </tr>
+          
+
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">League 3.23: Affliction</td>
+              <td style="padding: 0.75rem 0.5rem;">Dec 8, 2025</td>
+              <td style="padding: 0.75rem 0.5rem;">Mar 29, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">111 days</td>
+              <td style="padding: 0.75rem 0.5rem;"><a href="https://www.pathofexile.com/forum/view-thread/3451457" target="_blank" class="history-table__link">Read ↗</a></td>
+            </tr>
+          
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Embedded history translations data -->
+      <script type="application/json" id="history-translations-data">[{"season":{"en":"League 3.25: Settlers of Kalguur","ru":"Лига 3.25: Поселенцы Калгуура"},"startDate":"2026-07-26","endDate":null,"sourceUrl":"https://www.pathofexile.com/forum/view-thread/3985393"},{"season":{"en":"League 3.24: Necropolis","ru":"Лига 3.24: Некрополь"},"startDate":"2026-03-29","endDate":"2026-07-26","sourceUrl":"https://www.pathofexile.com/forum/view-thread/3496666"},{"season":{"en":"League 3.23: Affliction","ru":"Лига 3.23: Заклятие"},"startDate":"2025-12-08","endDate":"2026-03-29","sourceUrl":"https://www.pathofexile.com/forum/view-thread/3451457"}]</script>
     </div>
 
     <footer class="app-footer">

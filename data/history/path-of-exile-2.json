@@ -1,0 +1,20 @@
+[
+  {
+    "season": {
+      "en": "Early Access Launch",
+      "ru": "Запуск раннего доступа"
+    },
+    "startDate": "2026-11-15",
+    "endDate": null,
+    "sourceUrl": "https://www.pathofexile.com/poe2"
+  },
+  {
+    "season": {
+      "en": "Closed Beta Test",
+      "ru": "Закрытый бета-тест"
+    },
+    "startDate": "2026-06-07",
+    "endDate": "2026-11-15",
+    "sourceUrl": "https://www.pathofexile.com/poe2"
+  }
+]

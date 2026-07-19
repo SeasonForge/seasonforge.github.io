@@ -135,8 +135,8 @@
       <div class="game-card__countdown">
         <div class="game-card__countdown-item"><strong>52</strong><span>days</span></div>
         <div class="game-card__countdown-item"><strong>19</strong><span>hours</span></div>
-        <div class="game-card__countdown-item"><strong>57</strong><span>min</span></div>
-        <div class="game-card__countdown-item"><strong>30</strong><span>sec</span></div>
+        <div class="game-card__countdown-item"><strong>54</strong><span>min</span></div>
+        <div class="game-card__countdown-item"><strong>46</strong><span>sec</span></div>
       </div>
     
           <div class="game-card__developer">
@@ -191,6 +191,49 @@
 
       <!-- Embedded bilingual content for zero-fetch translation -->
       <script type="application/json" id="about-translations-data">{"en":"Last Epoch is an action RPG developed by Eleventh Hour Games, combining time travel, exciting dungeon crawling, and deep character customization. The game features an accessible crafting system, a deep skill tree, and a robust endgame. Seasons (known as Cycles) run for approximately 3 to 4 months, offering fresh content, competitive ladders, and item updates.","ru":"Last Epoch — это action RPG, разработанная Eleventh Hour Games, объединяющая путешествия во времени, увлекательные исследования подземелий и глубокую кастомизацию персонажей. Игра предлагает доступную систему крафта, разветвленные древа умений и проработанный эндгейм. Сезоны (известные как Циклы) длятся около 3-4 месяцев, предлагая свежий контент, соревновательные таблицы лидеров и новые предметы."}</script>
+
+      <!-- Season Timeline Section -->
+      <section class="game-card__panel game-card__panel--history" id="history-section" style="margin-top: 1rem; width: 100%;">
+        <div class="game-card__features-header">
+          <span class="game-card__label"><span class="game-card__features-compass">📅</span> <span id="lbl-history-title">Season Timeline</span></span>
+        </div>
+        <div class="game-card__history-table-container" style="overflow-x: auto; padding: 0.5rem 0;">
+          <table class="history-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; color: #d1d5db;">
+            <thead>
+              <tr style="border-bottom: 2px solid #374151;">
+                <th id="lbl-th-season" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Season</th>
+                <th id="lbl-th-start" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Start Date</th>
+                <th id="lbl-th-end" style="padding: 0.75rem 0.5rem; color: #9ca3af;">End Date</th>
+                <th id="lbl-th-duration" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Duration</th>
+                <th id="lbl-th-link" style="padding: 0.75rem 0.5rem; color: #9ca3af;">Announcement</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body">
+              
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">Cycle 1.1: Harbingers of Ruin</td>
+              <td style="padding: 0.75rem 0.5rem;">Jul 9, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">—</td>
+              <td style="padding: 0.75rem 0.5rem;">Ongoing</td>
+              <td style="padding: 0.75rem 0.5rem;"><a href="https://forum.lastepoch.com/t/harbingers-of-ruin-patch-notes/71618" target="_blank" class="history-table__link">Read ↗</a></td>
+            </tr>
+          
+
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">Cycle 1.0: Imperial Uprising</td>
+              <td style="padding: 0.75rem 0.5rem;">Feb 21, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">Jul 9, 2026</td>
+              <td style="padding: 0.75rem 0.5rem;">138 days</td>
+              <td style="padding: 0.75rem 0.5rem;"><a href="https://forum.lastepoch.com/" target="_blank" class="history-table__link">Read ↗</a></td>
+            </tr>
+          
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Embedded history translations data -->
+      <script type="application/json" id="history-translations-data">[{"season":{"en":"Cycle 1.1: Harbingers of Ruin","ru":"Цикл 1.1: Предвестники Погибели"},"startDate":"2026-07-09","endDate":null,"sourceUrl":"https://forum.lastepoch.com/t/harbingers-of-ruin-patch-notes/71618"},{"season":{"en":"Cycle 1.0: Imperial Uprising","ru":"Цикл 1.0: Имперское Восстание"},"startDate":"2026-02-21","endDate":"2026-07-09","sourceUrl":"https://forum.lastepoch.com/"}]</script>
     </div>
 
     <footer class="app-footer">

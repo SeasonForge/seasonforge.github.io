@@ -131,6 +131,56 @@ async function build() {
       }
     }
 
+    // 2b. Load "History/Timeline" data file if it exists
+    const historyPath = path.join(__dirname, `../data/history/${gameId}.json`);
+    let timelineHtml = '';
+    let timelineJson = '[]';
+    if (fs.existsSync(historyPath)) {
+      try {
+        const historyData = JSON.parse(fs.readFileSync(historyPath, 'utf-8'));
+        timelineJson = JSON.stringify(historyData);
+        
+        // Render timeline rows in English for static HTML
+        const rows = [];
+        for (const item of historyData) {
+          const seasonName = item.season.en || '';
+          const start = item.startDate;
+          const end = item.endDate;
+          
+          let durationStr = '—';
+          if (start) {
+            const startDateObj = new Date(start);
+            if (end) {
+              const endDateObj = new Date(end);
+              const diffDays = Math.round((endDateObj - startDateObj) / (1000 * 60 * 60 * 24));
+              durationStr = `${diffDays} days`;
+            } else {
+              durationStr = 'Ongoing';
+            }
+          }
+          
+          const formattedStart = start ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
+          const formattedEnd = end ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
+          const linkHtml = item.sourceUrl 
+            ? `<a href="${item.sourceUrl}" target="_blank" class="history-table__link">Read ↗</a>` 
+            : '—';
+            
+          rows.push(`
+            <tr style="border-bottom: 1px solid #1f2937;">
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${seasonName}</td>
+              <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
+              <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
+              <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
+              <td style="padding: 0.75rem 0.5rem;">${linkHtml}</td>
+            </tr>
+          `);
+        }
+        timelineHtml = rows.join('\n');
+      } catch (err) {
+        console.error(`[SSG] Error reading history for ${gameId}:`, err.message);
+      }
+    }
+
     // 3. Construct SEO values
     const canonicalUrl = `${BASE_URL}/games/${gameId}/`;
     const schemaObj = {
@@ -167,6 +217,8 @@ async function build() {
     html = html.replace(/{{ABOUT_JSON}}/g, aboutJson);
     html = html.replace(/{{CANONICAL_URL}}/g, canonicalUrl);
     html = html.replace(/{{SCHEMA_JSONLD}}/g, schemaJson);
+    html = html.replace(/{{TIMELINE_HTML}}/g, timelineHtml);
+    html = html.replace(/{{TIMELINE_JSON}}/g, timelineJson);
 
     // 5. Write target index.html
     const targetDir = path.join(__dirname, `../games/${gameId}`);

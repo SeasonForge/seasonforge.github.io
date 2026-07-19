@@ -21,6 +21,7 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         nextSeasonName: "3.29: Curse of the Allflame",
         nextSeasonStartDate: getRelativeDateString(5),
         nextSeasonEndDate: "",
+        nextSeasonVerification: "official",
         status: "ending",
         features: [
           "Тематика глубоководных экспедиций («Вояжи»)",
@@ -37,6 +38,7 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         nextSeasonName: "Season 15",
         nextSeasonStartDate: getRelativeDateString(61),
         nextSeasonEndDate: "",
+        nextSeasonVerification: "estimated",
         status: "in-progress",
         features: [
           "Тематика «Пробуждения Смерти»",
@@ -53,6 +55,7 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         nextSeasonName: "Cycle 5 & Расширение Orobyss",
         nextSeasonStartDate: getRelativeDateString(53),
         nextSeasonEndDate: "",
+        nextSeasonVerification: "estimated",
         status: "active",
         features: [
           "Случайные энкаунтеры с Предзнаменованиями (Omens)",
@@ -69,6 +72,7 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         nextSeasonName: "SS14",
         nextSeasonStartDate: getRelativeDateString(96),
         nextSeasonEndDate: "",
+        nextSeasonVerification: "estimated",
         status: "just-started",
         features: [
           "Механика Ночных Стражей: проводы душ усопших",

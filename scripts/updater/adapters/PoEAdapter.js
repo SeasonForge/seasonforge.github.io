@@ -62,6 +62,7 @@ Currently, the year is ${new Date().getFullYear()}. Determine:
 3. Next Season/League name, start date (YYYY-MM-DD), and end date (YYYY-MM-DD). If unknown, use empty string.
 4. Game status: "active" (if a league is currently running), "in-development" (if between leagues), "maintenance" (if offline).
 5. A list of 3-5 key features introduced or planned.
+6. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
 
 Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. PoE league launches are usually on Fridays.`;
 
@@ -74,13 +75,14 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           nextSeasonName: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
+          nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
           status: { type: 'STRING' },
           features: {
             type: 'ARRAY',
             items: { type: 'STRING' }
           }
         },
-        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'status', 'features']
+        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'nextSeasonVerification', 'status', 'features']
       };
 
       const extracted = await this.callGemini(feedContent, systemInstruction, schema);
@@ -96,7 +98,7 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         latestNews: {
           id: latestNewsId,
           title: firstItem.title,
-          url: firstItem.link || 'https://www.pathofexile.com/',
+          url: firstItem.link,
           publishDate: firstItem.pubDate || '',
           source: 'Path of Exile RSS'
         },
@@ -110,7 +112,7 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
           isActive: extracted.status === 'active',
-          verification: extracted.currentSeasonStartDate ? 'ai' : 'official',
+          verification: 'official',
           sourceUrl: items[0].link || 'https://www.pathofexile.com/'
         },
         nextSeason: {
@@ -118,7 +120,7 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           startDate: extracted.nextSeasonStartDate || '',
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
-          verification: extracted.nextSeasonStartDate ? 'ai' : 'official',
+          verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
           sourceUrl: items[0].link || 'https://www.pathofexile.com/'
         },
         features: extracted.features || [],

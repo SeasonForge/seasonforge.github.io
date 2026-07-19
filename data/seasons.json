@@ -18,14 +18,14 @@
       "status": {
         "code": "ending",
         "label": "Maintenance",
-        "updatedAt": "2026-07-19T00:29:17.109Z"
+        "updatedAt": "2026-07-19T02:29:58.621Z"
       },
       "currentSeason": {
         "name": "3.28: Necropolis Finale",
         "startDate": "2026-03-29",
         "endDate": "2026-07-20",
         "isActive": false,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "nextSeason": {
@@ -33,7 +33,7 @@
         "startDate": "2026-07-24",
         "endDate": "",
         "isActive": false,
-        "verification": "ai",
+        "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "features": [
@@ -75,7 +75,7 @@
       "status": {
         "code": "early-access",
         "label": "Ранний доступ",
-        "updatedAt": "2026-07-19T00:29:16.585Z"
+        "updatedAt": "2026-07-19T02:29:58.090Z"
       },
       "currentSeason": {
         "name": "0.5.0: Return of the Ancients",
@@ -132,7 +132,7 @@
       "status": {
         "code": "in-progress",
         "label": "Maintenance",
-        "updatedAt": "2026-07-19T00:29:17.939Z"
+        "updatedAt": "2026-07-19T02:29:59.507Z"
       },
       "currentSeason": {
         "name": "Сезон 14: Season of Death Awakening",
@@ -191,7 +191,7 @@
       "status": {
         "code": "active",
         "label": "Active",
-        "updatedAt": "2026-07-19T00:29:16.936Z"
+        "updatedAt": "2026-07-19T02:29:58.427Z"
       },
       "currentSeason": {
         "name": "Цикл 4: Shattered Omens",
@@ -249,7 +249,7 @@
       "status": {
         "code": "just-started",
         "label": "Maintenance",
-        "updatedAt": "2026-07-19T00:29:16.944Z"
+        "updatedAt": "2026-07-19T02:29:58.437Z"
       },
       "currentSeason": {
         "name": "SS13: Afterlight",

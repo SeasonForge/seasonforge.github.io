@@ -1,3 +1,5 @@
+import { t, getVal } from '../i18n/index.js';
+
 // Render navigation from a list of games and an active game.
 function escapeHtml(value) {
   return String(value ?? '')
@@ -8,19 +10,6 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
-function getRussianStatusLabel(code) {
-  const mapping = {
-    'ending': 'Завершается',
-    'early-access': 'Ранний доступ',
-    'in-progress': 'В разгаре',
-    'active': 'Активен',
-    'just-started': 'Только начался',
-    'in-development': 'В разработке',
-    'maintenance': 'Техобслуживание'
-  };
-  return mapping[code] || code;
-}
-
 export function render(games = [], activeGame = null, activeView = 'card') {
   const items = Array.isArray(games) ? games : [];
   const activeId = activeGame?.id || activeGame?.slug || '';
@@ -28,10 +17,10 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const links = items
     .map((game) => {
       const id = game.id || game.slug || '';
-      const name = escapeHtml(game.name || 'Untitled Game');
-      const currentSeason = escapeHtml(game.currentSeason?.name || 'TBA');
+      const name = escapeHtml(getVal(game.name) || 'Untitled Game');
+      const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
       const statusCode = game.status?.code || 'active';
-      const statusLabel = escapeHtml(getRussianStatusLabel(statusCode) || game.status?.label || 'Активен');
+      const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
       const color = escapeHtml(game.color || '#6366f1');
       const icon = escapeHtml(game.icon || '🎮');
       
@@ -60,18 +49,18 @@ export function render(games = [], activeGame = null, activeView = 'card') {
     <section class="navbar-panel">
       <div class="navbar-panel__header">
         <div>
-          <p class="navbar-panel__eyebrow">ВЫБЕРИТЕ ИГРУ</p>
+          <p class="navbar-panel__eyebrow">${t('navbar.eyebrow')}</p>
           <h2 class="navbar-panel__title">SeasonForge</h2>
         </div>
         <div class="navbar-panel__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
           <img src="./assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
         </div>
       </div>
-      <p class="navbar-panel__caption">Компактный список актуальных сезонов</p>
+      <p class="navbar-panel__caption">${t('navbar.caption')}</p>
       <div class="navbar__list">${links}</div>
       <div class="navbar-panel__footer">
-        <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">Карточка игры</button>
-        <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">Хронология 2026</button>
+        <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">${t('navbar.btnCard')}</button>
+        <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">${t('navbar.btnTimeline')}</button>
       </div>
     </section>
   `;

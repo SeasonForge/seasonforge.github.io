@@ -1,3 +1,6 @@
+import { t, getVal } from '../i18n/index.js';
+import { getState } from '../store/state.js';
+
 // Render a game card from provided props only.
 function escapeHtml(value) {
   return String(value ?? '')
@@ -16,59 +19,53 @@ function formatLocalDate(dateStr) {
   if (!dateStr) return '';
   const date = new Date(dateStr);
   if (Number.isNaN(date.getTime())) return dateStr;
-  const months = [
-    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-  ];
-  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()} г.`;
-}
-
-function getRussianStatusLabel(code) {
-  const mapping = {
-    'ending': 'Завершается',
-    'early-access': 'Ранний доступ',
-    'in-progress': 'В разгаре',
-    'active': 'Активен',
-    'just-started': 'Только начался',
-    'in-development': 'В разработке',
-    'maintenance': 'Техобслуживание'
+  
+  const state = getState();
+  const lang = state.settings?.lang || 'en';
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+  
+  const options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   };
-  return mapping[code] || code;
+  
+  return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
 export function render(game = {}, options = {}) {
-  const name = escapeHtml(game.name || 'Untitled Game');
+  const name = escapeHtml(getVal(game.name) || 'Untitled Game');
   const developer = escapeHtml(game.developer || 'Unknown developer');
   const color = escapeAttr(game.color || '#4b5563');
   const statusCode = (game.status?.code || 'default');
-  const statusLabel = escapeHtml(getRussianStatusLabel(statusCode) || game.status?.label || 'Unknown');
+  const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Unknown');
   
-  const currentSeason = escapeHtml(game.currentSeason?.name || 'TBA');
+  const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
   const currentSeasonDate = formatLocalDate(game.currentSeason?.startDate);
   
-  const rawNextSeason = game.nextSeason?.name || 'TBA';
+  const rawNextSeason = getVal(game.nextSeason?.name) || 'TBA';
   const nextSeasonClean = rawNextSeason.startsWith('Сезон') || rawNextSeason.startsWith('Season') || rawNextSeason.startsWith('Cycle') || rawNextSeason.startsWith('Цикл') || rawNextSeason === 'TBA'
     ? rawNextSeason
-    : `Сезон ${rawNextSeason}`;
+    : `${t('card.nextSeasonLabel')} ${rawNextSeason}`;
   const nextSeason = escapeHtml(nextSeasonClean);
   const nextSeasonDate = formatLocalDate(game.nextSeason?.startDate);
   
   const isNextSeasonEstimated = game.nextSeason?.verification === 'ai' || game.nextSeason?.verification === 'estimated';
   const nextSeasonDateBadge = isNextSeasonEstimated && nextSeasonDate
-    ? ` <span class="verification-badge verification-badge--estimated" title="Эта дата рассчитана алгоритмом на основе исторических циклов игры и не является официальным анонсом" style="margin-left: 0.5rem; cursor: help; vertical-align: middle;">▲ Прогноз</span>`
+    ? ` <span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="margin-left: 0.5rem; cursor: help; vertical-align: middle;">▲ ${t('card.estimatedBadge')}</span>`
     : '';
   
   const countdown = options.countdown || {};
   const progressBar = options.progressBar || '';
   const website = escapeAttr(game.website || '#');
-  const features = Array.isArray(game.features) ? game.features : [];
+  const features = Array.isArray(getVal(game.features)) ? getVal(game.features) : [];
   
   const pillModifier = statusCode && statusCode !== 'default' ? ` game-card__pill--${escapeAttr(statusCode)}` : '';
   const featureItems = features
     .map((feature) => `
       <li class="game-card__feature-item">
         <span class="game-card__feature-check">✓</span>
-        <span class="game-card__feature-text">${escapeHtml(feature)}</span>
+        <span class="game-card__feature-text">${escapeHtml(getVal(feature))}</span>
       </li>
     `)
     .join('');
@@ -84,44 +81,44 @@ export function render(game = {}, options = {}) {
     countdownHtml = `
       <div class="game-card__countdown game-card__countdown--tba">
         <div class="game-card__tba-icon">📅</div>
-        <span class="game-card__tba-label">Дата старта не объявлена</span>
+        <span class="game-card__tba-label">${t('card.noLaunchDate')}</span>
       </div>
     `;
   } else if (nextSeasonPassed) {
     countdownHtml = `
       <div class="game-card__countdown game-card__countdown--launched">
         <div class="game-card__tba-icon">⚡</div>
-        <span class="game-card__tba-label">Запуск нового сезона!</span>
+        <span class="game-card__tba-label">${t('card.justLaunched')}</span>
       </div>
     `;
   } else {
     countdownHtml = `
       <div class="game-card__countdown">
-        <div class="game-card__countdown-item"><strong>${countdown.days ?? 0}</strong><span>дней</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.hours ?? 0}</strong><span>часов</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.minutes ?? 0}</strong><span>мин</span></div>
-        <div class="game-card__countdown-item"><strong>${countdown.seconds ?? 0}</strong><span>сек</span></div>
+        <div class="game-card__countdown-item"><strong>${countdown.days ?? 0}</strong><span>${t('card.days')}</span></div>
+        <div class="game-card__countdown-item"><strong>${countdown.hours ?? 0}</strong><span>${t('card.hours')}</span></div>
+        <div class="game-card__countdown-item"><strong>${countdown.minutes ?? 0}</strong><span>${t('card.minutes')}</span></div>
+        <div class="game-card__countdown-item"><strong>${countdown.seconds ?? 0}</strong><span>${t('card.seconds')}</span></div>
       </div>
     `;
   }
 
   // Use sourceUrl for more details if available, otherwise fallback to official website
   const moreDetailsUrl = game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website;
-  const uppercaseStatusPill = `Active Status: ${statusLabel}`.toUpperCase();
+  const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
   let sourceHtml = '';
   if (game.latestNews && game.latestNews.url) {
-    const newsTitle = escapeHtml(game.latestNews.title || 'анонс');
+    const newsTitle = escapeHtml(game.latestNews.title || 'announcement');
     const newsUrl = escapeAttr(game.latestNews.url);
     const rawDate = game.latestNews.publishDate;
     const formattedNewsDate = rawDate ? formatLocalDate(rawDate) : '';
-    const dateText = formattedNewsDate ? ` от ${formattedNewsDate}` : '';
+    const dateText = formattedNewsDate ? ` ${t('card.publishedAt')} ${formattedNewsDate}` : '';
     const sourceLabel = escapeHtml(game.latestNews.source || 'Official Source');
     sourceHtml = `
       <p class="game-card__source-info">
-        Источник: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
+        ${t('card.sourceLabel')}: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
         <span class="game-card__source-title" title="${newsTitle}">${newsTitle}</span>${dateText} • 
-        <a href="${newsUrl}" target="_blank" class="game-card__source-link">Читать оригинал ↗</a>
+        <a href="${newsUrl}" target="_blank" class="game-card__source-link">${t('card.readOriginal')}</a>
       </p>
     `;
   }
@@ -133,11 +130,11 @@ export function render(game = {}, options = {}) {
         <div class="game-card__title-block">
           <span class="game-card__pill${pillModifier}">${uppercaseStatusPill}</span>
           <h2 class="game-card__title">${name}</h2>
-          <p class="game-card__subtitle">Текущий сезон: ${currentSeason}</p>
+          <p class="game-card__subtitle">${t('card.currentSeasonLabel')}: ${currentSeason}</p>
           ${sourceHtml}
         </div>
         <div class="game-card__next-season">
-          <span class="game-card__label">Следующий сезон</span>
+          <span class="game-card__label">${t('card.nextSeasonLabel')}</span>
           <div class="game-card__next-season-title">
             <strong>${nextSeason}</strong>
           </div>
@@ -147,37 +144,37 @@ export function render(game = {}, options = {}) {
 
       <div class="game-card__body">
         <section class="game-card__panel game-card__panel--main">
-          <span class="game-card__label">Текущий сезон / Лига</span>
+          <span class="game-card__label">${t('card.currentSeasonLabel')}</span>
           <h3 class="game-card__season">
             ${currentSeason}
           </h3>
           <div class="game-card__meta-row">
-            <span>Запуск:</span>
+            <span>${t('card.launchLabel')}</span>
             <span>${currentSeasonDate || 'TBA'}</span>
           </div>
 
           <div class="game-card__progress-block">
             <div class="game-card__progress-meta">
-              <span>Прогресс сезона:</span>
+              <span>${t('card.progressLabel')}</span>
             </div>
             ${hasNextSeasonDate && !nextSeasonPassed ? progressBar : '<div class="game-card__progress-bar-placeholder"></div>'}
           </div>
         </section>
 
         <section class="game-card__panel game-card__panel--side">
-          <span class="game-card__label">До старта нового сезона: ${nextSeason}</span>
+          <span class="game-card__label">${t('card.countdownPrefix')} ${nextSeason}</span>
           ${countdownHtml}
           <div class="game-card__developer">
-            <span class="game-card__label">Разработчик</span>
+            <span class="game-card__label">${t('card.developerLabel')}</span>
             <strong>${developer}</strong>
           </div>
-          <a class="game-card__link" href="${moreDetailsUrl}" target="_blank" rel="noopener noreferrer">Подробнее →</a>
+          <a class="game-card__link" href="${moreDetailsUrl}" target="_blank" rel="noopener noreferrer">${t('card.detailsBtn')}</a>
         </section>
       </div>
 
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
-          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> КЛЮЧЕВЫЕ ФИЧИ И НОВОВВЕДЕНИЯ:</span>
+          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
         </div>
         <ul class="game-card__feature-grid">${featureItems}</ul>
       </section>

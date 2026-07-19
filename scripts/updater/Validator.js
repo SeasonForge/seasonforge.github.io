@@ -9,7 +9,7 @@ export class Validator {
       throw new Error('Missing or invalid game ID');
     }
 
-    if (!data.name || typeof data.name !== 'string') {
+    if (!data.name || (typeof data.name !== 'string' && typeof data.name !== 'object')) {
       throw new Error('Missing or invalid game name');
     }
 
@@ -65,8 +65,8 @@ export class Validator {
     }
 
     // Validate features
-    if (data.features && !Array.isArray(data.features)) {
-      throw new Error('Features must be an array');
+    if (data.features && !Array.isArray(data.features) && typeof data.features !== 'object') {
+      throw new Error('Features must be an array or an object (bilingual)');
     }
 
     return true;

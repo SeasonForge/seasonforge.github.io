@@ -1,9 +1,21 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SeasonForge</title>
+    <title>SeasonForge - ARPG Season Tracker</title>
+    <meta name="description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SeasonForge - ARPG Season Tracker" />
+    <meta property="og:description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SeasonForge - ARPG Season Tracker" />
+    <meta name="twitter:description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+
     <link rel="stylesheet" href="./src/styles/main.css" />
     <link rel="icon" href="./assets/favicon.png" type="image/png" />
   </head>
@@ -15,18 +27,21 @@
         </div>
         <div>
           <h1 class="app-header__title">SeasonForge</h1>
-          <p class="app-header__subtitle">Мониторинг текущих и будущих сезонов главных ролевых экшенов</p>
+          <p class="app-header__subtitle" id="app-header-subtitle">Monitoring current and upcoming seasons of major action RPGs</p>
         </div>
       </div>
-      <div class="app-header__meta">
-        <div class="app-header__meta-item">
-          <span class="app-header__meta-label">Последнее обновление</span>
-          <strong id="last-updated-time">18 Июля 2026 • 14:40 UTC</strong>
+      <div class="app-header__right-block" style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+        <div class="app-header__meta">
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-last-updated">Last updated</span>
+            <strong id="last-updated-time">-</strong>
+          </div>
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-data-source">Data source</span>
+            <strong id="lbl-source-value">Official Game Feeds</strong>
+          </div>
         </div>
-        <div class="app-header__meta-item">
-          <span class="app-header__meta-label">Источник данных</span>
-          <strong>Official Game Feeds</strong>
-        </div>
+        <div id="lang-switcher" class="lang-switcher"></div>
       </div>
     </header>
 

@@ -7,8 +7,10 @@ import {
   setActiveView,
   setError,
   setGames,
-  setLoading
+  setLoading,
+  setLanguage
 } from './store/state.js';
+import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
@@ -51,11 +53,68 @@ function getProgressPercent(game) {
 
 function formatLastUpdated(timestamp) {
   const date = new Date(timestamp);
-  const months = [
-    'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
-    'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
-  ];
-  return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()} • ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')} UTC`;
+  if (Number.isNaN(date.getTime())) return timestamp;
+  const state = getState();
+  const lang = state.settings?.lang || 'en';
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+
+  const options = {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+    timeZone: 'UTC'
+  };
+
+  const formatted = new Intl.DateTimeFormat(locale, options).format(date);
+  return `${formatted} UTC`;
+}
+
+function updateSeo() {
+  document.title = t('seo.title');
+  document.documentElement.lang = getState().settings?.lang || 'en';
+  
+  const desc = t('seo.description');
+  const descMeta = document.querySelector('meta[name="description"]');
+  if (descMeta) descMeta.setAttribute('content', desc);
+  
+  const ogTitle = document.querySelector('meta[property="og:title"]');
+  if (ogTitle) ogTitle.setAttribute('content', t('seo.title'));
+  
+  const ogDesc = document.querySelector('meta[property="og:description"]');
+  if (ogDesc) ogDesc.setAttribute('content', desc);
+  
+  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+  if (twitterTitle) twitterTitle.setAttribute('content', t('seo.title'));
+  
+  const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+  if (twitterDesc) twitterDesc.setAttribute('content', desc);
+}
+
+function renderLangSwitcher() {
+  const switcherRoot = document.getElementById('lang-switcher');
+  if (!switcherRoot) return;
+  const state = getState();
+  const currentLang = state.settings.lang;
+  
+  switcherRoot.innerHTML = `
+    <button class="lang-switcher__btn ${currentLang === 'en' ? 'lang-switcher__btn--active' : ''}" data-lang-val="en">🇺🇸 EN</button>
+    <button class="lang-switcher__btn ${currentLang === 'ru' ? 'lang-switcher__btn--active' : ''}" data-lang-val="ru">🇷🇺 RU</button>
+  `;
+  
+  switcherRoot.querySelectorAll('[data-lang-val]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selected = btn.getAttribute('data-lang-val');
+      if (selected !== state.settings.lang) {
+        setLanguage(selected);
+        updateSeo();
+        renderToast(t('toasts.gameSelected', { game: getVal(state.activeGame?.name || '') }));
+        renderApp();
+      }
+    });
+  });
 }
 
 function renderModal() {
@@ -101,6 +160,28 @@ function renderApp() {
   const navbarRoot = document.getElementById('navbar');
   const contentRoot = document.getElementById('content');
 
+  // Sync title and metadata
+  updateSeo();
+
+  // Render language selector buttons
+  renderLangSwitcher();
+
+  // Translate static header elements
+  const appHeaderSubtitle = document.getElementById('app-header-subtitle');
+  if (appHeaderSubtitle) {
+    appHeaderSubtitle.textContent = t('header.subtitle');
+  }
+
+  const lblLastUpdated = document.getElementById('lbl-last-updated');
+  if (lblLastUpdated) {
+    lblLastUpdated.textContent = t('header.lastUpdated');
+  }
+
+  const lblDataSource = document.getElementById('lbl-data-source');
+  if (lblDataSource) {
+    lblDataSource.textContent = t('header.dataSource');
+  }
+
   // Update navbar
   if (navbarRoot) {
     navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView);
@@ -119,7 +200,7 @@ function renderApp() {
   // Render main content depending on activeView
   if (contentRoot) {
     if (!state.activeGame) {
-      contentRoot.innerHTML = '<p>No game available.</p>';
+      contentRoot.innerHTML = `<p>${t('fallback.noGame')}</p>`;
       return;
     }
 
@@ -159,7 +240,7 @@ function attachNavbarEvents() {
 
       if (nextGame) {
         setActiveGame(nextGame);
-        renderToast(`Выбрана игра: ${nextGame.name}`);
+        renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
         renderApp();
       }
     });
@@ -219,8 +300,8 @@ async function initializeApp() {
       activeGame: getState().activeGame
     });
   } catch (error) {
-    setError(error.message || 'Failed to initialize SeasonForge');
-    renderToast('Failed to load data.', 'error');
+    setError(error.message || t('toasts.initFailed'));
+    renderToast(t('toasts.loadFailed'), 'error');
     console.error('SeasonForge initialization failed', error);
   } finally {
     setLoading(false);

@@ -57,39 +57,53 @@ export class PoEAdapter extends BaseAdapter {
 
       const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile RSS feed content.
 Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season/League name (e.g. "Settlers of Kalguur", "The Forbidden Sanctum"). If none, use empty string.
+1. Current Season/League name in English (e.g. "Settlers of Kalguur") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
 2. Current Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
-3. Next Season/League name, start date (YYYY-MM-DD), and end date (YYYY-MM-DD). If unknown, use empty string.
-4. Game status: "active" (if a league is currently running), "in-development" (if between leagues), "maintenance" (if offline).
-5. A list of 3-5 key features introduced or planned.
-6. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+3. Next Season/League name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
+4. Next Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
+5. Game status: "active" (if a league is currently running), "in-development" (if between leagues), "maintenance" (if offline).
+6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
+7. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
 
 Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. PoE league launches are usually on Fridays.`;
 
       const schema = {
         type: 'OBJECT',
         properties: {
-          currentSeasonName: { type: 'STRING' },
+          currentSeasonNameEn: { type: 'STRING' },
+          currentSeasonNameRu: { type: 'STRING' },
           currentSeasonStartDate: { type: 'STRING' },
           currentSeasonEndDate: { type: 'STRING' },
-          nextSeasonName: { type: 'STRING' },
+          nextSeasonNameEn: { type: 'STRING' },
+          nextSeasonNameRu: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
           nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
           status: { type: 'STRING' },
-          features: {
+          featuresEn: {
+            type: 'ARRAY',
+            items: { type: 'STRING' }
+          },
+          featuresRu: {
             type: 'ARRAY',
             items: { type: 'STRING' }
           }
         },
-        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'nextSeasonVerification', 'status', 'features']
+        required: [
+          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate', 'currentSeasonEndDate', 
+          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate', 'nextSeasonEndDate', 
+          'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
+        ]
       };
 
       const extracted = await this.callGemini(feedContent, systemInstruction, schema);
 
       const normalized = {
         id: this.gameId,
-        name: 'Path of Exile 1',
+        name: {
+          en: 'Path of Exile 1',
+          ru: 'Path of Exile 1'
+        },
         developer: 'Grinding Gear Games',
         logo: '',
         color: '#f5c342',
@@ -104,11 +118,17 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         },
         status: {
           code: extracted.status || 'active',
-          label: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
+          label: {
+            en: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
+            ru: extracted.status === 'active' ? 'Активен' : (extracted.status === 'in-development' ? 'В разработке' : 'Техобслуживание')
+          },
           updatedAt: new Date().toISOString()
         },
         currentSeason: {
-          name: extracted.currentSeasonName || 'TBA',
+          name: {
+            en: extracted.currentSeasonNameEn || 'TBA',
+            ru: extracted.currentSeasonNameRu || 'TBA'
+          },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
           isActive: extracted.status === 'active',
@@ -116,14 +136,20 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           sourceUrl: items[0].link || 'https://www.pathofexile.com/'
         },
         nextSeason: {
-          name: extracted.nextSeasonName || 'TBA',
+          name: {
+            en: extracted.nextSeasonNameEn || 'TBA',
+            ru: extracted.nextSeasonNameRu || 'TBA'
+          },
           startDate: extracted.nextSeasonStartDate || '',
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
           sourceUrl: items[0].link || 'https://www.pathofexile.com/'
         },
-        features: extracted.features || [],
+        features: {
+          en: extracted.featuresEn || [],
+          ru: extracted.featuresRu || []
+        },
         links: {
           official: 'https://www.pathofexile.com/',
           wiki: '',

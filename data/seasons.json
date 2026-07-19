@@ -2,7 +2,10 @@
   "games": [
     {
       "id": "path-of-exile",
-      "name": "Path of Exile 1",
+      "name": {
+        "en": "Path of Exile 1",
+        "ru": "Path of Exile 1"
+      },
       "developer": "Grinding Gear Games",
       "logo": "",
       "color": "#f5c342",
@@ -17,11 +20,17 @@
       },
       "status": {
         "code": "ending",
-        "label": "Maintenance",
+        "label": {
+          "en": "Maintenance",
+          "ru": "Техобслуживание"
+        },
         "updatedAt": "2026-07-19T02:43:55.543Z"
       },
       "currentSeason": {
-        "name": "3.28: Necropolis Finale",
+        "name": {
+          "en": "3.28: Necropolis Finale",
+          "ru": "3.28: Necropolis Finale"
+        },
         "startDate": "2026-03-29",
         "endDate": "2026-07-20",
         "isActive": false,
@@ -29,19 +38,20 @@
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
       "nextSeason": {
-        "name": "3.29: Curse of the Allflame",
+        "name": {
+          "en": "3.29: Curse of the Allflame",
+          "ru": "3.29: Curse of the Allflame"
+        },
         "startDate": "2026-07-24",
         "endDate": "",
         "isActive": false,
         "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393"
       },
-      "features": [
-        "Контент нового расширения Curse of the Allflame",
-        "Квалификационные гонки ExileCon 2026 в соло-формате",
-        "Обновление восхождения Reliquarian для класса Дикарка (Scion)",
-        "Эксклюзивный косметический эффект Abyssal Soul Shatter"
-      ],
+      "features": {
+        "en": [],
+        "ru": []
+      },
       "links": {
         "official": "https://www.pathofexile.com/",
         "wiki": "",
@@ -60,7 +70,10 @@
     },
     {
       "id": "path-of-exile-2",
-      "name": "Path of Exile 2",
+      "name": {
+        "en": "Path of Exile 2",
+        "ru": "Path of Exile 2"
+      },
       "developer": "Grinding Gear Games",
       "logo": "",
       "color": "#4b6e9c",
@@ -74,11 +87,17 @@
       },
       "status": {
         "code": "early-access",
-        "label": "Ранний доступ",
-        "updatedAt": "2026-07-19T02:43:54.927Z"
+        "label": {
+          "en": "Early Access",
+          "ru": "Ранний доступ"
+        },
+        "updatedAt": "2026-07-19T03:18:47.376Z"
       },
       "currentSeason": {
-        "name": "0.5.0: Return of the Ancients",
+        "name": {
+          "en": "0.5.0: Return of the Ancients",
+          "ru": "0.5.0: Return of the Ancients"
+        },
         "startDate": "2026-05-29",
         "endDate": "",
         "isActive": false,
@@ -86,19 +105,30 @@
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3587981"
       },
       "nextSeason": {
-        "name": "Версия 1.0 (Релиз)",
+        "name": {
+          "en": "Version 1.0 (Release)",
+          "ru": "Версия 1.0 (Релиз)"
+        },
         "startDate": "2026-12-15",
         "endDate": "",
         "isActive": false,
         "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3587981"
       },
-      "features": [
-        "Тестирование лиги Runes of Aldur",
-        "Переработка механики Атласа Миров под сиквел",
-        "Новое древо пассивных умений для раннего доступа",
-        "Полный релиз и новые акты кампании в декабре"
-      ],
+      "features": {
+        "en": [
+          "Runes of Aldur league testing",
+          "Atlas of Worlds rework for the sequel",
+          "New passive skill tree for early access",
+          "Full release and new campaign acts in December"
+        ],
+        "ru": [
+          "Тестирование лиги Runes of Aldur",
+          "Переработка механики Атласа Миров под сиквел",
+          "Новое древо пассивных умений для раннего доступа",
+          "Полный релиз и новые акты кампании в декабре"
+        ]
+      },
       "links": {
         "official": "https://pathofexile2.com",
         "wiki": "",
@@ -116,7 +146,10 @@
     },
     {
       "id": "diablo-iv",
-      "name": "Diablo IV",
+      "name": {
+        "en": "Diablo IV",
+        "ru": "Diablo IV"
+      },
       "developer": "Blizzard Entertainment",
       "logo": "",
       "color": "#8b1f1f",
@@ -131,11 +164,17 @@
       },
       "status": {
         "code": "in-progress",
-        "label": "Maintenance",
+        "label": {
+          "en": "Maintenance",
+          "ru": "Техобслуживание"
+        },
         "updatedAt": "2026-07-19T02:43:56.348Z"
       },
       "currentSeason": {
-        "name": "Сезон 14: Season of Death Awakening",
+        "name": {
+          "en": "Сезон 14: Season of Death Awakening",
+          "ru": "Сезон 14: Season of Death Awakening"
+        },
         "startDate": "2026-06-30",
         "endDate": "2026-07-24",
         "isActive": false,
@@ -143,20 +182,20 @@
         "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening"
       },
       "nextSeason": {
-        "name": "Season 15",
+        "name": {
+          "en": "Season 15",
+          "ru": "Season 15"
+        },
         "startDate": "2026-09-18",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
         "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening"
       },
-      "features": [
-        "Борьба с новой угрозой от культов Смерти (Death Cults)",
-        "Прогрессия Башни испытаний и обновленные таблицы лидеров",
-        "Бесплатный пробный доступ к новому игровому классу",
-        "Возвращение механики Мироходцев (Realmwalkers) в игру",
-        "Масштабный реворк системы эпохальных уникальных предметов"
-      ],
+      "features": {
+        "en": [],
+        "ru": []
+      },
       "links": {
         "official": "https://diablo4.blizzard.com/",
         "wiki": "",
@@ -176,7 +215,10 @@
     },
     {
       "id": "last-epoch",
-      "name": "Last Epoch",
+      "name": {
+        "en": "Last Epoch",
+        "ru": "Last Epoch"
+      },
       "developer": "Eleventh Hour Games",
       "logo": "",
       "color": "#6b3fa0",
@@ -191,11 +233,17 @@
       },
       "status": {
         "code": "active",
-        "label": "Active",
+        "label": {
+          "en": "Active",
+          "ru": "Активен"
+        },
         "updatedAt": "2026-07-19T02:43:55.310Z"
       },
       "currentSeason": {
-        "name": "Цикл 4: Shattered Omens",
+        "name": {
+          "en": "Цикл 4: Shattered Omens",
+          "ru": "Цикл 4: Shattered Omens"
+        },
         "startDate": "2026-03-26",
         "endDate": "2026-07-20",
         "isActive": true,
@@ -203,19 +251,20 @@
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
       "nextSeason": {
-        "name": "Cycle 5 & Расширение Orobyss",
+        "name": {
+          "en": "Cycle 5 & Расширение Orobyss",
+          "ru": "Cycle 5 & Расширение Orobyss"
+        },
         "startDate": "2026-09-10",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
       },
-      "features": [
-        "Случайные энкаунтеры с Предзнаменованиями (Omens)",
-        "Реворк системы крафта и фракций торговли",
-        "Второе крупное дополнение с новыми подклассами",
-        "Расширенный эндгейм-контент монолитов судьбы"
-      ],
+      "features": {
+        "en": [],
+        "ru": []
+      },
       "links": {
         "official": "https://www.lastepoch.com/",
         "wiki": "",
@@ -234,7 +283,10 @@
     },
     {
       "id": "torchlight-infinite",
-      "name": "Torchlight: Infinite",
+      "name": {
+        "en": "Torchlight: Infinite",
+        "ru": "Torchlight: Infinite"
+      },
       "developer": "Perfect World Entertainment",
       "logo": "",
       "color": "#c27a2b",
@@ -249,11 +301,17 @@
       },
       "status": {
         "code": "just-started",
-        "label": "Maintenance",
+        "label": {
+          "en": "Maintenance",
+          "ru": "Техобслуживание"
+        },
         "updatedAt": "2026-07-19T02:43:55.285Z"
       },
       "currentSeason": {
-        "name": "SS13: Afterlight",
+        "name": {
+          "en": "SS13: Afterlight",
+          "ru": "SS13: Afterlight"
+        },
         "startDate": "2026-07-17",
         "endDate": "2026-07-24",
         "isActive": false,
@@ -261,19 +319,20 @@
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "nextSeason": {
-        "name": "SS14",
+        "name": {
+          "en": "SS14",
+          "ru": "SS14"
+        },
         "startDate": "2026-10-23",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
-      "features": [
-        "Механика Ночных Стражей: проводы душ усопших",
-        "Новый сверхсложный эндгейм-режим Divine Ascent",
-        "Новый играбельный герой-маг Кронос",
-        "Автоматизация лут-фильтра нового поколения"
-      ],
+      "features": {
+        "en": [],
+        "ru": []
+      },
       "links": {
         "official": "https://torchlightinfinite.com/",
         "wiki": "",

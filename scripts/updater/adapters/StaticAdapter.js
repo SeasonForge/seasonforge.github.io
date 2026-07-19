@@ -12,25 +12,25 @@ export class StaticAdapter extends BaseAdapter {
     
     return {
       id: gameConfig.id,
-      name: gameConfig.name,
+      name: gameConfig.name || { en: gameConfig.name, ru: gameConfig.name },
       developer: staticData.developer || 'Unknown',
       logo: staticData.logo || '',
       color: staticData.color || '#4b5563',
       website: staticData.website || '#',
       latestNews: {
         id: 'static-config',
-        title: staticData.latestNews?.title || 'Официальный анонс Path of Exile 2',
+        title: staticData.latestNews?.title || 'Path of Exile 2 Announcement',
         url: staticData.latestNews?.url || staticData.website || 'https://www.pathofexile.com/',
         publishDate: staticData.latestNews?.publishDate || staticData.currentSeason?.startDate || new Date().toISOString(),
         source: staticData.latestNews?.source || 'Grinding Gear Games'
       },
       status: {
         code: staticData.status?.code || 'in-development',
-        label: staticData.status?.label || 'In Development',
+        label: staticData.status?.label || { en: 'In Development', ru: 'В разработке' },
         updatedAt: new Date().toISOString()
       },
       currentSeason: {
-        name: staticData.currentSeason?.name || 'TBA',
+        name: staticData.currentSeason?.name || { en: 'TBA', ru: 'TBA' },
         startDate: staticData.currentSeason?.startDate || '',
         endDate: staticData.currentSeason?.endDate || '',
         isActive: staticData.currentSeason?.isActive || false,
@@ -38,14 +38,14 @@ export class StaticAdapter extends BaseAdapter {
         sourceUrl: staticData.currentSeason?.sourceUrl || ''
       },
       nextSeason: {
-        name: staticData.nextSeason?.name || 'TBA',
+        name: staticData.nextSeason?.name || { en: 'TBA', ru: 'TBA' },
         startDate: staticData.nextSeason?.startDate || '',
         endDate: staticData.nextSeason?.endDate || '',
         isActive: false,
         verification: staticData.nextSeason?.verification || 'official',
         sourceUrl: staticData.nextSeason?.sourceUrl || ''
       },
-      features: staticData.features || [],
+      features: staticData.features || { en: [], ru: [] },
       links: staticData.links || {
         official: staticData.website || '#',
         wiki: '',

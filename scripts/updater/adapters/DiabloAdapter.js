@@ -35,40 +35,53 @@ export class DiabloAdapter extends BaseAdapter {
 
       const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season details from the provided Diablo IV Blizzard news titles and summaries.
 Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season name (e.g. "Season of the Hatred"). If none, use empty string.
+1. Current Season name in English (e.g. "Season of the Hatred") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
 2. Current Season start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-3. Next Season name, start date (YYYY-MM-DD), and end date (YYYY-MM-DD). Use empty string if unknown.
-4. Game status: "active" (if a season is running), "in-development" (if between seasons), "maintenance" (if offline).
-5. A list of 3-5 key features introduced or planned.
-6. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+3. Next Season name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
+4. Next Season start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
+5. Game status: "active" (if a season is running), "in-development" (if between seasons), "maintenance" (if offline).
+6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
+7. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
 
-CRITICAL: Translate all extracted text fields (season names, feature descriptions) into Russian. The features array must contain 3-5 clear points in Russian.
 Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. Reference news headlines and publication dates in the text to understand when events happen.`;
 
       const schema = {
         type: 'OBJECT',
         properties: {
-          currentSeasonName: { type: 'STRING' },
+          currentSeasonNameEn: { type: 'STRING' },
+          currentSeasonNameRu: { type: 'STRING' },
           currentSeasonStartDate: { type: 'STRING' },
           currentSeasonEndDate: { type: 'STRING' },
-          nextSeasonName: { type: 'STRING' },
+          nextSeasonNameEn: { type: 'STRING' },
+          nextSeasonNameRu: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
           nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
           status: { type: 'STRING' },
-          features: {
+          featuresEn: {
+            type: 'ARRAY',
+            items: { type: 'STRING' }
+          },
+          featuresRu: {
             type: 'ARRAY',
             items: { type: 'STRING' }
           }
         },
-        required: ['currentSeasonName', 'currentSeasonStartDate', 'currentSeasonEndDate', 'nextSeasonName', 'nextSeasonStartDate', 'nextSeasonEndDate', 'nextSeasonVerification', 'status', 'features']
+        required: [
+          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate', 'currentSeasonEndDate', 
+          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate', 'nextSeasonEndDate', 
+          'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
+        ]
       };
 
       const extracted = await this.callGemini(newsText, systemInstruction, schema);
 
       const normalized = {
         id: this.gameId,
-        name: 'Diablo IV',
+        name: {
+          en: 'Diablo IV',
+          ru: 'Diablo IV'
+        },
         developer: 'Blizzard Entertainment',
         logo: '',
         color: '#8b1f1f',
@@ -83,11 +96,17 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         },
         status: {
           code: extracted.status || 'active',
-          label: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
+          label: {
+            en: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
+            ru: extracted.status === 'active' ? 'Активен' : (extracted.status === 'in-development' ? 'В разработке' : 'Техобслуживание')
+          },
           updatedAt: new Date().toISOString()
         },
         currentSeason: {
-          name: extracted.currentSeasonName || 'TBA',
+          name: {
+            en: extracted.currentSeasonNameEn || 'TBA',
+            ru: extracted.currentSeasonNameRu || 'TBA'
+          },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
           isActive: extracted.status === 'active',
@@ -95,14 +114,20 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         nextSeason: {
-          name: extracted.nextSeasonName || 'TBA',
+          name: {
+            en: extracted.nextSeasonNameEn || 'TBA',
+            ru: extracted.nextSeasonNameRu || 'TBA'
+          },
           startDate: extracted.nextSeasonStartDate || '',
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
-        features: extracted.features || [],
+        features: {
+          en: extracted.featuresEn || [],
+          ru: extracted.featuresRu || []
+        },
         links: {
           official: 'https://diablo4.blizzard.com/',
           wiki: '',

@@ -1,3 +1,5 @@
+import { detectDefaultLocale } from '../i18n/index.js';
+
 // Global application state.
 export const state = {
   games: [],
@@ -9,9 +11,19 @@ export const state = {
   settings: {
     theme: 'dark',
     autoRefresh: true,
-    notificationsEnabled: true
+    notificationsEnabled: true,
+    lang: detectDefaultLocale()
   }
 };
+
+export function setLanguage(lang) {
+  if (lang === 'en' || lang === 'ru') {
+    state.settings.lang = lang;
+    localStorage.setItem('seasonforge_lang', lang);
+    document.documentElement.lang = lang;
+  }
+  return state;
+}
 
 export function setGames(games) {
   state.games = Array.isArray(games) ? games : [];

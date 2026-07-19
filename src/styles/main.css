@@ -1372,3 +1372,40 @@ body::after {
   text-decoration: underline;
   opacity: 0.9;
 }
+
+/* ===== LANG SWITCHER ===== */
+.lang-switcher {
+  display: flex;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-xs);
+  padding: 2px;
+  backdrop-filter: blur(8px);
+}
+
+.lang-switcher__btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 0.65rem;
+  font-family: var(--font);
+  font-weight: 700;
+  padding: 0.35rem 0.6rem;
+  border-radius: calc(var(--radius-xs) - 2px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.lang-switcher__btn:hover {
+  color: var(--text);
+}
+
+.lang-switcher__btn--active {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 10px var(--accent-glow);
+}

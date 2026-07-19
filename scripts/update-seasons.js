@@ -13,6 +13,25 @@ const logsDir = path.join(dataDir, 'logs');
   }
 });
 
+function isNameEmptyOrTba(name) {
+  if (!name) return true;
+  if (typeof name === 'string') return name === '' || name === 'TBA';
+  if (typeof name === 'object') {
+    return (!name.en || name.en === '' || name.en === 'TBA') &&
+           (!name.ru || name.ru === '' || name.ru === 'TBA');
+  }
+  return false;
+}
+
+function isFeaturesEmpty(feat) {
+  if (!feat) return true;
+  if (Array.isArray(feat)) return feat.length === 0;
+  if (typeof feat === 'object') {
+    return (!feat.en || feat.en.length === 0) && (!feat.ru || feat.ru.length === 0);
+  }
+  return false;
+}
+
 function mergeGameData(existingGame, newGame) {
   if (!existingGame) return newGame;
   
@@ -33,8 +52,13 @@ function mergeGameData(existingGame, newGame) {
       ...existingGame.currentSeason,
       ...newGame.currentSeason
     };
-    if (!newGame.currentSeason.name || newGame.currentSeason.name === 'TBA') {
+    if (isNameEmptyOrTba(newGame.currentSeason.name)) {
       merged.currentSeason.name = existingGame.currentSeason.name;
+    } else if (existingGame.currentSeason.name && typeof existingGame.currentSeason.name === 'object' && typeof newGame.currentSeason.name === 'object') {
+      merged.currentSeason.name = {
+        en: newGame.currentSeason.name.en || existingGame.currentSeason.name.en || 'TBA',
+        ru: newGame.currentSeason.name.ru || existingGame.currentSeason.name.ru || 'TBA'
+      };
     }
     if (!newGame.currentSeason.startDate || newGame.currentSeason.startDate === 'TBA') {
       merged.currentSeason.startDate = existingGame.currentSeason.startDate;
@@ -57,8 +81,13 @@ function mergeGameData(existingGame, newGame) {
       ...existingGame.nextSeason,
       ...newGame.nextSeason
     };
-    if (!newGame.nextSeason.name || newGame.nextSeason.name === 'TBA') {
+    if (isNameEmptyOrTba(newGame.nextSeason.name)) {
       merged.nextSeason.name = existingGame.nextSeason.name;
+    } else if (existingGame.nextSeason.name && typeof existingGame.nextSeason.name === 'object' && typeof newGame.nextSeason.name === 'object') {
+      merged.nextSeason.name = {
+        en: newGame.nextSeason.name.en || existingGame.nextSeason.name.en || 'TBA',
+        ru: newGame.nextSeason.name.ru || existingGame.nextSeason.name.ru || 'TBA'
+      };
     }
     if (!newGame.nextSeason.startDate || newGame.nextSeason.startDate === 'TBA') {
       merged.nextSeason.startDate = existingGame.nextSeason.startDate;
@@ -76,11 +105,83 @@ function mergeGameData(existingGame, newGame) {
   }
 
   // Merge features (keep existing if new features is empty)
-  if ((!newGame.features || newGame.features.length === 0) && existingGame.features) {
+  if (isFeaturesEmpty(newGame.features) && existingGame.features) {
     merged.features = existingGame.features;
+  } else if (existingGame.features && typeof existingGame.features === 'object' && typeof newGame.features === 'object') {
+    merged.features = {
+      en: newGame.features.en || existingGame.features.en || [],
+      ru: newGame.features.ru || existingGame.features.ru || []
+    };
   }
   
   return merged;
+}
+
+function upgradeToBilingualSchema(game) {
+  if (!game) return game;
+  
+  const upgraded = { ...game };
+  
+  // Upgrade game name
+  if (upgraded.name && typeof upgraded.name === 'string') {
+    upgraded.name = {
+      en: upgraded.name,
+      ru: upgraded.name
+    };
+  }
+  
+  // Upgrade status label
+  if (upgraded.status) {
+    if (upgraded.status.label && typeof upgraded.status.label === 'string') {
+      const label = upgraded.status.label;
+      const mapping = {
+        'Ранний доступ': { en: 'Early Access', ru: 'Ранний доступ' },
+        'В разгаре': { en: 'In Progress', ru: 'В разгаре' },
+        'Активен': { en: 'Active', ru: 'Активен' },
+        'Только начался': { en: 'Just Started', ru: 'Только начался' },
+        'В разработке': { en: 'In Development', ru: 'В разработке' },
+        'Техобслуживание': { en: 'Maintenance', ru: 'Техобслуживание' },
+        'Завершается': { en: 'Ending', ru: 'Завершается' },
+        'Active': { en: 'Active', ru: 'Активен' },
+        'In Development': { en: 'In Development', ru: 'В разработке' },
+        'Maintenance': { en: 'Maintenance', ru: 'Техобслуживание' }
+      };
+      
+      upgraded.status.label = mapping[label] || { en: label, ru: label };
+    }
+  }
+  
+  // Upgrade currentSeason name
+  if (upgraded.currentSeason) {
+    if (upgraded.currentSeason.name && typeof upgraded.currentSeason.name === 'string') {
+      upgraded.currentSeason.name = {
+        en: upgraded.currentSeason.name,
+        ru: upgraded.currentSeason.name
+      };
+    }
+  }
+  
+  // Upgrade nextSeason name
+  if (upgraded.nextSeason) {
+    if (upgraded.nextSeason.name && typeof upgraded.nextSeason.name === 'string') {
+      upgraded.nextSeason.name = {
+        en: upgraded.nextSeason.name,
+        ru: upgraded.nextSeason.name
+      };
+    }
+  }
+  
+  // Upgrade features
+  if (upgraded.features) {
+    if (Array.isArray(upgraded.features)) {
+      upgraded.features = {
+        en: upgraded.features,
+        ru: upgraded.features
+      };
+    }
+  }
+  
+  return upgraded;
 }
 
 async function main() {
@@ -104,7 +205,7 @@ async function main() {
   if (fs.existsSync(seasonsPath)) {
     try {
       const oldSeasons = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
-      existingGames = oldSeasons.games || [];
+      existingGames = (oldSeasons.games || []).map(upgradeToBilingualSchema);
     } catch (e) {
       console.warn('[Orchestrator] Could not load existing seasons.json for merging:', e.message);
     }
@@ -120,8 +221,12 @@ async function main() {
   // 2. Run adapters in parallel using Promise.allSettled
   const adapterPromises = enabledGames.map(async (gameConfig) => {
     const adapterName = gameConfig.adapter;
-    console.log(`[Orchestrator] Loading adapter ${adapterName} for ${gameConfig.name}...`);
-    const existingGame = existingGames.find(g => g.id === gameConfig.id);
+    const displayName = gameConfig.name?.en || gameConfig.name;
+    console.log(`[Orchestrator] Loading adapter ${adapterName} for ${displayName}...`);
+    let existingGame = existingGames.find(g => g.id === gameConfig.id);
+    if (existingGame) {
+      existingGame = upgradeToBilingualSchema(existingGame);
+    }
 
     try {
       // Dynamic import of the adapter

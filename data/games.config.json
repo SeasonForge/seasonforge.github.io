@@ -1,14 +1,20 @@
 [
   {
     "id": "path-of-exile",
-    "name": "Path of Exile 1",
+    "name": {
+      "en": "Path of Exile 1",
+      "ru": "Path of Exile 1"
+    },
     "adapter": "PoEAdapter",
     "enabled": true,
     "sourceUrl": "https://www.pathofexile.com/news/rss"
   },
   {
     "id": "path-of-exile-2",
-    "name": "Path of Exile 2",
+    "name": {
+      "en": "Path of Exile 2",
+      "ru": "Path of Exile 2"
+    },
     "adapter": "StaticAdapter",
     "enabled": true,
     "staticData": {
@@ -24,47 +30,73 @@
       },
       "status": {
         "code": "early-access",
-        "label": "Ранний доступ"
+        "label": {
+          "en": "Early Access",
+          "ru": "Ранний доступ"
+        }
       },
       "currentSeason": {
-        "name": "0.5.0: Return of the Ancients",
+        "name": {
+          "en": "0.5.0: Return of the Ancients",
+          "ru": "0.5.0: Return of the Ancients"
+        },
         "startDate": "2026-05-29",
         "endDate": "",
         "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3587981"
       },
       "nextSeason": {
-        "name": "Версия 1.0 (Релиз)",
+        "name": {
+          "en": "Version 1.0 (Release)",
+          "ru": "Версия 1.0 (Релиз)"
+        },
         "startDate": "2026-12-15",
         "endDate": "",
         "verification": "official",
         "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3587981"
       },
-      "features": [
-        "Тестирование лиги Runes of Aldur",
-        "Переработка механики Атласа Миров под сиквел",
-        "Новое древо пассивных умений для раннего доступа",
-        "Полный релиз и новые акты кампании в декабре"
-      ]
+      "features": {
+        "en": [
+          "Runes of Aldur league testing",
+          "Atlas of Worlds rework for the sequel",
+          "New passive skill tree for early access",
+          "Full release and new campaign acts in December"
+        ],
+        "ru": [
+          "Тестирование лиги Runes of Aldur",
+          "Переработка механики Атласа Миров под сиквел",
+          "Новое древо пассивных умений для раннего доступа",
+          "Полный релиз и новые акты кампании в декабре"
+        ]
+      }
     }
   },
   {
     "id": "diablo-iv",
-    "name": "Diablo IV",
+    "name": {
+      "en": "Diablo IV",
+      "ru": "Diablo IV"
+    },
     "adapter": "DiabloAdapter",
     "enabled": true,
     "sourceUrl": "https://news.blizzard.com/en-us/diablo4"
   },
   {
     "id": "last-epoch",
-    "name": "Last Epoch",
+    "name": {
+      "en": "Last Epoch",
+      "ru": "Last Epoch"
+    },
     "adapter": "LastEpochAdapter",
     "enabled": true,
     "appId": 899770
   },
   {
     "id": "torchlight-infinite",
-    "name": "Torchlight: Infinite",
+    "name": {
+      "en": "Torchlight: Infinite",
+      "ru": "Торчлайт: Инфинит"
+    },
     "adapter": "TorchlightAdapter",
     "enabled": true,
     "appId": 1974050

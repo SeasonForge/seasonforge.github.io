@@ -57,6 +57,19 @@
       <main class="game-page-content" id="game-page-root" data-game-id="{{GAME_ID}}" style="width: 100%;">
         {{GAME_CARD_HTML}}
       </main>
+
+      <!-- About Section -->
+      <section class="game-card__panel game-card__panel--about" id="about-section" style="margin-top: 1rem; width: 100%;">
+        <div class="game-card__features-header">
+          <span class="game-card__label"><span class="game-card__features-compass">📖</span> <span id="lbl-about-title">About Seasons</span></span>
+        </div>
+        <div class="game-card__about-content" id="about-content" style="padding: 1.25rem; line-height: 1.7; color: #d1d5db; font-size: 0.95rem; white-space: pre-line;">
+          {{ABOUT_HTML}}
+        </div>
+      </section>
+
+      <!-- Embedded bilingual content for zero-fetch translation -->
+      <script type="application/json" id="about-translations-data">{{ABOUT_JSON}}</script>
     </div>
 
     <footer class="app-footer">

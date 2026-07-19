@@ -27,6 +27,7 @@ export const en = {
     progressLabel: "Season progress:",
     detailsBtn: "More details →",
     featuresLabel: "KEY FEATURES & INNOVATIONS:",
+    aboutTitle: "About Seasons",
     sourceLabel: "Source",
     readOriginal: "Read original ↗",
     publishedAt: "published on",

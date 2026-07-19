@@ -113,12 +113,30 @@ async function build() {
       isDetailPage: true 
     });
 
-    // 2. Inject placeholders into layout
+    // 2. Load "About Seasons" content file if it exists
+    const contentPath = path.join(__dirname, `../content/${gameId}.json`);
+    let aboutHtml = '';
+    let aboutJson = '{}';
+    if (fs.existsSync(contentPath)) {
+      try {
+        const contentData = JSON.parse(fs.readFileSync(contentPath, 'utf-8'));
+        if (contentData.about) {
+          aboutHtml = contentData.about.en || '';
+          aboutJson = JSON.stringify(contentData.about);
+        }
+      } catch (err) {
+        console.error(`[SSG] Error reading content for ${gameId}:`, err.message);
+      }
+    }
+
+    // 3. Inject placeholders into layout
     let html = template;
     html = html.replace(/{{GAME_ID}}/g, gameId);
     html = html.replace(/{{GAME_NAME}}/g, gameName);
     html = html.replace(/{{GAME_COLOR}}/g, gameColor);
     html = html.replace(/{{GAME_CARD_HTML}}/g, cardHtml);
+    html = html.replace(/{{ABOUT_HTML}}/g, aboutHtml);
+    html = html.replace(/{{ABOUT_JSON}}/g, aboutJson);
 
     // 3. Write target index.html
     const targetDir = path.join(__dirname, `../games/${gameId}`);

@@ -142,6 +142,22 @@ function renderApp() {
   const breadGames = document.getElementById('breadcrumbs-games');
   if (breadGames) breadGames.textContent = t('breadcrumbs.games');
 
+  // Translate About section heading and description
+  const lblAboutTitle = document.getElementById('lbl-about-title');
+  if (lblAboutTitle) lblAboutTitle.textContent = t('card.aboutTitle');
+
+  const aboutDataEl = document.getElementById('about-translations-data');
+  const aboutContent = document.getElementById('about-content');
+  if (aboutDataEl && aboutContent) {
+    try {
+      const data = JSON.parse(aboutDataEl.textContent);
+      const activeLang = getState().settings?.lang || 'en';
+      aboutContent.textContent = data[activeLang] || data.en || '';
+    } catch (e) {
+      console.error('[Detail Page] Error parsing About translation data:', e.message);
+    }
+  }
+
   // 3. Calculate countdown & progress bar
   const countdown = calculateCountdown(activeGame.nextSeason?.startDate);
   const progress = getProgressPercent(activeGame);

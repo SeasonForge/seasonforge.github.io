@@ -27,6 +27,7 @@ export const ru = {
     progressLabel: "Прогресс сезона:",
     detailsBtn: "Подробнее →",
     featuresLabel: "КЛЮЧЕВЫЕ ФИЧИ И НОВОВВЕДЕНИЯ:",
+    aboutTitle: "О сезонах",
     sourceLabel: "Источник",
     readOriginal: "Читать оригинал ↗",
     publishedAt: "от",

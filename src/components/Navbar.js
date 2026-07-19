@@ -63,7 +63,9 @@ export function render(games = [], activeGame = null, activeView = 'card') {
           <p class="navbar-panel__eyebrow">ВЫБЕРИТЕ ИГРУ</p>
           <h2 class="navbar-panel__title">SeasonForge</h2>
         </div>
-        <div class="navbar-panel__icon"></div>
+        <div class="navbar-panel__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
+          <img src="./assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
+        </div>
       </div>
       <p class="navbar-panel__caption">Компактный список актуальных сезонов</p>
       <div class="navbar__list">${links}</div>

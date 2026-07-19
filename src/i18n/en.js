@@ -58,5 +58,9 @@ export const en = {
   },
   fallback: {
     noGame: "No game available."
+  },
+  breadcrumbs: {
+    home: "Home",
+    games: "Games"
   }
 };

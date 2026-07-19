@@ -58,5 +58,9 @@ export const ru = {
   },
   fallback: {
     noGame: "Нет доступных игр."
+  },
+  breadcrumbs: {
+    home: "Главная",
+    games: "Игры"
   }
 };

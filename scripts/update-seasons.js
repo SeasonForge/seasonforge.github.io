@@ -433,6 +433,16 @@ async function main() {
   existingLogs.push(logSummary);
   fs.writeFileSync(logFile, JSON.stringify(existingLogs, null, 2), 'utf-8');
   console.log(`[Orchestrator] Log written to ${logFile}`);
+
+  // 6. Run static site generator to rebuild pages
+  console.log('[Orchestrator] Running static site generator build...');
+  try {
+    const { execSync } = await import('child_process');
+    execSync('node scripts/build.js', { stdio: 'inherit' });
+  } catch (buildError) {
+    console.error('[Orchestrator] Static site generator build failed:', buildError.message);
+  }
+
   console.log('=== SeasonForge Data Update Completed ===');
 }
 

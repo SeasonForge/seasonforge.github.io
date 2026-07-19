@@ -114,8 +114,12 @@ export function render(game = {}, options = {}) {
     `;
   }
 
-  // Use sourceUrl for more details if available, otherwise fallback to official website
-  const moreDetailsUrl = game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website;
+  // On detail pages, "More details" links to the external source. On the dashboard, it links to our detail page.
+  const isDetailPage = options.isDetailPage || false;
+  const moreDetailsUrl = isDetailPage 
+    ? (game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website)
+    : `./games/${game.id}/index.html`;
+  const moreDetailsTarget = isDetailPage ? 'target="_blank"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
   let sourceHtml = '';
@@ -180,7 +184,7 @@ export function render(game = {}, options = {}) {
             <span class="game-card__label">${t('card.developerLabel')}</span>
             <strong>${developer}</strong>
           </div>
-          <a class="game-card__link" href="${moreDetailsUrl}" target="_blank" rel="noopener noreferrer">${t('card.detailsBtn')}</a>
+          <a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer">${t('card.detailsBtn')}</a>
         </section>
       </div>
 

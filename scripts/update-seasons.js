@@ -123,11 +123,18 @@ function upgradeToBilingualSchema(game) {
   const upgraded = { ...game };
   
   // Upgrade game name
-  if (upgraded.name && typeof upgraded.name === 'string') {
-    upgraded.name = {
-      en: upgraded.name,
-      ru: upgraded.name
-    };
+  if (upgraded.name) {
+    if (typeof upgraded.name === 'string') {
+      upgraded.name = {
+        en: upgraded.name,
+        ru: upgraded.name
+      };
+    } else if (typeof upgraded.name === 'object') {
+      upgraded.name = {
+        en: upgraded.name.en || upgraded.name.ru || '',
+        ru: upgraded.name.ru || upgraded.name.en || ''
+      };
+    }
   }
   
   // Upgrade status label
@@ -148,26 +155,45 @@ function upgradeToBilingualSchema(game) {
       };
       
       upgraded.status.label = mapping[label] || { en: label, ru: label };
+    } else if (typeof upgraded.status.label === 'object') {
+      upgraded.status.label = {
+        en: upgraded.status.label.en || upgraded.status.label.ru || '',
+        ru: upgraded.status.label.ru || upgraded.status.label.en || ''
+      };
     }
   }
   
   // Upgrade currentSeason name
   if (upgraded.currentSeason) {
-    if (upgraded.currentSeason.name && typeof upgraded.currentSeason.name === 'string') {
-      upgraded.currentSeason.name = {
-        en: upgraded.currentSeason.name,
-        ru: upgraded.currentSeason.name
-      };
+    if (upgraded.currentSeason.name) {
+      if (typeof upgraded.currentSeason.name === 'string') {
+        upgraded.currentSeason.name = {
+          en: upgraded.currentSeason.name,
+          ru: upgraded.currentSeason.name
+        };
+      } else if (typeof upgraded.currentSeason.name === 'object') {
+        upgraded.currentSeason.name = {
+          en: upgraded.currentSeason.name.en || upgraded.currentSeason.name.ru || 'TBA',
+          ru: upgraded.currentSeason.name.ru || upgraded.currentSeason.name.en || 'TBA'
+        };
+      }
     }
   }
   
   // Upgrade nextSeason name
   if (upgraded.nextSeason) {
-    if (upgraded.nextSeason.name && typeof upgraded.nextSeason.name === 'string') {
-      upgraded.nextSeason.name = {
-        en: upgraded.nextSeason.name,
-        ru: upgraded.nextSeason.name
-      };
+    if (upgraded.nextSeason.name) {
+      if (typeof upgraded.nextSeason.name === 'string') {
+        upgraded.nextSeason.name = {
+          en: upgraded.nextSeason.name,
+          ru: upgraded.nextSeason.name
+        };
+      } else if (typeof upgraded.nextSeason.name === 'object') {
+        upgraded.nextSeason.name = {
+          en: upgraded.nextSeason.name.en || upgraded.nextSeason.name.ru || 'TBA',
+          ru: upgraded.nextSeason.name.ru || upgraded.nextSeason.name.en || 'TBA'
+        };
+      }
     }
   }
   
@@ -178,6 +204,20 @@ function upgradeToBilingualSchema(game) {
         en: upgraded.features,
         ru: upgraded.features
       };
+    } else if (typeof upgraded.features === 'object') {
+      const en = upgraded.features.en || [];
+      const ru = upgraded.features.ru || [];
+      if (en.length === 0 && ru.length > 0) {
+        upgraded.features = {
+          en: [...ru],
+          ru: ru
+        };
+      } else if (ru.length === 0 && en.length > 0) {
+        upgraded.features = {
+          en: en,
+          ru: [...en]
+        };
+      }
     }
   }
   

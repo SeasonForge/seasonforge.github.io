@@ -70,6 +70,18 @@ export function render(game = {}, options = {}) {
     `)
     .join('');
 
+  let featuresHtml = '';
+  if (features.length > 0) {
+    featuresHtml = `
+      <section class="game-card__panel game-card__panel--features">
+        <div class="game-card__features-header">
+          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+        </div>
+        <ul class="game-card__feature-grid">${featureItems}</ul>
+      </section>
+    `;
+  }
+  
   // Check if we have a valid next season date to countdown to
   const hasNextSeasonDate = game.nextSeason?.startDate && game.nextSeason.startDate !== '';
   const now = new Date();
@@ -172,12 +184,7 @@ export function render(game = {}, options = {}) {
         </section>
       </div>
 
-      <section class="game-card__panel game-card__panel--features">
-        <div class="game-card__features-header">
-          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
-        </div>
-        <ul class="game-card__feature-grid">${featureItems}</ul>
-      </section>
+      ${featuresHtml}
     </article>
   `;
 }

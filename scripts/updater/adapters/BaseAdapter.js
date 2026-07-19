@@ -132,6 +132,29 @@ export class BaseAdapter {
     }
   }
 
+  // Normalize Gemini status output to a whitelist-matched code and bilingual label
+  normalizeStatus(statusStr) {
+    const status = (statusStr || '').toLowerCase().trim();
+    const mapping = {
+      'active':         { code: 'active',         label: { en: 'Active',         ru: 'Активен' } },
+      'in-progress':    { code: 'in-progress',    label: { en: 'In Progress',    ru: 'В разгаре' } },
+      'in-development': { code: 'in-development', label: { en: 'In Development', ru: 'В разработке' } },
+      'maintenance':    { code: 'maintenance',    label: { en: 'Maintenance',    ru: 'Техобслуживание' } },
+      'early-access':   { code: 'early-access',   label: { en: 'Early Access',   ru: 'Ранний доступ' } },
+      'ending':         { code: 'ending',         label: { en: 'Ending',         ru: 'Завершается' } },
+      'just-started':   { code: 'just-started',   label: { en: 'Just Started',   ru: 'Только начался' } }
+    };
+
+    if (mapping[status]) return mapping[status];
+    if (status.includes('progress') || status.includes('run'))          return mapping['in-progress'];
+    if (status.includes('develop') || status.includes('tba') || status.includes('between')) return mapping['in-development'];
+    if (status.includes('maintenance') || status.includes('offline'))   return mapping['maintenance'];
+    if (status.includes('early'))                                        return mapping['early-access'];
+    if (status.includes('end'))                                          return mapping['ending'];
+    if (status.includes('start') || status.includes('launch'))          return mapping['just-started'];
+    return mapping['active']; // Default fallback
+  }
+
   // Abstract method to be implemented by child classes
   async fetchAndNormalize(gameConfig) {
     throw new Error('Method fetchAndNormalize() must be implemented');

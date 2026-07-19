@@ -96,11 +96,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           source: 'Last Epoch Steam News'
         },
         status: {
-          code: extracted.status || 'active',
-          label: {
-            en: extracted.status === 'active' ? 'Active' : (extracted.status === 'in-development' ? 'In Development' : 'Maintenance'),
-            ru: extracted.status === 'active' ? 'Активен' : (extracted.status === 'in-development' ? 'В разработке' : 'Техобслуживание')
-          },
+          ...this.normalizeStatus(extracted.status),
           updatedAt: new Date().toISOString()
         },
         currentSeason: {

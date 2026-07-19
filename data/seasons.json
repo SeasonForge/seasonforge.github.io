@@ -21,10 +21,10 @@
       "status": {
         "code": "ending",
         "label": {
-          "en": "Maintenance",
-          "ru": "Техобслуживание"
+          "en": "Ending",
+          "ru": "Завершается"
         },
-        "updatedAt": "2026-07-19T03:33:57.255Z"
+        "updatedAt": "2026-07-19T08:47:40.050Z"
       },
       "currentSeason": {
         "name": {
@@ -101,7 +101,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-19T03:33:56.641Z"
+        "updatedAt": "2026-07-19T08:47:39.020Z"
       },
       "currentSeason": {
         "name": {
@@ -175,10 +175,10 @@
       "status": {
         "code": "in-progress",
         "label": {
-          "en": "Maintenance",
-          "ru": "Техобслуживание"
+          "en": "In Progress",
+          "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-19T03:33:58.271Z"
+        "updatedAt": "2026-07-19T08:47:40.674Z"
       },
       "currentSeason": {
         "name": {
@@ -259,7 +259,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-19T03:33:57.007Z"
+        "updatedAt": "2026-07-19T08:47:39.552Z"
       },
       "currentSeason": {
         "name": {
@@ -334,10 +334,10 @@
       "status": {
         "code": "just-started",
         "label": {
-          "en": "Maintenance",
-          "ru": "Техобслуживание"
+          "en": "Just Started",
+          "ru": "Только начался"
         },
-        "updatedAt": "2026-07-19T03:33:57.024Z"
+        "updatedAt": "2026-07-19T08:47:39.554Z"
       },
       "currentSeason": {
         "name": {

@@ -306,5 +306,4 @@ async function init() {
 }
 
 // Boot page controller
-document.addEventListener('DOMContentLoaded', init);
 init();

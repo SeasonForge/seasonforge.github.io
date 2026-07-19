@@ -27,6 +27,7 @@ globalThis.window = globalThis;
 const { render: renderGameCard } = await import('../src/components/GameCard.js');
 const { render: renderProgressBar } = await import('../src/components/ProgressBar.js');
 const { getVal } = await import('../src/i18n/index.js');
+const { getProgressPercent, calculateCountdown } = await import('../src/utils/helpers.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -34,49 +35,7 @@ const __dirname = path.dirname(__filename);
 const dataDir = path.join(__dirname, '../data');
 const templatePath = path.join(__dirname, '../src/templates/game.html');
 
-// Helper to calculate progress percent
-function getProgressPercent(game) {
-  const startDate = game?.currentSeason?.startDate;
-  const nextStartDate = game?.nextSeason?.startDate;
 
-  if (!startDate || !nextStartDate) {
-    return 0;
-  }
-
-  const start = new Date(startDate);
-  const nextStart = new Date(nextStartDate);
-  const now = new Date();
-
-  if (Number.isNaN(start.getTime()) || Number.isNaN(nextStart.getTime())) {
-    return 0;
-  }
-
-  const total = nextStart.getTime() - start.getTime();
-  const elapsed = now.getTime() - start.getTime();
-
-  if (total <= 0) {
-    return 0;
-  }
-
-  return Math.max(0, Math.min(100, (elapsed / total) * 100));
-}
-
-// Helper to calculate countdown
-function calculateCountdown(targetDateStr) {
-  if (!targetDateStr) return {};
-  const targetDate = new Date(targetDateStr);
-  if (Number.isNaN(targetDate.getTime())) return {};
-
-  const total = targetDate.getTime() - Date.now();
-  if (total <= 0) return {};
-
-  const seconds = Math.floor((total / 1000) % 60);
-  const minutes = Math.floor((total / 1000 / 60) % 60);
-  const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-  const days = Math.floor(total / (1000 * 60 * 60 * 24));
-
-  return { days, hours, minutes, seconds };
-}
 
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');

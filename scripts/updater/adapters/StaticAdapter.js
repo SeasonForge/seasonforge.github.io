@@ -19,10 +19,10 @@ export class StaticAdapter extends BaseAdapter {
       website: staticData.website || '#',
       latestNews: {
         id: 'static-config',
-        title: 'Официальный анонс Path of Exile 2',
-        url: staticData.website || 'https://www.pathofexile.com/',
-        publishDate: staticData.currentSeason?.startDate || new Date().toISOString(),
-        source: 'Grinding Gear Games'
+        title: staticData.latestNews?.title || 'Официальный анонс Path of Exile 2',
+        url: staticData.latestNews?.url || staticData.website || 'https://www.pathofexile.com/',
+        publishDate: staticData.latestNews?.publishDate || staticData.currentSeason?.startDate || new Date().toISOString(),
+        source: staticData.latestNews?.source || 'Grinding Gear Games'
       },
       status: {
         code: staticData.status?.code || 'in-development',

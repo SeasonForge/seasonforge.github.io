@@ -67,15 +67,15 @@
       "website": "https://pathofexile2.com",
       "latestNews": {
         "id": "static-config",
-        "title": "Официальный анонс Path of Exile 2",
-        "url": "https://pathofexile2.com",
+        "title": "Path of Exile 2 Early Access FAQ & Info",
+        "url": "https://www.pathofexile.com/forum/view-thread/3601550",
         "publishDate": "2026-05-29",
-        "source": "Grinding Gear Games"
+        "source": "Official FAQ"
       },
       "status": {
         "code": "early-access",
         "label": "Ранний доступ",
-        "updatedAt": "2026-07-19T02:29:58.090Z"
+        "updatedAt": "2026-07-19T02:34:12.669Z"
       },
       "currentSeason": {
         "name": "0.5.0: Return of the Ancients",
@@ -83,7 +83,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://pathofexile2.com"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3601550"
       },
       "nextSeason": {
         "name": "Версия 1.0 (Релиз)",
@@ -91,7 +91,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://pathofexile2.com"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3601550"
       },
       "features": [
         "Тестирование лиги Runes of Aldur",

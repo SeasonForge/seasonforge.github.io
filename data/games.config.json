@@ -16,6 +16,12 @@
       "color": "#4b6e9c",
       "icon": "✨",
       "website": "https://pathofexile2.com",
+      "latestNews": {
+        "title": "Path of Exile 2 Early Access FAQ & Info",
+        "url": "https://www.pathofexile.com/forum/view-thread/3601550",
+        "publishDate": "2026-05-29",
+        "source": "Official FAQ"
+      },
       "status": {
         "code": "early-access",
         "label": "Ранний доступ"
@@ -25,14 +31,14 @@
         "startDate": "2026-05-29",
         "endDate": "",
         "verification": "official",
-        "sourceUrl": "https://pathofexile2.com"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3601550"
       },
       "nextSeason": {
         "name": "Версия 1.0 (Релиз)",
         "startDate": "2026-12-15",
         "endDate": "",
         "verification": "official",
-        "sourceUrl": "https://pathofexile2.com"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3601550"
       },
       "features": [
         "Тестирование лиги Runes of Aldur",

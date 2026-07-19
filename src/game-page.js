@@ -220,7 +220,36 @@ function renderApp() {
       console.error('[Detail Page] Error parsing Timeline translation data:', e.message);
     }
   }
+  // Translate Useful Links Section headings and content
+  const lblLinksTitle = document.getElementById('lbl-links-title');
+  if (lblLinksTitle) lblLinksTitle.textContent = t('card.linksTitle');
 
+  const linksDataEl = document.getElementById('links-translations-data');
+  const linksGrid = document.getElementById('links-grid');
+  if (linksDataEl && linksGrid) {
+    try {
+      const linksData = JSON.parse(linksDataEl.textContent);
+      const activeLang = getState().settings?.lang || 'en';
+      
+      const boxes = [];
+      for (const item of linksData) {
+        const categoryKey = item.category || 'Official';
+        const categoryLabel = t(`categories.${categoryKey}`) || categoryKey;
+        const label = item.label[activeLang] || item.label.en || '';
+        const url = item.url || '#';
+        
+        boxes.push(`
+          <div class="game-card__link-item">
+            <span class="game-card__link-category">${categoryLabel}</span>
+            <a href="${url}" target="_blank" class="game-card__link-anchor">${label}</a>
+          </div>
+        `);
+      }
+      linksGrid.innerHTML = boxes.join('\n');
+    } catch (e) {
+      console.error('[Detail Page] Error parsing Links translation data:', e.message);
+    }
+  }
   // 3. Calculate countdown & progress bar
   const countdown = calculateCountdown(activeGame.nextSeason?.startDate);
   const progress = getProgressPercent(activeGame);

@@ -181,6 +181,36 @@ async function build() {
       }
     }
 
+    // 2c. Load "Useful Links" array from content file if it exists
+    let linksHtml = '';
+    let linksJson = '[]';
+    if (fs.existsSync(contentPath)) {
+      try {
+        const contentData = JSON.parse(fs.readFileSync(contentPath, 'utf-8'));
+        if (contentData.links && Array.isArray(contentData.links)) {
+          linksJson = JSON.stringify(contentData.links);
+          
+          // Render links in English for static HTML
+          const boxes = [];
+          for (const item of contentData.links) {
+            const category = item.category || 'Official';
+            const label = item.label.en || '';
+            const url = item.url || '#';
+            
+            boxes.push(`
+              <div class="game-card__link-item">
+                <span class="game-card__link-category">${category}</span>
+                <a href="${url}" target="_blank" class="game-card__link-anchor">${label}</a>
+              </div>
+            `);
+          }
+          linksHtml = boxes.join('\n');
+        }
+      } catch (err) {
+        console.error(`[SSG] Error parsing useful links for ${gameId}:`, err.message);
+      }
+    }
+
     // 3. Construct SEO values
     const canonicalUrl = `${BASE_URL}/games/${gameId}/`;
     const schemaObj = {
@@ -219,6 +249,8 @@ async function build() {
     html = html.replace(/{{SCHEMA_JSONLD}}/g, schemaJson);
     html = html.replace(/{{TIMELINE_HTML}}/g, timelineHtml);
     html = html.replace(/{{TIMELINE_JSON}}/g, timelineJson);
+    html = html.replace(/{{LINKS_HTML}}/g, linksHtml);
+    html = html.replace(/{{LINKS_JSON}}/g, linksJson);
 
     // 5. Write target index.html
     const targetDir = path.join(__dirname, `../games/${gameId}`);

@@ -1426,3 +1426,49 @@ body::after {
 .history-table__link:hover {
   opacity: 0.8;
 }
+
+/* Useful Links Grid styling */
+.game-card__links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+.game-card__link-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  transition: background 0.2s, border-color 0.2s;
+}
+.game-card__link-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(99, 102, 241, 0.18);
+}
+.game-card__link-category {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: var(--muted-strong);
+  letter-spacing: 0.08em;
+}
+.game-card__link-anchor {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #f8fafc;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: color 0.15s;
+}
+.game-card__link-anchor:hover {
+  color: var(--color-primary, #a5b4fc);
+}
+.game-card__link-anchor::after {
+  content: '↗';
+  font-size: 0.8em;
+  opacity: 0.7;
+}

@@ -2,5 +2,37 @@
   "about": {
     "en": "Last Epoch is an action RPG developed by Eleventh Hour Games, combining time travel, exciting dungeon crawling, and deep character customization. The game features an accessible crafting system, a deep skill tree, and a robust endgame. Seasons (known as Cycles) run for approximately 3 to 4 months, offering fresh content, competitive ladders, and item updates.",
     "ru": "Last Epoch — это action RPG, разработанная Eleventh Hour Games, объединяющая путешествия во времени, увлекательные исследования подземелий и глубокую кастомизацию персонажей. Игра предлагает доступную систему крафта, разветвленные древа умений и проработанный эндгейм. Сезоны (известные как Циклы) длятся около 3-4 месяцев, предлагая свежий контент, соревновательные таблицы лидеров и новые предметы."
-  }
+  },
+  "links": [
+    {
+      "category": "Official",
+      "label": { "en": "Official Website", "ru": "Официальный сайт" },
+      "url": "https://lastepoch.com/"
+    },
+    {
+      "category": "Wiki",
+      "label": { "en": "Last Epoch Tools Database", "ru": "База данных Last Epoch Tools" },
+      "url": "https://www.lastepochtools.com/"
+    },
+    {
+      "category": "Tools",
+      "label": { "en": "LE Build Planner", "ru": "Конструктор билдов LE" },
+      "url": "https://www.lastepochtools.com/planner/"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Official Discord", "ru": "Официальный Discord" },
+      "url": "https://discord.gg/lastepoch"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Reddit Subreddit", "ru": "Сообщество Reddit" },
+      "url": "https://www.reddit.com/r/LastEpoch/"
+    },
+    {
+      "category": "Official",
+      "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
+      "url": "https://store.steampowered.com/app/899770/Last_Epoch/"
+    }
+  ]
 }

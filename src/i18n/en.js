@@ -47,7 +47,8 @@ export const en = {
     thDuration: "Duration",
     thLink: "Announcement",
     ongoing: "Ongoing",
-    readUrl: "Read ↗"
+    readUrl: "Read ↗",
+    linksTitle: "Useful Links"
   },
   timeline: {
     title: "Chronological map",
@@ -71,5 +72,11 @@ export const en = {
   breadcrumbs: {
     home: "Home",
     games: "Games"
+  },
+  categories: {
+    Official: "Official",
+    Wiki: "Wiki",
+    Tools: "Tools & Calculators",
+    Community: "Community"
   }
 };

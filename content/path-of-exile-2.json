@@ -2,5 +2,27 @@
   "about": {
     "en": "Path of Exile 2 is a next-generation action RPG developed by Grinding Gear Games. Set years after the original game, it introduces a brand new campaign, reworked class mechanics, a new skill gem system, and improved graphical fidelity. It shares a co-existing endgame and microtransactions with the original Path of Exile, with seasons running concurrently.",
     "ru": "Path of Exile 2 — это action RPG нового поколения, разработанная Grinding Gear Games. Действие игры разворачивается спустя годы после событий первой части, предлагая совершенно новую кампанию, переработанную механику классов, новую систему камней умений и улучшенную графику. Игра делит общий эндгейм и микротранзакции с оригинальной Path of Exile, а сезоны запускаются параллельно."
-  }
+  },
+  "links": [
+    {
+      "category": "Official",
+      "label": { "en": "Official Website", "ru": "Официальный сайт" },
+      "url": "https://pathofexile2.com"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Official Discord", "ru": "Официальный Discord" },
+      "url": "https://discord.gg/pathofexile"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Reddit Subreddit", "ru": "Сообщество Reddit" },
+      "url": "https://www.reddit.com/r/pathofexile/"
+    },
+    {
+      "category": "Official",
+      "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
+      "url": "https://store.steampowered.com/app/2694490/Path_of_Exile_2/"
+    }
+  ]
 }

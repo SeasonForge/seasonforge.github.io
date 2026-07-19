@@ -47,7 +47,8 @@ export const ru = {
     thDuration: "Длительность",
     thLink: "Анонс",
     ongoing: "В процессе",
-    readUrl: "Читать ↗"
+    readUrl: "Читать ↗",
+    linksTitle: "Полезные ссылки"
   },
   timeline: {
     title: "Хронологическая карта",
@@ -71,5 +72,11 @@ export const ru = {
   breadcrumbs: {
     home: "Главная",
     games: "Игры"
+  },
+  categories: {
+    Official: "Официальные",
+    Wiki: "Вики",
+    Tools: "Инструменты",
+    Community: "Сообщество"
   }
 };

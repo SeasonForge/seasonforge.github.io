@@ -2,5 +2,42 @@
   "about": {
     "en": "Diablo IV is an action RPG developed and published by Blizzard Entertainment. It returns to the dark, gothic roots of the series, featuring a vast shared open world of Sanctuary. Diablo IV operates on a quarterly seasonal model, with each season introducing new storylines, unique mechanics, class balance updates, and new Battle Pass rewards.",
     "ru": "Diablo IV — это action RPG, разработанная и выпущенная Blizzard Entertainment. Игра возвращается к мрачным готическим корням серии, предлагая просторный общий открытый мир Санктуария. Diablo IV работает по квартальной сезонной модели, где каждый сезон представляет новые сюжетные линии, уникальные механики, изменения баланса классов и награды боевого пропуска."
-  }
+  },
+  "links": [
+    {
+      "category": "Official",
+      "label": { "en": "Official Website", "ru": "Официальный сайт" },
+      "url": "https://diablo4.blizzard.com/"
+    },
+    {
+      "category": "Official",
+      "label": { "en": "Patch Notes / News", "ru": "Новости и патчноуты" },
+      "url": "https://news.blizzard.com/diablo4"
+    },
+    {
+      "category": "Wiki",
+      "label": { "en": "Maxroll Diablo IV Wiki", "ru": "Вики от Maxroll" },
+      "url": "https://maxroll.gg/d4"
+    },
+    {
+      "category": "Tools",
+      "label": { "en": "D4 Builds Planner", "ru": "Конструктор билдов D4" },
+      "url": "https://d4builds.gg/"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Official Discord", "ru": "Официальный Discord" },
+      "url": "https://discord.gg/diablo"
+    },
+    {
+      "category": "Community",
+      "label": { "en": "Reddit Subreddit", "ru": "Сообщество Reddit" },
+      "url": "https://www.reddit.com/r/diablo4/"
+    },
+    {
+      "category": "Official",
+      "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
+      "url": "https://store.steampowered.com/app/2344520/Diablo_IV/"
+    }
+  ]
 }

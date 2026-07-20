@@ -2609,8 +2609,9 @@ body.app-layout--overlay .upcoming-card__next-season {
 /* Semi-translucent glassy backdrop panels for readability */
 body.app-layout--overlay .game-card {
   max-width: 420px;
+  min-height: auto !important; /* Fix squished look by letting card auto-shrink to hug contents */
   margin: 0;
-  padding: 1.25rem !important;
+  padding: 1.5rem !important; /* Generous padding for spacious feel */
   background: rgba(15, 23, 42, 0.8) !important;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -2623,16 +2624,21 @@ body.app-layout--overlay .game-card__body {
   display: block !important; /* Stack panels vertically and take full 100% width */
 }
 
+/* Make inner panels borderless and backgroundless to avoid double-box clutter */
 body.app-layout--overlay .game-card__panel {
   width: 100% !important;
-  min-height: auto !important; /* Let container hug content exactly */
-  padding: 1rem 1.25rem !important;
+  min-height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   box-sizing: border-box;
 }
 
-/* Hide header subtitle, pill badges, developer info, and countdown prefix in overlay mode */
+/* Hide header subtitle, next season badge, pill status, developer, and prefix text in overlay mode */
 body.app-layout--overlay .game-card__pill,
 body.app-layout--overlay .game-card__subtitle,
+body.app-layout--overlay .game-card__next-season,
 body.app-layout--overlay .game-card__developer,
 body.app-layout--overlay .game-card__countdown-prefix {
   display: none !important;
@@ -2643,6 +2649,15 @@ body.app-layout--overlay .game-card__title {
   font-weight: 800 !important;
   margin-bottom: 0.5rem !important;
   letter-spacing: -0.02em !important;
+}
+
+/* Add margin offsets in overlay mode for spacious layout */
+body.app-layout--overlay .game-card__countdown {
+  margin-top: 1.25rem !important;
+}
+
+body.app-layout--overlay .game-card__progress-block {
+  margin-top: 1.25rem !important;
 }
 
 body.app-layout--overlay .timeline-map {

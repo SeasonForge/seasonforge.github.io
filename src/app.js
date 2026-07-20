@@ -171,13 +171,10 @@ function renderApp() {
 
   // Render main content depending on activeView
   if (contentRoot) {
-    if (!state.activeGame) {
-      contentRoot.innerHTML = `<p>${t('fallback.noGame')}</p>`;
-      return;
-    }
-
     if (state.activeView === 'timeline') {
       contentRoot.innerHTML = renderTimeline(state.games);
+    } else if (!state.activeGame) {
+      contentRoot.innerHTML = `<p>${t('fallback.noGame')}</p>`;
     } else {
       const countdown = calculateCountdown(state.activeGame?.nextSeason?.startDate || state.activeGame?.currentSeason?.startDate);
       const progressBar = renderProgressBar(getProgressPercent(state.activeGame), state.activeGame?.color);

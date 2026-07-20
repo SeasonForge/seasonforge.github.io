@@ -199,7 +199,7 @@ export function render(game = {}, options = {}) {
             <span class="game-card__label">${t('card.developerLabel')}</span>
             <strong>${developer}</strong>
           </div>
-          <a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer">${t('card.detailsBtn')}</a>
+          ${isDetailPage ? `<a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer">${t('card.detailsBtn')}</a>` : ''}
         </section>
       </div>
 

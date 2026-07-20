@@ -664,8 +664,8 @@ body::after {
   border: 1px solid rgba(139, 92, 246, 0.15);
   border-radius: var(--radius-sm);
   padding: 0.75rem 1rem;
-  margin: 1.25rem auto 0 auto;
-  width: 85%;
+  margin: 1.25rem 0 0 0;
+  width: 100%;
   text-decoration: none;
   cursor: pointer;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;

@@ -2313,3 +2313,363 @@ body::after {
     width: 100%;
   }
 }
+
+/* --- STREAMER WIDGET BUTTON & MODAL --- */
+.streamer-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm, 6px);
+  padding: 0.4rem 0.8rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.streamer-trigger-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(139, 92, 246, 0.45); /* Violet accent */
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+}
+
+.streamer-trigger-btn:active {
+  transform: translateY(0);
+}
+
+.streamer-trigger-btn__icon {
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
+/* Modal Overlay and Container */
+.streamer-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 1.5rem;
+}
+
+.streamer-modal-overlay--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.streamer-modal-container {
+  background: #0f172a;
+  border: 1px solid rgba(139, 92, 246, 0.15); /* Soft violet border */
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.6);
+  padding: 2.25rem 2rem;
+  max-width: 500px;
+  width: 100%;
+  transform: scale(0.92);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.streamer-modal-overlay--visible .streamer-modal-container {
+  transform: scale(1);
+}
+
+.streamer-modal__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+/* Form selects and inputs */
+.streamer-form__field {
+  margin-bottom: 1.25rem;
+}
+
+.streamer-form__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.streamer-form__select {
+  width: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #f1f5f9;
+  font-family: inherit;
+  font-size: 0.925rem;
+  padding: 0.75rem 0.9rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.streamer-form__select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* Link input and Copy button */
+.streamer-form__url-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.streamer-form__input-readonly {
+  flex: 1;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #94a3b8;
+  font-family: monospace;
+  font-size: 0.85rem;
+  padding: 0.75rem 0.9rem;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.streamer-form__btn-copy {
+  background: #8b5cf6; /* Violet-500 */
+  border: 1px solid #7c3aed;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  padding: 0 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  white-space: nowrap;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+}
+
+.streamer-form__btn-copy:hover {
+  background: #7c3aed;
+  box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
+  transform: translateY(-1px);
+}
+
+.streamer-form__btn-copy--success {
+  background: #10b981 !important; /* Emerald-500 */
+  border-color: #059669 !important;
+  box-shadow: 0 0 15px rgba(16, 185, 129, 0.5) !important;
+}
+
+/* Recommendations and instruction box */
+.streamer-info-box {
+  background: rgba(139, 92, 246, 0.04);
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-sizing: border-box;
+}
+
+.streamer-info-box__resolution {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.streamer-info-box__resolution strong {
+  color: #f1f5f9;
+}
+
+.streamer-info-box__resolution span {
+  color: #a78bfa;
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.streamer-info-box__instructions strong {
+  display: block;
+  font-size: 0.85rem;
+  color: #f1f5f9;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.streamer-info-box__instructions ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #94a3b8;
+  font-size: 0.825rem;
+  line-height: 1.5;
+}
+
+.streamer-info-box__instructions li {
+  margin-bottom: 0.35rem;
+}
+
+.streamer-form__buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.streamer-form__btn-close {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.streamer-form__btn-close:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* --- OVERLAY MODE (OBS TRANSPARENCY & CONTRAST) --- */
+body.app-layout--overlay {
+  background: transparent !important;
+  overflow: hidden !important;
+}
+
+/* Completely hide navigations and static elements in overlay mode */
+body.app-layout--overlay .app-header,
+body.app-layout--overlay .app-footer,
+body.app-layout--overlay #navbar,
+body.app-layout--overlay #feedback-trigger-btn,
+body.app-layout--overlay #streamer-trigger-btn,
+body.app-layout--overlay .lang-switcher,
+body.app-layout--overlay .game-card__cta-block,
+body.app-layout--overlay .game-card__source-info {
+  display: none !important;
+}
+
+/* Remove wrappers, shadows, borders and paddings in overlay mode */
+body.app-layout--overlay .app-layout {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  max-width: none !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.app-layout--overlay #content {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* Apply contrast text-shadows for readability over dynamic gameplays */
+body.app-layout--overlay .game-card__title,
+body.app-layout--overlay .game-card__season,
+body.app-layout--overlay .game-card__countdown-item strong,
+body.app-layout--overlay .game-card__label,
+body.app-layout--overlay .game-card__next-season-title,
+body.app-layout--overlay .game-card__next-season-date,
+body.app-layout--overlay .timeline-map__title,
+body.app-layout--overlay .timeline-months__header span,
+body.app-layout--overlay .timeline-row__game-label,
+body.app-layout--overlay .timeline-row__short-name,
+body.app-layout--overlay .upcoming-card__title,
+body.app-layout--overlay .upcoming-card__next-season {
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.95), -1px -1px 2px rgba(0, 0, 0, 0.95), 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Semi-translucent glassy backdrop panels for readability */
+body.app-layout--overlay .game-card {
+  max-width: 400px;
+  margin: 0;
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+body.app-layout--overlay .timeline-map {
+  background: rgba(15, 23, 42, 0.75) !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  padding: 1.5rem;
+  border-radius: 12px;
+}
+
+/* Specific conditional hides based on widget type */
+body.overlay-type-status .game-card__panel--side,
+body.overlay-type-status .game-card__panel--features,
+body.overlay-type-status .game-card__next-season {
+  display: none !important;
+}
+
+body.overlay-type-countdown .game-card__panel--main,
+body.overlay-type-countdown .game-card__panel--features,
+body.overlay-type-countdown .game-card__next-season-title,
+body.overlay-type-countdown .game-card__next-season-date {
+  display: none !important;
+}
+
+/* In countdown-only mode, let the countdown panel expand full-width */
+body.overlay-type-countdown .game-card__body {
+  display: block !important;
+}
+body.overlay-type-countdown .game-card__panel--side {
+  width: 100% !important;
+  border-left: none !important;
+  padding: 0 !important;
+  margin-top: 0.5rem;
+}
+
+/* Mobile responsive fixes for Configurator Modal */
+@media (max-width: 480px) {
+  .streamer-modal-overlay {
+    padding: 1rem;
+  }
+  .streamer-modal-container {
+    padding: 1.75rem 1.25rem;
+  }
+  .streamer-form__url-wrapper {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .streamer-form__btn-copy {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}

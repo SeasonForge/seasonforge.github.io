@@ -105,5 +105,24 @@ export const en = {
     errorValidationMessage: "Message must be between 10 and 3000 characters.",
     errorValidationEmail: "Please enter a valid email address.",
     errorNetwork: "Failed to send message. Please try again."
+  },
+  streamer: {
+    btnLabel: "OBS Widgets",
+    title: "OBS Widget Configurator",
+    typeLabel: "Widget Type",
+    typeStatus: "Current Season Status",
+    typeCountdown: "Hype Countdown Timer",
+    typeTimeline: "Global Season Timeline",
+    gameLabel: "Select Game",
+    urlLabel: "Widget Source URL",
+    btnCopy: "Copy Link",
+    copied: "Copied!",
+    recommendationLabel: "Recommended OBS Resolution:",
+    instructionsTitle: "How to use in OBS:",
+    instructionsStep1: "1. Select the widget type and game.",
+    instructionsStep2: "2. Copy the generated widget link above.",
+    instructionsStep3: "3. In OBS, add a new 'Browser' source.",
+    instructionsStep4: "4. Paste the link into the URL field and enter the recommended resolution.",
+    btnCancel: "Close"
   }
 };

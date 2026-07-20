@@ -21,6 +21,7 @@ import { Toast } from './components/Toast.js';
 import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { initFeedback } from './utils/initFeedback.js';
+import { initStreamer } from './utils/initStreamer.js';
 
 const seasonService = new SeasonService();
 let countdownTimer = null;
@@ -148,6 +149,11 @@ function renderApp() {
     feedbackBtn.textContent = t('feedback.btnLabel');
   }
 
+  const streamerBtn = document.getElementById('lbl-streamer-btn');
+  if (streamerBtn) {
+    streamerBtn.textContent = t('streamer.btnLabel');
+  }
+
   // Update navbar
   if (navbarRoot) {
     navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView);
@@ -189,6 +195,7 @@ function renderApp() {
   attachNavbarEvents();
   attachFooterEvents();
   initFeedback(() => state.activeGame?.id || 'None');
+  initStreamer(state.games);
   
   if (state.activeView === 'timeline') {
     attachTimelineTooltipEvents();
@@ -337,7 +344,32 @@ async function initializeApp() {
   try {
     const games = await seasonService.getGames();
     setGames(games);
-    setActiveGame(games[0] ?? null);
+
+    // Check overlay parameters
+    const params = new URLSearchParams(window.location.search);
+    const isOverlay = params.get('overlay') === 'true';
+    if (isOverlay) {
+      document.body.classList.add('app-layout--overlay');
+      const type = params.get('type') || 'status';
+      const gameId = params.get('game') || '';
+      
+      document.body.classList.add(`overlay-type-${type}`);
+      
+      if (type === 'timeline') {
+        setActiveView('timeline');
+      } else {
+        setActiveView('card');
+        const matchedGame = games.find(g => g.id === gameId);
+        if (matchedGame) {
+          setActiveGame(matchedGame);
+        } else {
+          setActiveGame(games[0] ?? null);
+        }
+      }
+    } else {
+      setActiveGame(games[0] ?? null);
+    }
+
     renderApp();
     startCountdownLoop();
 

@@ -105,5 +105,24 @@ export const ru = {
     errorValidationMessage: "Сообщение должно быть длиной от 10 до 3000 символов.",
     errorValidationEmail: "Пожалуйста, введите корректный email.",
     errorNetwork: "Не удалось отправить сообщение. Попробуйте ещё раз."
+  },
+  streamer: {
+    btnLabel: "OBS Виджеты",
+    title: "Настройка виджета OBS",
+    typeLabel: "Тип виджета",
+    typeStatus: "Статус текущего сезона",
+    typeCountdown: "Таймер обратного отсчета (Хайп)",
+    typeTimeline: "Общий таймлайн сезонов",
+    gameLabel: "Выберите игру",
+    urlLabel: "Ссылка для источника в OBS",
+    btnCopy: "Копировать ссылку",
+    copied: "Скопировано!",
+    recommendationLabel: "Рекомендуемое разрешение в OBS:",
+    instructionsTitle: "Как использовать в OBS:",
+    instructionsStep1: "1. Выберите тип виджета и нужную игру.",
+    instructionsStep2: "2. Скопируйте сгенерированную ссылку выше.",
+    instructionsStep3: "3. В OBS добавьте новый источник типа «Браузер» (Browser).",
+    instructionsStep4: "4. Вставьте ссылку в поле URL и укажите рекомендуемое разрешение.",
+    btnCancel: "Закрыть"
   }
 };

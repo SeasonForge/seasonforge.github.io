@@ -7,6 +7,7 @@ import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { escapeAttr } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
+import { initStreamer } from './utils/initStreamer.js';
 
 // SeasonService receives the path directly to avoid mutating the shared CONFIG object
 const seasonService = new SeasonService('../../data/seasons.json');
@@ -250,7 +251,14 @@ function renderApp() {
   if (feedbackBtn) {
     feedbackBtn.textContent = t('feedback.btnLabel');
   }
+
+  const streamerBtn = document.getElementById('lbl-streamer-btn');
+  if (streamerBtn) {
+    streamerBtn.textContent = t('streamer.btnLabel');
+  }
+
   initFeedback(() => activeGame?.id || 'None');
+  initStreamer(state.games);
 }
 
 /**
@@ -296,6 +304,15 @@ async function init() {
     if (!activeGame) {
       console.error(`[Detail Page] Game with ID ${gameId} not found in seasons database`);
       return;
+    }
+
+    // Check overlay parameters
+    const params = new URLSearchParams(window.location.search);
+    const isOverlay = params.get('overlay') === 'true';
+    if (isOverlay) {
+      document.body.classList.add('app-layout--overlay');
+      const type = params.get('type') || 'status';
+      document.body.classList.add(`overlay-type-${type}`);
     }
 
     renderApp();

@@ -18,6 +18,12 @@ function formatDate(dateStr, lang = 'en') {
   return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' }).format(date);
 }
 
+function getShortName(name) {
+  if (!name) return '';
+  const parts = name.split(/[:—-]/);
+  return parts[0].trim();
+}
+
 function formatFullDate(dateStr, lang = 'en') {
   if (!dateStr) return '';
   const date = new Date(dateStr);
@@ -135,12 +141,12 @@ export function render(games = []) {
         <div class="timeline-map__row-track">
           <!-- Solid bar for current season -->
           <div class="timeline-bar timeline-bar--current" style="left: ${currentStart}%; width: ${currentWidth}%;" data-tooltip="${currentTooltip}">
-            <span class="timeline-bar__title">${currentSeasonName}</span>
+            <span class="timeline-bar__title">${getShortName(getVal(game.currentSeason?.name)) || 'TBA'}</span>
           </div>
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
             <div class="timeline-circle" style="left: ${nextStart}%;" data-tooltip="${nextTooltip}">
-              <span class="timeline-circle__label">${nextSeasonName}</span>
+              <span class="timeline-circle__label">${getShortName(getVal(game.nextSeason?.name)) || 'TBA'}</span>
               <span class="timeline-circle__date">${formattedNextStart}</span>
             </div>
           ` : ''}

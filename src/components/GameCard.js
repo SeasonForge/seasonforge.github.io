@@ -165,7 +165,7 @@ export function render(game = {}, options = {}) {
         <section class="game-card__panel game-card__panel--main">
           <span class="game-card__label">${t('card.currentSeasonLabel')}</span>
           <h3 class="game-card__season">
-            ${currentSeason}
+            <span>${currentSeason}</span>
           </h3>
           <div class="game-card__meta-row">
             <span>${t('card.launchLabel')}</span>
@@ -193,7 +193,10 @@ export function render(game = {}, options = {}) {
         </section>
 
         <section class="game-card__panel game-card__panel--side">
-          <span class="game-card__label">${t('card.countdownPrefix')} ${nextSeason}</span>
+          <span class="game-card__label">
+            <span class="game-card__countdown-prefix">${t('card.countdownPrefix')}</span>
+            <span class="game-card__countdown-name">${nextSeason}</span>
+          </span>
           ${countdownHtml}
           <div class="game-card__developer">
             <span class="game-card__label">${t('card.developerLabel')}</span>

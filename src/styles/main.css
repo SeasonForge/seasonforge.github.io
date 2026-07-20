@@ -1557,10 +1557,7 @@ body::after {
 }
 
 .game-card__season {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+  display: block;
   margin-top: 0.4rem;
   margin-bottom: 0.8rem;
 }
@@ -2611,14 +2608,41 @@ body.app-layout--overlay .upcoming-card__next-season {
 
 /* Semi-translucent glassy backdrop panels for readability */
 body.app-layout--overlay .game-card {
-  max-width: 400px;
+  max-width: 420px;
   margin: 0;
-  background: rgba(15, 23, 42, 0.75) !important;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  padding: 1.25rem !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.25) !important; /* Soft violet border */
+  box-shadow: 0 12px 20px -3px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
+}
+
+body.app-layout--overlay .game-card__body {
+  display: block !important; /* Stack panels vertically and take full 100% width */
+}
+
+body.app-layout--overlay .game-card__panel {
+  width: 100% !important;
+  min-height: auto !important; /* Let container hug content exactly */
+  padding: 1rem 1.25rem !important;
+  box-sizing: border-box;
+}
+
+/* Hide header subtitle, pill badges, developer info, and countdown prefix in overlay mode */
+body.app-layout--overlay .game-card__pill,
+body.app-layout--overlay .game-card__subtitle,
+body.app-layout--overlay .game-card__developer,
+body.app-layout--overlay .game-card__countdown-prefix {
+  display: none !important;
+}
+
+body.app-layout--overlay .game-card__title {
+  font-size: 1.65rem !important;
+  font-weight: 800 !important;
+  margin-bottom: 0.5rem !important;
+  letter-spacing: -0.02em !important;
 }
 
 body.app-layout--overlay .timeline-map {
@@ -2645,15 +2669,11 @@ body.overlay-type-countdown .game-card__next-season-date {
   display: none !important;
 }
 
-/* In countdown-only mode, let the countdown panel expand full-width */
-body.overlay-type-countdown .game-card__body {
-  display: block !important;
-}
+/* In countdown-only mode, remove side panel borders and padding offsets */
 body.overlay-type-countdown .game-card__panel--side {
-  width: 100% !important;
   border-left: none !important;
   padding: 0 !important;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 /* Mobile responsive fixes for Configurator Modal */

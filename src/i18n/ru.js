@@ -87,5 +87,23 @@ export const ru = {
     Wiki: "Вики",
     Tools: "Инструменты",
     Community: "Сообщество"
+  },
+  feedback: {
+    btnLabel: "Обратная связь",
+    title: "Обратная связь",
+    subtitle: "Есть идея или заметил проблему? Напиши — все сообщения читаются.",
+    typeLabel: "Тип сообщения",
+    typeIdea: "💡 Идея",
+    typeBug: "🐞 Ошибка",
+    typeOther: "💬 Другое",
+    messagePlaceholder: "Опишите идею, проблему или предложение...",
+    emailPlaceholder: "Email (необязательно)",
+    btnCancel: "Отмена",
+    btnSubmit: "Отправить",
+    successTitle: "Спасибо!",
+    successText: "Ваше сообщение успешно отправлено.",
+    errorValidationMessage: "Сообщение должно быть длиной от 10 до 3000 символов.",
+    errorValidationEmail: "Пожалуйста, введите корректный email.",
+    errorNetwork: "Не удалось отправить сообщение. Попробуйте ещё раз."
   }
 };

@@ -6,6 +6,7 @@ import { render as renderProgressBar } from './components/ProgressBar.js';
 import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { escapeAttr } from './utils/helpers.js';
+import { initFeedback } from './utils/initFeedback.js';
 
 // SeasonService receives the path directly to avoid mutating the shared CONFIG object
 const seasonService = new SeasonService('../../data/seasons.json');
@@ -244,6 +245,12 @@ function renderApp() {
   if (timeEl && latestTime) {
     timeEl.textContent = formatLastUpdated(latestTime, state.settings?.lang);
   }
+
+  const feedbackBtn = document.getElementById('lbl-feedback-btn');
+  if (feedbackBtn) {
+    feedbackBtn.textContent = t('feedback.btnLabel');
+  }
+  initFeedback(() => activeGame?.id || 'None');
 }
 
 /**

@@ -87,5 +87,23 @@ export const en = {
     Wiki: "Wiki",
     Tools: "Tools & Calculators",
     Community: "Community"
+  },
+  feedback: {
+    btnLabel: "Feedback",
+    title: "Feedback",
+    subtitle: "Have an idea or noticed a problem? Write to us — all messages are read.",
+    typeLabel: "Message Type",
+    typeIdea: "💡 Idea",
+    typeBug: "🐞 Bug",
+    typeOther: "💬 Other",
+    messagePlaceholder: "Describe your idea, problem, or suggestion...",
+    emailPlaceholder: "Email (optional)",
+    btnCancel: "Cancel",
+    btnSubmit: "Send",
+    successTitle: "Thank you!",
+    successText: "Your message has been successfully sent.",
+    errorValidationMessage: "Message must be between 10 and 3000 characters.",
+    errorValidationEmail: "Please enter a valid email address.",
+    errorNetwork: "Failed to send message. Please try again."
   }
 };

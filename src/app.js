@@ -20,6 +20,7 @@ import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
 import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
+import { initFeedback } from './utils/initFeedback.js';
 
 const seasonService = new SeasonService();
 let countdownTimer = null;
@@ -142,6 +143,11 @@ function renderApp() {
     lblDataSource.textContent = t('header.dataSource');
   }
 
+  const feedbackBtn = document.getElementById('lbl-feedback-btn');
+  if (feedbackBtn) {
+    feedbackBtn.textContent = t('feedback.btnLabel');
+  }
+
   // Update navbar
   if (navbarRoot) {
     navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView);
@@ -182,6 +188,7 @@ function renderApp() {
 
   attachNavbarEvents();
   attachFooterEvents();
+  initFeedback(() => state.activeGame?.id || 'None');
   
   if (state.activeView === 'timeline') {
     attachTimelineTooltipEvents();

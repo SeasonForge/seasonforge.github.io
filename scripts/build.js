@@ -43,6 +43,29 @@ async function build() {
 
   const BASE_URL = process.env.BASE_URL || 'https://seasonforge.github.io';
 
+  // Inject Telegram feedback credentials from environment variables into data/feedback.json if provided
+  const feedbackPath = path.join(dataDir, 'feedback.json');
+  if (fs.existsSync(feedbackPath)) {
+    try {
+      const feedbackConfig = JSON.parse(fs.readFileSync(feedbackPath, 'utf-8'));
+      let modified = false;
+      if (process.env.TELEGRAM_BOT_TOKEN) {
+        feedbackConfig.telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
+        modified = true;
+      }
+      if (process.env.TELEGRAM_CHAT_ID) {
+        feedbackConfig.telegramChatId = process.env.TELEGRAM_CHAT_ID;
+        modified = true;
+      }
+      if (modified) {
+        fs.writeFileSync(feedbackPath, JSON.stringify(feedbackConfig, null, 2), 'utf-8');
+        console.log('[SSG] Updated data/feedback.json with environment variables.');
+      }
+    } catch (err) {
+      console.warn('[SSG] Warning: Could not update data/feedback.json:', err.message);
+    }
+  }
+
   const seasonsPath = path.join(dataDir, 'seasons.json');
   if (!fs.existsSync(seasonsPath)) {
     console.error('Database file seasons.json not found. Run update-seasons first.');

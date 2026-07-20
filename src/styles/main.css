@@ -1202,13 +1202,84 @@ body::after {
   box-shadow: 0 0 12px color-mix(in srgb, var(--game-color) 12%, transparent);
 }
 
+.upcoming-card__date-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+  width: 100%;
+}
+
 .upcoming-card__date {
   font-size: 0.62rem;
   font-weight: 800;
   color: var(--game-color);
   letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
 }
+
+.upcoming-card__hype-badge {
+  background: #ea580c; /* bright neon orange */
+  color: #ffffff;
+  font-size: 0.52rem;
+  font-weight: 900;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  letter-spacing: 0.03em;
+  box-shadow: 0 0 8px rgba(234, 88, 12, 0.4);
+}
+
+/* --- HYPE PULSE ANIMATIONS --- */
+@keyframes hypePulse {
+  0% {
+    box-shadow: 0 0 5px var(--game-color);
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    box-shadow: 0 0 15px var(--game-color);
+    transform: translate(-50%, -50%) scale(1.2);
+    background-color: var(--game-color);
+  }
+  100% {
+    box-shadow: 0 0 5px var(--game-color);
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.timeline-circle--hype {
+  animation: hypePulse 2s infinite ease-in-out, popNode 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both !important;
+}
+
+@keyframes hypeLinePulse {
+  0% { opacity: 0.35; }
+  50% { opacity: 0.95; }
+  100% { opacity: 0.35; }
+}
+
+.timeline-bar--future-hype {
+  animation: hypeLinePulse 2s infinite ease-in-out;
+}
+
+@keyframes hypeCardPulse {
+  0% {
+    border-color: color-mix(in srgb, var(--game-color) 30%, transparent);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--game-color) 8%, transparent);
+  }
+  50% {
+    border-color: var(--game-color);
+    box-shadow: 0 0 15px color-mix(in srgb, var(--game-color) 25%, transparent);
+  }
+  100% {
+    border-color: color-mix(in srgb, var(--game-color) 30%, transparent);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--game-color) 8%, transparent);
+  }
+}
+
+.upcoming-card--hype {
+  animation: hypeCardPulse 2.5s infinite ease-in-out;
+  background: rgba(15, 23, 42, 0.45) !important;
+}
+
+/* ===== TOAST ===== */
 
 .upcoming-card__game-name {
   margin: 0;

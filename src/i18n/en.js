@@ -63,7 +63,8 @@ export const en = {
     duration: "Duration",
     fallbackTitle: "Timeline",
     fallbackNoGames: "No games available",
-    tba: "TBA"
+    tba: "TBA",
+    hype: "🔥 STARTING SOON"
   },
   seo: {
     title: "SeasonForge - ARPG Season Tracker",

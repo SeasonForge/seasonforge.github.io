@@ -146,6 +146,11 @@ export function render(games = []) {
     const currentTooltip = getTooltipHtml(game, false);
     const nextTooltip = getTooltipHtml(game, true);
 
+    const daysUntil = game.nextSeason?.startDate 
+      ? (new Date(game.nextSeason.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      : Infinity;
+    const isHype = daysUntil >= 0 && daysUntil <= 14;
+
     return `
       <div class="timeline-map__row" style="--game-color: ${color}">
         <div class="timeline-map__row-label">
@@ -167,14 +172,14 @@ export function render(games = []) {
           ` : ''}
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-circle" style="left: ${nextStart}%;" data-tooltip="${nextTooltip}">
+            <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-tooltip="${nextTooltip}">
               <span class="timeline-circle__label">${getShortName(getVal(game.nextSeason?.name)) || 'TBA'}</span>
               <span class="timeline-circle__date">${formattedNextStart}</span>
             </div>
           ` : ''}
           <!-- Future season dashed line -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-bar timeline-bar--future" style="left: ${nextStart}%; width: ${nextWidth}%;" data-tooltip="${nextTooltip}"></div>
+            <div class="timeline-bar timeline-bar--future ${isHype ? 'timeline-bar--future-hype' : ''}" style="left: ${nextStart}%; width: ${nextWidth}%;" data-tooltip="${nextTooltip}"></div>
           ` : ''}
           <!-- Intersection dot for NOW line -->
           <div class="timeline-map__now-dot" style="left: ${nowPercent}%;"></div>
@@ -206,9 +211,17 @@ export function render(games = []) {
       const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
       const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
       
+      const daysUntil = game.nextSeason?.startDate 
+        ? (new Date(game.nextSeason.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+        : Infinity;
+      const isHype = daysUntil >= 0 && daysUntil <= 14;
+      
       return `
-        <div class="upcoming-card" style="--game-color: ${color}" data-game-countdown="${game.id}">
-          <div class="upcoming-card__date">${formattedDate}</div>
+        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
+          <div class="upcoming-card__date-wrapper">
+            <span class="upcoming-card__date">${formattedDate}</span>
+            ${isHype ? `<span class="upcoming-card__hype-badge">${t('timeline.hype')}</span>` : ''}
+          </div>
           <h4 class="upcoming-card__game-name">${gameName}</h4>
           <div class="upcoming-card__season-name">${nextSeasonName}</div>
           

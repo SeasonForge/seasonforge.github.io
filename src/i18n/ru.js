@@ -63,7 +63,8 @@ export const ru = {
     duration: "Длительность",
     fallbackTitle: "Хронология",
     fallbackNoGames: "Игры недоступны",
-    tba: "TBA"
+    tba: "TBA",
+    hype: "🔥 СКОРО СТАРТ"
   },
   seo: {
     title: "SeasonForge - Мониторинг ARPG Сезонов",

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://seasonforge.com/sitemap.xml
+Sitemap: https://seasonforge.github.io/SeasonForge/sitemap.xml

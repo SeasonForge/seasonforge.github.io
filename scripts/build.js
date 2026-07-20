@@ -41,7 +41,7 @@ const templatePath = path.join(__dirname, '../src/templates/game.html');
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');
 
-  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.com';
+  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.github.io/SeasonForge';
 
   const seasonsPath = path.join(dataDir, 'seasons.json');
   if (!fs.existsSync(seasonsPath)) {

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/</loc>
+    <loc>https://seasonforge.github.io/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/games/path-of-exile/</loc>
+    <loc>https://seasonforge.github.io/games/path-of-exile/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/games/path-of-exile-2/</loc>
+    <loc>https://seasonforge.github.io/games/path-of-exile-2/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/games/diablo-iv/</loc>
+    <loc>https://seasonforge.github.io/games/diablo-iv/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/games/last-epoch/</loc>
+    <loc>https://seasonforge.github.io/games/last-epoch/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://seasonforge.github.io/SeasonForge/games/torchlight-infinite/</loc>
+    <loc>https://seasonforge.github.io/games/torchlight-infinite/</loc>
     <lastmod>2026-07-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>

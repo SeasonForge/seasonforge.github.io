@@ -2,7 +2,7 @@
   {
     "season": {
       "en": "0.4.0: Fate of the Vaal",
-      "ru": "0.4.0: Судьба Ваал"
+      "ru": "0.4.0: Fate of the Vaal"
     },
     "startDate": "2025-12-13",
     "endDate": "2026-05-29",
@@ -11,7 +11,7 @@
   {
     "season": {
       "en": "0.3.0: Rise of the Abyssal",
-      "ru": "0.3.0: Восхождение Бездны"
+      "ru": "0.3.0: Rise of the Abyssal"
     },
     "startDate": "2025-08-15",
     "endDate": "2025-12-13",
@@ -20,7 +20,7 @@
   {
     "season": {
       "en": "0.2.0: Early Access Launch",
-      "ru": "0.2.0: Запуск Раннего Доступа"
+      "ru": "0.2.0: Early Access Launch"
     },
     "startDate": "2025-05-30",
     "endDate": "2025-08-15",
@@ -29,7 +29,7 @@
   {
     "season": {
       "en": "0.1.0: Closed Beta Test",
-      "ru": "0.1.0: Закрытый Бета-Тест"
+      "ru": "0.1.0: Closed Beta Test"
     },
     "startDate": "2024-11-15",
     "endDate": "2025-05-30",

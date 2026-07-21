@@ -29,7 +29,7 @@
       "currentSeason": {
         "name": {
           "en": "3.28: Necropolis Finale",
-          "ru": "3.28: Финал Некрополя"
+          "ru": "3.28: Necropolis Finale"
         },
         "startDate": "2026-03-30T20:00:00Z",
         "endDate": "",
@@ -40,7 +40,7 @@
       "nextSeason": {
         "name": {
           "en": "Curse of the Allflame",
-          "ru": "Проклятие Всепламени"
+          "ru": "Curse of the Allflame"
         },
         "startDate": "2026-07-24T20:00:00Z",
         "endDate": "",
@@ -117,7 +117,7 @@
       "nextSeason": {
         "name": {
           "en": "Version 1.0 (Release)",
-          "ru": "Версия 1.0 (Релиз)"
+          "ru": "Version 1.0 (Release)"
         },
         "startDate": "2026-12-15T20:00:00Z",
         "endDate": "",
@@ -184,7 +184,7 @@
       "currentSeason": {
         "name": {
           "en": "Season 14: Season of Death Awakening",
-          "ru": "Сезон 14: Season of Death Awakening"
+          "ru": "Season 14: Season of Death Awakening"
         },
         "startDate": "2026-07-01T17:00:00Z",
         "endDate": "",
@@ -195,7 +195,7 @@
       "nextSeason": {
         "name": {
           "en": "Season 15",
-          "ru": "Сезон 15"
+          "ru": "Season 15"
         },
         "startDate": "2026-09-19T17:00:00Z",
         "endDate": "",
@@ -265,7 +265,7 @@
       "currentSeason": {
         "name": {
           "en": "Cycle 4: Shattered Omens",
-          "ru": "Цикл 4: Расколотые Знамения"
+          "ru": "Cycle 4: Shattered Omens"
         },
         "startDate": "2026-03-27T16:00:00Z",
         "endDate": "",
@@ -276,7 +276,7 @@
       "nextSeason": {
         "name": {
           "en": "Cycle 5 & Orobyss Expansion",
-          "ru": "Цикл 5 и дополнение Orobyss"
+          "ru": "Cycle 5 & Orobyss Expansion"
         },
         "startDate": "2026-09-11T16:00:00Z",
         "endDate": "",

@@ -2,7 +2,7 @@
   {
     "season": {
       "en": "Cycle 4: Shattered Omens",
-      "ru": "Цикл 4: Расколотые Знамения"
+      "ru": "Cycle 4: Shattered Omens"
     },
     "startDate": "2026-03-26",
     "endDate": null,
@@ -11,7 +11,7 @@
   {
     "season": {
       "en": "Cycle 3: Beneath Ancient Skies",
-      "ru": "Цикл 3: Под Древними Небесами"
+      "ru": "Cycle 3: Beneath Ancient Skies"
     },
     "startDate": "2025-08-21",
     "endDate": "2026-03-26",
@@ -20,7 +20,7 @@
   {
     "season": {
       "en": "Cycle 2: Tombs of the Erased",
-      "ru": "Цикл 2: Гробницы Стёртых"
+      "ru": "Cycle 2: Tombs of the Erased"
     },
     "startDate": "2025-04-17",
     "endDate": "2025-08-21",
@@ -29,7 +29,7 @@
   {
     "season": {
       "en": "Cycle 1: Harbingers of Ruin",
-      "ru": "Цикл 1: Предвестники Погибели"
+      "ru": "Cycle 1: Harbingers of Ruin"
     },
     "startDate": "2024-07-09",
     "endDate": "2025-04-17",
@@ -38,7 +38,7 @@
   {
     "season": {
       "en": "Launch: Release (1.0)",
-      "ru": "Релиз (1.0)"
+      "ru": "Launch: Release (1.0)"
     },
     "startDate": "2024-02-21",
     "endDate": "2024-07-09",

@@ -102,7 +102,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         currentSeason: {
           name: {
             en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameRu || 'TBA'
+            ru: extracted.currentSeasonNameEn || 'TBA'
           },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
@@ -113,7 +113,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         nextSeason: {
           name: {
             en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameRu || 'TBA'
+            ru: extracted.nextSeasonNameEn || 'TBA'
           },
           startDate: extracted.nextSeasonStartDate || '',
           endDate: extracted.nextSeasonEndDate || '',

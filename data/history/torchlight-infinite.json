@@ -2,7 +2,7 @@
   {
     "season": {
       "en": "SS13: Afterlight",
-      "ru": "SS13: Послесветие"
+      "ru": "SS13: Afterlight"
     },
     "startDate": "2026-07-17",
     "endDate": null,
@@ -11,7 +11,7 @@
   {
     "season": {
       "en": "SS12: Lunaria",
-      "ru": "SS12: Лунария"
+      "ru": "SS12: Lunaria"
     },
     "startDate": "2026-04-17",
     "endDate": "2026-07-17",
@@ -20,7 +20,7 @@
   {
     "season": {
       "en": "SS11: Vorax",
-      "ru": "SS11: Воракс"
+      "ru": "SS11: Vorax"
     },
     "startDate": "2026-01-15",
     "endDate": "2026-04-17",
@@ -29,7 +29,7 @@
   {
     "season": {
       "en": "SS10: Overrealm",
-      "ru": "SS10: Сверхцарство"
+      "ru": "SS10: Overrealm"
     },
     "startDate": "2025-10-10",
     "endDate": "2026-01-15",
@@ -38,7 +38,7 @@
   {
     "season": {
       "en": "SS9: Outlaw",
-      "ru": "SS9: Вне Закона"
+      "ru": "SS9: Outlaw"
     },
     "startDate": "2025-07-17",
     "endDate": "2025-10-10",
@@ -47,7 +47,7 @@
   {
     "season": {
       "en": "SS8: Sandlord",
-      "ru": "SS8: Повелитель Песков"
+      "ru": "SS8: Sandlord"
     },
     "startDate": "2025-04-17",
     "endDate": "2025-07-17",
@@ -56,7 +56,7 @@
   {
     "season": {
       "en": "SS7: Arcana",
-      "ru": "SS7: Аркана"
+      "ru": "SS7: Arcana"
     },
     "startDate": "2025-01-09",
     "endDate": "2025-04-17",
@@ -65,7 +65,7 @@
   {
     "season": {
       "en": "SS6: The Frozen Canvas",
-      "ru": "SS6: Ледяной Холст"
+      "ru": "SS6: The Frozen Canvas"
     },
     "startDate": "2024-10-24",
     "endDate": "2025-01-09",
@@ -74,7 +74,7 @@
   {
     "season": {
       "en": "SS5: Clockwork Ballet",
-      "ru": "SS5: Заводной Балет"
+      "ru": "SS5: Clockwork Ballet"
     },
     "startDate": "2024-07-04",
     "endDate": "2024-10-24",
@@ -83,7 +83,7 @@
   {
     "season": {
       "en": "SS4: Whispering Mist",
-      "ru": "SS4: Шепчущий Туман"
+      "ru": "SS4: Whispering Mist"
     },
     "startDate": "2024-04-18",
     "endDate": "2024-07-04",
@@ -92,7 +92,7 @@
   {
     "season": {
       "en": "SS3: Twinightmare",
-      "ru": "SS3: Близнецы-кошмары"
+      "ru": "SS3: Twinightmare"
     },
     "startDate": "2023-12-28",
     "endDate": "2024-04-18",
@@ -101,7 +101,7 @@
   {
     "season": {
       "en": "SS2: The City of Aeterna",
-      "ru": "SS2: Город Этерна"
+      "ru": "SS2: The City of Aeterna"
     },
     "startDate": "2023-09-07",
     "endDate": "2023-12-28",
@@ -110,7 +110,7 @@
   {
     "season": {
       "en": "SS1: Cube of Rapacity",
-      "ru": "SS1: Куб Алчности"
+      "ru": "SS1: Cube of Rapacity"
     },
     "startDate": "2023-05-09",
     "endDate": "2023-09-07",
@@ -119,7 +119,7 @@
   {
     "season": {
       "en": "S2: Blacksail",
-      "ru": "S2: Черные Паруса"
+      "ru": "S2: Blacksail"
     },
     "startDate": "2023-01-12",
     "endDate": "2023-05-09",
@@ -128,7 +128,7 @@
   {
     "season": {
       "en": "S1: Dark Surge",
-      "ru": "S1: Темный Прилив"
+      "ru": "S1: Dark Surge"
     },
     "startDate": "2022-10-12",
     "endDate": "2023-01-12",

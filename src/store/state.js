@@ -30,13 +30,20 @@ export function setGames(games) {
   return state;
 }
 
-export function setActiveGame(game) {
+export function setActiveGame(game, saveToStorage = false) {
   state.activeGame = game ?? null;
+  if (saveToStorage && game) {
+    localStorage.setItem('lastGame', game.id);
+  }
   return state;
 }
 
-export function setActiveView(view) {
+export function setActiveView(view, saveToStorage = false) {
   state.activeView = view === 'timeline' ? 'timeline' : 'card';
+  if (saveToStorage) {
+    const storageValue = state.activeView === 'timeline' ? 'Timeline' : 'Game Card';
+    localStorage.setItem('lastView', storageValue);
+  }
   return state;
 }
 

@@ -248,7 +248,7 @@ function attachNavbarEvents() {
       const nextGame = state.games.find((game) => game.id === gameId || game.slug === gameId);
 
       if (nextGame) {
-        setActiveGame(nextGame);
+        setActiveGame(nextGame, true);
         renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
         renderApp();
       }
@@ -261,14 +261,24 @@ function attachNavbarEvents() {
 
   if (viewCardBtn) {
     viewCardBtn.addEventListener('click', () => {
-      setActiveView('card');
+      const state = getState();
+      setActiveView('card', true);
+      if (!state.activeGame) {
+        const lastGame = localStorage.getItem('lastGame');
+        const matched = state.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+        if (matched) {
+          setActiveGame(matched, true);
+        } else if (state.games.length > 0) {
+          setActiveGame(state.games[0], true);
+        }
+      }
       renderApp();
     });
   }
 
   if (viewTimelineBtn) {
     viewTimelineBtn.addEventListener('click', () => {
-      setActiveView('timeline');
+      setActiveView('timeline', true);
       renderApp();
     });
   }
@@ -364,7 +374,58 @@ async function initializeApp() {
         }
       }
     } else {
-      setActiveGame(games[0] ?? null);
+      // Restore user state from localStorage
+      const lastGame = localStorage.getItem('lastGame');
+      const lastView = localStorage.getItem('lastView');
+      const lastVisit = localStorage.getItem('lastVisit');
+      
+      const now = Date.now();
+      const isLongTimeNoSee = lastVisit && (now - parseInt(lastVisit, 10) > 30 * 24 * 60 * 60 * 1000);
+      const isFirstVisit = !lastVisit;
+
+      if (isFirstVisit) {
+        // First-time visit: open Timeline (Overview), do not select game automatically
+        setActiveView('timeline', false);
+        setActiveGame(null, false);
+      } else if (isLongTimeNoSee) {
+        // Inactive for 30+ days: open saved game, show Game Card instead of Timeline
+        let matchedGame = null;
+        if (lastGame) {
+          matchedGame = games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+        }
+        
+        if (matchedGame) {
+          setActiveGame(matchedGame, false);
+          setActiveView('card', false);
+        } else {
+          setActiveGame(null, false);
+          setActiveView('timeline', false);
+        }
+      } else {
+        // Returning visit (under 30 days): restore saved game and view
+        let matchedGame = null;
+        if (lastGame) {
+          matchedGame = games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+        }
+        
+        if (matchedGame) {
+          setActiveGame(matchedGame, false);
+        } else {
+          setActiveGame(null, false);
+        }
+
+        if (lastView === 'Timeline') {
+          setActiveView('timeline', false);
+        } else if (lastView === 'Game Card') {
+          setActiveView('card', false);
+        } else {
+          // Default fallback: show Card if game is selected, else Timeline
+          setActiveView(matchedGame ? 'card' : 'timeline', false);
+        }
+      }
+
+      // Update lastVisit timestamp
+      localStorage.setItem('lastVisit', String(now));
     }
 
     renderApp();

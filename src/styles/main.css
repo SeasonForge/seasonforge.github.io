@@ -1497,7 +1497,17 @@ body::after {
 
 @media (max-width: 900px) {
   .app-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  #content {
+    order: 1;
+  }
+
+  #navbar {
+    order: 2;
   }
 
   .game-card__body {
@@ -1514,79 +1524,19 @@ body::after {
     min-width: 140px;
   }
 
-  /* Compact Horizontal Games Switcher on Mobile */
-  .navbar-panel {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
+  /* Timeline mobile reordering: Upcoming launches first, timeline map second */
+  .timeline-view-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1.5rem;
   }
 
-  .navbar-panel__header,
-  .navbar-panel__caption {
-    display: none !important;
+  .upcoming-launches {
+    order: 1;
   }
 
-  .navbar__list {
-    display: flex !important;
-    flex-direction: row !important;
-    overflow-x: auto;
-    gap: 0.5rem !important;
-    padding: 0.25rem 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .navbar__list::-webkit-scrollbar {
-    display: none;
-  }
-
-  .navbar__tab {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    padding: 0.5rem 0.85rem !important;
-    margin: 0 !important;
-    height: 38px !important;
-    align-items: center !important;
-  }
-
-  .navbar__tab-main {
-    align-items: center !important;
-    gap: 0.4rem !important;
-  }
-
-  .navbar__tab-copy {
-    margin: 0 !important;
-  }
-
-  .navbar__season,
-  .navbar__status {
-    display: none !important;
-  }
-
-  .navbar__name {
-    font-size: 0.82rem !important;
-    margin: 0 !important;
-    white-space: nowrap;
-  }
-
-  .navbar-panel__footer {
-    display: grid !important;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.5rem !important;
-    margin-top: 0 !important;
-    padding: 0 !important;
-    border-top: none !important;
-  }
-
-  .navbar-panel__action {
-    margin: 0 !important;
-    justify-content: center !important;
-    font-size: 0.82rem !important;
-    padding: 0.65rem !important;
+  .timeline-card {
+    order: 2;
   }
 }
 

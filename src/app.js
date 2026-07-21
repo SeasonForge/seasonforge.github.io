@@ -249,6 +249,7 @@ function attachNavbarEvents() {
 
       if (nextGame) {
         setActiveGame(nextGame, true);
+        setActiveView('card', true);
         renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
         renderApp();
       }

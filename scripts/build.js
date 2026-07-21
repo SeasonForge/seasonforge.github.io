@@ -41,7 +41,7 @@ const templatePath = path.join(__dirname, '../src/templates/game.html');
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');
 
-  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.github.io';
+  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.online';
 
   // Inject Telegram feedback credentials from environment variables into data/feedback.json if provided
   const feedbackPath = path.join(dataDir, 'feedback.json');

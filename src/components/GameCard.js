@@ -121,7 +121,7 @@ export function render(game = {}, options = {}) {
   const isDetailPage = options.isDetailPage || false;
   const moreDetailsUrl = isDetailPage 
     ? (game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website)
-    : `./games/${game.id}/index.html`;
+    : `./games/${game.id}/`;
   const moreDetailsTarget = isDetailPage ? 'target="_blank"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
@@ -179,7 +179,7 @@ export function render(game = {}, options = {}) {
             ${hasNextSeasonDate && !nextSeasonPassed ? progressBar : '<div class="game-card__progress-bar-placeholder"></div>'}
           </div>
           ${!isDetailPage ? `
-            <a class="game-card__cta-block" href="./games/${game.id}/index.html">
+            <a class="game-card__cta-block" href="./games/${game.id}/">
               <div class="game-card__cta-icon-box">
                 <span class="game-card__cta-icon">📖</span>
               </div>

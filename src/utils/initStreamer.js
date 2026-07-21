@@ -25,8 +25,9 @@ export function initStreamer(games = []) {
   function getRootUrl() {
     const origin = window.location.origin;
     let path = window.location.pathname;
+    path = path.replace(/index\.html$/, '');
     if (path.includes('/games/')) {
-      path = path.substring(0, path.indexOf('/games/')) + '/index.html';
+      path = path.substring(0, path.indexOf('/games/')) + '/';
     }
     path = path.replace(/\/+/g, '/');
     return origin + path;

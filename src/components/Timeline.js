@@ -280,6 +280,11 @@ export function render(games = []) {
             <span class="timeline-map__now-badge">${t('timeline.now')}</span>
           </div>
         </div>
+        <div class="timeline-card__watermark">
+          <img src="./assets/logo.png" alt="SeasonForge Logo" class="timeline-card__watermark-logo" />
+          <span class="timeline-card__watermark-dot">•</span>
+          <span class="timeline-card__watermark-text">seasonforge.online</span>
+        </div>
       </section>
 
       <!-- Bottom launches section -->

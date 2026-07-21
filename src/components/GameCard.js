@@ -119,6 +119,7 @@ export function render(game = {}, options = {}) {
 
   // On detail pages, "More details" links to the external source. On the dashboard, it links to our detail page.
   const isDetailPage = options.isDetailPage || false;
+  const logoPrefix = isDetailPage ? '../../' : './';
   const moreDetailsUrl = isDetailPage 
     ? (game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website)
     : `./games/${game.id}/`;
@@ -207,6 +208,11 @@ export function render(game = {}, options = {}) {
       </div>
 
       ${featuresHtml}
+      <div class="game-card__watermark">
+        <img src="${logoPrefix}assets/logo.png" alt="SeasonForge Logo" class="game-card__watermark-logo" />
+        <span class="game-card__watermark-dot">•</span>
+        <span class="game-card__watermark-text">seasonforge.online</span>
+      </div>
     </article>
   `;
 }

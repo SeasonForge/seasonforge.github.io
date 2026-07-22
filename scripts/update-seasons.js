@@ -13,6 +13,12 @@ const logsDir = path.join(dataDir, 'logs');
   }
 });
 
+function atomicWriteFileSync(filePath, content, encoding = 'utf-8') {
+  const tmpPath = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
+  fs.writeFileSync(tmpPath, content, encoding);
+  fs.renameSync(tmpPath, filePath);
+}
+
 function isNameEmptyOrTba(name) {
   if (!name) return true;
   if (typeof name === 'string') return name === '' || name === 'TBA';
@@ -313,8 +319,8 @@ async function main() {
     updates: []
   };
 
-  // 2. Run adapters in parallel using Promise.allSettled
-  const adapterPromises = enabledGames.map(async (gameConfig) => {
+  // 2. Run adapters in controlled batches (concurrency limit: 3)
+  const runAdapter = async (gameConfig) => {
     const adapterName = gameConfig.adapter;
     const displayName = gameConfig.name?.en || gameConfig.name;
     console.log(`[Orchestrator] Loading adapter ${adapterName} for ${displayName}...`);
@@ -342,7 +348,7 @@ async function main() {
 
       // Save to local cache folder ONLY after successful validation!
       const cachePath = path.join(cacheDir, `${gameConfig.id}.json`);
-      fs.writeFileSync(cachePath, JSON.stringify(gameData, null, 2), 'utf-8');
+      atomicWriteFileSync(cachePath, JSON.stringify(gameData, null, 2), 'utf-8');
 
       return {
         gameId: gameConfig.id,
@@ -392,9 +398,15 @@ async function main() {
         error: error.message
       };
     }
-  });
+  };
 
-  const settledResults = await Promise.allSettled(adapterPromises);
+  const settledResults = [];
+  const CONCURRENCY_LIMIT = 3;
+  for (let i = 0; i < enabledGames.length; i += CONCURRENCY_LIMIT) {
+    const chunk = enabledGames.slice(i, i + CONCURRENCY_LIMIT);
+    const chunkResults = await Promise.allSettled(chunk.map(gameConfig => runAdapter(gameConfig)));
+    settledResults.push(...chunkResults);
+  }
 
   const finalGames = [];
   let changesCount = 0;
@@ -468,7 +480,7 @@ async function main() {
 
   // 4. Save seasons.json only if changed or missing
   if (hasActualChanges) {
-    fs.writeFileSync(seasonsPath, JSON.stringify({ games: finalGames }, null, 2), 'utf-8');
+    atomicWriteFileSync(seasonsPath, JSON.stringify({ games: finalGames }, null, 2), 'utf-8');
     console.log(`[Orchestrator] seasons.json updated successfully with ${finalGames.length} games.`);
     logSummary.saved = true;
   } else {
@@ -487,7 +499,7 @@ async function main() {
     }
   }
   existingLogs.push(logSummary);
-  fs.writeFileSync(logFile, JSON.stringify(existingLogs, null, 2), 'utf-8');
+  atomicWriteFileSync(logFile, JSON.stringify(existingLogs, null, 2), 'utf-8');
   console.log(`[Orchestrator] Log written to ${logFile}`);
   cleanOldLogs(logsDir); // Remove logs older than 30 days
 

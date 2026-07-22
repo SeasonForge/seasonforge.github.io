@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const PORT = 8080;
-const PUBLIC_DIR = path.join(__dirname, '../');
+const PUBLIC_DIR = path.resolve(__dirname, '../');
 
 const MIME_TYPES = {
   '.html': 'text/html',
@@ -23,12 +23,20 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   // Parse URL
-  const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-  let filePath = path.join(PUBLIC_DIR, parsedUrl.pathname);
+  const parsedUrl = new URL(req.url, `http://${req.headers.host || '127.0.0.1'}`);
+  const safePath = path.normalize(parsedUrl.pathname).replace(/^(\.\.[\/\\])+/, '');
+  let filePath = path.resolve(PUBLIC_DIR, '.' + safePath);
 
   // If path is a directory, append index.html
   if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
     filePath = path.join(filePath, 'index.html');
+  }
+
+  const relative = path.relative(PUBLIC_DIR, filePath);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+    res.writeHead(403, { 'Content-Type': 'text/html' });
+    res.end('<h1>403 Forbidden</h1>', 'utf-8');
+    return;
   }
 
   const extname = String(path.extname(filePath)).toLowerCase();
@@ -50,8 +58,8 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '127.0.0.1', () => {
   console.log(`=== SeasonForge Local Server Started ===`);
-  console.log(`URL: http://localhost:${PORT}`);
+  console.log(`URL: http://127.0.0.1:${PORT}`);
   console.log(`Press Ctrl+C to stop.`);
 });

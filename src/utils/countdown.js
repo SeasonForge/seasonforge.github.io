@@ -44,3 +44,22 @@ export function calculateCountdown(targetDateStr) {
     seconds: Math.floor((total / 1000) % 60)
   };
 }
+
+/**
+ * Directly updates countdown number elements inside a container element.
+ * @param {HTMLElement} container
+ * @param {{ days?: number, hours?: number, minutes?: number, seconds?: number }} countdown
+ */
+export function updateCountdownDOM(container, countdown = {}) {
+  if (!container) return;
+  const update = (attr, val) => {
+    const el = container.querySelector(`[data-countdown="${attr}"]`);
+    if (el && val !== undefined) {
+      el.textContent = val;
+    }
+  };
+  update('days', countdown.days ?? 0);
+  update('hours', countdown.hours ?? 0);
+  update('minutes', countdown.minutes ?? 0);
+  update('seconds', countdown.seconds ?? 0);
+}

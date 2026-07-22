@@ -39,7 +39,8 @@ function formatLocalDate(dateStr) {
 export function render(game = {}, options = {}) {
   const name = escapeHtml(getVal(game.name) || 'Untitled Game');
   const developer = escapeHtml(game.developer || 'Unknown developer');
-  const color = escapeAttr(game.color || '#4b5563');
+  const rawColor = String(game.color || '#4b5563');
+  const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#4b5563';
   const statusCode = (game.status?.code || 'default');
   const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Unknown');
   

@@ -18,10 +18,12 @@ import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
-import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
+import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
+import { setMetaTags } from './utils/seo.js';
+import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -40,54 +42,21 @@ let countdownTimer = null;
 let modalInstance = null;
 let toastInstance = null;
 
-
-
 function updateSeo() {
-  document.title = t('seo.title');
-  document.documentElement.lang = getState().settings?.lang || 'en';
-  
-  const desc = t('seo.description');
-  const descMeta = document.querySelector('meta[name="description"]');
-  if (descMeta) descMeta.setAttribute('content', desc);
-  
-  const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute('content', t('seo.title'));
-  
-  const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute('content', desc);
-  
-  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-  if (twitterTitle) twitterTitle.setAttribute('content', t('seo.title'));
-  
-  const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-  if (twitterDesc) twitterDesc.setAttribute('content', desc);
+  setMetaTags({
+    title: t('seo.title'),
+    description: t('seo.description'),
+    lang: getState().settings?.lang || 'en'
+  });
 }
 
 function renderLangSwitcher() {
-  const switcherRoot = document.getElementById('lang-switcher');
-  if (!switcherRoot) return;
   const state = getState();
-  const currentLang = state.settings.lang;
-  
-  switcherRoot.innerHTML = `
-    <button class="lang-switcher__btn ${currentLang === 'en' ? 'lang-switcher__btn--active' : ''}" data-lang-val="en">
-      <img src="https://flagcdn.com/w20/us.png" class="lang-switcher__flag" alt="EN"> EN
-    </button>
-    <button class="lang-switcher__btn ${currentLang === 'ru' ? 'lang-switcher__btn--active' : ''}" data-lang-val="ru">
-      <img src="https://flagcdn.com/w20/ru.png" class="lang-switcher__flag" alt="RU"> RU
-    </button>
-  `;
-  
-  switcherRoot.querySelectorAll('[data-lang-val]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const selected = btn.getAttribute('data-lang-val');
-      if (selected !== state.settings.lang) {
-        setLanguage(selected);
-        updateSeo();
-        renderToast(t('toasts.gameSelected', { game: getVal(state.activeGame?.name || '') }));
-        renderApp();
-      }
-    });
+  renderLangSwitcherComponent('lang-switcher', state.settings.lang, (selected) => {
+    setLanguage(selected);
+    updateSeo();
+    renderToast(t('toasts.gameSelected', { game: getVal(state.activeGame?.name || '') }));
+    renderApp();
   });
 }
 
@@ -358,10 +327,19 @@ function renderApp() {
   }
 }
 
+let timelineAbortController = null;
+const expiredGameCountdowns = new Set();
+
 function attachTimelineTooltipEvents() {
   const grid = document.querySelector('.timeline-map__grid');
   const tooltip = document.getElementById('timeline-tooltip');
   if (!grid || !tooltip) return;
+
+  if (timelineAbortController) {
+    timelineAbortController.abort();
+  }
+  timelineAbortController = new AbortController();
+  const { signal } = timelineAbortController;
 
   let activeTouch = false;
 
@@ -375,7 +353,7 @@ function attachTimelineTooltipEvents() {
 
     tooltip.innerHTML = content;
     tooltip.style.display = 'block';
-  });
+  }, { signal });
 
   grid.addEventListener('mousemove', (e) => {
     if (activeTouch) return;
@@ -383,7 +361,7 @@ function attachTimelineTooltipEvents() {
       tooltip.style.left = `${e.clientX + 15}px`;
       tooltip.style.top = `${e.clientY + 15}px`;
     }
-  });
+  }, { signal });
 
   grid.addEventListener('mouseout', (e) => {
     if (activeTouch) return;
@@ -394,7 +372,7 @@ function attachTimelineTooltipEvents() {
     if (related && item.contains(related)) return;
 
     tooltip.style.display = 'none';
-  });
+  }, { signal });
 
   // Tap-to-toggle details on mobile touchscreens
   const handleTouchTap = (e) => {
@@ -432,14 +410,14 @@ function attachTimelineTooltipEvents() {
     }
   };
 
-  grid.addEventListener('click', handleTouchTap);
+  grid.addEventListener('click', handleTouchTap, { signal });
   
   // Hide tooltip when clicking anywhere else
   document.addEventListener('click', (e) => {
     if (!grid.contains(e.target)) {
       tooltip.style.display = 'none';
     }
-  });
+  }, { signal });
 }
 
 function attachNavbarEvents() {
@@ -551,19 +529,17 @@ function tickCountdown() {
       const targetDate = new Date(targetDateStr);
       const now = new Date();
       if (targetDate <= now) {
-        renderApp();
+        if (!expiredGameCountdowns.has(game.id)) {
+          expiredGameCountdowns.add(game.id);
+          renderApp();
+        }
         return;
       }
       
-      const total = targetDate.getTime() - now.getTime();
-      const update = (attr, val) => {
-        const el = document.querySelector(`.game-card[data-game-id="${game.id}"] .game-card__countdown [data-countdown="${attr}"]`);
-        if (el) el.textContent = val;
-      };
-      update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
-      update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
-      update('minutes', Math.floor((total / (1000 * 60)) % 60));
-      update('seconds', Math.floor((total / 1000) % 60));
+      const cardEl = document.querySelector(`.game-card[data-game-id="${game.id}"] .game-card__countdown`);
+      if (cardEl) {
+        updateCountdownDOM(cardEl, calculateCountdown(targetDateStr));
+      }
     });
   }
 

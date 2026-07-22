@@ -28,7 +28,14 @@ const { render: renderGameCard } = await import('../src/components/GameCard.js')
 const { render: renderProgressBar } = await import('../src/components/ProgressBar.js');
 const { getVal } = await import('../src/i18n/index.js');
 const { getProgressPercent, calculateCountdown } = await import('../src/utils/countdown.js');
-const { escapeAttr } = await import('../src/utils/helpers.js');
+const { escapeAttr, escapeHtml } = await import('../src/utils/helpers.js');
+
+function escapeJsonForScript(str) {
+  return String(str || '')
+    .replace(/</g, '\\u003c')
+    .replace(/>/g, '\\u003e')
+    .replace(/&/g, '\\u0026');
+}
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,28 +50,7 @@ async function build() {
 
   const BASE_URL = process.env.BASE_URL || 'https://seasonforge.online';
 
-  // Inject Telegram feedback credentials from environment variables into data/feedback.json if provided
-  const feedbackPath = path.join(dataDir, 'feedback.json');
-  if (fs.existsSync(feedbackPath)) {
-    try {
-      const feedbackConfig = JSON.parse(fs.readFileSync(feedbackPath, 'utf-8'));
-      let modified = false;
-      if (process.env.TELEGRAM_BOT_TOKEN) {
-        feedbackConfig.telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
-        modified = true;
-      }
-      if (process.env.TELEGRAM_CHAT_ID) {
-        feedbackConfig.telegramChatId = process.env.TELEGRAM_CHAT_ID;
-        modified = true;
-      }
-      if (modified) {
-        fs.writeFileSync(feedbackPath, JSON.stringify(feedbackConfig, null, 2), 'utf-8');
-        console.log('[SSG] Updated data/feedback.json with environment variables.');
-      }
-    } catch (err) {
-      console.warn('[SSG] Warning: Could not update data/feedback.json:', err.message);
-    }
-  }
+  // Feedback config loaded statically without secrets
 
   const seasonsPath = path.join(dataDir, 'seasons.json');
   if (!fs.existsSync(seasonsPath)) {
@@ -150,7 +136,7 @@ async function build() {
             
           rows.push(`
             <tr style="border-bottom: 1px solid #1f2937;">
-              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${seasonName}</td>
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${escapeHtml(seasonName)}</td>
               <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
               <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
               <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
@@ -176,8 +162,8 @@ async function build() {
           // Render links in English for static HTML
           const boxes = [];
           for (const item of contentData.links) {
-            const category = item.category || 'Official';
-            const label = item.label.en || '';
+            const category = escapeHtml(item.category || 'Official');
+            const label = escapeHtml(item.label.en || '');
             const url = item.url || '#';
             
             boxes.push(`
@@ -285,19 +271,19 @@ async function build() {
     // 4. Inject placeholders into layout
     let html = template;
     html = html.replace(/{{GAME_ID}}/g, gameId);
-    html = html.replace(/{{GAME_NAME}}/g, gameName);
-    html = html.replace(/{{GAME_DESCRIPTION}}/g, dynamicDesc);
+    html = html.replace(/{{GAME_NAME}}/g, escapeHtml(gameName));
+    html = html.replace(/{{GAME_DESCRIPTION}}/g, escapeAttr(dynamicDesc));
     html = html.replace(/{{BASE_URL}}/g, BASE_URL);
-    html = html.replace(/{{GAME_COLOR}}/g, gameColor);
+    html = html.replace(/{{GAME_COLOR}}/g, escapeAttr(gameColor));
     html = html.replace(/{{GAME_CARD_HTML}}/g, cardHtml);
     html = html.replace(/{{ABOUT_HTML}}/g, aboutHtml);
-    html = html.replace(/{{ABOUT_JSON}}/g, aboutJson);
-    html = html.replace(/{{CANONICAL_URL}}/g, canonicalUrl);
-    html = html.replace(/{{SCHEMA_JSONLD}}/g, schemaJson);
+    html = html.replace(/{{ABOUT_JSON}}/g, escapeJsonForScript(aboutJson));
+    html = html.replace(/{{CANONICAL_URL}}/g, escapeAttr(canonicalUrl));
+    html = html.replace(/{{SCHEMA_JSONLD}}/g, escapeJsonForScript(schemaJson));
     html = html.replace(/{{TIMELINE_HTML}}/g, timelineHtml);
-    html = html.replace(/{{TIMELINE_JSON}}/g, timelineJson);
+    html = html.replace(/{{TIMELINE_JSON}}/g, escapeJsonForScript(timelineJson));
     html = html.replace(/{{LINKS_HTML}}/g, linksHtml);
-    html = html.replace(/{{LINKS_JSON}}/g, linksJson);
+    html = html.replace(/{{LINKS_JSON}}/g, escapeJsonForScript(linksJson));
 
     // 5. Write target index.html
     const targetDir = path.join(__dirname, `../games/${gameId}`);

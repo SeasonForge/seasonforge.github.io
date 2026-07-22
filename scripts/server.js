@@ -16,9 +16,19 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon'
 };
 
+const PUBLIC_DIR = process.cwd();
+
 const server = http.createServer((req, res) => {
   const decodedUrl = decodeURIComponent(req.url);
-  let filePath = path.join(process.cwd(), decodedUrl === '/' ? 'index.html' : decodedUrl);
+  const safePath = path.normalize(decodedUrl === '/' ? '/index.html' : decodedUrl).replace(/^(\.\.[\/\\])+/, '');
+  const filePath = path.resolve(PUBLIC_DIR, '.' + safePath);
+
+  const relative = path.relative(PUBLIC_DIR, filePath);
+  if (relative.startsWith('..') || path.isAbsolute(relative)) {
+    res.writeHead(403, { 'Content-Type': 'text/html' });
+    res.end('<h1>403 Forbidden</h1>', 'utf-8');
+    return;
+  }
 
   const extname = String(path.extname(filePath)).toLowerCase();
   const contentType = MIME_TYPES[extname] || 'application/octet-stream';
@@ -39,6 +49,6 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
+server.listen(PORT, '127.0.0.1', () => {
+  console.log(`Server running at http://127.0.0.1:${PORT}/`);
 });

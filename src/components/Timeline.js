@@ -41,10 +41,33 @@ export function render(games = []) {
     return `<section class="timeline-card"><h3>${t('timeline.fallbackTitle')}</h3><p>${t('timeline.fallbackNoGames')}</p></section>`;
   }
 
-  // 1. Setup Time Window: 2026-04-01 to 2026-12-31
-  const startTimeline = new Date('2026-04-01T00:00:00Z').getTime();
-  const endTimeline = new Date('2026-12-31T23:59:59Z').getTime();
-  const totalDuration = endTimeline - startTimeline;
+  // 1. Setup Dynamic Time Window
+  const currentYear = new Date().getFullYear();
+  let minDate = new Date(`${currentYear}-01-01T00:00:00Z`).getTime();
+  let maxDate = new Date(`${currentYear}-12-31T23:59:59Z`).getTime();
+
+  items.forEach(g => {
+    [g.currentSeason?.startDate, g.currentSeason?.endDate, g.nextSeason?.startDate, g.nextSeason?.endDate].forEach(d => {
+      if (!d) return;
+      const timeMs = new Date(d).getTime();
+      if (!Number.isNaN(timeMs)) {
+        if (timeMs < minDate) minDate = timeMs;
+        if (timeMs > maxDate) maxDate = timeMs;
+      }
+    });
+  });
+
+  const startTimelineDate = new Date(minDate);
+  startTimelineDate.setDate(1);
+  startTimelineDate.setHours(0, 0, 0, 0);
+
+  const endTimelineDate = new Date(maxDate);
+  endTimelineDate.setMonth(endTimelineDate.getMonth() + 1, 0);
+  endTimelineDate.setHours(23, 59, 59, 999);
+
+  const startTimeline = startTimelineDate.getTime();
+  const endTimeline = endTimelineDate.getTime();
+  const totalDuration = Math.max(1, endTimeline - startTimeline);
 
   const getPercent = (dateStr) => {
     if (!dateStr) return 0;
@@ -57,10 +80,16 @@ export function render(games = []) {
   const nowTime = new Date().getTime();
   const nowPercent = Math.max(0, Math.min(100, ((nowTime - startTimeline) / totalDuration) * 100));
 
-  // 3. Grid months header (April to December)
-  const months = ['APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  const monthsRu = ['АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК'];
-  const activeMonths = lang === 'ru' ? monthsRu : months;
+  // 3. Dynamic Grid months header
+  const activeMonths = [];
+  const monthCursor = new Date(startTimelineDate);
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+  const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
+
+  while (monthCursor <= endTimelineDate) {
+    activeMonths.push(monthFormatter.format(monthCursor).toUpperCase().slice(0, 3));
+    monthCursor.setMonth(monthCursor.getMonth() + 1);
+  }
 
   const monthsHeaderHtml = activeMonths
     .map(m => `<div class="timeline-map__month">${m}</div>`)
@@ -101,7 +130,8 @@ export function render(games = []) {
   // 4. Render rows
   const rowsHtml = items.map((game) => {
     const name = escapeHtml(getVal(game.name));
-    const color = escapeHtml(game.color || '#6366f1');
+    const rawColor = String(game.color || '#6366f1');
+    const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#6366f1';
     const logo = game.logo ? escapeHtml(game.logo) : '';
 
     const currentSeasonName = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
@@ -141,7 +171,7 @@ export function render(games = []) {
 
     const logoHtml = logo 
       ? `<img src="./assets/logos/${logo}" alt="${name}" class="timeline-map__row-logo" />`
-      : `<span class="timeline-map__row-emoji">${game.icon || '🎮'}</span>`;
+      : `<span class="timeline-map__row-emoji">${escapeHtml(game.icon || '🎮')}</span>`;
 
     const currentTooltip = getTooltipHtml(game, false);
     const nextTooltip = getTooltipHtml(game, true);
@@ -161,19 +191,19 @@ export function render(games = []) {
           <!-- Elapsed bar for current season -->
           ${elapsedWidth > 0 ? `
             <div class="timeline-bar timeline-bar--current-elapsed" style="left: ${currentStart}%; width: ${elapsedWidth}%;" data-tooltip="${currentTooltip}">
-              <span class="timeline-bar__title">${getShortName(getVal(game.currentSeason?.name)) || 'TBA'}</span>
+              <span class="timeline-bar__title">${escapeHtml(getShortName(getVal(game.currentSeason?.name)) || 'TBA')}</span>
             </div>
           ` : ''}
           <!-- Remaining bar for current season -->
           ${remainingWidth > 0 ? `
             <div class="timeline-bar timeline-bar--current-remaining" style="left: ${remainingStart}%; width: ${remainingWidth}%;" data-tooltip="${currentTooltip}">
-              ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${getShortName(getVal(game.currentSeason?.name)) || 'TBA'}</span>` : ''}
+              ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${escapeHtml(getShortName(getVal(game.currentSeason?.name)) || 'TBA')}</span>` : ''}
             </div>
           ` : ''}
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
             <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-tooltip="${nextTooltip}">
-              <span class="timeline-circle__label">${getShortName(getVal(game.nextSeason?.name)) || 'TBA'}</span>
+              <span class="timeline-circle__label">${escapeHtml(getShortName(getVal(game.nextSeason?.name)) || 'TBA')}</span>
               <span class="timeline-circle__date">${formattedNextStart}</span>
             </div>
           ` : ''}
@@ -203,7 +233,8 @@ export function render(games = []) {
     const cardsHtml = upcoming.map(({ game, date }) => {
       const gameName = escapeHtml(getVal(game.name));
       const nextSeasonName = escapeHtml(getVal(game.nextSeason?.name) || 'TBA');
-      const color = escapeHtml(game.color || '#6366f1');
+      const rawColor = String(game.color || '#6366f1');
+      const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#6366f1';
       const formattedDate = formatFullDate(game.nextSeason.startDate, lang);
       
       const diff = date.getTime() - Date.now();
@@ -247,6 +278,10 @@ export function render(games = []) {
     `;
   }
 
+  const startYear = startTimelineDate.getFullYear();
+  const endYear = endTimelineDate.getFullYear();
+  const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
+
   // 6. Main timeline structure output
   return `
     <div class="timeline-view-wrapper">
@@ -256,7 +291,7 @@ export function render(games = []) {
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
             <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
           </div>
-          <div class="timeline-card__year-badge">2026</div>
+          <div class="timeline-card__year-badge">${yearBadgeText}</div>
         </div>
         
         <div class="timeline-map__scroll-container">

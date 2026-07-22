@@ -3,18 +3,18 @@ import { getState, setLanguage, setGames } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
-import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
+import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { escapeAttr } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
+import { setMetaTags } from './utils/seo.js';
+import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 
 // SeasonService receives the path directly to avoid mutating the shared CONFIG object
 const seasonService = new SeasonService('../../data/seasons.json');
 let activeGame = null;
 let countdownTimer = null;
-
-
 
 function updateSeo(game) {
   if (!game) return;
@@ -46,48 +46,14 @@ function updateSeo(game) {
   }
 
   const pageTitle = `${gameName} - ${activeLang === 'ru' ? 'Мониторинг Сезонов' : 'ARPG Season Tracker'}`;
-  document.title = pageTitle;
-  document.documentElement.lang = activeLang;
-  
-  const descMeta = document.querySelector('meta[name="description"]');
-  if (descMeta) descMeta.setAttribute('content', desc);
-  
-  const ogTitle = document.querySelector('meta[property="og:title"]');
-  if (ogTitle) ogTitle.setAttribute('content', pageTitle);
-  
-  const ogDesc = document.querySelector('meta[property="og:description"]');
-  if (ogDesc) ogDesc.setAttribute('content', desc);
-  
-  const twitterTitle = document.querySelector('meta[name="twitter:title"]');
-  if (twitterTitle) twitterTitle.setAttribute('content', pageTitle);
-  
-  const twitterDesc = document.querySelector('meta[name="twitter:description"]');
-  if (twitterDesc) twitterDesc.setAttribute('content', desc);
+  setMetaTags({ title: pageTitle, description: desc, lang: activeLang });
 }
 
 function renderLangSwitcher() {
-  const switcherRoot = document.getElementById('lang-switcher');
-  if (!switcherRoot) return;
   const state = getState();
-  const currentLang = state.settings.lang;
-  
-  switcherRoot.innerHTML = `
-    <button class="lang-switcher__btn ${currentLang === 'en' ? 'lang-switcher__btn--active' : ''}" data-lang-val="en">
-      <img src="https://flagcdn.com/w20/us.png" class="lang-switcher__flag" alt="EN"> EN
-    </button>
-    <button class="lang-switcher__btn ${currentLang === 'ru' ? 'lang-switcher__btn--active' : ''}" data-lang-val="ru">
-      <img src="https://flagcdn.com/w20/ru.png" class="lang-switcher__flag" alt="RU"> RU
-    </button>
-  `;
-  
-  switcherRoot.querySelectorAll('[data-lang-val]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const selected = btn.getAttribute('data-lang-val');
-      if (selected !== state.settings.lang) {
-        setLanguage(selected);
-        renderApp();
-      }
-    });
+  renderLangSwitcherComponent('lang-switcher', state.settings.lang, (selected) => {
+    setLanguage(selected);
+    renderApp();
   });
 }
 
@@ -261,6 +227,8 @@ function renderApp() {
   initStreamer(state.games);
 }
 
+let isExpiredRendered = false;
+
 /**
  * Updates only the countdown number elements in the DOM without a full re-render.
  * Falls back to a full renderApp() when the countdown expires (state change).
@@ -273,20 +241,19 @@ function tickCountdown() {
 
   const targetDate = new Date(targetDateStr);
   if (targetDate <= new Date()) {
-    // Countdown just expired — full re-render to show "Just Launched" state
-    renderApp();
+    // Countdown just expired — full re-render to show "Just Launched" state once
+    if (!isExpiredRendered) {
+      isExpiredRendered = true;
+      renderApp();
+    }
     return;
   }
 
-  const total = targetDate.getTime() - Date.now();
-  const update = (attr, val) => {
-    const el = document.querySelector(`[data-countdown="${attr}"]`);
-    if (el) el.textContent = val;
-  };
-  update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
-  update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
-  update('minutes', Math.floor((total / (1000 * 60)) % 60));
-  update('seconds', Math.floor((total / 1000) % 60));
+  const countdownValues = calculateCountdown(targetDateStr);
+  const cardEl = document.querySelector('.game-card');
+  if (cardEl) {
+    updateCountdownDOM(cardEl, countdownValues);
+  }
 }
 
 async function init() {

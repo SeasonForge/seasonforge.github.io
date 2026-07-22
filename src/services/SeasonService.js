@@ -21,13 +21,27 @@ export class SeasonService {
       }
     }
 
-    const response = await fetch(fetchPath);
+    const cacheBuster = `?t=${Date.now()}`;
+    const pathsToTry = [
+      fetchPath + cacheBuster,
+      fetchPath,
+      './data/seasons.json' + cacheBuster,
+      '/data/seasons.json' + cacheBuster
+    ];
 
-    if (!response.ok) {
-      throw new Error(`Unable to load season data: ${response.status}`);
+    let lastError = null;
+    for (const pathUrl of pathsToTry) {
+      try {
+        const response = await fetch(pathUrl);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch (err) {
+        lastError = err;
+      }
     }
 
-    return response.json();
+    throw new Error(`Unable to load season data: ${lastError?.message || 'Network/Path error'}`);
   }
 
   async getGames() {

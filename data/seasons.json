@@ -12,19 +12,19 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3986665",
-        "title": "Curse of the Allflame FAQ",
-        "url": "https://www.pathofexile.com/forum/view-thread/3986665",
-        "publishDate": "Mon, 20 Jul 2026 23:53:55 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3986972",
+        "title": "Curse of the Allflame Item Filter Information",
+        "url": "https://www.pathofexile.com/forum/view-thread/3986972",
+        "publishDate": "Tue, 21 Jul 2026 23:51:31 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
-        "code": "active",
+        "code": "in-development",
         "label": {
-          "en": "Active",
-          "ru": "Активен"
+          "en": "In Development",
+          "ru": "В разработке"
         },
-        "updatedAt": "2026-07-21T10:00:38.115Z"
+        "updatedAt": "2026-07-22T05:27:24.982Z"
       },
       "currentSeason": {
         "name": {
@@ -33,9 +33,9 @@
         },
         "startDate": "2026-03-30T20:00:00Z",
         "endDate": "",
-        "isActive": true,
+        "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3986665"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3986972"
       },
       "nextSeason": {
         "name": {
@@ -46,20 +46,22 @@
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3986665"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3986972"
       },
       "features": {
         "en": [
-          "Quality of life improvements such as protection while channeling Verisium Ore",
+          "Protection while channeling Verisium Ore",
           "Animate Guardian's inventory",
           "Crafting Bench in every town",
-          "New underwater Unique items like The Crustacean's Call and Subsume the Source"
+          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
+          "ExileCon 2026 Race Qualifier Events"
         ],
         "ru": [
-          "Улучшения удобства игры, такие как защита во время поддержания веризиевой руды",
-          "Инвентарь Аниматора доспеха",
-          "Верстак для ремесла в каждом городе",
-          "Новые подводные уникальные предметы, такие как The Crustacean's Call и Subsume the Source"
+          "Защита во время поддержания жилы веризия",
+          "Инвентарь Анимированного стража",
+          "Верстак для создания предметов в каждом городе",
+          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
+          "Отборочные состязания к ExileCon 2026"
         ]
       },
       "links": {
@@ -101,7 +103,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-21T10:00:28.816Z"
+        "updatedAt": "2026-07-22T05:27:15.441Z"
       },
       "currentSeason": {
         "name": {

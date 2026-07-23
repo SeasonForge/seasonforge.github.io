@@ -909,6 +909,7 @@ body::after {
 }
 
 .timeline-map__grid {
+  --timeline-offset: 180px;
   position: relative;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.12);
@@ -920,7 +921,7 @@ body::after {
 
 .timeline-map__months {
   display: flex;
-  margin-left: 180px;
+  margin-left: var(--timeline-offset, 180px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
@@ -941,8 +942,8 @@ body::after {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 192px; /* 180px row label + 12px grid start offset */
-  right: 20px; /* offset for right edge alignment */
+  left: calc(var(--timeline-offset, 180px) + 12px);
+  right: 20px;
   display: flex;
   pointer-events: none;
   z-index: 1;
@@ -2925,7 +2926,8 @@ body.overlay-type-countdown .game-card__panel--side {
 /* Mobile responsive fixes for Timeline */
 @media (max-width: 768px) {
   .timeline-map__grid {
-    min-width: 750px;
+    --timeline-offset: 48px !important;
+    min-width: 700px;
   }
   .timeline-map__row-label {
     width: 48px !important;
@@ -2936,19 +2938,16 @@ body.overlay-type-countdown .game-card__panel--side {
   .timeline-map__months {
     margin-left: 48px !important;
   }
-  .timeline-map__grid-lines {
-    left: 60px !important;
-  }
 }
 
-/* Mobile bottom nav bar styling (hidden on desktop) */
+/* Modern 2026 Floating Glassmorphism Mobile Bottom Navigation Dock */
 .mobile-nav {
   display: none;
 }
 
 @media (max-width: 900px) {
   body {
-    padding-bottom: max(75px, calc(60px + env(safe-area-inset-bottom))) !important;
+    padding-bottom: max(90px, calc(75px + env(safe-area-inset-bottom))) !important;
   }
 
   #navbar {
@@ -2958,21 +2957,20 @@ body.overlay-type-countdown .game-card__panel--side {
   .mobile-nav {
     display: flex;
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: calc(58px + env(safe-area-inset-bottom));
-    padding-bottom: env(safe-area-inset-bottom);
-    background: rgba(15, 23, 42, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 12px;
+    right: 12px;
+    height: 60px;
+    background: rgba(15, 23, 42, 0.84);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
     z-index: 1000;
     justify-content: space-around;
     align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+    padding: 0 0.25rem;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   .mobile-nav__btn {
@@ -2982,41 +2980,50 @@ body.overlay-type-countdown .game-card__panel--side {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.2rem;
-    color: var(--muted, #94a3b8);
+    gap: 0.15rem;
+    color: #94a3b8;
     font-family: var(--font);
     cursor: pointer;
     flex: 1;
-    height: 100%;
-    min-height: 48px;
+    height: 48px;
     padding: 0.25rem 0;
-    transition: color 0.15s ease, transform 0.1s ease;
+    border-radius: 16px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
   }
 
   .mobile-nav__btn:active {
-    transform: scale(0.94);
+    transform: scale(0.92);
   }
 
   .mobile-nav__icon {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     line-height: 1;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
   }
 
   .mobile-nav__label {
-    font-size: 0.65rem;
+    font-size: 0.64rem;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
+    opacity: 0.85;
+    transition: color 0.2s ease, opacity 0.2s ease;
   }
 
   .mobile-nav__btn--active {
-    color: var(--accent, #6366f1);
+    color: #ffffff !important;
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid rgba(99, 102, 241, 0.3);
   }
 
   .mobile-nav__btn--active .mobile-nav__icon {
-    transform: translateY(-2px);
-    text-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
+    transform: translateY(-1px) scale(1.1);
+    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.7));
+  }
+
+  .mobile-nav__btn--active .mobile-nav__label {
+    color: #a855f7;
+    opacity: 1;
   }
 
   .game-feed {

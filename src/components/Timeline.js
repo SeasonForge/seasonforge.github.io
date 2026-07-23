@@ -313,7 +313,7 @@ export function render(games = []) {
             </div>
             
             <!-- Vertical NOW line marker -->
-            <div class="timeline-map__now-line" style="left: calc(180px + (100% - 180px) * ${nowPercent / 100});">
+            <div class="timeline-map__now-line" style="left: calc(var(--timeline-offset, 180px) + (100% - var(--timeline-offset, 180px)) * ${nowPercent / 100});">
               <span class="timeline-map__now-badge">${t('timeline.now')}</span>
             </div>
           </div>

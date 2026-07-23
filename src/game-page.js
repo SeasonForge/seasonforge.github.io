@@ -237,6 +237,14 @@ function renderApp() {
     streamerBtn.textContent = t('streamer.btnLabel');
   }
 
+  const mobMoreBtn = document.getElementById('mob-btn-more');
+  if (mobMoreBtn) {
+    mobMoreBtn.addEventListener('click', () => {
+      const trigger = document.getElementById('feedback-trigger-btn');
+      if (trigger) trigger.click();
+    });
+  }
+
   initFeedback(() => activeGame?.id || 'None');
   initStreamer(state.games);
 }

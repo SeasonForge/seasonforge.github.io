@@ -3190,7 +3190,6 @@ body.overlay-type-countdown .game-card__panel--side {
     display: none !important;
   }
 }
-}
 
 /* Desktop: show only active game card in the feed. Mobile: show all cards vertically */
 @media (min-width: 901px) {

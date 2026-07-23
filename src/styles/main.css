@@ -2878,57 +2878,47 @@ body.overlay-type-countdown .game-card__panel--side {
 /* Mobile responsive fixes for App Header & Lang Switcher */
 @media (max-width: 640px) {
   .app-header {
-    flex-direction: column;
-    align-items: stretch !important;
-    gap: 1rem;
-    padding: 1rem 1rem 1.25rem !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.75rem 1rem !important;
+    gap: 0.5rem;
+  }
+
+  .app-header__subtitle {
+    display: none !important;
   }
 
   .app-header__right-block {
     display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0.75rem !important;
-    width: 100%;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    width: auto !important;
   }
 
   .app-header__meta {
-    display: flex !important;
-    justify-content: space-between;
-    width: 100%;
-    margin: 0 !important;
-    box-sizing: border-box;
+    display: none !important;
   }
 
   .app-header__tools {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 0.75rem !important;
-    width: 100%;
-    overflow-x: auto;
-    white-space: nowrap;
-    flex-wrap: nowrap !important;
-    padding: 0.25rem 0;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .app-header__tools::-webkit-scrollbar {
-    display: none;
+    gap: 0.5rem !important;
+    width: auto !important;
   }
 
   .feedback-trigger-btn,
-  .streamer-trigger-btn,
-  .lang-switcher {
-    flex: 0 0 auto !important;
-    width: auto !important;
-    margin: 0 !important;
+  .streamer-trigger-btn {
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.75rem !important;
+    min-height: 38px;
   }
 
-  .lang-switcher__btn {
-    flex: 0 0 auto !important;
-    justify-content: center;
+  .feedback-trigger-btn span:not(.feedback-trigger-btn__icon),
+  .streamer-trigger-btn span:not(.streamer-trigger-btn__icon) {
+    display: none !important;
   }
 }
 
@@ -2958,18 +2948,10 @@ body.overlay-type-countdown .game-card__panel--side {
 
 @media (max-width: 900px) {
   body {
-    padding-bottom: 75px !important;
+    padding-bottom: max(75px, calc(60px + env(safe-area-inset-bottom))) !important;
   }
 
   #navbar {
-    display: none !important;
-  }
-
-  .app-header__tools {
-    display: none !important;
-  }
-
-  .app-header__meta {
     display: none !important;
   }
 
@@ -2979,16 +2961,18 @@ body.overlay-type-countdown .game-card__panel--side {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 40;
+    height: calc(58px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
     justify-content: space-around;
     align-items: center;
-    padding: 0 0.5rem;
-    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
   }
 
   .mobile-nav__btn {
@@ -2998,28 +2982,29 @@ body.overlay-type-countdown .game-card__panel--side {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.25rem;
-    color: var(--muted);
+    gap: 0.2rem;
+    color: var(--muted, #94a3b8);
     font-family: var(--font);
     cursor: pointer;
     flex: 1;
     height: 100%;
-    padding: 0.35rem 0;
+    min-height: 48px;
+    padding: 0.25rem 0;
     transition: color 0.15s ease, transform 0.1s ease;
   }
 
   .mobile-nav__btn:active {
-    transform: scale(0.95);
+    transform: scale(0.94);
   }
 
   .mobile-nav__icon {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     line-height: 1;
     transition: transform 0.2s ease;
   }
 
   .mobile-nav__label {
-    font-size: 0.62rem;
+    font-size: 0.65rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -3031,19 +3016,52 @@ body.overlay-type-countdown .game-card__panel--side {
 
   .mobile-nav__btn--active .mobile-nav__icon {
     transform: translateY(-2px);
-    text-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    text-shadow: 0 0 12px rgba(99, 102, 241, 0.5);
   }
 
   .game-feed {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     width: 100%;
   }
 
   .game-card {
     display: block !important;
+    border-radius: 16px !important;
+    margin-bottom: 0.5rem;
   }
+
+  /* Compact touch targets & padding for mobile cards */
+  .game-card__header {
+    padding: 1rem 1.25rem !important;
+  }
+
+  .game-card__countdown {
+    gap: 0.5rem !important;
+  }
+
+  .game-card__countdown-item {
+    padding: 0.5rem 0.25rem !important;
+    border-radius: 10px !important;
+  }
+
+  .game-card__countdown-val {
+    font-size: 1.35rem !important;
+  }
+
+  .game-card__links {
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .game-card__links > a,
+  .game-card__links > button {
+    width: 100% !important;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
 }
 
 /* Desktop: show only active game card in the feed. Mobile: show all cards vertically */

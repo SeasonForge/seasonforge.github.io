@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-23T00:14:35.278Z",
+  "lastCheckedAt": "2026-07-23T00:25:38.176Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -25,7 +25,7 @@
           "en": "In Development",
           "ru": "В разработке"
         },
-        "updatedAt": "2026-07-23T00:14:33.897Z"
+        "updatedAt": "2026-07-23T00:25:37.095Z"
       },
       "currentSeason": {
         "name": {
@@ -104,7 +104,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-23T00:14:33.677Z"
+        "updatedAt": "2026-07-23T00:25:36.840Z"
       },
       "currentSeason": {
         "name": {
@@ -185,7 +185,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-23T00:14:35.023Z"
+        "updatedAt": "2026-07-23T00:25:37.917Z"
       },
       "currentSeason": {
         "name": {
@@ -266,7 +266,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-23T00:14:35.117Z"
+        "updatedAt": "2026-07-23T00:25:38.021Z"
       },
       "currentSeason": {
         "name": {
@@ -344,7 +344,7 @@
           "en": "Just Started",
           "ru": "Только начался"
         },
-        "updatedAt": "2026-07-23T00:14:35.277Z"
+        "updatedAt": "2026-07-23T00:25:38.175Z"
       },
       "currentSeason": {
         "name": {

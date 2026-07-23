@@ -194,52 +194,46 @@ function renderApp() {
     if (state.activeView === 'timeline') {
       contentRoot.innerHTML = renderTimeline(state.games);
     } else if (state.activeView === 'games') {
-      contentRoot.innerHTML = `
-        <div class="mobile-games-panel">
-          <h2 class="mobile-games-panel__title">${t('navbar.eyebrow')}</h2>
-          <div class="navbar__list">${state.games.map(game => {
-            const id = game.id;
-            const name = escapeHtml(getVal(game.name) || 'Untitled Game');
-            const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
-            const statusCode = game.status?.code || 'active';
-            const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
-            const color = escapeHtml(game.color || '#6366f1');
-            const icon = escapeHtml(game.icon || '🎮');
-            const logo = game.logo ? escapeHtml(game.logo) : '';
-            
-            const iconHtml = logo 
-              ? `<img src="./assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
-              : `<span class="navbar__tab-emoji">${icon}</span>`;
-              
-            return `
-              <div class="navbar__tab" data-game-id="${escapeAttr(id)}" style="--tab-color: ${color};">
-                <div class="navbar__tab-main">
-                  <div class="navbar__tab-icon">${iconHtml}</div>
-                  <div class="navbar__tab-copy">
-                    <h3 class="navbar__name">${name}</h3>
-                    <p class="navbar__season">${currentSeason}</p>
-                  </div>
+      const catalogCards = state.games.map(game => {
+        const id = game.id;
+        const name = escapeHtml(getVal(game.name) || 'Untitled Game');
+        const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
+        const statusCode = game.status?.code || 'active';
+        const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
+        const color = escapeHtml(game.color || '#6366f1');
+        const icon = escapeHtml(game.icon || '🎮');
+        const logo = game.logo ? escapeHtml(game.logo) : '';
+        
+        const iconHtml = logo 
+          ? `<img src="./assets/logos/${logo}" alt="${name}" class="catalog-card__logo" />`
+          : `<span class="catalog-card__emoji">${icon}</span>`;
+          
+        return `
+          <a class="catalog-card" href="./games/${id}/" style="--game-color: ${color};">
+            <div class="catalog-card__main">
+              <div class="catalog-card__icon">${iconHtml}</div>
+              <div class="catalog-card__info">
+                <div class="catalog-card__top">
+                  <h3 class="catalog-card__name">${name}</h3>
+                  <span class="game-card__pill game-card__pill--${statusCode}">${statusLabel.toUpperCase()}</span>
                 </div>
-                <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
+                <p class="catalog-card__season">${t('card.currentSeasonLabel')}: <strong>${currentSeason}</strong></p>
               </div>
-            `;
-          }).join('')}</div>
+            </div>
+            <div class="catalog-card__action">
+              <span>${t('card.gamePageLinkTitle') || 'Page'}</span>
+              <span class="catalog-card__arrow">→</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+
+      contentRoot.innerHTML = `
+        <div class="games-catalog">
+          <h2 class="games-catalog__title">🎮 ${t('navbar.btnGames') || 'Games'}</h2>
+          <div class="games-catalog__grid">${catalogCards}</div>
         </div>
       `;
-      
-      // Attach click events to the games in this mobile panel
-      contentRoot.querySelectorAll('.navbar__tab[data-game-id]').forEach((tab) => {
-        tab.addEventListener('click', () => {
-          const gameId = tab.getAttribute('data-game-id');
-          const nextGame = state.games.find((g) => g.id === gameId);
-          if (nextGame) {
-            setActiveGame(nextGame, true);
-            setActiveView('card', true);
-            renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
-            renderApp();
-          }
-        });
-      });
     } else if (state.activeView === 'more') {
       contentRoot.innerHTML = `
         <div class="more-panel">
@@ -486,20 +480,27 @@ function attachNavbarEvents() {
     });
   }
 
-  // Mobile Bottom Nav listeners
+  // Mobile Bottom Nav listeners & active class sync
+  const state = getState();
   const mobTrackerBtn = document.getElementById('mob-btn-tracker');
   const mobTimelineBtn = document.getElementById('mob-btn-timeline');
   const mobGamesBtn = document.getElementById('mob-btn-games');
   const mobMoreBtn = document.getElementById('mob-btn-more');
 
+  [mobTrackerBtn, mobTimelineBtn, mobGamesBtn, mobMoreBtn].forEach(b => b?.classList.remove('mobile-nav__btn--active'));
+  if (state.activeView === 'card' && mobTrackerBtn) mobTrackerBtn.classList.add('mobile-nav__btn--active');
+  else if (state.activeView === 'timeline' && mobTimelineBtn) mobTimelineBtn.classList.add('mobile-nav__btn--active');
+  else if (state.activeView === 'games' && mobGamesBtn) mobGamesBtn.classList.add('mobile-nav__btn--active');
+  else if (state.activeView === 'more' && mobMoreBtn) mobMoreBtn.classList.add('mobile-nav__btn--active');
+
   if (mobTrackerBtn) {
     mobTrackerBtn.addEventListener('click', () => {
       setActiveView('card', true);
-      const state = getState();
-      if (!state.activeGame && state.games.length > 0) {
+      const currentState = getState();
+      if (!currentState.activeGame && currentState.games.length > 0) {
         const lastGame = localStorage.getItem('lastGame');
-        const matched = state.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
-        setActiveGame(matched || state.games[0], true);
+        const matched = currentState.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+        setActiveGame(matched || currentState.games[0], true);
       }
       renderApp();
     });

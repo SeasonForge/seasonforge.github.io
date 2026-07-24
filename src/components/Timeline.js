@@ -139,8 +139,16 @@ export function render(games = []) {
     const nextSeasonName = escapeHtml(getVal(game.nextSeason?.name) || 'TBA');
 
     // Calculate segments
-    const currentStart = getPercent(game.currentSeason?.startDate);
-    const currentEnd = getPercent(game.currentSeason?.endDate || game.nextSeason?.startDate);
+    let curEndMs = 0;
+    if (game.currentSeason?.endDate) {
+      curEndMs = new Date(game.currentSeason.endDate).getTime();
+    } else if (game.nextSeason?.startDate) {
+      curEndMs = new Date(game.nextSeason.startDate).getTime();
+    } else if (game.currentSeason?.startDate) {
+      const curStartMs = new Date(game.currentSeason.startDate).getTime();
+      curEndMs = curStartMs + 90 * 24 * 60 * 60 * 1000;
+    }
+    const currentEnd = curEndMs > 0 ? getPercent(new Date(curEndMs).toISOString()) : getPercent(game.currentSeason?.startDate);
     
     // Split into elapsed (opacity: 1) and remaining (opacity: 0.4) based on nowPercent
     const nowPos = nowPercent;

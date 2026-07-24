@@ -89,14 +89,33 @@ export function render(game = {}, options = {}) {
   const targetDateObj = new Date(game.nextSeason?.startDate);
   const nextSeasonPassed = hasNextSeasonDate && !Number.isNaN(targetDateObj.getTime()) && targetDateObj.getTime() <= now.getTime();
   
+  const curStart = game.currentSeason?.startDate ? new Date(game.currentSeason.startDate) : null;
+  const isCurActive = curStart && !Number.isNaN(curStart.getTime()) && curStart.getTime() <= now.getTime();
+
   let countdownHtml = '';
   if (!hasNextSeasonDate) {
-    countdownHtml = `
-      <div class="game-card__countdown game-card__countdown--tba">
-        <div class="game-card__tba-icon">📅</div>
-        <span class="game-card__tba-label">${t('card.noLaunchDate')}</span>
-      </div>
-    `;
+    if (isCurActive) {
+      const daysActive = Math.max(1, Math.floor((now.getTime() - curStart.getTime()) / (1000 * 60 * 60 * 24)));
+      const state = getState();
+      const lang = state.settings?.lang || 'en';
+      const dayLabel = lang === 'ru' ? `День ${daysActive} из ~90` : `Day ${daysActive} of ~90`;
+      const activeLabel = lang === 'ru' ? 'Сезон в разгаре' : 'Season in Progress';
+      countdownHtml = `
+        <div class="game-card__countdown game-card__countdown--active-season" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0.85rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px;">
+          <div style="font-weight: 700; color: #818cf8; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
+            <span>⚡</span> <span>${activeLabel}</span>
+          </div>
+          <span style="font-size: 0.85rem; color: #9ca3af;">${dayLabel}</span>
+        </div>
+      `;
+    } else {
+      countdownHtml = `
+        <div class="game-card__countdown game-card__countdown--tba">
+          <div class="game-card__tba-icon">📅</div>
+          <span class="game-card__tba-label">${t('card.noLaunchDate')}</span>
+        </div>
+      `;
+    }
   } else if (nextSeasonPassed) {
     countdownHtml = `
       <div class="game-card__countdown game-card__countdown--launched">

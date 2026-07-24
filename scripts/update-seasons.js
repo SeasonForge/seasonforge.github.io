@@ -280,6 +280,37 @@ function normalizeGameDates(gameData) {
     gameData.nextSeason.startDate = appendDefaultTime(gameData.nextSeason.startDate);
     gameData.nextSeason.endDate = appendDefaultTime(gameData.nextSeason.endDate);
   }
+
+  // Auto-transition: If nextSeason startDate has passed or matches currentSeason startDate, shift nextSeason -> currentSeason and set nextSeason -> TBA
+  if (gameData.nextSeason?.startDate && gameData.nextSeason.startDate !== 'TBA') {
+    const nextStartMs = new Date(gameData.nextSeason.startDate).getTime();
+    const nowMs = Date.now();
+    
+    if (!Number.isNaN(nextStartMs) && nextStartMs <= nowMs) {
+      const curStartMs = gameData.currentSeason?.startDate ? new Date(gameData.currentSeason.startDate).getTime() : 0;
+      
+      if (nextStartMs >= curStartMs) {
+        gameData.currentSeason = {
+          ...gameData.nextSeason,
+          isActive: true
+        };
+      }
+      
+      gameData.nextSeason = {
+        name: { en: 'TBA', ru: 'TBA' },
+        startDate: '',
+        endDate: '',
+        isActive: false,
+        verification: 'estimated',
+        sourceUrl: gameData.currentSeason?.sourceUrl || ''
+      };
+
+      if (gameData.status) {
+        gameData.status.code = 'active';
+        gameData.status.label = { en: 'Active', ru: 'Активен' };
+      }
+    }
+  }
   
   return gameData;
 }

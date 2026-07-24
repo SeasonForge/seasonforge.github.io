@@ -48,10 +48,7 @@ export function render(game = {}, options = {}) {
   const currentSeasonDate = formatLocalDate(game.currentSeason?.startDate);
   
   const rawNextSeason = getVal(game.nextSeason?.name) || 'TBA';
-  const nextSeasonClean = rawNextSeason.startsWith('Сезон') || rawNextSeason.startsWith('Season') || rawNextSeason.startsWith('Cycle') || rawNextSeason.startsWith('Цикл') || rawNextSeason === 'TBA'
-    ? rawNextSeason
-    : `${t('card.nextSeasonLabel')} ${rawNextSeason}`;
-  const nextSeason = escapeHtml(nextSeasonClean);
+  const nextSeason = escapeHtml(rawNextSeason);
   const nextSeasonDate = formatLocalDate(game.nextSeason?.startDate);
   
   const isNextSeasonEstimated = game.nextSeason?.verification === 'ai' || game.nextSeason?.verification === 'estimated';
@@ -178,7 +175,7 @@ export function render(game = {}, options = {}) {
             <div class="game-card__progress-meta">
               <span>${t('card.progressLabel')}</span>
             </div>
-            ${hasNextSeasonDate && !nextSeasonPassed ? progressBar : '<div class="game-card__progress-bar-placeholder"></div>'}
+            ${game.currentSeason?.startDate ? progressBar : '<div class="game-card__progress-bar-placeholder"></div>'}
           </div>
           ${!isDetailPage ? `
             <a class="game-card__cta-block" href="./games/${game.id}/">

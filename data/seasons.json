@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-24T21:58:00.457Z",
+  "lastCheckedAt": "2026-07-24T22:03:12.185Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -25,7 +25,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-24T21:58:00.238Z"
+        "updatedAt": "2026-07-24T22:03:10.578Z"
       },
       "currentSeason": {
         "name": {
@@ -40,10 +40,10 @@
       },
       "nextSeason": {
         "name": {
-          "en": "Curse of the Allflame",
-          "ru": "Curse of the Allflame"
+          "en": "TBA",
+          "ru": "TBA"
         },
-        "startDate": "2026-07-24T20:00:00Z",
+        "startDate": "",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
@@ -51,16 +51,18 @@
       },
       "features": {
         "en": [
-          "New Luminary Ascendancy for the Scion",
-          "Permanent Mercenary companions",
-          "Deep-sea themed league challenge rewards",
-          "Exclusive Twitch Drops including Nautical Explorer Back Attachment"
+          "Protection while channeling Verisium Ore",
+          "Animate Guardian's inventory",
+          "Crafting Bench in every town",
+          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
+          "ExileCon 2026 Race Qualifier Events"
         ],
         "ru": [
-          "Новое Восхождение Светило (Luminary) для Дворянки",
-          "Постоянные спутники-наёмники",
-          "Награды за испытания лиги в глубоководной тематике",
-          "Эксклюзивные Twitch Drops, включая украшение на спину морского исследователя"
+          "Защита во время поддержания жилы веризия",
+          "Инвентарь Анимированного стража",
+          "Верстак для создания предметов в каждом городе",
+          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
+          "Отборочные состязания к ExileCon 2026"
         ]
       },
       "links": {
@@ -102,7 +104,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-23T00:47:53.648Z"
+        "updatedAt": "2026-07-24T22:03:10.641Z"
       },
       "currentSeason": {
         "name": {
@@ -183,7 +185,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-23T00:47:55.109Z"
+        "updatedAt": "2026-07-24T22:03:11.720Z"
       },
       "currentSeason": {
         "name": {
@@ -264,7 +266,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-23T00:47:55.213Z"
+        "updatedAt": "2026-07-24T22:03:12.034Z"
       },
       "currentSeason": {
         "name": {
@@ -342,7 +344,7 @@
           "en": "Just Started",
           "ru": "Только начался"
         },
-        "updatedAt": "2026-07-23T00:47:55.388Z"
+        "updatedAt": "2026-07-24T22:03:12.183Z"
       },
       "currentSeason": {
         "name": {

@@ -1243,6 +1243,21 @@ body::after {
   height: 2px;
   background: var(--game-color);
   opacity: 0.8;
+  z-index: 2;
+}
+
+.upcoming-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.22;
+  filter: brightness(0.8) contrast(1.15);
+  z-index: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.4s ease, filter 0.3s ease;
 }
 
 .upcoming-card:hover {
@@ -1252,11 +1267,18 @@ body::after {
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--game-color) 25%, transparent);
 }
 
-.upcoming-card:hover img,
-.upcoming-card:hover .upcoming-card__logo {
-  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--game-color) 80%, #ffffff));
-  transform: scale(1.1);
-  transition: filter 0.3s ease, transform 0.3s ease;
+.upcoming-card:hover .upcoming-card__bg {
+  opacity: 0.38;
+  filter: brightness(0.95) contrast(1.15);
+  transform: scale(1.06);
+}
+
+.upcoming-card__date-wrapper,
+.upcoming-card__game-name,
+.upcoming-card__season-name,
+.upcoming-card__countdown {
+  position: relative;
+  z-index: 1;
 }
 
 .upcoming-card__date-wrapper {

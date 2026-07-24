@@ -259,6 +259,7 @@ export function render(games = []) {
       
       return `
         <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
+          <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
           <div class="upcoming-card__date-wrapper">
             <span class="upcoming-card__date">${formattedDate}</span>
             ${isHype ? `<span class="upcoming-card__hype-badge">${t('timeline.hype')}</span>` : ''}

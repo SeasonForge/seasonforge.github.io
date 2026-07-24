@@ -302,13 +302,16 @@ function renderApp() {
           const btn = document.getElementById('streamer-trigger-btn');
           if (btn) btn.click();
         });
-      }
-    } else if (!state.activeGame && state.games.length > 0) {
-      contentRoot.innerHTML = `<p>${t('fallback.noGame')}</p>`;
     } else {
+      let activeGame = state.activeGame;
+      if (!activeGame && state.games.length > 0) {
+        activeGame = state.games[0];
+        setActiveGame(activeGame, false);
+      }
+
       // Render feed of all games
       const cardsHtml = state.games.map((game) => {
-        const isActive = state.activeGame && game.id === state.activeGame.id;
+        const isActive = activeGame && game.id === activeGame.id;
         const countdown = calculateCountdown(game.nextSeason?.startDate || game.currentSeason?.startDate);
         const progressBar = renderProgressBar(getProgressPercent(game), game.color);
         const statusBadge = renderStatusBadge(game.status);
@@ -682,7 +685,9 @@ async function initializeApp() {
     });
   } catch (error) {
     setError(error.message || t('toasts.initFailed'));
-    renderToast(t('toasts.loadFailed'), 'error');
+    if (!getState().games || getState().games.length === 0) {
+      renderToast(t('toasts.loadFailed'), 'error');
+    }
     console.error('SeasonForge initialization failed', error);
   } finally {
     setLoading(false);

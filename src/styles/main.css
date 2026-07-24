@@ -3191,12 +3191,13 @@ body.overlay-type-countdown .game-card__panel--side {
   }
 }
 
-/* Desktop: show only active game card in the feed. Mobile: show all cards vertically */
+/* Desktop: show active game card in the feed, fallback to first card if none active */
 @media (min-width: 901px) {
   .game-feed .game-card {
     display: none;
   }
-  .game-feed .game-card.game-card--active {
+  .game-feed .game-card.game-card--active,
+  .game-feed:not(:has(.game-card--active)) .game-card:first-child {
     display: block;
   }
 }

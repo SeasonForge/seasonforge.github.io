@@ -317,6 +317,14 @@ async function build() {
 `;
   }
 
+  sitemapXml += `  <url>
+    <loc>${BASE_URL}/privacy/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+`;
+
   sitemapXml += `</urlset>\n`;
   fs.writeFileSync(path.join(__dirname, '../sitemap.xml'), sitemapXml, 'utf-8');
   console.log('[SSG] sitemap.xml written successfully.');

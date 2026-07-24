@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-23T17:03:57.769Z",
+  "lastCheckedAt": "2026-07-24T09:11:54.374Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -13,30 +13,30 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3987254",
-        "title": "New and Changed Gems in Path of Exile 1: Curse of the Allflame",
-        "url": "https://www.pathofexile.com/forum/view-thread/3987254",
-        "publishDate": "Thu, 23 Jul 2026 00:07:07 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3987535",
+        "title": "Curse of the Allflame Challenge Rewards",
+        "url": "https://www.pathofexile.com/forum/view-thread/3987535",
+        "publishDate": "Fri, 24 Jul 2026 01:39:01 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
-        "code": "in-development",
+        "code": "active",
         "label": {
-          "en": "In Development",
-          "ru": "В разработке"
+          "en": "Active",
+          "ru": "Активен"
         },
-        "updatedAt": "2026-07-23T00:47:53.866Z"
+        "updatedAt": "2026-07-24T09:11:54.261Z"
       },
       "currentSeason": {
         "name": {
-          "en": "3.28: Necropolis Finale",
-          "ru": "3.28: Necropolis Finale"
+          "en": "Curse of the Allflame",
+          "ru": "Curse of the Allflame"
         },
-        "startDate": "2026-03-30T20:00:00Z",
+        "startDate": "2026-07-24T20:00:00Z",
         "endDate": "",
-        "isActive": false,
+        "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987254"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
       },
       "nextSeason": {
         "name": {
@@ -47,22 +47,22 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987254"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
       },
       "features": {
         "en": [
-          "Protection while channeling Verisium Ore",
-          "Animate Guardian's inventory",
-          "Crafting Bench in every town",
-          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
-          "ExileCon 2026 Race Qualifier Events"
+          "New Pact Gems and updates to existing Skill and Support Gems",
+          "Scion's new Luminary Ascendancy class",
+          "Permanent Mercenary companions",
+          "Curse of the Allflame challenge rewards",
+          "Launch week Twitch Drops rewards"
         ],
         "ru": [
-          "Защита во время поддержания жилы веризия",
-          "Инвентарь Анимированного стража",
-          "Верстак для создания предметов в каждом городе",
-          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
-          "Отборочные состязания к ExileCon 2026"
+          "Новые камни договора и изменения существующих камней умений и поддержки",
+          "Новый класс восхождения Дворянки — Светило",
+          "Постоянные компаньоны-наемники",
+          "Испытания и награды лиги «Проклятие Всепламени»",
+          "Награды Twitch Drops в неделю запуска"
         ]
       },
       "links": {

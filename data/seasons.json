@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-24T17:14:37.525Z",
+  "lastCheckedAt": "2026-07-24T21:58:00.457Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -13,10 +13,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3987535",
-        "title": "Curse of the Allflame Challenge Rewards",
-        "url": "https://www.pathofexile.com/forum/view-thread/3987535",
-        "publishDate": "Fri, 24 Jul 2026 01:39:01 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3987730",
+        "title": "Curse of the Allflame - Live Updates 🔴",
+        "url": "https://www.pathofexile.com/forum/view-thread/3987730",
+        "publishDate": "Fri, 24 Jul 2026 20:06:08 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -25,7 +25,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-24T09:11:54.261Z"
+        "updatedAt": "2026-07-24T21:58:00.238Z"
       },
       "currentSeason": {
         "name": {
@@ -36,7 +36,7 @@
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
       },
       "nextSeason": {
         "name": {
@@ -46,23 +46,21 @@
         "startDate": "2026-07-24T20:00:00Z",
         "endDate": "",
         "isActive": false,
-        "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
+        "verification": "estimated",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
       },
       "features": {
         "en": [
-          "New Pact Gems and updates to existing Skill and Support Gems",
-          "Scion's new Luminary Ascendancy class",
+          "New Luminary Ascendancy for the Scion",
           "Permanent Mercenary companions",
-          "Curse of the Allflame challenge rewards",
-          "Launch week Twitch Drops rewards"
+          "Deep-sea themed league challenge rewards",
+          "Exclusive Twitch Drops including Nautical Explorer Back Attachment"
         ],
         "ru": [
-          "Новые камни договора и изменения существующих камней умений и поддержки",
-          "Новый класс восхождения Дворянки — Светило",
-          "Постоянные компаньоны-наемники",
-          "Испытания и награды лиги «Проклятие Всепламени»",
-          "Награды Twitch Drops в неделю запуска"
+          "Новое Восхождение Светило (Luminary) для Дворянки",
+          "Постоянные спутники-наёмники",
+          "Награды за испытания лиги в глубоководной тематике",
+          "Эксклюзивные Twitch Drops, включая украшение на спину морского исследователя"
         ]
       },
       "links": {

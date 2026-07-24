@@ -655,7 +655,7 @@ async function initializeApp() {
         if (matchedGame) {
           setActiveGame(matchedGame, false);
         } else {
-          setActiveGame(null, false);
+          setActiveGame(games[0] ?? null, false);
         }
 
         if (lastView === 'Timeline') {

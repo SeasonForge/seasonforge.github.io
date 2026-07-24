@@ -14,7 +14,21 @@ export class SeasonService {
 
   async loadSeasons() {
     let fetchPath = this.seasonsPath || './data/seasons.json';
+    const pathsToTry = [];
+
     if (typeof window !== 'undefined') {
+      try {
+        const rootUrl = new URL('/data/seasons.json', window.location.origin).href;
+        pathsToTry.push(rootUrl + `?t=${Date.now()}`);
+        pathsToTry.push(rootUrl);
+      } catch (e) {}
+
+      try {
+        const relativeUrl = new URL('data/seasons.json', window.location.href).href;
+        pathsToTry.push(relativeUrl + `?t=${Date.now()}`);
+        pathsToTry.push(relativeUrl);
+      } catch (e) {}
+
       const isGamesSubdir = window.location.pathname.includes('/games/');
       if (isGamesSubdir && !fetchPath.startsWith('http') && !fetchPath.startsWith('/')) {
         fetchPath = '../../data/seasons.json';
@@ -22,12 +36,10 @@ export class SeasonService {
     }
 
     const cacheBuster = `?t=${Date.now()}`;
-    const pathsToTry = [
-      fetchPath + cacheBuster,
-      fetchPath,
-      './data/seasons.json' + cacheBuster,
-      '/data/seasons.json' + cacheBuster
-    ];
+    pathsToTry.push(fetchPath + cacheBuster);
+    pathsToTry.push(fetchPath);
+    pathsToTry.push('./data/seasons.json' + cacheBuster);
+    pathsToTry.push('/data/seasons.json' + cacheBuster);
 
     let lastError = null;
     for (const pathUrl of pathsToTry) {
@@ -35,6 +47,8 @@ export class SeasonService {
         const response = await fetch(pathUrl);
         if (response.ok) {
           return await response.json();
+        } else {
+          lastError = new Error(`HTTP ${response.status} ${response.statusText} at ${pathUrl}`);
         }
       } catch (err) {
         lastError = err;

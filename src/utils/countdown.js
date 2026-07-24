@@ -5,20 +5,29 @@
  */
 export function getProgressPercent(game) {
   const startDate = game?.currentSeason?.startDate;
-  const nextStartDate = game?.nextSeason?.startDate;
-
-  if (!startDate || !nextStartDate) return 0;
+  if (!startDate) return 0;
 
   const start = new Date(startDate);
-  const nextStart = new Date(nextStartDate);
   const now = new Date();
+  if (Number.isNaN(start.getTime())) return 0;
 
-  if (Number.isNaN(start.getTime()) || Number.isNaN(nextStart.getTime())) return 0;
+  // Don't calculate progress if season hasn't started yet
+  if (now.getTime() < start.getTime()) return 0;
 
-  const total = nextStart.getTime() - start.getTime();
+  let endMs = 0;
+  if (game?.currentSeason?.endDate) {
+    endMs = new Date(game.currentSeason.endDate).getTime();
+  } else if (game?.nextSeason?.startDate && new Date(game.nextSeason.startDate).getTime() > start.getTime()) {
+    endMs = new Date(game.nextSeason.startDate).getTime();
+  } else {
+    // Default fallback: 90-day ARPG season cycle
+    endMs = start.getTime() + (90 * 24 * 60 * 60 * 1000);
+  }
+
+  if (Number.isNaN(endMs) || endMs <= start.getTime()) return 0;
+
+  const total = endMs - start.getTime();
   const elapsed = now.getTime() - start.getTime();
-
-  if (total <= 0) return 0;
 
   return Math.max(0, Math.min(100, (elapsed / total) * 100));
 }

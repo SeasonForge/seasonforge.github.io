@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-24T17:14:37.525Z",
+  "lastCheckedAt": "2026-07-24T22:03:12.185Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -13,10 +13,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3987535",
-        "title": "Curse of the Allflame Challenge Rewards",
-        "url": "https://www.pathofexile.com/forum/view-thread/3987535",
-        "publishDate": "Fri, 24 Jul 2026 01:39:01 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3987730",
+        "title": "Curse of the Allflame - Live Updates 🔴",
+        "url": "https://www.pathofexile.com/forum/view-thread/3987730",
+        "publishDate": "Fri, 24 Jul 2026 20:06:08 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -25,7 +25,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-24T09:11:54.261Z"
+        "updatedAt": "2026-07-24T22:03:10.578Z"
       },
       "currentSeason": {
         "name": {
@@ -36,33 +36,33 @@
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
       },
       "nextSeason": {
         "name": {
-          "en": "Curse of the Allflame",
-          "ru": "Curse of the Allflame"
+          "en": "TBA",
+          "ru": "TBA"
         },
-        "startDate": "2026-07-24T20:00:00Z",
+        "startDate": "",
         "endDate": "",
         "isActive": false,
-        "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987535"
+        "verification": "estimated",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
       },
       "features": {
         "en": [
-          "New Pact Gems and updates to existing Skill and Support Gems",
-          "Scion's new Luminary Ascendancy class",
-          "Permanent Mercenary companions",
-          "Curse of the Allflame challenge rewards",
-          "Launch week Twitch Drops rewards"
+          "Protection while channeling Verisium Ore",
+          "Animate Guardian's inventory",
+          "Crafting Bench in every town",
+          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
+          "ExileCon 2026 Race Qualifier Events"
         ],
         "ru": [
-          "Новые камни договора и изменения существующих камней умений и поддержки",
-          "Новый класс восхождения Дворянки — Светило",
-          "Постоянные компаньоны-наемники",
-          "Испытания и награды лиги «Проклятие Всепламени»",
-          "Награды Twitch Drops в неделю запуска"
+          "Защита во время поддержания жилы веризия",
+          "Инвентарь Анимированного стража",
+          "Верстак для создания предметов в каждом городе",
+          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
+          "Отборочные состязания к ExileCon 2026"
         ]
       },
       "links": {
@@ -104,7 +104,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-23T00:47:53.648Z"
+        "updatedAt": "2026-07-24T22:03:10.641Z"
       },
       "currentSeason": {
         "name": {
@@ -185,7 +185,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-23T00:47:55.109Z"
+        "updatedAt": "2026-07-24T22:03:11.720Z"
       },
       "currentSeason": {
         "name": {
@@ -266,7 +266,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-23T00:47:55.213Z"
+        "updatedAt": "2026-07-24T22:03:12.034Z"
       },
       "currentSeason": {
         "name": {
@@ -344,7 +344,7 @@
           "en": "Just Started",
           "ru": "Только начался"
         },
-        "updatedAt": "2026-07-23T00:47:55.388Z"
+        "updatedAt": "2026-07-24T22:03:12.183Z"
       },
       "currentSeason": {
         "name": {

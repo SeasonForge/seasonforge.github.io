@@ -302,6 +302,7 @@ function renderApp() {
           const btn = document.getElementById('streamer-trigger-btn');
           if (btn) btn.click();
         });
+      }
     } else {
       let activeGame = state.activeGame;
       if (!activeGame && state.games.length > 0) {

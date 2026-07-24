@@ -148,6 +148,7 @@ export function render(games = []) {
       const curStartMs = new Date(game.currentSeason.startDate).getTime();
       curEndMs = curStartMs + 90 * 24 * 60 * 60 * 1000;
     }
+    const currentStart = getPercent(game.currentSeason?.startDate);
     const currentEnd = curEndMs > 0 ? getPercent(new Date(curEndMs).toISOString()) : getPercent(game.currentSeason?.startDate);
     
     // Split into elapsed (opacity: 1) and remaining (opacity: 0.4) based on nowPercent

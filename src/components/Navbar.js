@@ -67,6 +67,22 @@ export function render(games = [], activeGame = null, activeView = 'card') {
         <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">${t('navbar.btnCard')}</button>
         <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">${t('navbar.btnTimeline')}</button>
       </div>
+      
+      <div class="navbar-app-card">
+        <div class="navbar-app-card__header">
+          <span class="navbar-app-card__badge">${t('mobileApp.badge')}</span>
+          <h3 class="navbar-app-card__title">📱 ${t('mobileApp.title')}</h3>
+        </div>
+        <p class="navbar-app-card__desc">${t('mobileApp.desc')}</p>
+        <div class="navbar-app-card__actions">
+          <a href="https://github.com/SeasonForge/SeasonForgeMobile/releases/latest/download/SeasonForge-v2.7.0.apk" target="_blank" rel="noopener noreferrer" class="navbar-app-card__btn-download">
+            <span>📥</span> ${t('mobileApp.btnDownload')}
+          </a>
+          <button class="navbar-app-card__btn-guide mobile-app-trigger-btn">
+            <span>ℹ️</span> ${t('mobileApp.btnGuide')}
+          </button>
+        </div>
+      </div>
     </section>
   `;
 }

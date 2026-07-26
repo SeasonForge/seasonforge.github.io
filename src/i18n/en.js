@@ -17,7 +17,7 @@ export const en = {
     badge: "Android App",
     title: "SeasonForge Mobile",
     desc: "Home screen widgets & season reminders on your phone.",
-    btnDownload: "Download APK",
+    btnDownload: "Download on GitHub",
     btnGuide: "How to Install",
     headerBtn: "App",
     modalTitle: "SeasonForge for Android",
@@ -28,9 +28,9 @@ export const en = {
     remindersDesc: "Set push alerts 1 hour, 24 hours, 3 days, or 1 week before a new season launches.",
     protectTitle: "Installing APK outside Google Play",
     protectDesc: "Android may display a standard security notice as the app is installed directly.",
-    protectStep1: "1. Tap 'Download APK' and open the file.",
+    protectStep1: "1. Tap 'Download on GitHub Releases' and select the `.apk` file.",
     protectStep2: "2. If prompted by Play Protect, select: 'More details' → 'Install anyway'.",
-    downloadDirect: "Direct Download (APK)"
+    downloadDirect: "Download on GitHub Releases"
   },
   statuses: {
     ending: "Ending",

@@ -17,7 +17,7 @@ export const ru = {
     badge: "Android App",
     title: "SeasonForge Mobile",
     desc: "Виджеты на рабочий стол и напоминания о сезонах на смартфонах.",
-    btnDownload: "Скачать APK",
+    btnDownload: "Скачать на GitHub",
     btnGuide: "Установка",
     headerBtn: "Приложение",
     modalTitle: "SeasonForge для Android",
@@ -28,9 +28,9 @@ export const ru = {
     remindersDesc: "Настраивайте push-уведомления за 1 час, 24 часа, 3 дня или 1 неделю до старта нового сезона.",
     protectTitle: "Установка APK вне Google Play",
     protectDesc: "Android может показать стандартное предупреждение безопасности, так как приложение устанавливается напрямую.",
-    protectStep1: "1. Нажмите «Скачать APK» и откройте файл.",
+    protectStep1: "1. Нажмите «Скачать на GitHub Releases» и выберите файл `.apk` в релизе.",
     protectStep2: "2. При появлении окна Play Защиты выберите: «Подробнее» → «Всё равно установить».",
-    downloadDirect: "Скачать APK напрямую"
+    downloadDirect: "Скачать на GitHub Releases"
   },
   statuses: {
     ending: "Завершается",

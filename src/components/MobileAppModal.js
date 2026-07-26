@@ -48,11 +48,8 @@ export function render() {
         </div>
 
         <div class="mobile-app-modal__footer">
-          <a href="${apkDownloadUrl}" target="_blank" rel="noopener noreferrer" class="mobile-app-modal__btn mobile-app-modal__btn--primary">
+          <a href="${latestReleaseUrl}" target="_blank" rel="noopener noreferrer" class="mobile-app-modal__btn mobile-app-modal__btn--primary" style="width: 100%;">
             <span>📥</span> ${t('mobileApp.downloadDirect')}
-          </a>
-          <a href="${latestReleaseUrl}" target="_blank" rel="noopener noreferrer" class="mobile-app-modal__btn mobile-app-modal__btn--secondary">
-            <span>🐙</span> GitHub Release
           </a>
         </div>
       </div>

@@ -12,24 +12,41 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SeasonForge - ARPG Season Tracker</title>
-    <meta name="description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+    <title>SeasonForge — ARPG Season Tracker &amp; Timeline (PoE, D4, LE)</title>
+    <meta name="description" content="Track current and upcoming seasons for Path of Exile 1 &amp; 2, Diablo IV, Last Epoch, and Torchlight: Infinite. Live countdown timers, timelines, and Android widgets." />
+    <meta name="keywords" content="ARPG season tracker, Path of Exile league start countdown, Diablo 4 season end date, Last Epoch cycle tracker, Torchlight Infinite season" />
     <meta name="google-site-verification" content="1ZmquktDWf9wST9j1OsRN_dFaSGy_9-yIFz_5vbRN0c" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="SeasonForge - ARPG Season Tracker" />
-    <meta property="og:description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+    <meta property="og:url" content="https://seasonforge.online" />
+    <meta property="og:title" content="SeasonForge — ARPG Season Tracker &amp; Timeline" />
+    <meta property="og:description" content="Live countdowns, season timelines, and Android widgets for PoE, D4, Last Epoch &amp; Torchlight." />
+    <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SeasonForge - ARPG Season Tracker" />
-    <meta name="twitter:description" content="Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite." />
+    <meta name="twitter:title" content="SeasonForge — ARPG Season Tracker &amp; Timeline" />
+    <meta name="twitter:description" content="Live countdowns, season timelines, and Android widgets for PoE, D4, Last Epoch &amp; Torchlight." />
+    <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "SeasonForge",
+      "url": "https://seasonforge.online",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "description": "Monitoring current and upcoming seasons of major action RPGs."
+    }
+    </script>
 
     <!-- Google Fonts Preconnect & Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" />
 
     <link rel="stylesheet" href="./src/styles/main.css?v=1.0.4" />
     <link rel="icon" href="./assets/favicon.png" type="image/png" />
@@ -37,17 +54,16 @@
     <link rel="alternate" hreflang="x-default" href="https://seasonforge.online/" />
     <link rel="alternate" hreflang="en" href="https://seasonforge.online/" />
     <link rel="alternate" hreflang="ru" href="https://seasonforge.online/?lang=ru" />
-    <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
-    <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
   </head>
   <body>
     <header class="app-header">
+      <h1 class="sr-only">ARPG Season Tracker &amp; Live Timelines</h1>
       <div class="app-header__logo-block">
         <div class="app-header__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
           <img src="./assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
         </div>
         <div>
-          <h1 class="app-header__title">SeasonForge</h1>
+          <div class="app-header__title">SeasonForge</div>
           <p class="app-header__subtitle" id="app-header-subtitle">Monitoring current and upcoming seasons of major action RPGs</p>
         </div>
       </div>

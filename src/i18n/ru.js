@@ -13,6 +13,25 @@ export const ru = {
     btnGames: "Игры",
     btnMore: "Ещё"
   },
+  mobileApp: {
+    badge: "Android App",
+    title: "SeasonForge Mobile",
+    desc: "Виджеты на рабочий стол и напоминания о сезонах на смартфонах.",
+    btnDownload: "Скачать APK",
+    btnGuide: "Установка",
+    headerBtn: "Приложение",
+    modalTitle: "SeasonForge для Android",
+    modalSubtitle: "Отслеживайте ARPG сезоны прямо с экрана вашего смартфона",
+    widgetsTitle: "Виджеты на рабочий стол",
+    widgetsDesc: "Выберите Season Card, 3D Countdown Timer или Hybrid Widget, чтобы таймеры сезонов всегда были перед глазами.",
+    remindersTitle: "Гибкие напоминания",
+    remindersDesc: "Настраивайте push-уведомления за 1 час, 24 часа, 3 дня или 1 неделю до старта нового сезона.",
+    protectTitle: "Установка APK вне Google Play",
+    protectDesc: "Android может показать стандартное предупреждение безопасности, так как приложение устанавливается напрямую.",
+    protectStep1: "1. Нажмите «Скачать APK» и откройте файл.",
+    protectStep2: "2. При появлении окна Play Защиты выберите: «Подробнее» → «Всё равно установить».",
+    downloadDirect: "Скачать APK напрямую"
+  },
   statuses: {
     ending: "Завершается",
     'early-access': "Ранний доступ",

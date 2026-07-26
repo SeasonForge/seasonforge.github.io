@@ -23,6 +23,7 @@ import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './ut
 import { formatLastUpdated } from './utils/date.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
+import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 
@@ -134,6 +135,11 @@ function renderApp() {
   const streamerBtn = document.getElementById('lbl-streamer-btn');
   if (streamerBtn) {
     streamerBtn.textContent = t('streamer.btnLabel');
+  }
+
+  const mobileAppBtn = document.getElementById('lbl-mobile-app-btn');
+  if (mobileAppBtn) {
+    mobileAppBtn.textContent = t('mobileApp.headerBtn');
   }
 
   const mobLblTracker = document.getElementById('mob-lbl-tracker');
@@ -334,6 +340,7 @@ function renderApp() {
   attachFooterEvents();
   initFeedback(() => state.activeGame?.id || 'None');
   initStreamer(state.games);
+  initMobileAppModal();
   
   if (state.activeView === 'timeline') {
     attachTimelineTooltipEvents();

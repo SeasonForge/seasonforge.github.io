@@ -43,7 +43,7 @@
     "id": "torchlight-infinite",
     "name": {
       "en": "Torchlight: Infinite",
-      "ru": "Торчлайт: Инфинит"
+      "ru": "Torchlight: Infinite"
     },
     "adapter": "TorchlightAdapter",
     "enabled": true,

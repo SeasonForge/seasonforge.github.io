@@ -101,11 +101,11 @@ export function render(game = {}, options = {}) {
       const dayLabel = lang === 'ru' ? `День ${daysActive} из ~90` : `Day ${daysActive} of ~90`;
       const activeLabel = lang === 'ru' ? 'Сезон в разгаре' : 'Season in Progress';
       countdownHtml = `
-        <div class="game-card__countdown game-card__countdown--active-season" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; padding: 0.85rem; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.2); border-radius: 8px;">
-          <div style="font-weight: 700; color: #818cf8; font-size: 0.95rem; display: flex; align-items: center; gap: 0.35rem;">
+        <div class="game-card__countdown game-card__countdown--active-season" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px;">
+          <div style="font-weight: 600; color: #818cf8; font-size: 0.88rem; display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-display);">
             <span>⚡</span> <span>${activeLabel}</span>
           </div>
-          <span style="font-size: 0.85rem; color: #9ca3af;">${dayLabel}</span>
+          <span style="font-size: 0.88rem; font-weight: 600; color: #cbd5e1; font-family: var(--font-display);">${dayLabel}</span>
         </div>
       `;
     } else {

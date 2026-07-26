@@ -4,9 +4,8 @@ import { t } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 
 export function initFeedback(getCurrentGameId) {
-  const triggerBtn = document.getElementById('feedback-trigger-btn');
   const modalRoot = document.getElementById('modal-root');
-  if (!triggerBtn || !modalRoot) return;
+  if (!modalRoot) return;
 
   // Remove existing one if any, then insert fresh HTML to ensure correct translation
   const existingOverlay = document.getElementById('feedback-modal-overlay');
@@ -154,10 +153,10 @@ export function initFeedback(getCurrentGameId) {
     }
   });
 
-  // Re-attach fresh click listener
-  const newTriggerBtn = triggerBtn.cloneNode(true);
-  triggerBtn.parentNode.replaceChild(newTriggerBtn, triggerBtn);
-  newTriggerBtn.addEventListener('click', openModal);
+  // Attach click listener to all feedback trigger elements
+  document.querySelectorAll('.feedback-trigger-btn, #feedback-trigger-btn').forEach(btn => {
+    btn.addEventListener('click', openModal);
+  });
 
   cancelBtn.addEventListener('click', closeModal);
 }

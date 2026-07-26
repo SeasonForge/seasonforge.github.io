@@ -11,21 +11,23 @@ export function renderLangSwitcher(rootElementOrId, currentLang, onLangChange) {
 
   if (!root) return;
 
+  const nextLang = currentLang === 'ru' ? 'en' : 'ru';
+  const flagUrl = currentLang === 'ru' ? 'https://flagcdn.com/w20/ru.png' : 'https://flagcdn.com/w20/us.png';
+  const label = currentLang === 'ru' ? 'RU' : 'EN';
+  const title = currentLang === 'ru' ? 'Switch to English' : 'Переключить на русский';
+
   root.innerHTML = `
-    <button class="lang-switcher__btn ${currentLang === 'en' ? 'lang-switcher__btn--active' : ''}" data-lang-val="en">
-      <img src="https://flagcdn.com/w20/us.png" class="lang-switcher__flag" alt="EN"> EN
-    </button>
-    <button class="lang-switcher__btn ${currentLang === 'ru' ? 'lang-switcher__btn--active' : ''}" data-lang-val="ru">
-      <img src="https://flagcdn.com/w20/ru.png" class="lang-switcher__flag" alt="RU"> RU
+    <button class="lang-switcher__btn lang-switcher__btn--toggle" data-lang-val="${nextLang}" title="${title}">
+      <img src="${flagUrl}" class="lang-switcher__flag" alt="${label}"> ${label}
     </button>
   `;
 
-  root.querySelectorAll('[data-lang-val]').forEach(btn => {
+  const btn = root.querySelector('[data-lang-val]');
+  if (btn) {
     btn.addEventListener('click', () => {
-      const selected = btn.getAttribute('data-lang-val');
-      if (selected && selected !== currentLang && typeof onLangChange === 'function') {
-        onLangChange(selected);
+      if (typeof onLangChange === 'function') {
+        onLangChange(nextLang);
       }
     });
-  });
+  }
 }

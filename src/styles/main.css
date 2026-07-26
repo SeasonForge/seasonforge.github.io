@@ -23,13 +23,20 @@
   --radius-md: 16px;
   --radius-lg: 20px;
   --radius-xl: 24px;
-  --font: 'Plus Jakarta Sans', sans-serif;
+  --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Unbounded', sans-serif;
+  --font-heading: 'Cinzel', 'Cormorant Garamond', Georgia, serif;
   --shadow-card: 0 30px 70px rgba(0, 0, 0, 0.6);
   --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.04);
 }
 
 * {
   box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -43,7 +50,6 @@ body {
   background-attachment: fixed;
   color: #f8fafc;
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
 /* Ambient glow orbs */
@@ -450,9 +456,10 @@ body::after {
 
 .game-card__title {
   margin: 0.4rem 0 0;
+  font-family: var(--font-heading);
   font-size: 2.1rem;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.01em;
   line-height: 1.15;
 }
 
@@ -647,18 +654,22 @@ body::after {
 
 .game-card__countdown-item strong {
   display: block;
-  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   color: #f8fafc;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.1;
+  letter-spacing: -0.01em;
 }
 
 .game-card__countdown-item span {
   display: block;
-  font-size: 0.55rem;
+  font-family: var(--font-display);
+  font-size: 0.52rem;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--muted-strong);
-  letter-spacing: 0.08em;
+  color: #a5b4fc;
+  letter-spacing: 0.06em;
 }
 
 .game-card__developer {
@@ -812,9 +823,12 @@ body::after {
 
 .progress-bar__label {
   text-align: right;
-  font-size: 0.75rem;
-  color: var(--muted);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
 }
 
 .progress-bar__track {
@@ -1670,12 +1684,13 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  font-size: 0.65rem;
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: 0.6rem;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.2rem 0.45rem;
-  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
   border: 1px solid transparent;
   transition: all 0.2s ease;
 }
@@ -1704,9 +1719,9 @@ body::after {
 }
 
 .verification-badge--estimated {
-  background: rgba(245, 195, 66, 0.04);
-  color: #f5c342;
-  border-color: rgba(245, 195, 66, 0.18);
+  background: rgba(245, 158, 11, 0.12);
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.28);
 }
 
 /* TBA Countdown & Progress placeholders */
@@ -1999,7 +2014,7 @@ body::after {
 
 /* ===== LANG SWITCHER ===== */
 .lang-switcher {
-  display: flex;
+  display: inline-flex;
   background: rgba(15, 23, 42, 0.6);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-xs);
@@ -2012,7 +2027,7 @@ body::after {
   border: none;
   color: var(--muted);
   font-size: 0.65rem;
-  font-family: var(--font);
+  font-family: var(--font-display);
   font-weight: 700;
   padding: 0.35rem 0.6rem;
   border-radius: calc(var(--radius-xs) - 2px);
@@ -2022,6 +2037,18 @@ body::after {
   display: flex;
   align-items: center;
   gap: 0.3rem;
+}
+
+.lang-switcher__btn--toggle {
+  background: rgba(99, 102, 241, 0.18);
+  color: #ffffff;
+  border: 1px solid rgba(99, 102, 241, 0.35);
+}
+
+.lang-switcher__btn--toggle:hover {
+  background: rgba(99, 102, 241, 0.35);
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .lang-switcher__btn:hover {
@@ -2932,14 +2959,16 @@ body.overlay-type-countdown .game-card__panel--side {
     width: auto !important;
   }
 
-  .feedback-trigger-btn,
+  .feedback-trigger-btn {
+    display: none !important;
+  }
+
   .streamer-trigger-btn {
     padding: 0.45rem 0.65rem !important;
     font-size: 0.75rem !important;
     min-height: 38px;
   }
 
-  .feedback-trigger-btn span:not(.feedback-trigger-btn__icon),
   .streamer-trigger-btn span:not(.streamer-trigger-btn__icon) {
     display: none !important;
   }
@@ -2980,10 +3009,10 @@ body.overlay-type-countdown .game-card__panel--side {
     display: flex;
     position: fixed;
     bottom: max(10px, env(safe-area-inset-bottom));
-    left: 12px;
-    right: 12px;
+    left: 10px;
+    right: 10px;
     height: 60px;
-    background: rgba(15, 23, 42, 0.84);
+    background: rgba(15, 23, 42, 0.88);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid rgba(255, 255, 255, 0.12);
@@ -2991,8 +3020,16 @@ body.overlay-type-countdown .game-card__panel--side {
     z-index: 1000;
     justify-content: space-around;
     align-items: center;
-    padding: 0 0.25rem;
+    padding: 0 0.35rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .mobile-nav__btn {
@@ -3104,12 +3141,14 @@ body.overlay-type-countdown .game-card__panel--side {
   }
 
   .game-feed .game-card__next-season-date {
-    font-size: 0.9rem !important;
-    font-weight: 800 !important;
-    color: #a855f7 !important;
+    font-family: var(--font) !important;
+    font-size: 0.76rem !important;
+    font-weight: 500 !important;
+    color: #94a3b8 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.02em !important;
     margin: 0 !important;
+    opacity: 0.9 !important;
   }
 
   .game-feed .game-card__title-block {
@@ -3169,26 +3208,37 @@ body.overlay-type-countdown .game-card__panel--side {
     display: none !important;
   }
 
+  .game-feed .game-card__title {
+    font-family: var(--font-heading) !important;
+    font-size: 1.45rem !important;
+    letter-spacing: 0.01em !important;
+  }
+
   .game-feed .game-card__countdown-item {
-    background: rgba(15, 23, 42, 0.65) !important;
-    border: 1px solid rgba(255, 255, 255, 0.07) !important;
+    background: linear-gradient(145deg, rgba(26, 22, 48, 0.7) 0%, rgba(14, 11, 26, 0.8) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
     border-radius: 12px !important;
-    padding: 0.55rem 0.25rem !important;
+    padding: 0.6rem 0.25rem !important;
     text-align: center !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 12px rgba(0, 0, 0, 0.3) !important;
   }
 
   .game-feed .game-card__countdown-val,
   .game-feed .game-card__countdown-item strong {
-    font-size: 1.25rem !important;
-    font-weight: 800 !important;
+    font-family: var(--font-display) !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
     color: #ffffff !important;
+    text-shadow: 0 0 12px rgba(99, 102, 241, 0.3) !important;
   }
 
   .game-feed .game-card__countdown-item span {
-    font-size: 0.65rem !important;
+    font-family: var(--font-display) !important;
+    font-size: 0.58rem !important;
+    font-weight: 600 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
-    color: var(--muted, #94a3b8) !important;
+    letter-spacing: 0.06em !important;
+    color: #a5b4fc !important;
   }
 
   /* CTA link to game page */
@@ -3196,15 +3246,17 @@ body.overlay-type-countdown .game-card__panel--side {
     margin-top: 0.5rem !important;
     padding: 0.65rem 0.85rem !important;
     border-radius: 12px !important;
-    background: rgba(255, 255, 255, 0.04) !important;
-    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%) !important;
+    border: 1px solid rgba(99, 102, 241, 0.2) !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    transition: all 0.2s ease !important;
   }
 
   .game-feed .game-card__cta-title {
-    font-size: 0.85rem !important;
+    font-family: var(--font-display) !important;
+    font-size: 0.82rem !important;
     font-weight: 600 !important;
   }
 

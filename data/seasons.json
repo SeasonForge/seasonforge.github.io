@@ -40,10 +40,10 @@
       },
       "nextSeason": {
         "name": {
-          "en": "TBA",
-          "ru": "TBA"
+          "en": "3.27 League (Estimated)",
+          "ru": "Лига 3.27 (Прогноз)"
         },
-        "startDate": "",
+        "startDate": "2026-11-13T20:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",

@@ -98,8 +98,19 @@ export function render(game = {}, options = {}) {
       const daysActive = Math.max(1, Math.floor((now.getTime() - curStart.getTime()) / (1000 * 60 * 60 * 24)));
       const state = getState();
       const lang = state.settings?.lang || 'en';
-      const dayLabel = lang === 'ru' ? `День ${daysActive} из ~90` : `Day ${daysActive} of ~90`;
-      const activeLabel = lang === 'ru' ? 'Сезон в разгаре' : 'Season in Progress';
+      
+      let activeLabel = lang === 'ru' ? 'Сезон в разгаре' : 'Season in Progress';
+      let dayLabel = lang === 'ru' ? `В игре ${daysActive} дн.` : `Active for ${daysActive}d`;
+
+      if (daysActive <= 3) {
+        activeLabel = lang === 'ru' ? 'Свежий запуск' : 'Fresh Start';
+        const dayWord = lang === 'ru' ? (daysActive === 1 ? 'день' : 'дня') : (daysActive === 1 ? 'day' : 'days');
+        dayLabel = lang === 'ru' ? `Старт ${daysActive} ${dayWord} назад` : `Started ${daysActive} ${dayWord} ago`;
+      } else if (daysActive <= 14) {
+        activeLabel = lang === 'ru' ? 'Ранняя фаза' : 'Early Phase';
+        dayLabel = lang === 'ru' ? `Старт ${daysActive} дн. назад` : `Started ${daysActive}d ago`;
+      }
+
       countdownHtml = `
         <div class="game-card__countdown game-card__countdown--active-season" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px;">
           <div style="font-weight: 600; color: #818cf8; font-size: 0.88rem; display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-display);">

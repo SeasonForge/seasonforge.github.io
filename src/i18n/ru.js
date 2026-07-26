@@ -33,6 +33,7 @@ export const ru = {
     downloadDirect: "Скачать на GitHub Releases"
   },
   statuses: {
+    newest: "🔥 Самый свежий",
     ending: "Завершается",
     'early-access': "Ранний доступ",
     'in-progress': "В разгаре",

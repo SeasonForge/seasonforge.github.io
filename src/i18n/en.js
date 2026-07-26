@@ -33,6 +33,7 @@ export const en = {
     downloadDirect: "Download on GitHub Releases"
   },
   statuses: {
+    newest: "🔥 Newest",
     ending: "Ending",
     'early-access': "Early Access",
     'in-progress': "In Progress",

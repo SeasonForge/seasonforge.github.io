@@ -13,13 +13,43 @@ function escapeHtml(value) {
 export function render(games = [], activeGame = null, activeView = 'card') {
   const items = Array.isArray(games) ? games : [];
   const activeId = activeGame?.id || activeGame?.slug || '';
+  const now = new Date();
+
+  let newestGameId = null;
+  let minAgeMs = Infinity;
+
+  items.forEach((g) => {
+    if (g.currentSeason?.startDate) {
+      const st = new Date(g.currentSeason.startDate);
+      if (!Number.isNaN(st.getTime()) && st.getTime() <= now.getTime()) {
+        const age = now.getTime() - st.getTime();
+        if (age < minAgeMs) {
+          minAgeMs = age;
+          newestGameId = g.id || g.slug;
+        }
+      }
+    }
+  });
 
   const links = items
     .map((game) => {
       const id = game.id || game.slug || '';
       const name = escapeHtml(getVal(game.name) || 'Untitled Game');
       const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
-      const statusCode = game.status?.code || 'active';
+      
+      let statusCode = game.status?.code || 'active';
+      if (id === newestGameId) {
+        statusCode = 'newest';
+      } else if (game.currentSeason?.startDate) {
+        const st = new Date(game.currentSeason.startDate);
+        if (!Number.isNaN(st.getTime())) {
+          const days = Math.floor((now.getTime() - st.getTime()) / (1000 * 60 * 60 * 24));
+          if (days >= 0 && days <= 14) {
+            statusCode = 'just-started';
+          }
+        }
+      }
+
       const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
       const color = escapeHtml(game.color || '#6366f1');
       const icon = escapeHtml(game.icon || '🎮');

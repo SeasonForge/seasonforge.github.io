@@ -2,7 +2,7 @@ import { t } from '../i18n/index.js';
 
 export function render() {
   const latestReleaseUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest";
-  const apkDownloadUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest/download/SeasonForge-v2.7.0.apk";
+  const apkDownloadUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest";
 
   return `
     <div id="mobile-app-modal-overlay" class="feedback-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="app-modal-title">

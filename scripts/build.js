@@ -305,13 +305,15 @@ async function build() {
       let dateStr = '';
       if (item.timestamp) {
         const d = new Date(item.timestamp);
-        dateStr = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(d);
+        dateStr = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
       }
-      const textRu = item.text?.ru || item.text?.en || '';
+      const textEn = item.text?.en || '';
+      const textRu = item.text?.ru || '';
       return `
         <article class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
           <time datetime="${item.timestamp || ''}" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">${dateStr}</time>
-          <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">${escapeHtml(textRu)}</div>
+          <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4; margin-bottom: 0.25rem;">${escapeHtml(textRu)}</div>
+          ${textEn && textEn !== textRu ? `<div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.35;">${escapeHtml(textEn)}</div>` : ''}
         </article>
       `;
     }).join('\n');

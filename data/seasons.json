@@ -4,15 +4,8 @@
     {
       "timestamp": "2026-07-27T11:20:43Z",
       "text": {
-        "en": "Path of Exile 1: Started League 3.29 Curse of the Allflame and added estimated dates for League 3.30.",
-        "ru": "Path of Exile 1: Запущена лига 3.29 «Curse of the Allflame», рассчитаны даты следующей лиги 3.30."
-      }
-    },
-    {
-      "timestamp": "2026-07-26T15:47:21Z",
-      "text": {
-        "en": "Torchlight: Infinite: Launched Season SS13 Afterlight.",
-        "ru": "Torchlight: Infinite: Состоялся запуск нового сезона SS13 «Afterlight»."
+        "en": "SeasonForge monitoring engine initialized. Automated tracking is active.",
+        "ru": "Система мониторинга SeasonForge инициализирована. Автоматический трекинг активен."
       }
     }
   ],

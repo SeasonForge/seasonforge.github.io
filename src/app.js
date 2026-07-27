@@ -195,6 +195,43 @@ function renderApp() {
     timeEl.textContent = formatLastUpdated(latestTime, state.settings?.lang);
   }
 
+  // Attach click listener for header meta to show Changelog Modal
+  const headerMeta = document.querySelector('.app-header__meta');
+  if (headerMeta && !headerMeta.dataset.changelogBound) {
+    headerMeta.dataset.changelogBound = 'true';
+    headerMeta.style.cursor = 'pointer';
+    headerMeta.title = state.settings?.lang === 'ru' ? 'Посмотреть историю обновлений' : 'View update history';
+    headerMeta.addEventListener('click', () => {
+      const currentState = getState();
+      const rawData = currentState.rawData || {};
+      const changelog = rawData.changelog || [];
+      const lang = currentState.settings?.lang || 'en';
+
+      const title = lang === 'ru' ? '📜 История обновлений' : '📜 Update History';
+
+      let listHtml = '';
+      if (!changelog.length) {
+        listHtml = `<p style="color: var(--muted); text-align: center; padding: 1.5rem;">${lang === 'ru' ? 'Записей обновлений пока нет' : 'No update logs recorded yet'}</p>`;
+      } else {
+        listHtml = changelog.map(item => {
+          const dateStr = item.timestamp ? formatTooltipDate(item.timestamp, lang) : '';
+          const text = escapeHtml(item.text?.[lang] || item.text?.en || '');
+          return `
+            <div class="changelog-item">
+              <div class="changelog-item__date">${dateStr}</div>
+              <div class="changelog-item__text">${text}</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      Modal.open({
+        title,
+        content: `<div class="changelog-list">${listHtml}</div>`
+      });
+    });
+  }
+
   // Render main content depending on activeView
   if (contentRoot) {
     if (state.activeView === 'timeline') {

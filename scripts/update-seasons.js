@@ -481,13 +481,68 @@ async function main() {
     process.exit(1);
   }
 
+async function sendTelegramNotification(messageText) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  const chatId = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_FEEDBACK_CHAT_ID;
+  if (!botToken || !chatId) return;
+
+  try {
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: messageText,
+        parse_mode: 'HTML',
+        disable_web_page_preview: true
+      })
+    });
+    if (res.ok) {
+      console.log('[Orchestrator] Telegram update notification sent.');
+    }
+  } catch (err) {
+    console.warn('[Orchestrator] Failed to send Telegram notification:', err.message);
+  }
+}
+
   // 3. Compare with old seasons.json to check if we have actual changes
   let hasActualChanges = true;
+  let existingChangelog = [];
+  const detectedDiffs = [];
   
   if (fs.existsSync(seasonsPath)) {
     try {
       const oldSeasons = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
+      existingChangelog = Array.isArray(oldSeasons.changelog) ? oldSeasons.changelog : [];
       
+      if (Array.isArray(oldSeasons.games)) {
+        finalGames.forEach(newG => {
+          const oldG = oldSeasons.games.find(g => g.id === newG.id);
+          if (!oldG) return;
+
+          const gNameEn = newG.name?.en || newG.id;
+          const gNameRu = newG.name?.ru || gNameEn;
+
+          const oldCur = oldG.currentSeason?.name?.en;
+          const newCur = newG.currentSeason?.name?.en;
+          const oldNext = oldG.nextSeason?.startDate;
+          const newNext = newG.nextSeason?.startDate;
+
+          if (oldCur !== newCur && newCur) {
+            detectedDiffs.push({
+              en: `${gNameEn}: Current season updated to "${newG.currentSeason?.name?.en || 'TBA'}"`,
+              ru: `${gNameRu}: Текущий сезон обновлён на "${newG.currentSeason?.name?.ru || 'TBA'}"`
+            });
+          } else if (oldNext !== newNext && newNext) {
+            detectedDiffs.push({
+              en: `${gNameEn}: Next season updated (${newG.nextSeason?.name?.en || 'TBA'})`,
+              ru: `${gNameRu}: Обновлён прогноз следующего сезона (${newG.nextSeason?.name?.ru || 'TBA'})`
+            });
+          }
+        });
+      }
+
       // Helper to strip dynamic timestamps for comparison
       const stripDynamicFields = (games) => {
         return games.map(g => {
@@ -511,7 +566,24 @@ async function main() {
 
   // 4. Save seasons.json (always update lastCheckedAt timestamp)
   const nowIso = new Date().toISOString();
-  atomicWriteFileSync(seasonsPath, JSON.stringify({ lastCheckedAt: nowIso, games: finalGames }, null, 2), 'utf-8');
+
+  if (hasActualChanges && detectedDiffs.length > 0) {
+    const newEntries = detectedDiffs.map(d => ({
+      timestamp: nowIso,
+      text: { en: d.en, ru: d.ru }
+    }));
+    existingChangelog = [...newEntries, ...existingChangelog].slice(0, 15);
+
+    const tgMsg = `<b>⚡ SeasonForge Data Update</b>\n\n` + detectedDiffs.map(d => `• ${d.ru}`).join('\n');
+    await sendTelegramNotification(tgMsg);
+  }
+
+  atomicWriteFileSync(seasonsPath, JSON.stringify({
+    lastCheckedAt: nowIso,
+    changelog: existingChangelog,
+    games: finalGames
+  }, null, 2), 'utf-8');
+
   if (hasActualChanges) {
     console.log(`[Orchestrator] seasons.json updated successfully with ${finalGames.length} games (data changed).`);
     logSummary.saved = true;

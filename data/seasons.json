@@ -1,5 +1,21 @@
 {
   "lastCheckedAt": "2026-07-27T11:20:43.238Z",
+  "changelog": [
+    {
+      "timestamp": "2026-07-27T11:20:43Z",
+      "text": {
+        "en": "PoE 1: Season 3.29 Curse of the Allflame launched. Next season 3.30 estimated.",
+        "ru": "PoE 1: Запущена лига 3.29 Curse of the Allflame. Прогноз следующей лиги 3.30."
+      }
+    },
+    {
+      "timestamp": "2026-07-26T15:47:21Z",
+      "text": {
+        "en": "Torchlight: Infinite: SS13 Afterlight season launched.",
+        "ru": "Torchlight: Infinite: Запущен новый сезон SS13 Afterlight."
+      }
+    }
+  ],
   "games": [
     {
       "id": "path-of-exile",

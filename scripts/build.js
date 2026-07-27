@@ -294,6 +294,37 @@ async function build() {
     fs.writeFileSync(path.join(targetDir, 'index.html'), html, 'utf-8');
   }
 
+  // 5.5 Generate changelog/index.html page
+  const changelogTemplatePath = path.join(__dirname, '../src/templates/changelog.html');
+  if (fs.existsSync(changelogTemplatePath)) {
+    console.log('[SSG] Compiling changelog page...');
+    const changelogTemplate = fs.readFileSync(changelogTemplatePath, 'utf-8');
+    const changelogList = database.changelog || [];
+
+    const changelogItemsHtml = changelogList.map(item => {
+      let dateStr = '';
+      if (item.timestamp) {
+        const d = new Date(item.timestamp);
+        dateStr = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
+      }
+      const textEn = item.text?.en || '';
+      return `
+        <article class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+          <time datetime="${item.timestamp || ''}" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; text-transform: uppercase; display: block; margin-bottom: 0.35rem;">${dateStr}</time>
+          <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">${escapeHtml(textEn)}</div>
+        </article>
+      `;
+    }).join('\n');
+
+    const changelogHtml = changelogTemplate.replace(/{{CHANGELOG_ITEMS}}/g, changelogItemsHtml);
+    const changelogDir = path.join(__dirname, '../changelog');
+    if (!fs.existsSync(changelogDir)) {
+      fs.mkdirSync(changelogDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(changelogDir, 'index.html'), changelogHtml, 'utf-8');
+    console.log('[SSG] changelog/index.html generated.');
+  }
+
   // 6. Generate sitemap.xml
   console.log('[SSG] Generating sitemap.xml...');
   const todayStr = new Date().toISOString().split('T')[0];
@@ -304,6 +335,12 @@ async function build() {
     <lastmod>${todayStr}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/changelog/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
   </url>
 `;
 

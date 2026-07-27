@@ -3017,23 +3017,22 @@ body.overlay-type-countdown .game-card__panel--side {
     display: flex;
     position: fixed;
     bottom: max(10px, env(safe-area-inset-bottom));
-    left: 10px;
-    right: 10px;
-    height: 60px;
-    background: rgba(15, 23, 42, 0.88);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 24px;
+    left: 12px;
+    right: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    height: 56px;
+    background: rgba(18, 20, 32, 0.94);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
     z-index: 1000;
     justify-content: space-around;
     align-items: center;
-    padding: 0 0.35rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    padding: 0 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
 
   .mobile-nav::-webkit-scrollbar {
@@ -3047,50 +3046,77 @@ body.overlay-type-countdown .game-card__panel--side {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 0.15rem;
-    color: #94a3b8;
+    gap: 2px;
+    color: #787f95;
     font-family: var(--font);
     cursor: pointer;
     flex: 1;
-    height: 48px;
-    padding: 0.25rem 0;
-    border-radius: 16px;
+    height: 100%;
+    padding: 4px 0 2px;
+    border-radius: 14px;
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
+    text-decoration: none;
   }
 
   .mobile-nav__btn:active {
-    transform: scale(0.92);
+    transform: scale(0.94);
   }
 
   .mobile-nav__icon {
-    font-size: 1.2rem;
-    line-height: 1;
-    transition: transform 0.2s ease, filter 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    color: #787f95;
+    transition: color 0.2s ease, transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .mobile-nav__icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    stroke: currentColor;
   }
 
   .mobile-nav__label {
-    font-size: 0.64rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    opacity: 0.85;
-    transition: color 0.2s ease, opacity 0.2s ease;
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #838b9f;
+    white-space: nowrap;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+  }
+
+  .mobile-nav__indicator {
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: transparent;
+    margin-top: 1px;
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .mobile-nav__btn--active {
-    color: #ffffff !important;
-    background: rgba(99, 102, 241, 0.18);
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: transparent !important;
+    border: none !important;
   }
 
   .mobile-nav__btn--active .mobile-nav__icon {
-    transform: translateY(-1px) scale(1.1);
-    filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.7));
+    color: #9d70ff !important;
+    transform: translateY(-0.5px);
+    filter: drop-shadow(0 0 8px rgba(157, 112, 255, 0.6));
   }
 
   .mobile-nav__btn--active .mobile-nav__label {
-    color: #a855f7;
-    opacity: 1;
+    color: #ffffff !important;
+    font-weight: 700;
+  }
+
+  .mobile-nav__btn--active .mobile-nav__indicator {
+    background: linear-gradient(90deg, #8b5cf6, #a855f7);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.8);
   }
 
   .game-feed {

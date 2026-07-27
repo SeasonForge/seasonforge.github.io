@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-26T15:47:21.276Z",
+  "lastCheckedAt": "2026-07-27T11:20:43.238Z",
   "games": [
     {
       "id": "path-of-exile",
@@ -13,10 +13,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3987730",
-        "title": "Curse of the Allflame - Live Updates 🔴",
-        "url": "https://www.pathofexile.com/forum/view-thread/3987730",
-        "publishDate": "Fri, 24 Jul 2026 20:06:08 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3989358",
+        "title": "What We're Working On - Curse of the Allflame",
+        "url": "https://www.pathofexile.com/forum/view-thread/3989358",
+        "publishDate": "Mon, 27 Jul 2026 02:40:45 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -25,7 +25,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-24T22:15:42.047Z"
+        "updatedAt": "2026-07-27T11:20:43.061Z"
       },
       "history": [
         {
@@ -39,14 +39,14 @@
       ],
       "currentSeason": {
         "name": {
-          "en": "3.29: Curse of the Allflame",
-          "ru": "3.29: Curse of the Allflame"
+          "en": "Curse of the Allflame",
+          "ru": "Curse of the Allflame"
         },
         "startDate": "2026-07-24T20:00:00Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3989358"
       },
       "nextSeason": {
         "name": {
@@ -57,22 +57,18 @@
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3987730"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3989358"
       },
       "features": {
         "en": [
-          "Protection while channeling Verisium Ore",
-          "Animate Guardian's inventory",
-          "Crafting Bench in every town",
-          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
-          "ExileCon 2026 Race Qualifier Events"
+          "Curse of the Allflame league content and storyline",
+          "Curse of the Allflame Mystery Box without duplicate microtransactions",
+          "New league challenges with exclusive cosmetic rewards"
         ],
         "ru": [
-          "Защита во время поддержания жилы веризия",
-          "Инвентарь Анимированного стража",
-          "Верстак для создания предметов в каждом городе",
-          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
-          "Отборочные состязания к ExileCon 2026"
+          "Контент и сюжет лиги Проклятие Всепламени",
+          "Таинственная коробка Проклятия Всепламени без повторяющихся микротранзакций",
+          "Новые испытания лиги с эксклюзивными косметическими наградами"
         ]
       },
       "links": {

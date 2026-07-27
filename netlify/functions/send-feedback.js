@@ -12,13 +12,26 @@ export async function handler(event, context) {
     const data = JSON.parse(event.body || '{}');
     const { type, message, email, telemetry } = data;
 
-    if (!message || message.length < 10) {
+    const trimmedMessage = typeof message === 'string' ? message.trim() : '';
+    if (!trimmedMessage || trimmedMessage.length < 10 || trimmedMessage.length > 2000) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Message is too short' })
+        body: JSON.stringify({ error: 'Message length must be between 10 and 2000 characters' })
       };
     }
+
+    const trimmedEmail = typeof email === 'string' ? email.trim() : '';
+    if (trimmedEmail && (trimmedEmail.length > 100 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail))) {
+      return {
+        statusCode: 400,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ error: 'Invalid email address' })
+      };
+    }
+
+    const ALLOWED_TYPES = ['Bug', 'Idea', 'General', 'Feedback'];
+    const validatedType = ALLOWED_TYPES.includes(type) ? type : 'General';
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     const chatId = process.env.TELEGRAM_CHAT_ID;
@@ -33,22 +46,23 @@ export async function handler(event, context) {
     }
 
     // Escape HTML special characters for safety in Telegram HTML parse mode
-    const escapeHtml = (str) =>
+    const escapeHtml = (str, maxLen = 200) =>
       String(str || '')
+        .slice(0, maxLen)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
 
-    const typeEmoji = type === 'Bug' ? '🐛' : type === 'Idea' ? '💡' : '💬';
-    const cleanType = escapeHtml(type || 'Feedback');
-    const cleanEmail = email ? escapeHtml(email) : '<i>Не указан</i>';
-    const cleanMessage = escapeHtml(message);
+    const typeEmoji = validatedType === 'Bug' ? '🐛' : validatedType === 'Idea' ? '💡' : '💬';
+    const cleanType = escapeHtml(validatedType, 50);
+    const cleanEmail = trimmedEmail ? escapeHtml(trimmedEmail, 100) : '<i>Не указан</i>';
+    const cleanMessage = escapeHtml(trimmedMessage, 2000);
 
-    const cleanUrl = escapeHtml(telemetry?.url || 'N/A');
-    const cleanLang = escapeHtml(telemetry?.lang || 'N/A');
-    const cleanGame = escapeHtml(telemetry?.game || 'N/A');
-    const cleanRes = escapeHtml(telemetry?.resolution || 'N/A');
-    const cleanUserAgent = escapeHtml(telemetry?.userAgent || 'N/A');
+    const cleanUrl = escapeHtml(telemetry?.url, 200) || 'N/A';
+    const cleanLang = escapeHtml(telemetry?.lang, 20) || 'N/A';
+    const cleanGame = escapeHtml(telemetry?.game, 50) || 'N/A';
+    const cleanRes = escapeHtml(telemetry?.resolution, 30) || 'N/A';
+    const cleanUserAgent = escapeHtml(telemetry?.userAgent, 300) || 'N/A';
 
     const text = `<b>${typeEmoji} Новый отзыв на SeasonForge!</b>
 

@@ -1,5 +1,18 @@
 import { detectDefaultLocale } from '../i18n/index.js';
 
+/**
+ * Safely persist a key/value to localStorage. Silently ignores quota / disabled-storage errors.
+ * @param {string} key
+ * @param {string} value
+ */
+function safeSetItem(key, value) {
+  try {
+    localStorage.setItem(key, value);
+  } catch (e) {
+    // QuotaExceededError, SecurityError, or storage disabled (private mode) — non-fatal.
+  }
+}
+
 // Global application state.
 export const state = {
   games: [],
@@ -20,7 +33,7 @@ export const state = {
 export function setLanguage(lang) {
   if (lang === 'en' || lang === 'ru') {
     state.settings.lang = lang;
-    localStorage.setItem('seasonforge_lang', lang);
+    safeSetItem('seasonforge_lang', lang);
     document.documentElement.lang = lang;
   }
   return state;
@@ -39,7 +52,7 @@ export function setRawData(data) {
 export function setActiveGame(game, saveToStorage = false) {
   state.activeGame = game ?? null;
   if (saveToStorage && game) {
-    localStorage.setItem('lastGame', game.id);
+    safeSetItem('lastGame', game.id);
   }
   return state;
 }
@@ -57,7 +70,7 @@ export function setActiveView(view, saveToStorage = false) {
       'games': 'Games',
       'more': 'More'
     };
-    localStorage.setItem('lastView', mapping[state.activeView] || 'Game Card');
+    safeSetItem('lastView', mapping[state.activeView] || 'Game Card');
   }
   return state;
 }

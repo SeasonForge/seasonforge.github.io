@@ -247,7 +247,7 @@ export function render(games = []) {
 
       const hTag = escapeHtml(getCleanSeasonTag(getVal(h.name), game.id));
       return `
-        <div class="timeline-bar timeline-bar--past" style="left: ${hStart}%; width: ${hWidth}%;" data-game-id="${game.id}" data-season-type="history-${idx}">
+        <div class="timeline-bar timeline-bar--past" style="left: ${hStart}%; width: ${hWidth}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="history-${idx}">
           <span class="timeline-bar__title">${hTag}</span>
         </div>
       `;
@@ -264,26 +264,26 @@ export function render(games = []) {
           ${historyBarsHtml}
           <!-- Elapsed bar for current season -->
           ${elapsedWidth > 0 ? `
-            <div class="timeline-bar timeline-bar--current-elapsed" style="left: ${currentStart}%; width: ${elapsedWidth}%;" data-game-id="${game.id}" data-season-type="current">
+            <div class="timeline-bar timeline-bar--current-elapsed" style="left: ${currentStart}%; width: ${elapsedWidth}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="current">
               <span class="timeline-bar__title">${escapeHtml(getCleanSeasonTag(getVal(game.currentSeason?.name), game.id))}</span>
             </div>
           ` : ''}
           <!-- Remaining bar for current season -->
           ${remainingWidth > 0 ? `
-            <div class="timeline-bar timeline-bar--current-remaining" style="left: ${remainingStart}%; width: ${remainingWidth}%;" data-game-id="${game.id}" data-season-type="current">
+            <div class="timeline-bar timeline-bar--current-remaining" style="left: ${remainingStart}%; width: ${remainingWidth}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="current">
               ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${escapeHtml(getCleanSeasonTag(getVal(game.currentSeason?.name), game.id))}</span>` : ''}
             </div>
           ` : ''}
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-game-id="${game.id}" data-season-type="next">
+            <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="next">
               <span class="timeline-circle__label">${escapeHtml(getCleanSeasonTag(getVal(game.nextSeason?.name), game.id))}</span>
               <span class="timeline-circle__date">${formattedNextStart}</span>
             </div>
           ` : ''}
           <!-- Future season dashed line -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-bar timeline-bar--future ${isHype ? 'timeline-bar--future-hype' : ''}" style="left: ${nextStart}%; width: ${nextWidth}%;" data-game-id="${game.id}" data-season-type="next"></div>
+            <div class="timeline-bar timeline-bar--future ${isHype ? 'timeline-bar--future-hype' : ''}" style="left: ${nextStart}%; width: ${nextWidth}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="next"></div>
           ` : ''}
           <!-- Intersection dot for NOW line -->
           <div class="timeline-map__now-dot" style="left: ${nowPercent}%;"></div>

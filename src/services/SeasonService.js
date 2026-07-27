@@ -102,9 +102,9 @@ export class SeasonService {
     pathsToTry.push(fetchPath + cacheBuster);
     pathsToTry.push(fetchPath);
     pathsToTry.push('./data/seasons.json' + cacheBuster);
-    pathsToTry.push('/data/seasons.json' + cacheBuster);
+    const uniquePaths = Array.from(new Set(pathsToTry));
 
-    for (const pathUrl of pathsToTry) {
+    for (const pathUrl of uniquePaths) {
       try {
         const response = await fetch(pathUrl);
         if (response.ok) {

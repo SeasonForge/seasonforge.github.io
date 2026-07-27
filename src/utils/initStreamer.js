@@ -112,11 +112,16 @@ export function initStreamer(games = []) {
     }, 1500);
   }
 
-  // Event Listeners
-  typeSelect.addEventListener('change', updateUrl);
-  gameSelect.addEventListener('change', updateUrl);
-  copyBtn.addEventListener('click', handleCopy);
-  closeBtn.addEventListener('click', closeModal);
+  // Event Listeners (guarded against duplicates — initStreamer runs on every renderApp)
+  const ensureBound = (el, evt, handler) => {
+    if (!el || el.dataset.bound) return;
+    el.dataset.bound = 'true';
+    el.addEventListener(evt, handler);
+  };
+  ensureBound(typeSelect, 'change', updateUrl);
+  ensureBound(gameSelect, 'change', updateUrl);
+  ensureBound(copyBtn, 'click', handleCopy);
+  ensureBound(closeBtn, 'click', closeModal);
 
   // Re-attach fresh click listener to trigger button to avoid multiple handlers
   const newTriggerBtn = triggerBtn.cloneNode(true);

@@ -79,7 +79,10 @@ export function initFeedback(getCurrentGameId) {
     errorAlert.style.display = 'block';
   }
 
-  form.addEventListener('submit', async (e) => {
+  // Attach submit handler only once per form element lifetime
+  if (!form.dataset.bound) {
+    form.dataset.bound = 'true';
+    form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorAlert.style.display = 'none';
     errorAlert.textContent = '';
@@ -152,11 +155,17 @@ export function initFeedback(getCurrentGameId) {
       if (btnText) btnText.style.opacity = '1';
     }
   });
+  }
 
-  // Attach click listener to all feedback trigger elements
+  // Attach click listener to all feedback trigger elements (guarded against duplicates)
   document.querySelectorAll('.feedback-trigger-btn, #feedback-trigger-btn').forEach(btn => {
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = 'true';
     btn.addEventListener('click', openModal);
   });
 
-  cancelBtn.addEventListener('click', closeModal);
+  if (!cancelBtn.dataset.bound) {
+    cancelBtn.dataset.bound = 'true';
+    cancelBtn.addEventListener('click', closeModal);
+  }
 }

@@ -41,6 +41,7 @@ function escapeAttr(value) {
 
 const seasonService = new SeasonService();
 let countdownTimer = null;
+let toastTimer = null;
 let modalInstance = null;
 let toastInstance = null;
 
@@ -87,16 +88,20 @@ function renderToast(message, type = 'info') {
     return;
   }
 
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+    toastTimer = null;
+  }
+
   toastInstance = Toast({ message, type, isVisible: true });
   toastRoot.innerHTML = toastInstance.render();
 
-  window.setTimeout(() => {
-    if (!toastInstance) {
-      return;
+  toastTimer = window.setTimeout(() => {
+    if (toastInstance) {
+      toastInstance.hide();
+      toastRoot.innerHTML = toastInstance.render();
     }
-
-    toastInstance.hide();
-    toastRoot.innerHTML = toastInstance.render();
+    toastTimer = null;
   }, 2000);
 }
 
@@ -184,7 +189,7 @@ function renderApp() {
     checkedEl.textContent = formatLastUpdated(lastChecked, state.settings?.lang);
   }
 
-  const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(t => !Number.isNaN(t));
+  const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
   const updatedLbl = document.getElementById('lbl-last-updated');
@@ -456,8 +461,20 @@ function attachTimelineTooltipEvents() {
   grid.addEventListener('mousemove', (e) => {
     if (activeTouch) return;
     if (tooltip.style.display === 'block') {
-      tooltip.style.left = `${e.clientX + 15}px`;
-      tooltip.style.top = `${e.clientY + 15}px`;
+      const tooltipWidth = tooltip.offsetWidth || 220;
+      const tooltipHeight = tooltip.offsetHeight || 100;
+      let left = e.clientX + 15;
+      let top = e.clientY + 15;
+
+      if (left + tooltipWidth > window.innerWidth - 10) {
+        left = Math.max(10, e.clientX - tooltipWidth - 15);
+      }
+      if (top + tooltipHeight > window.innerHeight - 10) {
+        top = Math.max(10, e.clientY - tooltipHeight - 15);
+      }
+
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
     }
   }, { signal });
 
@@ -509,9 +526,13 @@ function attachTimelineTooltipEvents() {
       } else {
         // Desktop click: navigate to game card
         if (gameId) {
-          setActiveGame(gameId);
-          setActiveView('tracker');
-          renderApp();
+          const nextGame = getState().games.find((g) => g.id === gameId);
+          if (nextGame) {
+            setActiveGame(nextGame, true);
+            setActiveView('card', true);
+            renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
+            renderApp();
+          }
         }
       }
     } else {
@@ -536,47 +557,51 @@ function attachNavbarEvents() {
     return;
   }
 
-  navbarRoot.querySelectorAll('.navbar__tab[data-game-id]').forEach((tab) => {
-    tab.addEventListener('click', (event) => {
-      event.preventDefault();
-      const gameId = tab.getAttribute('data-game-id');
-      const state = getState();
-      const nextGame = state.games.find((game) => game.id === gameId || game.slug === gameId);
+  // Use event delegation on the navbar container — survives innerHTML re-renders without duplicate listeners
+  if (!navbarRoot.dataset.navbarDelegated) {
+    navbarRoot.dataset.navbarDelegated = 'true';
+    navbarRoot.addEventListener('click', (event) => {
+      // 1) Game tab click
+      const tab = event.target.closest('.navbar__tab[data-game-id]');
+      if (tab) {
+        event.preventDefault();
+        const gameId = tab.getAttribute('data-game-id');
+        const state = getState();
+        const nextGame = state.games.find((game) => game.id === gameId || game.slug === gameId);
 
-      if (nextGame) {
-        setActiveGame(nextGame, true);
-        setActiveView('card', true);
-        renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
-        renderApp();
-      }
-    });
-  });
-
-  // Attach tab switching events
-  const viewCardBtn = document.getElementById('view-card-btn');
-  const viewTimelineBtn = document.getElementById('view-timeline-btn');
-
-  if (viewCardBtn) {
-    viewCardBtn.addEventListener('click', () => {
-      const state = getState();
-      setActiveView('card', true);
-      if (!state.activeGame) {
-        const lastGame = localStorage.getItem('lastGame');
-        const matched = state.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
-        if (matched) {
-          setActiveGame(matched, true);
-        } else if (state.games.length > 0) {
-          setActiveGame(state.games[0], true);
+        if (nextGame) {
+          setActiveGame(nextGame, true);
+          setActiveView('card', true);
+          renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
+          renderApp();
         }
+        return;
       }
-      renderApp();
-    });
-  }
 
-  if (viewTimelineBtn) {
-    viewTimelineBtn.addEventListener('click', () => {
-      setActiveView('timeline', true);
-      renderApp();
+      // 2) View switch buttons (rendered fresh each time, but listener lives on parent)
+      const viewCardBtn = event.target.closest('#view-card-btn');
+      if (viewCardBtn) {
+        const state = getState();
+        setActiveView('card', true);
+        if (!state.activeGame) {
+          const lastGame = localStorage.getItem('lastGame');
+          const matched = state.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+          if (matched) {
+            setActiveGame(matched, true);
+          } else if (state.games.length > 0) {
+            setActiveGame(state.games[0], true);
+          }
+        }
+        renderApp();
+        return;
+      }
+
+      const viewTimelineBtn = event.target.closest('#view-timeline-btn');
+      if (viewTimelineBtn) {
+        setActiveView('timeline', true);
+        renderApp();
+        return;
+      }
     });
   }
 
@@ -593,7 +618,8 @@ function attachNavbarEvents() {
   else if (state.activeView === 'games' && mobGamesBtn) mobGamesBtn.classList.add('mobile-nav__btn--active');
   else if (state.activeView === 'more' && mobMoreBtn) mobMoreBtn.classList.add('mobile-nav__btn--active');
 
-  if (mobTrackerBtn) {
+  if (mobTrackerBtn && !mobTrackerBtn.dataset.bound) {
+    mobTrackerBtn.dataset.bound = 'true';
     mobTrackerBtn.addEventListener('click', () => {
       setActiveView('card', true);
       const currentState = getState();
@@ -605,19 +631,22 @@ function attachNavbarEvents() {
       renderApp();
     });
   }
-  if (mobTimelineBtn) {
+  if (mobTimelineBtn && !mobTimelineBtn.dataset.bound) {
+    mobTimelineBtn.dataset.bound = 'true';
     mobTimelineBtn.addEventListener('click', () => {
       setActiveView('timeline', true);
       renderApp();
     });
   }
-  if (mobGamesBtn) {
+  if (mobGamesBtn && !mobGamesBtn.dataset.bound) {
+    mobGamesBtn.dataset.bound = 'true';
     mobGamesBtn.addEventListener('click', () => {
       setActiveView('games', true);
       renderApp();
     });
   }
-  if (mobMoreBtn) {
+  if (mobMoreBtn && !mobMoreBtn.dataset.bound) {
+    mobMoreBtn.dataset.bound = 'true';
     mobMoreBtn.addEventListener('click', () => {
       setActiveView('more', true);
       renderApp();
@@ -652,7 +681,8 @@ function tickCountdown() {
         return;
       }
       
-      const cardEl = document.querySelector(`.game-card[data-game-id="${game.id}"] .game-card__countdown`);
+      const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
+      const cardEl = document.querySelector(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
       if (cardEl) {
         updateCountdownDOM(cardEl, calculateCountdown(targetDateStr));
       }
@@ -670,8 +700,10 @@ function tickCountdown() {
       
       if (total <= 0) return;
 
+      const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
       const update = (attr, val) => {
-        const el = document.querySelector(`[data-game-countdown="${game.id}"] [data-countdown="${attr}"]`);
+        const safeAttr = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(attr) : attr;
+        const el = document.querySelector(`[data-game-countdown="${safeGameId}"] [data-countdown="${safeAttr}"]`);
         if (el) el.textContent = val;
       };
       update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
@@ -769,7 +801,11 @@ async function initializeApp() {
       }
 
       // Update lastVisit timestamp
-      localStorage.setItem('lastVisit', String(now));
+      try {
+        localStorage.setItem('lastVisit', String(now));
+      } catch (e) {
+        // localStorage may be disabled (private mode) or quota exceeded — non-fatal.
+      }
     }
 
     renderApp();

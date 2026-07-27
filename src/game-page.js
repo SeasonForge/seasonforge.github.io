@@ -73,8 +73,12 @@ function renderApp() {
   if (lblLastUpdated) lblLastUpdated.textContent = t('header.lastUpdated');
   const lblDataSource = document.getElementById('lbl-data-source');
   if (lblDataSource) lblDataSource.textContent = t('header.dataSource');
-  const lblFooterText = document.getElementById('lbl-footer-text');
-  if (lblFooterText) lblFooterText.textContent = `© 2026 SeasonForge. ${t('header.subtitle')}`;
+  const lblFooterCopy = document.getElementById('lbl-footer-copy');
+  if (lblFooterCopy) lblFooterCopy.textContent = t('footer.copy') || `© 2026 SeasonForge. ${t('header.subtitle')}`;
+  const lblFooterChangelog = document.getElementById('lbl-footer-changelog');
+  if (lblFooterChangelog) lblFooterChangelog.textContent = t('footer.changelog') || 'Changelog';
+  const lblFooterPrivacy = document.getElementById('lbl-footer-privacy');
+  if (lblFooterPrivacy) lblFooterPrivacy.textContent = t('footer.privacy') || 'Privacy Policy';
 
   const breadHome = document.getElementById('breadcrumbs-home');
   if (breadHome) breadHome.textContent = t('breadcrumbs.home');
@@ -216,7 +220,7 @@ function renderApp() {
     checkedEl.textContent = formatLastUpdated(lastChecked, state.settings?.lang);
   }
 
-  const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(t => !Number.isNaN(t));
+  const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
   const updatedLbl = document.getElementById('lbl-last-updated');
@@ -238,7 +242,8 @@ function renderApp() {
   }
 
   const mobMoreBtn = document.getElementById('mob-btn-more');
-  if (mobMoreBtn) {
+  if (mobMoreBtn && !mobMoreBtn.dataset.bound) {
+    mobMoreBtn.dataset.bound = 'true';
     mobMoreBtn.addEventListener('click', () => {
       const trigger = document.getElementById('feedback-trigger-btn');
       if (trigger) trigger.click();

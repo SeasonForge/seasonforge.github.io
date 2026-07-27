@@ -2,7 +2,7 @@ name: Update Seasons
 
 on:
   schedule:
-    - cron: '0 */12 * * *' # Run every 12 hours
+    - cron: '23 */12 * * *' # Run every 12 hours at minute 23 to bypass queue delays
   workflow_dispatch: # Enable manual triggers
 
 permissions:

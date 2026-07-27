@@ -91,5 +91,18 @@
         <a href="../privacy/" style="color: #818cf8; text-decoration: none;">Privacy Policy</a>
       </div>
     </footer>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const hash = window.location.hash;
+        if (hash) {
+          const target = document.querySelector(hash);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.classList.add('changelog-item--highlight');
+          }
+        }
+      });
+    </script>
   </body>
 </html>

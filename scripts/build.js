@@ -301,16 +301,25 @@ async function build() {
     const changelogTemplate = fs.readFileSync(changelogTemplatePath, 'utf-8');
     const changelogList = database.changelog || [];
 
-    const changelogItemsHtml = changelogList.map(item => {
+    const changelogItemsHtml = changelogList.map((item, index) => {
       let dateStr = '';
+      let anchorId = 'latest';
       if (item.timestamp) {
         const d = new Date(item.timestamp);
         dateStr = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(d);
+        const yyyy = d.getUTCFullYear();
+        const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
+        const dd = String(d.getUTCDate()).padStart(2, '0');
+        const hh = String(d.getUTCHours()).padStart(2, '0');
+        const min = String(d.getUTCMinutes()).padStart(2, '0');
+        anchorId = `update-${yyyy}-${mm}-${dd}-${hh}${min}`;
       }
+      const itemKey = index === 0 ? 'latest' : anchorId;
+
       const textEn = item.text?.en || '';
       const textRu = item.text?.ru || '';
       return `
-        <article class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem;">
+        <article id="${itemKey}" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
           <time datetime="${item.timestamp || ''}" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">${dateStr}</time>
           <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4; margin-bottom: 0.25rem;">${escapeHtml(textRu)}</div>
           ${textEn && textEn !== textRu ? `<div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.35;">${escapeHtml(textEn)}</div>` : ''}

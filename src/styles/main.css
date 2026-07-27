@@ -1932,7 +1932,8 @@ body::after {
   font-weight: 500;
 }
 
-.app-header__meta {
+.app-header__meta,
+.app-header__meta-link {
   display: flex;
   align-items: center;
   gap: 1.25rem;
@@ -1942,6 +1943,29 @@ body::after {
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-soft);
   backdrop-filter: blur(8px);
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.app-header__meta-link:hover {
+  background: rgba(30, 41, 59, 0.8);
+  border-color: rgba(129, 140, 248, 0.45);
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.25);
+  transform: translateY(-1px);
+}
+
+.changelog-item:target,
+.changelog-item--highlight {
+  border-color: rgba(129, 140, 248, 0.6) !important;
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3) !important;
+  animation: pulseHighlight 2.5s ease forwards;
+}
+
+@keyframes pulseHighlight {
+  0% { background: rgba(99, 102, 241, 0.2); }
+  100% { background: rgba(255, 255, 255, 0.03); }
 }
 
 .app-header__right-block {

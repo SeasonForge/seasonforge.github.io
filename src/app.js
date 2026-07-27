@@ -350,6 +350,62 @@ function renderApp() {
 let timelineAbortController = null;
 const expiredGameCountdowns = new Set();
 
+function formatTooltipDate(dateStr, lang = 'en') {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+  return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' }).format(date);
+}
+
+function getTimelineTooltipContent(gameId, seasonType) {
+  const currentState = getState();
+  const game = currentState.games?.find(g => g.id === gameId);
+  if (!game) return '';
+
+  const isNext = seasonType === 'next';
+  const isHistory = String(seasonType).startsWith('history');
+  const lang = currentState.settings?.lang || 'en';
+
+  const gameName = escapeHtml(getVal(game.name));
+  let seasonName = 'TBA';
+  let start = null;
+  let end = null;
+
+  if (isNext) {
+    seasonName = escapeHtml(getVal(game.nextSeason?.name) || 'TBA');
+    start = game.nextSeason?.startDate;
+    end = game.nextSeason?.endDate;
+  } else if (isHistory) {
+    const idx = parseInt(String(seasonType).split('-')[1] || '0', 10);
+    const hItem = (game.history || [])[idx] || (game.history || [])[0];
+    seasonName = escapeHtml(getVal(hItem?.name) || 'Past Season');
+    start = hItem?.startDate;
+    end = hItem?.endDate;
+  } else {
+    seasonName = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
+    start = game.currentSeason?.startDate;
+    end = game.currentSeason?.endDate || game.nextSeason?.startDate;
+  }
+
+  const startStr = start ? formatTooltipDate(start, lang) : 'TBA';
+  const endStr = end ? formatTooltipDate(end, lang) : (isNext ? 'TBA' : t('timeline.ongoing') || 'Ongoing');
+
+  let durationStr = '—';
+  if (start && end) {
+    const diff = Math.round((new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24));
+    durationStr = `${diff} ${lang === 'ru' ? 'дней' : 'days'}`;
+  }
+
+  return `
+    <div class="timeline-tooltip__title">${gameName}</div>
+    <div class="timeline-tooltip__season">${seasonName}</div>
+    <div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div>
+    <div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div>
+    <div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>
+  `;
+}
+
 function attachTimelineTooltipEvents() {
   const grid = document.querySelector('.timeline-map__grid');
   const tooltip = document.getElementById('timeline-tooltip');
@@ -365,10 +421,12 @@ function attachTimelineTooltipEvents() {
 
   grid.addEventListener('mouseover', (e) => {
     if (activeTouch) return;
-    const item = e.target.closest('[data-tooltip]');
+    const item = e.target.closest('[data-game-id]');
     if (!item) return;
 
-    const content = item.getAttribute('data-tooltip');
+    const gameId = item.getAttribute('data-game-id');
+    const seasonType = item.getAttribute('data-season-type');
+    const content = getTimelineTooltipContent(gameId, seasonType);
     if (!content) return;
 
     tooltip.innerHTML = content;
@@ -385,7 +443,7 @@ function attachTimelineTooltipEvents() {
 
   grid.addEventListener('mouseout', (e) => {
     if (activeTouch) return;
-    const item = e.target.closest('[data-tooltip]');
+    const item = e.target.closest('[data-game-id]');
     if (!item) return;
 
     const related = e.relatedTarget;
@@ -394,43 +452,54 @@ function attachTimelineTooltipEvents() {
     tooltip.style.display = 'none';
   }, { signal });
 
-  // Tap-to-toggle details on mobile touchscreens
-  const handleTouchTap = (e) => {
-    const item = e.target.closest('[data-tooltip]');
+  // Tap-to-toggle details on mobile touchscreens and click to navigate
+  const handleTimelineClick = (e) => {
+    const item = e.target.closest('[data-game-id]');
     if (item) {
-      activeTouch = true;
-      e.stopPropagation();
+      const gameId = item.getAttribute('data-game-id');
+      const seasonType = item.getAttribute('data-season-type');
       
-      const content = item.getAttribute('data-tooltip');
-      if (!content) return;
+      // If touchscreen, show tooltip on first tap
+      if (e.pointerType === 'touch' || e.detail === 0) {
+        activeTouch = true;
+        e.stopPropagation();
+        
+        const content = getTimelineTooltipContent(gameId, seasonType);
+        if (!content) return;
 
-      tooltip.innerHTML = content;
-      tooltip.style.display = 'block';
-      
-      // Position the tooltip near the tapped element
-      const rect = item.getBoundingClientRect();
-      const tooltipWidth = tooltip.offsetWidth || 180;
-      const tooltipHeight = tooltip.offsetHeight || 120;
-      
-      tooltip.style.left = `${rect.left + rect.width / 2 - tooltipWidth / 2}px`;
-      tooltip.style.top = `${rect.top - tooltipHeight - 10}px`;
+        tooltip.innerHTML = content;
+        tooltip.style.display = 'block';
+        
+        const rect = item.getBoundingClientRect();
+        const tooltipWidth = tooltip.offsetWidth || 180;
+        const tooltipHeight = tooltip.offsetHeight || 120;
+        
+        tooltip.style.left = `${rect.left + rect.width / 2 - tooltipWidth / 2}px`;
+        tooltip.style.top = `${rect.top - tooltipHeight - 10}px`;
 
-      // Contain tooltip within screen edges
-      const tooltipRect = tooltip.getBoundingClientRect();
-      if (tooltipRect.left < 10) {
-        tooltip.style.left = '10px';
-      } else if (tooltipRect.right > window.innerWidth - 10) {
-        tooltip.style.left = `${window.innerWidth - tooltipWidth - 10}px`;
-      }
-      if (tooltipRect.top < 10) {
-        tooltip.style.top = `${rect.bottom + 10}px`;
+        const tooltipRect = tooltip.getBoundingClientRect();
+        if (tooltipRect.left < 10) {
+          tooltip.style.left = '10px';
+        } else if (tooltipRect.right > window.innerWidth - 10) {
+          tooltip.style.left = `${window.innerWidth - tooltipWidth - 10}px`;
+        }
+        if (tooltipRect.top < 10) {
+          tooltip.style.top = `${rect.bottom + 10}px`;
+        }
+      } else {
+        // Desktop click: navigate to game card
+        if (gameId) {
+          setActiveGame(gameId);
+          setActiveView('tracker');
+          renderApp();
+        }
       }
     } else {
       tooltip.style.display = 'none';
     }
   };
 
-  grid.addEventListener('click', handleTouchTap, { signal });
+  grid.addEventListener('click', handleTimelineClick, { signal });
   
   // Hide tooltip when clicking anywhere else
   document.addEventListener('click', (e) => {

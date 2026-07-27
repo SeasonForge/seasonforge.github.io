@@ -944,6 +944,8 @@ body::after {
 .timeline-map__months {
   display: flex;
   margin-left: var(--timeline-offset, 180px);
+  padding-left: 12px;
+  padding-right: 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
@@ -954,10 +956,27 @@ body::after {
 .timeline-map__month {
   flex: 1;
   text-align: center;
-  font-size: 0.72rem;
-  font-weight: 800;
-  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: #64748b;
   letter-spacing: 0.05em;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.timeline-map__month--adjacent {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94a3b8;
+  opacity: 0.85;
+}
+
+.timeline-map__month--current {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #a78bfa;
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.35);
 }
 
 .timeline-map__grid-lines {
@@ -985,12 +1004,31 @@ body::after {
 .timeline-map__row {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.75rem;
   position: relative;
+  padding: 0.4rem 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .timeline-map__row:last-child {
   margin-bottom: 0.5rem;
+}
+
+.timeline-map__row:hover {
+  background: color-mix(in srgb, var(--game-color) 7%, rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-color) 20%, transparent);
+}
+
+.timeline-map__row:hover .timeline-map__row-name {
+  color: #ffffff;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--game-color) 50%, transparent);
+}
+
+.timeline-map__row:hover .timeline-map__row-logo {
+  transform: scale(1.1);
 }
 
 .timeline-map__row-label {
@@ -999,12 +1037,14 @@ body::after {
   align-items: center;
   gap: 0.65rem;
   flex-shrink: 0;
+  cursor: pointer;
 }
 
 .timeline-map__row-logo {
   width: 24px;
   height: 24px;
   object-fit: contain;
+  transition: transform 0.2s ease;
 }
 
 .timeline-map__row-emoji {
@@ -1040,10 +1080,18 @@ body::after {
   transform: translateY(-50%);
 }
 
+.timeline-bar--past {
+  height: 4px;
+  background: var(--game-color);
+  opacity: 0.3; /* Archived past season bar */
+  animation: drawLine 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: left center;
+}
+
 .timeline-bar--current-elapsed {
   height: 4px;
   background: var(--game-color);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--game-color) 40%, transparent);
+  opacity: 0.5; /* Muted past phase */
   animation: drawLine 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform-origin: left center;
 }
@@ -1051,22 +1099,29 @@ body::after {
 .timeline-bar--current-remaining {
   height: 4px;
   background: var(--game-color);
-  opacity: 0.45; /* Faded remaining portion */
+  opacity: 1; /* Bright active present phase */
+  box-shadow: 0 0 10px color-mix(in srgb, var(--game-color) 65%, transparent);
   animation: drawLine 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform-origin: left center;
 }
 
 .timeline-bar__title {
   position: absolute;
-  bottom: 8px;
-  left: 4px;
-  font-size: 0.68rem;
+  bottom: 12px;
+  left: 0;
+  font-size: 0.65rem;
   font-weight: 700;
   white-space: nowrap;
-  max-width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: color-mix(in srgb, var(--game-color) 85%, #ffffff);
+  color: color-mix(in srgb, var(--game-color) 90%, #ffffff);
+  background: rgba(11, 15, 25, 0.82);
+  border: 1px solid color-mix(in srgb, var(--game-color) 30%, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  line-height: 1;
 }
 
 .timeline-circle {
@@ -1092,27 +1147,41 @@ body::after {
 
 .timeline-circle__label {
   position: absolute;
-  top: 14px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  color: color-mix(in srgb, var(--game-color) 85%, #ffffff);
+  color: color-mix(in srgb, var(--game-color) 90%, #ffffff);
+  background: rgba(11, 15, 25, 0.85);
+  border: 1px solid color-mix(in srgb, var(--game-color) 35%, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
   white-space: nowrap;
-  max-width: 80px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  line-height: 1;
 }
 
 .timeline-circle__date {
   position: absolute;
-  top: 26px;
+  top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 600;
-  color: var(--muted);
+  color: #94a3b8;
+  background: rgba(11, 15, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.08rem 0.35rem;
+  border-radius: 4px;
   white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
 }
 
 .timeline-bar--future {
@@ -1121,29 +1190,39 @@ body::after {
 }
 
 /* --- NOW LINE & DOT --- */
+@keyframes subtleNowPulse {
+  0%, 100% { opacity: 0.75; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.03); }
+}
+
 .timeline-map__now-line {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 1.5px;
-  background: linear-gradient(to bottom, var(--accent), rgba(139, 92, 246, 0.05));
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(167, 139, 250, 0.7), rgba(139, 92, 246, 0.15) 80%, transparent);
   z-index: 3;
   pointer-events: none;
 }
 
 .timeline-map__now-badge {
   position: absolute;
-  top: 8px;
+  top: 6px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--accent);
-  color: #fff;
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #e0e7ff;
   font-size: 0.58rem;
   font-weight: 800;
-  padding: 0.15rem 0.35rem;
-  border-radius: 4px;
-  letter-spacing: 0.05em;
-  box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+  animation: subtleNowPulse 4s ease-in-out infinite;
 }
 
 .timeline-map__now-dot {

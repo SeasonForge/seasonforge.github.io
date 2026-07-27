@@ -18,9 +18,28 @@ function formatDate(dateStr, lang = 'en') {
   return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' }).format(date);
 }
 
-function getShortName(name) {
-  if (!name) return '';
-  const parts = name.split(/[:—-]/);
+function getCleanSeasonTag(name, gameId) {
+  if (!name) return 'TBA';
+  const str = String(name).trim();
+
+  // Version numbers (e.g. 3.29, 0.5.0, 1.0)
+  const versionMatch = str.match(/\b\d+\.\d+(?:\.\d+)?\b/);
+  if (versionMatch) {
+    return `v${versionMatch[0]}`;
+  }
+
+  // Season / Cycle / SS numbers
+  const numberMatch = str.match(/\b\d+\b/);
+  if (numberMatch) {
+    const num = numberMatch[0];
+    if (gameId === 'diablo-iv') return `S${num}`;
+    if (gameId === 'last-epoch') return `C${num}`;
+    if (gameId === 'torchlight-infinite') return `SS${num}`;
+    return `#${num}`;
+  }
+
+  const clean = str.replace(/\s*\((Estimated|Release|Прогноз|Релиз)\)/gi, '').trim();
+  const parts = clean.split(/[:—-]/);
   return parts[0].trim();
 }
 
@@ -47,6 +66,16 @@ export function render(games = []) {
   let maxDate = new Date(`${currentYear}-12-31T23:59:59Z`).getTime();
 
   items.forEach(g => {
+    (g.history || []).forEach(h => {
+      [h.startDate, h.endDate].forEach(d => {
+        if (!d) return;
+        const timeMs = new Date(d).getTime();
+        if (!Number.isNaN(timeMs)) {
+          if (timeMs < minDate) minDate = timeMs;
+          if (timeMs > maxDate) maxDate = timeMs;
+        }
+      });
+    });
     [g.currentSeason?.startDate, g.currentSeason?.endDate, g.nextSeason?.startDate, g.nextSeason?.endDate].forEach(d => {
       if (!d) return;
       const timeMs = new Date(d).getTime();
@@ -55,6 +84,15 @@ export function render(games = []) {
         if (timeMs > maxDate) maxDate = timeMs;
       }
     });
+    if (g.nextSeason?.startDate) {
+      const nextStartMs = new Date(g.nextSeason.startDate).getTime();
+      const estEndMs = g.nextSeason.endDate
+        ? new Date(g.nextSeason.endDate).getTime()
+        : nextStartMs + 90 * 24 * 60 * 60 * 1000;
+      if (!Number.isNaN(estEndMs) && estEndMs > maxDate) {
+        maxDate = estEndMs;
+      }
+    }
   });
 
   const startTimelineDate = new Date(minDate);
@@ -80,20 +118,36 @@ export function render(games = []) {
   const nowTime = new Date().getTime();
   const nowPercent = Math.max(0, Math.min(100, ((nowTime - startTimeline) / totalDuration) * 100));
 
-  // 3. Dynamic Grid months header
+  // 3. Dynamic Grid months header with depth perspective
   const activeMonths = [];
   const monthCursor = new Date(startTimelineDate);
   monthCursor.setDate(1);
   const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
   const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
 
+  const nowObj = new Date();
+  const currentMonthIdx = nowObj.getMonth();
+  const currentYearVal = nowObj.getFullYear();
+
   while (monthCursor <= endTimelineDate) {
-    activeMonths.push(monthFormatter.format(monthCursor).toUpperCase().slice(0, 3));
+    const isCurrent = monthCursor.getMonth() === currentMonthIdx && monthCursor.getFullYear() === currentYearVal;
+    const isAdjacent = Math.abs((monthCursor.getFullYear() * 12 + monthCursor.getMonth()) - (currentYearVal * 12 + currentMonthIdx)) === 1;
+
+    activeMonths.push({
+      name: monthFormatter.format(monthCursor).toUpperCase().slice(0, 3),
+      isCurrent,
+      isAdjacent
+    });
     monthCursor.setMonth(monthCursor.getMonth() + 1);
   }
 
   const monthsHeaderHtml = activeMonths
-    .map(m => `<div class="timeline-map__month">${m}</div>`)
+    .map(m => {
+      let cls = 'timeline-map__month';
+      if (m.isCurrent) cls += ' timeline-map__month--current';
+      else if (m.isAdjacent) cls += ' timeline-map__month--adjacent';
+      return `<div class="${cls}">${m.name}</div>`;
+    })
     .join('');
 
   // Grid lines mapping
@@ -119,13 +173,7 @@ export function render(games = []) {
       durationStr = `${diff} ${lang === 'ru' ? 'дней' : 'days'}`;
     }
 
-    return `
-      <div class="timeline-tooltip__title">${gameName}</div>
-      <div class="timeline-tooltip__season">${seasonName}</div>
-      <div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div>
-      <div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div>
-      <div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>
-    `.replace(/"/g, '&quot;');
+    return `<div class="timeline-tooltip__title">${gameName}</div><div class="timeline-tooltip__season">${seasonName}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>`.replace(/\s+/g, ' ').replace(/"/g, '&quot;');
   };
 
   // 4. Render rows
@@ -172,10 +220,10 @@ export function render(games = []) {
       const nextStartMs = new Date(game.nextSeason.startDate).getTime();
       const estEndMs = game.nextSeason.endDate 
         ? new Date(game.nextSeason.endDate).getTime() 
-        : nextStartMs + 120 * 24 * 60 * 60 * 1000;
-      nextEnd = getPercent(estEndMs);
+        : nextStartMs + 90 * 24 * 60 * 60 * 1000;
+      nextEnd = Math.min(100, getPercent(new Date(estEndMs).toISOString()));
     }
-    const nextWidth = Math.max(0, nextEnd - nextStart);
+    const nextWidth = Math.max(0, Math.min(100 - nextStart, nextEnd - nextStart));
 
     const formattedNextStart = game.nextSeason?.startDate ? formatDate(game.nextSeason.startDate, lang) : '';
 
@@ -183,13 +231,27 @@ export function render(games = []) {
       ? `<img src="./assets/logos/${logo}" alt="${name}" class="timeline-map__row-logo" />`
       : `<span class="timeline-map__row-emoji">${escapeHtml(game.icon || '🎮')}</span>`;
 
-    const currentTooltip = getTooltipHtml(game, false);
-    const nextTooltip = getTooltipHtml(game, true);
+
 
     const daysUntil = game.nextSeason?.startDate 
       ? (new Date(game.nextSeason.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
       : Infinity;
     const isHype = daysUntil >= 0 && daysUntil <= 14;
+
+    const historyBarsHtml = (game.history || []).map((h, idx) => {
+      if (!h.startDate || !h.endDate) return '';
+      const hStart = getPercent(h.startDate);
+      const hEnd = getPercent(h.endDate);
+      const hWidth = Math.max(0, hEnd - hStart);
+      if (hWidth <= 0) return '';
+
+      const hTag = escapeHtml(getCleanSeasonTag(getVal(h.name), game.id));
+      return `
+        <div class="timeline-bar timeline-bar--past" style="left: ${hStart}%; width: ${hWidth}%;" data-game-id="${game.id}" data-season-type="history-${idx}">
+          <span class="timeline-bar__title">${hTag}</span>
+        </div>
+      `;
+    }).join('\n');
 
     return `
       <div class="timeline-map__row" style="--game-color: ${color}">
@@ -198,28 +260,30 @@ export function render(games = []) {
           <span class="timeline-map__row-name">${name}</span>
         </div>
         <div class="timeline-map__row-track">
+          <!-- Past archived seasons -->
+          ${historyBarsHtml}
           <!-- Elapsed bar for current season -->
           ${elapsedWidth > 0 ? `
-            <div class="timeline-bar timeline-bar--current-elapsed" style="left: ${currentStart}%; width: ${elapsedWidth}%;" data-tooltip="${currentTooltip}">
-              <span class="timeline-bar__title">${escapeHtml(getShortName(getVal(game.currentSeason?.name)) || 'TBA')}</span>
+            <div class="timeline-bar timeline-bar--current-elapsed" style="left: ${currentStart}%; width: ${elapsedWidth}%;" data-game-id="${game.id}" data-season-type="current">
+              <span class="timeline-bar__title">${escapeHtml(getCleanSeasonTag(getVal(game.currentSeason?.name), game.id))}</span>
             </div>
           ` : ''}
           <!-- Remaining bar for current season -->
           ${remainingWidth > 0 ? `
-            <div class="timeline-bar timeline-bar--current-remaining" style="left: ${remainingStart}%; width: ${remainingWidth}%;" data-tooltip="${currentTooltip}">
-              ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${escapeHtml(getShortName(getVal(game.currentSeason?.name)) || 'TBA')}</span>` : ''}
+            <div class="timeline-bar timeline-bar--current-remaining" style="left: ${remainingStart}%; width: ${remainingWidth}%;" data-game-id="${game.id}" data-season-type="current">
+              ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${escapeHtml(getCleanSeasonTag(getVal(game.currentSeason?.name), game.id))}</span>` : ''}
             </div>
           ` : ''}
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-tooltip="${nextTooltip}">
-              <span class="timeline-circle__label">${escapeHtml(getShortName(getVal(game.nextSeason?.name)) || 'TBA')}</span>
+            <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-game-id="${game.id}" data-season-type="next">
+              <span class="timeline-circle__label">${escapeHtml(getCleanSeasonTag(getVal(game.nextSeason?.name), game.id))}</span>
               <span class="timeline-circle__date">${formattedNextStart}</span>
             </div>
           ` : ''}
           <!-- Future season dashed line -->
           ${game.nextSeason?.startDate ? `
-            <div class="timeline-bar timeline-bar--future ${isHype ? 'timeline-bar--future-hype' : ''}" style="left: ${nextStart}%; width: ${nextWidth}%;" data-tooltip="${nextTooltip}"></div>
+            <div class="timeline-bar timeline-bar--future ${isHype ? 'timeline-bar--future-hype' : ''}" style="left: ${nextStart}%; width: ${nextWidth}%;" data-game-id="${game.id}" data-season-type="next"></div>
           ` : ''}
           <!-- Intersection dot for NOW line -->
           <div class="timeline-map__now-dot" style="left: ${nowPercent}%;"></div>

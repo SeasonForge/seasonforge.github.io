@@ -89,6 +89,11 @@ export const en = {
     tba: "TBA",
     hype: "🔥 STARTING SOON"
   },
+  footer: {
+    copy: "© 2026 SeasonForge. Automatic ARPG Season Monitoring.",
+    changelog: "Changelog",
+    privacy: "Privacy Policy"
+  },
   seo: {
     title: "SeasonForge - ARPG Season Tracker",
     description: "Monitor current and upcoming seasons, cycles, and leagues of major action RPGs like Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite."

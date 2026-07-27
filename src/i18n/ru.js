@@ -89,6 +89,11 @@ export const ru = {
     tba: "TBA",
     hype: "🔥 СКОРО СТАРТ"
   },
+  footer: {
+    copy: "© 2026 SeasonForge. Автоматический мониторинг ARPG сезонов.",
+    changelog: "История обновлений",
+    privacy: "Политика конфиденциальности"
+  },
   seo: {
     title: "SeasonForge - Мониторинг ARPG Сезонов",
     description: "Следите за текущими и будущими сезонами, циклами и лигами главных ролевых экшенов: Path of Exile, Diablo IV, Last Epoch и Torchlight Infinite."

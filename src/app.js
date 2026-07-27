@@ -195,6 +195,15 @@ function renderApp() {
     timeEl.textContent = formatLastUpdated(latestTime, state.settings?.lang);
   }
 
+  // Update footer translations
+  const footerCopy = document.getElementById('lbl-footer-copy');
+  const footerChangelog = document.getElementById('lbl-footer-changelog');
+  const footerPrivacy = document.getElementById('lbl-footer-privacy');
+
+  if (footerCopy) footerCopy.textContent = t('footer.copy') || '© 2026 SeasonForge.';
+  if (footerChangelog) footerChangelog.textContent = t('footer.changelog') || 'Changelog';
+  if (footerPrivacy) footerPrivacy.textContent = t('footer.privacy') || 'Privacy Policy';
+
   // Attach click listener for header meta date to navigate to ./changelog/ as an easter egg
   const headerMeta = document.querySelector('.app-header__meta');
   if (headerMeta && !headerMeta.dataset.changelogBound) {

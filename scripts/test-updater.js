@@ -38,8 +38,8 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         currentSeasonNameRu: "0.5.0: Return of the Ancients",
         currentSeasonStartDate: "2026-05-29",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "Version 1.0 (Release)",
-        nextSeasonNameRu: "Version 1.0 (Release)",
+        nextSeasonNameEn: "Version 1.0 (Release) (Estimated)",
+        nextSeasonNameRu: "Версия 1.0 (Релиз) (Прогноз)",
         nextSeasonStartDate: "2026-12-15",
         nextSeasonEndDate: "",
         nextSeasonVerification: "estimated",
@@ -48,13 +48,13 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
           "Runes of Aldur league testing",
           "Atlas of Worlds rework for the sequel",
           "New passive skill tree for early access",
-          "Full release and new campaign acts in December"
+          "Full release and new campaign acts in December (Estimated)"
         ],
         featuresRu: [
           "Тестирование лиги Runes of Aldur",
           "Переработка механики Атласа Миров под сиквел",
           "Новое древо пассивных умений для раннего доступа",
-          "Полный релиз и новые акты кампании в декабре"
+          "Полный релиз и новые акты кампании в декабре (прогноз)"
         ]
       };
     case 'diablo-iv':
@@ -63,8 +63,8 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         currentSeasonNameRu: "Season 14: Season of Death Awakening",
         currentSeasonStartDate: "2026-07-01",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "Season 15",
-        nextSeasonNameRu: "Season 15",
+        nextSeasonNameEn: "Season 15 (Estimated)",
+        nextSeasonNameRu: "Сезон 15 (Прогноз)",
         nextSeasonStartDate: "2026-09-19",
         nextSeasonEndDate: "",
         nextSeasonVerification: "estimated",
@@ -90,8 +90,8 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         currentSeasonNameRu: "Cycle 4: Shattered Omens",
         currentSeasonStartDate: "2026-03-27",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "Cycle 5 & Orobyss Expansion",
-        nextSeasonNameRu: "Cycle 5 & Orobyss Expansion",
+        nextSeasonNameEn: "Cycle 5 (Estimated)",
+        nextSeasonNameRu: "Цикл 5 (Прогноз)",
         nextSeasonStartDate: "2026-09-11",
         nextSeasonEndDate: "",
         nextSeasonVerification: "estimated",
@@ -115,8 +115,8 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         currentSeasonNameRu: "SS13: Afterlight",
         currentSeasonStartDate: "2026-07-18",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "SS14",
-        nextSeasonNameRu: "SS14",
+        nextSeasonNameEn: "SS14 (Estimated)",
+        nextSeasonNameRu: "SS14 (Прогноз)",
         nextSeasonStartDate: "2026-10-24",
         nextSeasonEndDate: "",
         nextSeasonVerification: "estimated",

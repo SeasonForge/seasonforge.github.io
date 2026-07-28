@@ -2,6 +2,7 @@ import { render as renderFeedbackModal } from '../components/FeedbackModal.js';
 import { sendFeedback } from './feedback.js';
 import { t } from '../i18n/index.js';
 import { getState } from '../store/state.js';
+import { trackEvent } from './analytics.js';
 
 export function initFeedback(getCurrentGameId) {
   const modalRoot = document.getElementById('modal-root');
@@ -141,6 +142,10 @@ export function initFeedback(getCurrentGameId) {
 
     try {
       await sendFeedback(feedbackData);
+      trackEvent('feedback_submitted', {
+        feedback_type: feedbackData.type || 'Other',
+        game_id: (currentGame && currentGame !== 'None') ? currentGame : (state.activeGame?.id || 'path-of-exile')
+      });
       form.style.display = 'none';
       successScreen.style.display = 'flex';
       setTimeout(() => {

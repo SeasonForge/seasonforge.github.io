@@ -154,6 +154,10 @@ export function render(game = {}, options = {}) {
   const moreDetailsTarget = isDetailPage ? 'target="_blank"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
+  const isForecastStatus = isNextSeasonEstimated;
+  const dateStatusVal = isForecastStatus ? 'forecast' : 'official';
+  const gameIdVal = escapeAttr(game.id || '');
+
   let sourceHtml = '';
   if (game.latestNews && game.latestNews.url) {
     const newsTitle = escapeHtml(game.latestNews.title || 'announcement');
@@ -162,14 +166,23 @@ export function render(game = {}, options = {}) {
     const formattedNewsDate = rawDate ? formatLocalDate(rawDate) : '';
     const dateText = formattedNewsDate ? ` ${t('card.publishedAt')} ${formattedNewsDate}` : '';
     const sourceLabel = escapeHtml(game.latestNews.source || 'Official Source');
+    const newsSourceType = (newsUrl.includes('steam') || (game.latestNews.source || '').toLowerCase().includes('steam'))
+      ? 'steam_news'
+      : 'official_news';
+
     sourceHtml = `
       <p class="game-card__source-info">
         ${t('card.sourceLabel')}: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
         <span class="game-card__source-title" title="${newsTitle}">${newsTitle}</span>${dateText} • 
-        <a href="${newsUrl}" target="_blank" class="game-card__source-link">${t('card.readOriginal')}</a>
+        <a href="${newsUrl}" target="_blank" class="game-card__source-link" data-analytics-source="official_source" data-source-type="${newsSourceType}" data-date-status="${dateStatusVal}" data-game-id="${gameIdVal}">${t('card.readOriginal')}</a>
       </p>
     `;
   }
+
+  const detailsSourceType = moreDetailsUrl.includes('steam') ? 'steam_news' : 'official_announcement';
+  const detailsLinkAttr = isDetailPage && moreDetailsUrl !== website && !moreDetailsUrl.startsWith('./')
+    ? ` data-analytics-source="official_source" data-source-type="${detailsSourceType}" data-date-status="${dateStatusVal}" data-game-id="${gameIdVal}"`
+    : '';
 
   return `
     <article class="game-card" data-game-id="${escapeAttr(game.id || '')}" style="--game-color: ${color};">
@@ -231,7 +244,7 @@ export function render(game = {}, options = {}) {
             <span class="game-card__label">${t('card.developerLabel')}</span>
             <strong>${developer}</strong>
           </div>
-          ${isDetailPage ? `<a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer">${t('card.detailsBtn')}</a>` : ''}
+          ${isDetailPage ? `<a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer"${detailsLinkAttr}>${t('card.detailsBtn')}</a>` : ''}
         </section>
       </div>
 

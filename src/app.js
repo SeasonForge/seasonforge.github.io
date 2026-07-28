@@ -26,6 +26,7 @@ import { initStreamer } from './utils/initStreamer.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
+import { trackEvent } from './utils/analytics.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -370,10 +371,55 @@ function renderApp() {
   if (state.activeView === 'timeline') {
     attachTimelineTooltipEvents();
   }
+  checkForecastViewed();
+  initAnalyticsSourceDelegate();
 }
 
 let timelineAbortController = null;
 const expiredGameCountdowns = new Set();
+const trackedForecastGames = new Set();
+
+function checkForecastViewed() {
+  const state = getState();
+  const checkGame = (g) => {
+    if (!g || !g.id || !g.nextSeason) return;
+    const isEstimated = g.nextSeason.verification === 'estimated' || g.nextSeason.verification === 'ai';
+    if (isEstimated && g.nextSeason.startDate && !trackedForecastGames.has(g.id)) {
+      trackedForecastGames.add(g.id);
+      trackEvent('forecast_viewed', {
+        game_id: g.id,
+        season_name: getVal(g.nextSeason.name) || 'Estimated Season'
+      });
+    }
+  };
+
+  if (state.activeView === 'card' && state.activeGame) {
+    checkGame(state.activeGame);
+  } else if (state.activeView === 'timeline' && Array.isArray(state.games)) {
+    state.games.forEach(checkGame);
+  }
+}
+
+let _analyticsSourceBound = false;
+function initAnalyticsSourceDelegate() {
+  if (_analyticsSourceBound) return;
+  _analyticsSourceBound = true;
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[data-analytics-source="official_source"]');
+    if (link) {
+      const gameId = link.getAttribute('data-game-id');
+      const sourceType = link.getAttribute('data-source-type');
+      const dateStatus = link.getAttribute('data-date-status');
+      if (gameId && sourceType && dateStatus) {
+        trackEvent('official_source_opened', {
+          game_id: gameId,
+          source_type: sourceType,
+          date_status: dateStatus
+        });
+      }
+    }
+  });
+}
 
 function formatTooltipDate(dateStr, lang = 'en') {
   if (!dateStr) return '';
@@ -528,6 +574,11 @@ function attachTimelineTooltipEvents() {
         if (gameId) {
           const nextGame = getState().games.find((g) => g.id === gameId);
           if (nextGame) {
+            trackEvent('game_selected', {
+              game_id: nextGame.id,
+              game_name: getVal(nextGame.name) || 'Untitled Game',
+              view: 'timeline'
+            });
             setActiveGame(nextGame, true);
             setActiveView('card', true);
             renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));
@@ -570,6 +621,11 @@ function attachNavbarEvents() {
         const nextGame = state.games.find((game) => game.id === gameId || game.slug === gameId);
 
         if (nextGame) {
+          trackEvent('game_selected', {
+            game_id: nextGame.id,
+            game_name: getVal(nextGame.name) || 'Untitled Game',
+            view: state.activeView || 'card'
+          });
           setActiveGame(nextGame, true);
           setActiveView('card', true);
           renderToast(t('toasts.gameSelected', { game: getVal(nextGame.name) }));

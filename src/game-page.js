@@ -10,11 +10,13 @@ import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
+import { trackEvent } from './utils/analytics.js';
 
 // SeasonService receives the path directly to avoid mutating the shared CONFIG object
 const seasonService = new SeasonService('../../data/seasons.json');
 let activeGame = null;
 let countdownTimer = null;
+let _analyticsPageSourceBound = false;
 
 function updateSeo(game) {
   if (!game) return;
@@ -144,8 +146,9 @@ function renderApp() {
         
         const formattedStart = start ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
         const formattedEnd = end ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
+        const itemSourceType = (item.sourceUrl || '').includes('steam') ? 'steam_news' : 'official_announcement';
         const linkHtml = item.sourceUrl 
-          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link">${t('card.readUrl')}</a>` 
+          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link" data-analytics-source="official_source" data-source-type="${itemSourceType}" data-date-status="official" data-game-id="${escapeAttr(activeGame.id)}">${t('card.readUrl')}</a>` 
           : '—';
           
         rows.push(`
@@ -300,6 +303,41 @@ async function init() {
     if (!activeGame) {
       console.error(`[Detail Page] Game with ID ${gameId} not found in seasons database`);
       return;
+    }
+
+    // Track game page opened event
+    trackEvent('game_page_opened', {
+      game_id: activeGame.id,
+      game_name: getVal(activeGame.name) || 'Untitled Game'
+    });
+
+    // Check & track forecast_viewed event if dates are estimated
+    const isForecast = activeGame.nextSeason?.verification === 'estimated' || activeGame.nextSeason?.verification === 'ai';
+    if (isForecast && activeGame.nextSeason?.startDate) {
+      trackEvent('forecast_viewed', {
+        game_id: activeGame.id,
+        season_name: getVal(activeGame.nextSeason.name) || 'Estimated Season'
+      });
+    }
+
+    // Attach click listener for official date/news sources (once per module)
+    if (!_analyticsPageSourceBound) {
+      _analyticsPageSourceBound = true;
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a[data-analytics-source="official_source"]');
+        if (link) {
+          const gId = link.getAttribute('data-game-id');
+          const sType = link.getAttribute('data-source-type');
+          const dStatus = link.getAttribute('data-date-status');
+          if (gId && sType && dStatus) {
+            trackEvent('official_source_opened', {
+              game_id: gId,
+              source_type: sType,
+              date_status: dStatus
+            });
+          }
+        }
+      });
     }
 
     // Check overlay parameters

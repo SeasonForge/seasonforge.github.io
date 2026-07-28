@@ -1,5 +1,6 @@
 import { render as renderStreamerModal } from '../components/StreamerModal.js';
 import { t } from '../i18n/index.js';
+import { trackEvent } from './analytics.js';
 
 export function initStreamer(games = []) {
   const triggerBtn = document.getElementById('streamer-trigger-btn');
@@ -59,12 +60,14 @@ export function initStreamer(games = []) {
     }
   }
 
-  function openModal() {
+  function openModal(placement = 'header') {
     overlay.style.display = 'flex';
     updateUrl();
     setTimeout(() => {
       overlay.classList.add('streamer-modal-overlay--visible');
     }, 10);
+
+    trackEvent('obs_configurator_opened', { placement });
     
     document.addEventListener('keydown', handleEsc);
     overlay.addEventListener('click', handleOutsideClick);
@@ -102,6 +105,13 @@ export function initStreamer(games = []) {
       document.execCommand('copy');
     }
 
+    const widgetType = typeSelect.value || 'status';
+    const selectedGame = widgetType === 'timeline' ? 'all' : (gameSelect.value || 'path-of-exile');
+    trackEvent('obs_widget_copied', {
+      widget_type: widgetType,
+      game_id: selectedGame
+    });
+
     const btnText = copyBtn.querySelector('.streamer-form__btn-copy-text');
     copyBtn.classList.add('streamer-form__btn-copy--success');
     if (btnText) btnText.textContent = t('streamer.copied');
@@ -126,5 +136,12 @@ export function initStreamer(games = []) {
   // Re-attach fresh click listener to trigger button to avoid multiple handlers
   const newTriggerBtn = triggerBtn.cloneNode(true);
   triggerBtn.parentNode.replaceChild(newTriggerBtn, triggerBtn);
-  newTriggerBtn.addEventListener('click', openModal);
+  newTriggerBtn.addEventListener('click', () => openModal('header'));
+
+  // Also bind mobile trigger button if present
+  const mobTriggerBtn = document.getElementById('mob-streamer-trigger');
+  if (mobTriggerBtn && !mobTriggerBtn.dataset.boundObsTrack) {
+    mobTriggerBtn.dataset.boundObsTrack = 'true';
+    mobTriggerBtn.addEventListener('click', () => openModal('mobile_menu'));
+  }
 }

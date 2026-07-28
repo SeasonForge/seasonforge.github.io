@@ -10,12 +10,19 @@ export function render() {
         <button id="mobile-app-modal-close" class="feedback-modal__close" aria-label="Close">✕</button>
         
         <div class="mobile-app-modal__header">
-          <div class="mobile-app-modal__badge">Android • Free</div>
+          <div class="mobile-app-modal__badge">Android • BETA</div>
           <h2 id="app-modal-title" class="mobile-app-modal__title">${t('mobileApp.modalTitle')}</h2>
           <p class="mobile-app-modal__subtitle">${t('mobileApp.modalSubtitle')}</p>
         </div>
 
         <div class="mobile-app-modal__body">
+          <div class="mobile-app-modal__protect-notice" style="margin-bottom: 16px; border-color: rgba(234, 179, 8, 0.3); background: rgba(234, 179, 8, 0.05);">
+            <div class="mobile-app-modal__protect-header">
+              <h4>${t('mobileApp.soloNoticeTitle')}</h4>
+            </div>
+            <p style="margin: 0;">${t('mobileApp.soloNoticeDesc')}</p>
+          </div>
+
           <div class="mobile-app-modal__features">
             <div class="mobile-app-modal__feature-item">
               <span class="mobile-app-modal__feature-icon">📱</span>

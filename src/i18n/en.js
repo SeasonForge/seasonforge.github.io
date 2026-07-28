@@ -14,12 +14,12 @@ export const en = {
     btnMore: "More"
   },
   mobileApp: {
-    badge: "Android App",
+    badge: "BETA",
     title: "SeasonForge Mobile",
-    desc: "Home screen widgets & season reminders on your phone.",
+    desc: "Home screen widgets & season reminders. Currently in Beta — feedback is very welcome!",
     btnDownload: "Download on GitHub",
     btnGuide: "How to Install",
-    headerBtn: "App",
+    headerBtn: "App (Beta)",
     modalTitle: "SeasonForge for Android",
     modalSubtitle: "Track ARPG seasons right from your smartphone home screen",
     widgetsTitle: "Home Screen Widgets",
@@ -30,7 +30,9 @@ export const en = {
     protectDesc: "Android may display a standard security notice as the app is installed directly.",
     protectStep1: "1. Tap 'Download on GitHub Releases' and select the `.apk` file.",
     protectStep2: "2. If prompted by Play Protect, select: 'More details' → 'Install anyway'.",
-    downloadDirect: "Download on GitHub Releases"
+    downloadDirect: "Download on GitHub Releases",
+    soloNoticeTitle: "🛠️ Solo-Project (Beta)",
+    soloNoticeDesc: "The Android app is currently in active testing. If you run into any bugs or have feedback, let me know — it really helps!"
   },
   statuses: {
     newest: "🔥 Newest",

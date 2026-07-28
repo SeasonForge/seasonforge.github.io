@@ -14,12 +14,12 @@ export const ru = {
     btnMore: "Ещё"
   },
   mobileApp: {
-    badge: "Android App",
+    badge: "BETA",
     title: "SeasonForge Mobile",
-    desc: "Виджеты на рабочий стол и напоминания о сезонах на смартфонах.",
+    desc: "Виджеты на рабочий стол и напоминания о сезонах. Приложение в бэте — будем рады вашим отзывам!",
     btnDownload: "Скачать на GitHub",
     btnGuide: "Установка",
-    headerBtn: "Приложение",
+    headerBtn: "App (Beta)",
     modalTitle: "SeasonForge для Android",
     modalSubtitle: "Отслеживайте ARPG сезоны прямо с экрана вашего смартфона",
     widgetsTitle: "Виджеты на рабочий стол",
@@ -30,7 +30,9 @@ export const ru = {
     protectDesc: "Android может показать стандартное предупреждение безопасности, так как приложение устанавливается напрямую.",
     protectStep1: "1. Нажмите «Скачать на GitHub Releases» и выберите файл `.apk` в релизе.",
     protectStep2: "2. При появлении окна Play Защиты выберите: «Подробнее» → «Всё равно установить».",
-    downloadDirect: "Скачать на GitHub Releases"
+    downloadDirect: "Скачать на GitHub Releases",
+    soloNoticeTitle: "🛠️ Solo-Project (Beta)",
+    soloNoticeDesc: "Android-версия приложения активно тестируется. Если вы столкнулись с ошибкой или у вас есть идея — дайте знать, это сильно поможет проекту!"
   },
   statuses: {
     newest: "🔥 Самый свежий",

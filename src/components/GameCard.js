@@ -223,13 +223,21 @@ export function render(game = {}, options = {}) {
           ${!isDetailPage ? `
             <a class="game-card__cta-block" href="./games/${game.id}/">
               <div class="game-card__cta-icon-box">
-                <span class="game-card__cta-icon">📖</span>
+                ${game.logo 
+                  ? `<img src="./assets/logos/${escapeAttr(game.logo)}" alt="${name}" class="game-card__cta-game-logo" />`
+                  : `<span class="game-card__cta-game-emoji">${escapeHtml(game.icon || '🎮')}</span>`
+                }
               </div>
               <div class="game-card__cta-content">
                 <span class="game-card__cta-title">${t('card.gamePageLinkTitle')}</span>
                 <span class="game-card__cta-subtitle">${t('card.gamePageLinkSubtitle')}</span>
               </div>
-              <span class="game-card__cta-arrow">→</span>
+              <div class="game-card__cta-arrow-box">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="game-card__cta-arrow-icon">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </div>
             </a>
           ` : ''}
         </section>

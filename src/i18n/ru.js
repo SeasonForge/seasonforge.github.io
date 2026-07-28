@@ -31,8 +31,8 @@ export const ru = {
     protectStep1: "1. Нажмите «Скачать на GitHub Releases» и выберите файл `.apk` в релизе.",
     protectStep2: "2. При появлении окна Play Защиты выберите: «Подробнее» → «Всё равно установить».",
     downloadDirect: "Скачать на GitHub Releases",
-    soloNoticeTitle: "🛠️ Solo-Project (Beta)",
-    soloNoticeDesc: "Android-версия приложения активно тестируется. Если вы столкнулись с ошибкой или у вас есть идея — дайте знать, это сильно поможет проекту!"
+    soloNoticeTitle: "Solo-Project (Beta)",
+    soloNoticeDesc: "Android-версия приложения активно тестируется. Если вы столкнулись с ошибкой или у вас есть идея — дайте знать через <button type=\"button\" class=\"mobile-app-modal__feedback-link\">форму обратной связи</button>, это сильно поможет проекту!"
   },
   statuses: {
     newest: "🔥 Самый свежий",
@@ -74,8 +74,8 @@ export const ru = {
     ongoing: "В процессе",
     readUrl: "Читать ↗",
     linksTitle: "Полезные ссылки",
-    gamePageLinkTitle: "Страница игры",
-    gamePageLinkSubtitle: "История • Описание • Сезоны"
+    gamePageLinkTitle: "Полный архив сезонов",
+    gamePageLinkSubtitle: "История лиг • Хронология • Статистика"
   },
   timeline: {
     title: "ЖИВАЯ ХРОНОЛОГИЯ СЕЗОНОВ",

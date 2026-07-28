@@ -31,8 +31,8 @@ export const en = {
     protectStep1: "1. Tap 'Download on GitHub Releases' and select the `.apk` file.",
     protectStep2: "2. If prompted by Play Protect, select: 'More details' → 'Install anyway'.",
     downloadDirect: "Download on GitHub Releases",
-    soloNoticeTitle: "🛠️ Solo-Project (Beta)",
-    soloNoticeDesc: "The Android app is currently in active testing. If you run into any bugs or have feedback, let me know — it really helps!"
+    soloNoticeTitle: "Solo-Project (Beta)",
+    soloNoticeDesc: "The Android app is currently in active testing. If you run into any bugs or have feedback, let me know via the <button type=\"button\" class=\"mobile-app-modal__feedback-link\">feedback form</button> — it really helps!"
   },
   statuses: {
     newest: "🔥 Newest",
@@ -74,8 +74,8 @@ export const en = {
     ongoing: "Ongoing",
     readUrl: "Read ↗",
     linksTitle: "Useful Links",
-    gamePageLinkTitle: "Game Page",
-    gamePageLinkSubtitle: "History • Description • Seasons"
+    gamePageLinkTitle: "Full Seasons Archive",
+    gamePageLinkSubtitle: "Leagues History • Timeline • Stats"
   },
   timeline: {
     title: "LIVE SEASON TIMELINE",

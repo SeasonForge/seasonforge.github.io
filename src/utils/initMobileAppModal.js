@@ -66,6 +66,22 @@ export function initMobileAppModal() {
     };
   });
 
+  // Attach click listener to feedback links inside mobile app modal
+  const feedbackLink = overlay.querySelector('.mobile-app-modal__feedback-link');
+  if (feedbackLink) {
+    feedbackLink.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModal();
+      setTimeout(() => {
+        const feedbackBtn = document.getElementById('feedback-trigger-btn') || document.querySelector('.feedback-trigger-btn');
+        if (feedbackBtn) {
+          feedbackBtn.click();
+        }
+      }, 150);
+    };
+  }
+
   // Track download button inside modal or navbar
   const downloadBtns = document.querySelectorAll('.mobile-app-modal__btn, .navbar-app-card__btn-download');
   downloadBtns.forEach((btn) => {

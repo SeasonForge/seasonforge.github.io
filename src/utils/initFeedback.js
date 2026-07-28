@@ -162,11 +162,9 @@ export function initFeedback(getCurrentGameId) {
   });
   }
 
-  // Attach click listener to all feedback trigger elements (guarded against duplicates)
+  // Attach click listener to all feedback trigger elements (overwrites on each renderApp call with fresh closure)
   document.querySelectorAll('.feedback-trigger-btn, #feedback-trigger-btn').forEach(btn => {
-    if (btn.dataset.bound) return;
-    btn.dataset.bound = 'true';
-    btn.addEventListener('click', openModal);
+    btn.onclick = openModal;
   });
 
   if (!cancelBtn.dataset.bound) {

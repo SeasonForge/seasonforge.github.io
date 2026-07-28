@@ -54,9 +54,7 @@ export function initMobileAppModal() {
   // Attach event listeners to all triggers across header & navbar
   const triggers = document.querySelectorAll('.mobile-app-trigger-btn');
   triggers.forEach((btn) => {
-    if (btn.dataset.boundAppModal) return;
-    btn.dataset.boundAppModal = 'true';
-    btn.addEventListener('click', (e) => {
+    btn.onclick = (e) => {
       e.preventDefault();
       let placement = 'header';
       if (btn.closest('.navbar-panel') || btn.closest('.navbar') || btn.closest('.navbar-app-card')) {
@@ -65,7 +63,7 @@ export function initMobileAppModal() {
         placement = 'mobile_menu';
       }
       openModal(placement);
-    });
+    };
   });
 
   // Track download button inside modal or navbar
@@ -74,10 +72,7 @@ export function initMobileAppModal() {
     if (btn.dataset.boundDownloadTrack) return;
     btn.dataset.boundDownloadTrack = 'true';
     btn.addEventListener('click', () => {
-      let placement = 'sidebar';
-      if (btn.closest('.mobile-app-modal')) {
-        placement = 'sidebar'; // Default placement for modal downloads or sidebar
-      }
+      const placement = btn.closest('.navbar-app-card') ? 'sidebar' : 'header';
       trackEvent('android_download_clicked', {
         placement,
         destination: 'github_releases'

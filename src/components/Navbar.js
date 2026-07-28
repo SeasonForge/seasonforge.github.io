@@ -55,7 +55,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       const icon = escapeHtml(game.icon || '🎮');
       const logo = game.logo ? escapeHtml(game.logo) : '';
       
-      const isActive = activeId && id === activeId;
+      const isActive = (activeView === 'card' || activeView === 'game') && activeId && id === activeId;
       const activeClass = isActive ? 'navbar__link--active' : '';
 
       const iconHtml = logo 

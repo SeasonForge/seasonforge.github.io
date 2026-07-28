@@ -275,10 +275,10 @@ function renderApp() {
             <span class="more-panel__label">Language / Язык</span>
             <div class="more-panel__lang-row">
               <button class="more-panel__lang-btn ${state.settings.lang === 'en' ? 'more-panel__lang-btn--active' : ''}" data-lang-val="en">
-                <img src="https://flagcdn.com/w20/us.png" class="lang-switcher__flag" alt="EN"> English
+                English
               </button>
               <button class="more-panel__lang-btn ${state.settings.lang === 'ru' ? 'more-panel__lang-btn--active' : ''}" data-lang-val="ru">
-                <img src="https://flagcdn.com/w20/ru.png" class="lang-switcher__flag" alt="RU"> Русский
+                Русский
               </button>
             </div>
           </div>

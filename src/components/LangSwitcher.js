@@ -12,13 +12,12 @@ export function renderLangSwitcher(rootElementOrId, currentLang, onLangChange) {
   if (!root) return;
 
   const nextLang = currentLang === 'ru' ? 'en' : 'ru';
-  const flagUrl = currentLang === 'ru' ? 'https://flagcdn.com/w20/ru.png' : 'https://flagcdn.com/w20/us.png';
   const label = currentLang === 'ru' ? 'RU' : 'EN';
   const title = currentLang === 'ru' ? 'Switch to English' : 'Переключить на русский';
 
   root.innerHTML = `
     <button class="lang-switcher__btn lang-switcher__btn--toggle" data-lang-val="${nextLang}" title="${title}">
-      <img src="${flagUrl}" class="lang-switcher__flag" alt="${label}"> ${label}
+      🌐 ${label}
     </button>
   `;
 

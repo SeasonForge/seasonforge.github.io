@@ -255,7 +255,7 @@ export function render(games = []) {
 
     return `
       <div class="timeline-map__row" style="--game-color: ${color}">
-        <div class="timeline-map__row-label">
+        <div class="timeline-map__row-label" data-game-id="${escapeHtml(game.id)}">
           ${logoHtml}
           <span class="timeline-map__row-name">${name}</span>
         </div>

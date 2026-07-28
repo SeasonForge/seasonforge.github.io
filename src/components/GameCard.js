@@ -255,16 +255,36 @@ export function render(game = {}, options = {}) {
         </section>
 
         <section class="game-card__panel game-card__panel--side">
-          ${nextSeasonDateBadge ? `<div class="game-card__badge-corner">${nextSeasonDateBadge}</div>` : ''}
           <div class="game-card__side-header">
-            <span class="game-card__side-label">${t('card.countdownPrefix')}</span>
-            <strong class="game-card__side-season-name" title="${escapeAttr(rawNextSeason)}">${nextSeason}</strong>
-            ${nextSeasonDateShort ? `<span class="game-card__side-date" title="${escapeAttr(nextSeasonDateFull)}">${nextSeasonDateShort}</span>` : ''}
+            <div class="game-card__side-top-row">
+              <span class="game-card__side-label">${t('card.countdownPrefix')}</span>
+              ${nextSeasonDateBadge ? `<div class="game-card__badge-wrapper">${nextSeasonDateBadge}</div>` : ''}
+            </div>
+            <h3 class="game-card__side-season-name" title="${escapeAttr(rawNextSeason)}">${nextSeason}</h3>
+            ${nextSeasonDateShort ? `
+              <div class="game-card__side-date-row" title="${escapeAttr(nextSeasonDateFull)}">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="game-card__side-date-icon">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                <span class="game-card__side-date">${nextSeasonDateShort}</span>
+              </div>
+            ` : ''}
           </div>
           ${countdownHtml}
           <div class="game-card__developer">
-            <span class="game-card__label">${t('card.developerLabel')}</span>
-            <strong>${developer}</strong>
+            <div class="game-card__developer-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <div class="game-card__developer-info">
+              <span class="game-card__developer-label">${t('card.developerLabel')}</span>
+              <strong class="game-card__developer-name">${developer}</strong>
+            </div>
           </div>
           ${isDetailPage ? `<a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer"${detailsLinkAttr}>${t('card.detailsBtn')}</a>` : ''}
         </section>

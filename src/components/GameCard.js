@@ -36,6 +36,22 @@ function formatLocalDate(dateStr) {
   return new Intl.DateTimeFormat(locale, options).format(date);
 }
 
+function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+  
+  const state = getState();
+  const lang = state.settings?.lang || 'en';
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+  
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date);
+}
+
 export function render(game = {}, options = {}) {
   const name = escapeHtml(getVal(game.name) || 'Untitled Game');
   const developer = escapeHtml(game.developer || 'Unknown developer');
@@ -48,12 +64,15 @@ export function render(game = {}, options = {}) {
   const currentSeasonDate = formatLocalDate(game.currentSeason?.startDate);
   
   const rawNextSeason = getVal(game.nextSeason?.name) || 'TBA';
-  const nextSeason = escapeHtml(rawNextSeason);
-  const nextSeasonDate = formatLocalDate(game.nextSeason?.startDate);
+  const cleanNextSeason = rawNextSeason.replace(/\s*\((Estimated|Forecast|Оценка|Прогноз)\)/gi, '').trim();
+  const nextSeason = escapeHtml(cleanNextSeason);
+  
+  const nextSeasonDateShort = formatShortDate(game.nextSeason?.startDate);
+  const nextSeasonDateFull = formatLocalDate(game.nextSeason?.startDate);
   
   const isNextSeasonEstimated = game.nextSeason?.verification === 'ai' || game.nextSeason?.verification === 'estimated';
-  const nextSeasonDateBadge = isNextSeasonEstimated && nextSeasonDate
-    ? ` <span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="margin-left: 0.5rem; cursor: help; vertical-align: middle;">▲ ${t('card.estimatedBadge')}</span>`
+  const nextSeasonDateBadge = isNextSeasonEstimated
+    ? `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`
     : '';
   
   const countdown = options.countdown || {};
@@ -194,13 +213,6 @@ export function render(game = {}, options = {}) {
           <p class="game-card__subtitle">${t('card.currentSeasonLabel')}: ${currentSeason}</p>
           ${sourceHtml}
         </div>
-        <div class="game-card__next-season">
-          <span class="game-card__label">${t('card.nextSeasonLabel')}</span>
-          <div class="game-card__next-season-title">
-            <strong>${nextSeason}</strong>
-          </div>
-          <p class="game-card__next-season-date">${nextSeasonDate || 'TBA'}${nextSeasonDateBadge}</p>
-        </div>
       </div>
 
       <div class="game-card__body">
@@ -243,10 +255,12 @@ export function render(game = {}, options = {}) {
         </section>
 
         <section class="game-card__panel game-card__panel--side">
-          <span class="game-card__label">
-            <span class="game-card__countdown-prefix">${t('card.countdownPrefix')}</span>
-            <span class="game-card__countdown-name">${nextSeason}</span>
-          </span>
+          ${nextSeasonDateBadge ? `<div class="game-card__badge-corner">${nextSeasonDateBadge}</div>` : ''}
+          <div class="game-card__side-header">
+            <span class="game-card__side-label">${t('card.countdownPrefix')}</span>
+            <strong class="game-card__side-season-name" title="${escapeAttr(rawNextSeason)}">${nextSeason}</strong>
+            ${nextSeasonDateShort ? `<span class="game-card__side-date" title="${escapeAttr(nextSeasonDateFull)}">${nextSeasonDateShort}</span>` : ''}
+          </div>
           ${countdownHtml}
           <div class="game-card__developer">
             <span class="game-card__label">${t('card.developerLabel')}</span>

@@ -486,29 +486,49 @@ body::after {
   font-weight: 600;
 }
 
-.game-card__next-season {
+.game-card__panel--side {
   position: relative;
-  z-index: 1;
-  text-align: right;
-  padding: 0.35rem 0.6rem;
-  border-radius: var(--radius-xs);
-  background: rgba(2, 6, 23, 0.3);
-  border: 1px solid rgba(148, 163, 184, 0.06);
-  min-width: 140px;
 }
 
-.game-card__next-season strong {
-  display: block;
-  margin-top: 0.1rem;
+.game-card__badge-corner {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 2;
+}
+
+.game-card__side-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1.1rem;
+  padding-right: 4.8rem;
+}
+
+.game-card__side-label {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.game-card__side-season-name {
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.game-card__side-date {
   color: #f8fafc;
   font-size: 0.88rem;
   font-weight: 700;
-}
-
-.game-card__next-season-date {
-  margin: 0.15rem 0 0;
-  color: var(--muted);
-  font-size: 0.72rem;
+  white-space: nowrap;
+  margin-top: 0.1rem;
 }
 
 .game-card__body {
@@ -1811,15 +1831,18 @@ body::after {
 .verification-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.2rem;
   font-family: var(--font-display);
-  font-size: 0.6rem;
-  font-weight: 600;
+  font-size: 0.58rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding: 0.2rem 0.55rem;
+  padding: 0.18rem 0.45rem;
   border-radius: 999px;
   border: 1px solid transparent;
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1;
   transition: all 0.2s ease;
 }
 
@@ -1847,9 +1870,13 @@ body::after {
 }
 
 .verification-badge--estimated {
-  background: rgba(245, 158, 11, 0.12);
-  color: #fcd34d;
-  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.08);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.35);
+  font-size: 0.58rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
 }
 
 /* TBA Countdown & Progress placeholders */

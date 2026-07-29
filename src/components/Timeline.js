@@ -39,6 +39,12 @@ function getCleanSeasonTag(name, gameId) {
     return `#${num}`;
   }
 
+  // Known PoE league name fallbacks if version number is missing from name string
+  if (gameId === 'path-of-exile') {
+    if (/Curse of the Allflame/i.test(str)) return 'v3.29';
+    if (/Necropolis/i.test(str)) return 'v3.28';
+  }
+
   const clean = str.replace(/\s*\((Estimated|Release|Прогноз|Релиз)\)/gi, '').trim();
   const parts = clean.split(/[:—-]/);
   return parts[0].trim();

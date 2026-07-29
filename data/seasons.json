@@ -1,6 +1,13 @@
 {
-  "lastCheckedAt": "2026-07-28T17:47:53.353Z",
+  "lastCheckedAt": "2026-07-29T10:17:22.014Z",
   "changelog": [
+    {
+      "timestamp": "2026-07-29T10:17:22.014Z",
+      "text": {
+        "en": "Path of Exile 1: Current season updated to \"Curse of the Allflame\"",
+        "ru": "Path of Exile 1: Текущий сезон обновлён на \"Curse of the Allflame\""
+      }
+    },
     {
       "timestamp": "2026-07-27T11:20:43Z",
       "text": {
@@ -22,10 +29,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3989358",
-        "title": "What We're Working On - Curse of the Allflame",
-        "url": "https://www.pathofexile.com/forum/view-thread/3989358",
-        "publishDate": "Mon, 27 Jul 2026 02:40:45 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3990635",
+        "title": "New Unique - The Draugur’s Lantern",
+        "url": "https://www.pathofexile.com/forum/view-thread/3990635",
+        "publishDate": "Tue, 28 Jul 2026 23:54:06 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -34,7 +41,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-27T11:20:43.061Z"
+        "updatedAt": "2026-07-29T10:17:21.867Z"
       },
       "history": [
         {
@@ -48,14 +55,14 @@
       ],
       "currentSeason": {
         "name": {
-          "en": "v3.29: Curse of the Allflame",
-          "ru": "v3.29: Curse of the Allflame"
+          "en": "Curse of the Allflame",
+          "ru": "Curse of the Allflame"
         },
         "startDate": "2026-07-24T20:00:00Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3989358"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
       },
       "nextSeason": {
         "name": {
@@ -66,18 +73,20 @@
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3989358"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
       },
       "features": {
         "en": [
-          "Curse of the Allflame league content and storyline",
-          "Curse of the Allflame Mystery Box without duplicate microtransactions",
-          "New league challenges with exclusive cosmetic rewards"
+          "Curse of the Allflame expansion and league challenges",
+          "New unique items such as The Draugur's Lantern",
+          "Deep-sea themed challenge rewards",
+          "Curse of the Allflame Mystery Box featuring thematic microtransactions"
         ],
         "ru": [
-          "Контент и сюжет лиги Проклятие Всепламени",
-          "Таинственная коробка Проклятия Всепламени без повторяющихся микротранзакций",
-          "Новые испытания лиги с эксклюзивными косметическими наградами"
+          "Расширение «Проклятие Всепламени» и испытания лиги",
+          "Новые уникальные предметы, такие как «Фонарь Драугра»",
+          "Награды за испытания в глубоководной тематике",
+          "Загадочная коробка «Проклятие Всепламени» с тематической микротранзакцией"
         ]
       },
       "links": {

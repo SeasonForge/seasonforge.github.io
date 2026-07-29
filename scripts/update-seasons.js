@@ -524,20 +524,29 @@ async function sendTelegramNotification(messageText) {
           const gNameEn = newG.name?.en || newG.id;
           const gNameRu = newG.name?.ru || gNameEn;
 
+          const oldNewsId = oldG.latestNews?.id;
+          const newNewsId = newG.latestNews?.id;
+          const newsTitle = newG.latestNews?.title || '';
+
           const oldCur = oldG.currentSeason?.name?.en;
           const newCur = newG.currentSeason?.name?.en;
           const oldNext = oldG.nextSeason?.startDate;
           const newNext = newG.nextSeason?.startDate;
 
-          if (oldCur !== newCur && newCur) {
+          if (oldNewsId && newNewsId && oldNewsId !== newNewsId && newsTitle) {
             detectedDiffs.push({
-              en: `${gNameEn}: Current season updated to "${newG.currentSeason?.name?.en || 'TBA'}"`,
-              ru: `${gNameRu}: Текущий сезон обновлён на "${newG.currentSeason?.name?.ru || 'TBA'}"`
+              en: `${gNameEn}: New article published — "${newsTitle}"`,
+              ru: `${gNameRu}: Опубликована новость — «${newsTitle}»`
+            });
+          } else if (oldCur !== newCur && newCur) {
+            detectedDiffs.push({
+              en: `${gNameEn}: Current season updated — ${newG.currentSeason?.name?.en || 'TBA'}`,
+              ru: `${gNameRu}: Текущий сезон обновлён — ${newG.currentSeason?.name?.ru || 'TBA'}`
             });
           } else if (oldNext !== newNext && newNext) {
             detectedDiffs.push({
-              en: `${gNameEn}: Next season updated (${newG.nextSeason?.name?.en || 'TBA'})`,
-              ru: `${gNameRu}: Обновлён прогноз следующего сезона (${newG.nextSeason?.name?.ru || 'TBA'})`
+              en: `${gNameEn}: Next season start date announced (${newG.nextSeason?.name?.en || 'TBA'})`,
+              ru: `${gNameRu}: Анонсирована дата старта следующего сезона (${newG.nextSeason?.name?.ru || 'TBA'})`
             });
           }
         });

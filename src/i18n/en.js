@@ -92,7 +92,7 @@ export const en = {
     hype: "🔥 STARTING SOON"
   },
   footer: {
-    copy: "© 2026 SeasonForge. Automatic ARPG Season Monitoring.",
+    copy: "© 2026 SeasonForge. ARPG Season Tracker.",
     changelog: "Changelog",
     privacy: "Privacy Policy"
   },

@@ -2,17 +2,31 @@
   "lastCheckedAt": "2026-07-29T10:17:22.014Z",
   "changelog": [
     {
-      "timestamp": "2026-07-29T10:17:22.014Z",
+      "timestamp": "2026-07-29T02:54:00Z",
       "text": {
-        "en": "Path of Exile 1: Current season updated to \"Curse of the Allflame\"",
-        "ru": "Path of Exile 1: Текущий сезон обновлён на \"Curse of the Allflame\""
+        "ru": "Path of Exile 1: Опубликована новость «New Unique - The Draugur’s Lantern»",
+        "en": "Path of Exile 1: New article published \"New Unique - The Draugur’s Lantern\""
       }
     },
     {
-      "timestamp": "2026-07-27T11:20:43Z",
+      "timestamp": "2026-07-24T20:00:00Z",
       "text": {
-        "en": "SeasonForge monitoring engine initialized. Automated tracking is active.",
-        "ru": "Система мониторинга SeasonForge инициализирована. Автоматический трекинг активен."
+        "ru": "Path of Exile 1: Старт нового сезона v3.29 «Curse of the Allflame»",
+        "en": "Path of Exile 1: Season v3.29 \"Curse of the Allflame\" launched"
+      }
+    },
+    {
+      "timestamp": "2026-07-18T02:00:00Z",
+      "text": {
+        "ru": "Torchlight: Infinite: Старт сезона SS13 «Afterlight»",
+        "en": "Torchlight: Infinite: Season SS13 \"Afterlight\" launched"
+      }
+    },
+    {
+      "timestamp": "2026-07-01T17:00:00Z",
+      "text": {
+        "ru": "Diablo IV: Старт Сезона 14 «Season of Death Awakening»",
+        "en": "Diablo IV: Season 14 \"Season of Death Awakening\" launched"
       }
     }
   ],

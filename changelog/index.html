@@ -37,11 +37,16 @@
     <!-- Google Fonts Preconnect & Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Unbounded:wght@400;600;700;800&amp;display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
     <link rel="stylesheet" href="../src/styles/main.css?v=1.1.3" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="canonical" href="https://seasonforge.online/changelog/" />
+    <style>
+      .changelog-item__text { display: none; }
+      html[data-active-lang="ru"] .changelog-item__text[data-lang="ru"] { display: block; }
+      html[data-active-lang="en"] .changelog-item__text[data-lang="en"] { display: block; }
+    </style>
   </head>
   <body>
     <header class="app-header">
@@ -52,27 +57,28 @@
           </div>
           <div>
             <div class="app-header__title">SeasonForge</div>
-            <p class="app-header__subtitle">ARPG Season Tracker &amp; Updates</p>
+            <p class="app-header__subtitle" id="changelog-header-subtitle">ARPG Season Tracker &amp; Updates</p>
           </div>
         </a>
       </div>
       <div class="app-header__right-block">
-        <a href="../" class="streamer-trigger-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;">
-          <span>← Back to Tracker</span>
+        <div id="changelog-lang-switcher" class="lang-switcher"></div>
+        <a href="../" class="header-neon-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600;">
+          <span id="changelog-back-btn">← Back to Tracker</span>
         </a>
       </div>
     </header>
 
     <div class="app-layout" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
       <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--muted);">
-        <a href="../" style="color: #818cf8; text-decoration: none;">Home</a> &nbsp;›&nbsp; <span>Changelog</span>
+        <a href="../" style="color: #818cf8; text-decoration: none;" id="changelog-crumb-home">Home</a> &nbsp;›&nbsp; <span id="changelog-crumb-title">Changelog</span>
       </nav>
 
       <main>
         <section class="changelog-page-card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 2rem; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
           <div style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 1.5rem;">
-            <h1 style="font-family: 'Unbounded', sans-serif; font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem;">📜 ARPG Season Updates &amp; Changelog</h1>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0;">
+            <h1 style="font-family: var(--font), sans-serif; font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem;" id="changelog-title">📜 ARPG Season Updates &amp; Changelog</h1>
+            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0;" id="changelog-subtitle">
               Automated historical record of ARPG season dates and announcements.
             </p>
           </div>
@@ -80,16 +86,30 @@
           <div class="changelog-list" style="max-height: none;">
             
         <article id="latest" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
-          <time datetime="2026-07-29T10:17:22.014Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 29, 2026</time>
-          <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4; margin-bottom: 0.25rem;">Path of Exile 1: Текущий сезон обновлён на &quot;Curse of the Allflame&quot;</div>
-          <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.35;">Path of Exile 1: Current season updated to &quot;Curse of the Allflame&quot;</div>
+          <time datetime="2026-07-29T02:54:00Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 29, 2026</time>
+          <div class="changelog-item__text" data-lang="ru" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Path of Exile 1: Опубликована новость «New Unique - The Draugur’s Lantern»</div>
+          <div class="changelog-item__text" data-lang="en" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Path of Exile 1: New article published &quot;New Unique - The Draugur’s Lantern&quot;</div>
         </article>
       
 
-        <article id="update-2026-07-27-1120" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
-          <time datetime="2026-07-27T11:20:43Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 27, 2026</time>
-          <div style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4; margin-bottom: 0.25rem;">Система мониторинга SeasonForge инициализирована. Автоматический трекинг активен.</div>
-          <div style="font-size: 0.8rem; color: #94a3b8; line-height: 1.35;">SeasonForge monitoring engine initialized. Automated tracking is active.</div>
+        <article id="update-2026-07-24-2000" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
+          <time datetime="2026-07-24T20:00:00Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 24, 2026</time>
+          <div class="changelog-item__text" data-lang="ru" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Path of Exile 1: Старт нового сезона v3.29 «Curse of the Allflame»</div>
+          <div class="changelog-item__text" data-lang="en" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Path of Exile 1: Season v3.29 &quot;Curse of the Allflame&quot; launched</div>
+        </article>
+      
+
+        <article id="update-2026-07-18-0200" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
+          <time datetime="2026-07-18T02:00:00Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 18, 2026</time>
+          <div class="changelog-item__text" data-lang="ru" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Torchlight: Infinite: Старт сезона SS13 «Afterlight»</div>
+          <div class="changelog-item__text" data-lang="en" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Torchlight: Infinite: Season SS13 &quot;Afterlight&quot; launched</div>
+        </article>
+      
+
+        <article id="update-2026-07-01-1700" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
+          <time datetime="2026-07-01T17:00:00Z" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">Jul 1, 2026</time>
+          <div class="changelog-item__text" data-lang="ru" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Diablo IV: Старт Сезона 14 «Season of Death Awakening»</div>
+          <div class="changelog-item__text" data-lang="en" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">Diablo IV: Season 14 &quot;Season of Death Awakening&quot; launched</div>
         </article>
       
           </div>
@@ -98,15 +118,61 @@
     </div>
 
     <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 3rem; padding-bottom: 2rem;">
-      <span>© 2026 SeasonForge. Automatic ARPG Season Monitoring.</span>
+      <span id="changelog-foot-copy">© 2026 SeasonForge. ARPG Season Tracker.</span>
       <div style="display: flex; gap: 1rem; font-size: 0.85rem;">
-        <a href="../" style="color: #818cf8; text-decoration: none;">Home</a>
-        <a href="../privacy/" style="color: #818cf8; text-decoration: none;">Privacy Policy</a>
+        <a href="../" style="color: #818cf8; text-decoration: none;" id="changelog-foot-home">Home</a>
+        <a href="../privacy/" style="color: #818cf8; text-decoration: none;" id="changelog-foot-privacy">Privacy Policy</a>
       </div>
     </footer>
 
-    <script>
+    <script type="module">
+      import { renderLangSwitcher } from '../src/components/LangSwitcher.js';
+      import { detectDefaultLocale } from '../src/i18n/index.js';
+
+      let currentLang = detectDefaultLocale();
+
+      function updateLanguage(lang) {
+        currentLang = lang;
+        try { localStorage.setItem('seasonforge_lang', lang); } catch (e) {}
+        document.documentElement.setAttribute('data-active-lang', lang);
+
+        const isRu = lang === 'ru';
+        
+        const subtitle = document.getElementById('changelog-header-subtitle');
+        if (subtitle) subtitle.textContent = isRu ? 'Мониторинг сезонов главных ролевых экшенов' : 'ARPG Season Tracker & Updates';
+
+        const backBtn = document.getElementById('changelog-back-btn');
+        if (backBtn) backBtn.textContent = isRu ? '← На главную' : '← Back to Tracker';
+
+        const crumbHome = document.getElementById('changelog-crumb-home');
+        if (crumbHome) crumbHome.textContent = isRu ? 'Главная' : 'Home';
+
+        const crumbTitle = document.getElementById('changelog-crumb-title');
+        if (crumbTitle) crumbTitle.textContent = isRu ? 'История обновлений' : 'Changelog';
+
+        const pageTitle = document.getElementById('changelog-title');
+        if (pageTitle) pageTitle.textContent = isRu ? '📜 История обновлений сезонов ARPG' : '📜 ARPG Season Updates & Changelog';
+
+        const pageSubtitle = document.getElementById('changelog-subtitle');
+        if (pageSubtitle) pageSubtitle.textContent = isRu ? 'Автоматический архив дат сезонов и анонсов главных ролевых экшенов.' : 'Automated historical record of ARPG season dates and announcements.';
+
+        const footCopy = document.getElementById('changelog-foot-copy');
+        if (footCopy) footCopy.textContent = isRu ? '© 2026 SeasonForge. Трекер сезонов ARPG.' : '© 2026 SeasonForge. ARPG Season Tracker.';
+
+        const footHome = document.getElementById('changelog-foot-home');
+        if (footHome) footHome.textContent = isRu ? 'Главная' : 'Home';
+
+        const footPrivacy = document.getElementById('changelog-foot-privacy');
+        if (footPrivacy) footPrivacy.textContent = isRu ? 'Политика конфиденциальности' : 'Privacy Policy';
+
+        renderLangSwitcher('changelog-lang-switcher', lang, (newLang) => {
+          updateLanguage(newLang);
+        });
+      }
+
       window.addEventListener('DOMContentLoaded', () => {
+        updateLanguage(currentLang);
+
         const hash = window.location.hash;
         if (hash) {
           const target = document.querySelector(hash);

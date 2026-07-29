@@ -92,7 +92,7 @@ export const ru = {
     hype: "🔥 СКОРО СТАРТ"
   },
   footer: {
-    copy: "© 2026 SeasonForge. Автоматический мониторинг ARPG сезонов.",
+    copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",
     changelog: "История обновлений",
     privacy: "Политика конфиденциальности"
   },

@@ -89,7 +89,15 @@ export const ru = {
     fallbackTitle: "Хронология",
     fallbackNoGames: "Игры недоступны",
     tba: "TBA",
-    hype: "🔥 СКОРО СТАРТ"
+    hype: "🔥 СКОРО СТАРТ",
+    compare: "Сравнение",
+    allGames: "Все игры",
+    compareSelectMin: "Выберите минимум 2 игры для сравнения",
+    daysGap: "{days}д перерыв",
+    daysOverlap: "{days}д пересечение",
+    gapBetween: "{gameA} ↔ {gameB}",
+    overlapBetween: "{gameA} ∩ {gameB}",
+    compareStats: "Переходы между сезонами"
   },
   footer: {
     copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",

@@ -62,9 +62,37 @@ export function render(games = []) {
   const items = Array.isArray(games) ? games : [];
   const state = getState();
   const lang = state.settings?.lang || 'en';
+  const compareMode = state.compareMode || false;
+  const compareGames = state.compareGames || [];
+
+  // Filter games in compare mode
+  const displayItems = compareMode && compareGames.length > 0
+    ? items.filter(g => compareGames.includes(g.id))
+    : items;
 
   if (!items.length) {
     return `<section class="timeline-card"><h3>${t('timeline.fallbackTitle')}</h3><p>${t('timeline.fallbackNoGames')}</p></section>`;
+  }
+
+  // In compare mode with no games selected, show placeholder
+  if (compareMode && compareGames.length === 0) {
+    return `
+      <div class="timeline-view-wrapper">
+        <section class="timeline-card">
+          <div class="timeline-card__header">
+            <div>
+              <h3 class="timeline-card__title">${t('timeline.title')}</h3>
+              <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
+            </div>
+            ${renderCompareToggle(true, lang)}
+          </div>
+          <div class="timeline-compare__empty">
+            <span class="timeline-compare__empty-icon">⚡</span>
+            <p>${t('timeline.compareSelectMin')}</p>
+          </div>
+        </section>
+      </div>
+    `;
   }
 
   // 1. Setup Dynamic Time Window
@@ -72,7 +100,7 @@ export function render(games = []) {
   let minDate = new Date(`${currentYear}-01-01T00:00:00Z`).getTime();
   let maxDate = new Date(`${currentYear}-12-31T23:59:59Z`).getTime();
 
-  items.forEach(g => {
+  displayItems.forEach(g => {
     (g.history || []).forEach(h => {
       [h.startDate, h.endDate].forEach(d => {
         if (!d) return;
@@ -183,8 +211,11 @@ export function render(games = []) {
     return `<div class="timeline-tooltip__title">${gameName}</div><div class="timeline-tooltip__season">${seasonName}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div><div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>`.replace(/\s+/g, ' ').replace(/"/g, '&quot;');
   };
 
-  // 4. Render rows
-  const rowsHtml = items.map((game) => {
+  // 4. Compute compare statistics (gaps and overlaps)
+  const compareStatsHtml = computeCompareStats(displayItems, compareMode, lang);
+
+  // 5. Render rows
+  const rowsHtml = displayItems.map((game) => {
     const name = escapeHtml(getVal(game.name));
     const rawColor = String(game.color || '#6366f1');
     const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#6366f1';
@@ -299,8 +330,8 @@ export function render(games = []) {
     `;
   }).join('\n');
 
-  // 5. Render Upcoming Launches Cards
-  const upcoming = items
+  // 6. Render Upcoming Launches Cards (hide in compare mode)
+  const upcoming = compareMode ? [] : items
     .filter(g => g.nextSeason?.startDate)
     .map(g => {
       const date = new Date(g.nextSeason.startDate);
@@ -364,7 +395,7 @@ export function render(games = []) {
   const endYear = endTimelineDate.getFullYear();
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
-  // 6. Main timeline structure output
+  // 7. Main timeline structure output
   return `
     <div class="timeline-view-wrapper">
       <section class="timeline-card">
@@ -373,8 +404,12 @@ export function render(games = []) {
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
             <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
           </div>
-          <div class="timeline-card__year-badge">${yearBadgeText}</div>
+          <div class="timeline-card__header-actions">
+            ${renderCompareToggle(compareMode, lang)}
+            <div class="timeline-card__year-badge">${yearBadgeText}</div>
+          </div>
         </div>
+        ${compareStatsHtml}
         
         <div class="timeline-map__scroll-container">
           <div class="timeline-map__grid">
@@ -417,4 +452,115 @@ export function render(games = []) {
 
 export function Timeline(games) {
   return render(games);
+}
+
+// --- Compare Mode Helpers ---
+
+function renderCompareToggle(isActive, lang) {
+  return `
+    <div class="timeline-compare-toggle">
+      <button class="timeline-compare-toggle__btn ${!isActive ? 'timeline-compare-toggle__btn--active' : ''}" data-compare-toggle="false">
+        <span>🌐</span> ${t('timeline.allGames')}
+      </button>
+      <button class="timeline-compare-toggle__btn ${isActive ? 'timeline-compare-toggle__btn--active' : ''}" data-compare-toggle="true">
+        <span>⚡</span> ${t('timeline.compare')}
+      </button>
+    </div>
+  `;
+}
+
+function computeCompareStats(games, isActive, lang) {
+  if (!isActive || games.length < 2) {
+    if (isActive && games.length === 1) {
+      return `<div class="timeline-compare__stats timeline-compare__stats--hint"><p>${t('timeline.compareSelectMin')}</p></div>`;
+    }
+    return '';
+  }
+
+  // Collect all season events: { gameId, gameName, name, startDate, endDate }
+  const events = [];
+  games.forEach(g => {
+    const gameName = getVal(g.name) || g.id;
+    // History seasons
+    (g.history || []).forEach(h => {
+      if (h.startDate && h.endDate) {
+        events.push({ gameId: g.id, gameName, name: getVal(h.name), startDate: new Date(h.startDate).getTime(), endDate: new Date(h.endDate).getTime() });
+      }
+    });
+    // Current season
+    if (g.currentSeason?.startDate) {
+      const startMs = new Date(g.currentSeason.startDate).getTime();
+      let endMs;
+      if (g.currentSeason?.endDate) {
+        endMs = new Date(g.currentSeason.endDate).getTime();
+      } else if (g.nextSeason?.startDate) {
+        endMs = new Date(g.nextSeason.startDate).getTime();
+      } else {
+        endMs = startMs + 120 * 24 * 60 * 60 * 1000;
+      }
+      events.push({ gameId: g.id, gameName, name: getVal(g.currentSeason.name), startDate: startMs, endDate: endMs });
+    }
+    // Next season
+    if (g.nextSeason?.startDate) {
+      const startMs = new Date(g.nextSeason.startDate).getTime();
+      const endMs = g.nextSeason.endDate
+        ? new Date(g.nextSeason.endDate).getTime()
+        : startMs + 120 * 24 * 60 * 60 * 1000;
+      events.push({ gameId: g.id, gameName, name: getVal(g.nextSeason.name), startDate: startMs, endDate: endMs });
+    }
+  });
+
+  // Sort by start date
+  events.sort((a, b) => a.startDate - b.startDate);
+
+  // Find gaps and overlaps between consecutive events of DIFFERENT games
+  const transitions = [];
+  for (let i = 0; i < events.length - 1; i++) {
+    const a = events[i];
+    const b = events[i + 1];
+    if (a.gameId === b.gameId) continue;
+
+    // Gap: a ends before b starts
+    if (a.endDate < b.startDate) {
+      const gapDays = Math.round((b.startDate - a.endDate) / (1000 * 60 * 60 * 24));
+      if (gapDays > 0) {
+        transitions.push({ type: 'gap', gameA: a.gameName, gameB: b.gameName, days: gapDays });
+      }
+    }
+    // Overlap: a ends after b starts
+    else if (a.endDate > b.startDate) {
+      const overlapDays = Math.round((a.endDate - b.startDate) / (1000 * 60 * 60 * 24));
+      if (overlapDays > 0) {
+        transitions.push({ type: 'overlap', gameA: a.gameName, gameB: b.gameName, days: overlapDays });
+      }
+    }
+  }
+
+  if (transitions.length === 0) {
+    return `<div class="timeline-compare__stats"><p class="timeline-compare__stats-empty">—</p></div>`;
+  }
+
+  // Render up to 6 most significant transitions
+  const itemsHtml = transitions.slice(0, 6).map(tr => {
+    const gameALabel = escapeHtml(tr.gameA.length > 15 ? tr.gameA.split(' ').map(w => w[0]).join('').toUpperCase() : tr.gameA);
+    const gameBLabel = escapeHtml(tr.gameB.length > 15 ? tr.gameB.split(' ').map(w => w[0]).join('').toUpperCase() : tr.gameB);
+    const isOverlap = tr.type === 'overlap';
+    const labelKey = isOverlap ? 'timeline.overlapBetween' : 'timeline.gapBetween';
+    const daysKey = isOverlap ? 'timeline.daysOverlap' : 'timeline.daysGap';
+    return `
+      <div class="timeline-compare__stat-item ${isOverlap ? 'timeline-compare__stat-item--overlap' : ''}">
+        <span class="timeline-compare__stat-label">${t(labelKey, { gameA: gameALabel, gameB: gameBLabel })}</span>
+        <span class="timeline-compare__stat-value">${t(daysKey, { days: tr.days })}</span>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="timeline-compare__stats">
+      <span class="timeline-compare__stats-title">${t('timeline.compareStats')}</span>
+      <div class="timeline-compare__stats-grid">
+        ${itemsHtml}
+      </div>
+    </div>
+  `;
 }

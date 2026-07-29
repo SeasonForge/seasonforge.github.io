@@ -22,6 +22,8 @@ export const state = {
   error: null,
   lastUpdate: null,
   rawData: null,
+  compareMode: false,
+  compareGames: [], // array of game IDs selected for comparison
   settings: {
     theme: 'dark',
     autoRefresh: true,
@@ -82,6 +84,27 @@ export function setLoading(isLoading) {
 
 export function setError(error) {
   state.error = error ?? null;
+  return state;
+}
+
+export function setCompareMode(enabled) {
+  state.compareMode = Boolean(enabled);
+  if (!enabled) {
+    state.compareGames = [];
+  }
+  return state;
+}
+
+export function toggleCompareGame(gameId) {
+  if (!Array.isArray(state.compareGames)) {
+    state.compareGames = [];
+  }
+  const idx = state.compareGames.indexOf(gameId);
+  if (idx >= 0) {
+    state.compareGames.splice(idx, 1);
+  } else {
+    state.compareGames.push(gameId);
+  }
   return state;
 }
 

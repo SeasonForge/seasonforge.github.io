@@ -9,7 +9,9 @@ import {
   setGames,
   setLoading,
   setLanguage,
-  setRawData
+  setRawData,
+  setCompareMode,
+  toggleCompareGame
 } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
@@ -370,6 +372,7 @@ function renderApp() {
   
   if (state.activeView === 'timeline') {
     attachTimelineTooltipEvents();
+    attachCompareEvents();
   }
   checkForecastViewed();
   initAnalyticsSourceDelegate();
@@ -634,6 +637,18 @@ function attachNavbarEvents() {
         return;
       }
 
+      // 1b) Compare mode checkbox click
+      const compareCheckbox = event.target.closest('.navbar__compare-checkbox');
+      if (compareCheckbox) {
+        event.stopPropagation();
+        const gameId = compareCheckbox.getAttribute('data-compare-game-id');
+        if (gameId) {
+          toggleCompareGame(gameId);
+          renderApp();
+        }
+        return;
+      }
+
       // 2) View switch buttons (rendered fresh each time, but listener lives on parent)
       const viewCardBtn = event.target.closest('#view-card-btn');
       if (viewCardBtn) {
@@ -708,6 +723,20 @@ function attachNavbarEvents() {
       renderApp();
     });
   }
+}
+
+function attachCompareEvents() {
+  const contentRoot = document.getElementById('content');
+  if (!contentRoot) return;
+
+  const toggleBtns = contentRoot.querySelectorAll('[data-compare-toggle]');
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const value = btn.getAttribute('data-compare-toggle') === 'true';
+      setCompareMode(value);
+      renderApp();
+    });
+  });
 }
 
 function attachFooterEvents() {

@@ -1,4 +1,5 @@
 import { t, getVal } from '../i18n/index.js';
+import { getState } from '../store/state.js';
 
 // Render navigation from a list of games and an active game.
 function escapeHtml(value) {
@@ -14,6 +15,9 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const items = Array.isArray(games) ? games : [];
   const activeId = activeGame?.id || activeGame?.slug || '';
   const now = new Date();
+  const state = getState();
+  const compareMode = state.compareMode || false;
+  const compareGames = state.compareGames || [];
 
   let newestGameId = null;
   let minAgeMs = Infinity;
@@ -62,8 +66,14 @@ export function render(games = [], activeGame = null, activeView = 'card') {
         ? `<img src="./assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
         : `<span class="navbar__tab-emoji">${icon}</span>`;
 
+      const isChecked = compareMode && compareGames.includes(id);
+      const compareCheckboxHtml = compareMode
+        ? `<input type="checkbox" class="navbar__compare-checkbox" data-compare-game-id="${escapeHtml(id)}" ${isChecked ? 'checked' : ''} />`
+        : '';
+      const dimmedClass = compareMode && !isChecked ? 'navbar__tab--dimmed' : '';
+
       return `
-        <div class="navbar__tab ${activeClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
+        <div class="navbar__tab ${activeClass} ${dimmedClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
           <div class="navbar__tab-main">
             <div class="navbar__tab-icon">${iconHtml}</div>
             <div class="navbar__tab-copy">
@@ -71,14 +81,17 @@ export function render(games = [], activeGame = null, activeView = 'card') {
               <p class="navbar__season">${currentSeason}</p>
             </div>
           </div>
-          <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
+          ${compareCheckboxHtml}
+          ${!compareMode ? `<span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>` : ''}
         </div>
       `;
     })
     .join('');
 
-  const cardBtnClass = activeView === 'card' ? 'navbar-panel__action--active' : '';
-  const timelineBtnClass = activeView === 'timeline' ? 'navbar-panel__action--active' : 'navbar-panel__action--secondary';
+  // In compare mode, hide view switcher buttons
+  const cardBtnClass = (!compareMode && activeView === 'card') ? 'navbar-panel__action--active' : '';
+  const timelineBtnClass = (!compareMode && activeView === 'timeline') ? 'navbar-panel__action--active' : 'navbar-panel__action--secondary';
+  const hideFooter = compareMode ? 'style="display: none;"' : '';
 
   return `
     <section class="navbar-panel">
@@ -93,7 +106,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       </div>
       <p class="navbar-panel__caption">${t('navbar.caption')}</p>
       <div class="navbar__list">${links}</div>
-      <div class="navbar-panel__footer">
+      <div class="navbar-panel__footer" ${hideFooter}>
         <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">${t('navbar.btnCard')}</button>
         <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">${t('navbar.btnTimeline')}</button>
       </div>

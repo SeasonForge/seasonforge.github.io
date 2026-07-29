@@ -89,7 +89,15 @@ export const en = {
     fallbackTitle: "Timeline",
     fallbackNoGames: "No games available",
     tba: "TBA",
-    hype: "🔥 STARTING SOON"
+    hype: "🔥 STARTING SOON",
+    compare: "Compare",
+    allGames: "All Games",
+    compareSelectMin: "Select at least 2 games to compare",
+    daysGap: "{days}d gap",
+    daysOverlap: "{days}d overlap",
+    gapBetween: "{gameA} ↔ {gameB}",
+    overlapBetween: "{gameA} ∩ {gameB}",
+    compareStats: "Season Transitions"
   },
   footer: {
     copy: "© 2026 SeasonForge. ARPG Season Tracker.",

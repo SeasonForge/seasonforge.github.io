@@ -65,35 +65,16 @@ export function render(games = []) {
   const compareMode = state.compareMode || false;
   const compareGames = state.compareGames || [];
 
-  // Filter games in compare mode
-  const displayItems = compareMode && compareGames.length > 0
-    ? items.filter(g => compareGames.includes(g.id))
-    : items;
+  // In compare mode: all games shown, unchecked ones are dimmed
+  // compareGames starts pre-populated with all IDs on mode enter (see setCompareMode)
+  const displayItems = items;
 
   if (!items.length) {
     return `<section class="timeline-card"><h3>${t('timeline.fallbackTitle')}</h3><p>${t('timeline.fallbackNoGames')}</p></section>`;
   }
 
-  // In compare mode with no games selected, show placeholder
-  if (compareMode && compareGames.length === 0) {
-    return `
-      <div class="timeline-view-wrapper">
-        <section class="timeline-card">
-          <div class="timeline-card__header">
-            <div>
-              <h3 class="timeline-card__title">${t('timeline.title')}</h3>
-              <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
-            </div>
-            ${renderCompareToggle(true, lang)}
-          </div>
-          <div class="timeline-compare__empty">
-            <span class="timeline-compare__empty-icon">⚡</span>
-            <p>${t('timeline.compareSelectMin')}</p>
-          </div>
-        </section>
-      </div>
-    `;
-  }
+  // If in compare mode and < 2 selected, show hint
+  const showCompareHint = compareMode && compareGames.filter(id => items.some(g => g.id === id)).length < 2;
 
   // 1. Setup Dynamic Time Window
   const currentYear = new Date().getFullYear();
@@ -212,7 +193,8 @@ export function render(games = []) {
   };
 
   // 4. Compute compare statistics (gaps and overlaps)
-  const compareStatsHtml = computeCompareStats(displayItems, compareMode, lang);
+  const activeCompareGames = compareMode ? items.filter(g => compareGames.includes(g.id)) : [];
+  const compareStatsHtml = computeCompareStats(activeCompareGames, compareMode, lang);
 
   // 5. Render rows
   const rowsHtml = displayItems.map((game) => {
@@ -291,9 +273,16 @@ export function render(games = []) {
       `;
     }).join('\n');
 
+    const isCompareChecked = compareMode ? compareGames.includes(game.id) : false;
+    const compareDimClass = compareMode && !isCompareChecked ? 'timeline-map__row--compare-dimmed' : '';
+    const checkboxHtml = compareMode
+      ? `<input type="checkbox" class="timeline-compare-row-checkbox" data-compare-game-id="${escapeHtml(game.id)}" ${isCompareChecked ? 'checked' : ''} />`
+      : '';
+
     return `
-      <div class="timeline-map__row" style="--game-color: ${color}">
+      <div class="timeline-map__row ${compareDimClass}" style="--game-color: ${color}">
         <div class="timeline-map__row-label" data-game-id="${escapeHtml(game.id)}">
+          ${checkboxHtml}
           ${logoHtml}
           <span class="timeline-map__row-name">${name}</span>
         </div>
@@ -410,6 +399,7 @@ export function render(games = []) {
           </div>
         </div>
         ${compareStatsHtml}
+        ${showCompareHint ? `<div class="timeline-compare__stats timeline-compare__stats--hint"><p>${t('timeline.compareSelectMin')}</p></div>` : ''}
         
         <div class="timeline-map__scroll-container">
           <div class="timeline-map__grid">

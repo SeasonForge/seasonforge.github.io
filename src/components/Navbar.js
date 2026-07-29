@@ -17,7 +17,6 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const now = new Date();
   const state = getState();
   const compareMode = state.compareMode || false;
-  const compareGames = state.compareGames || [];
 
   let newestGameId = null;
   let minAgeMs = Infinity;
@@ -66,14 +65,8 @@ export function render(games = [], activeGame = null, activeView = 'card') {
         ? `<img src="./assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
         : `<span class="navbar__tab-emoji">${icon}</span>`;
 
-      const isChecked = compareMode && compareGames.includes(id);
-      const compareCheckboxHtml = compareMode
-        ? `<input type="checkbox" class="navbar__compare-checkbox" data-compare-game-id="${escapeHtml(id)}" ${isChecked ? 'checked' : ''} />`
-        : '';
-      const dimmedClass = compareMode && !isChecked ? 'navbar__tab--dimmed' : '';
-
       return `
-        <div class="navbar__tab ${activeClass} ${dimmedClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
+        <div class="navbar__tab ${activeClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
           <div class="navbar__tab-main">
             <div class="navbar__tab-icon">${iconHtml}</div>
             <div class="navbar__tab-copy">
@@ -81,8 +74,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
               <p class="navbar__season">${currentSeason}</p>
             </div>
           </div>
-          ${compareCheckboxHtml}
-          ${!compareMode ? `<span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>` : ''}
+          <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
         </div>
       `;
     })

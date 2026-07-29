@@ -89,7 +89,10 @@ export function setError(error) {
 
 export function setCompareMode(enabled) {
   state.compareMode = Boolean(enabled);
-  if (!enabled) {
+  if (enabled) {
+    // Pre-select all games when entering compare mode
+    state.compareGames = Array.isArray(state.games) ? state.games.map(g => g.id) : [];
+  } else {
     state.compareGames = [];
   }
   return state;

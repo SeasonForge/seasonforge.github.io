@@ -540,6 +540,9 @@ function attachTimelineTooltipEvents() {
 
   // Tap-to-toggle details on mobile touchscreens and click to navigate
   const handleTimelineClick = (e) => {
+    // In compare mode, don't navigate on timeline row clicks
+    if (getState().compareMode) return;
+
     const item = e.target.closest('[data-game-id]');
     if (item) {
       const gameId = item.getAttribute('data-game-id');
@@ -637,11 +640,11 @@ function attachNavbarEvents() {
         return;
       }
 
-      // 1b) Compare mode checkbox click
-      const compareCheckbox = event.target.closest('.navbar__compare-checkbox');
-      if (compareCheckbox) {
+      // 1b) Compare mode checkbox click (on timeline rows)
+      const compareRowCheckbox = event.target.closest('.timeline-compare-row-checkbox');
+      if (compareRowCheckbox) {
         event.stopPropagation();
-        const gameId = compareCheckbox.getAttribute('data-compare-game-id');
+        const gameId = compareRowCheckbox.getAttribute('data-compare-game-id');
         if (gameId) {
           toggleCompareGame(gameId);
           renderApp();
@@ -729,6 +732,7 @@ function attachCompareEvents() {
   const contentRoot = document.getElementById('content');
   if (!contentRoot) return;
 
+  // Toggle buttons
   const toggleBtns = contentRoot.querySelectorAll('[data-compare-toggle]');
   toggleBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -736,6 +740,19 @@ function attachCompareEvents() {
       setCompareMode(value);
       renderApp();
     });
+  });
+
+  // Row checkboxes (delegated on contentRoot)
+  contentRoot.addEventListener('click', (e) => {
+    const checkbox = e.target.closest('.timeline-compare-row-checkbox');
+    if (checkbox) {
+      e.stopPropagation();
+      const gameId = checkbox.getAttribute('data-compare-game-id');
+      if (gameId) {
+        toggleCompareGame(gameId);
+        renderApp();
+      }
+    }
   });
 }
 

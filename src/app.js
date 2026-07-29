@@ -719,6 +719,7 @@ function attachFooterEvents() {
  * Falls back to a full renderApp() when the countdown expires (state change).
  */
 function tickCountdown() {
+  if (typeof document !== 'undefined' && !document.querySelector('[data-countdown]')) return;
   const state = getState();
   
   // 1. Update Game Card Countdowns

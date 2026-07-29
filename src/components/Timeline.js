@@ -22,10 +22,10 @@ function getCleanSeasonTag(name, gameId) {
   if (!name) return 'TBA';
   const str = String(name).trim();
 
-  // Version numbers (e.g. 3.29, 0.5.0, 1.0)
-  const versionMatch = str.match(/\b\d+\.\d+(?:\.\d+)?\b/);
+  // Version numbers (e.g. 3.29, v3.29, 0.5.0, 1.0)
+  const versionMatch = str.match(/(?:v|version\s*)?(\d+\.\d+(?:\.\d+)?)/i);
   if (versionMatch) {
-    return `v${versionMatch[0]}`;
+    return `v${versionMatch[1]}`;
   }
 
   // Season / Cycle / SS numbers
@@ -35,6 +35,7 @@ function getCleanSeasonTag(name, gameId) {
     if (gameId === 'diablo-iv') return `S${num}`;
     if (gameId === 'last-epoch') return `C${num}`;
     if (gameId === 'torchlight-infinite') return `SS${num}`;
+    if (gameId === 'path-of-exile' || gameId === 'path-of-exile-2') return `v${num}`;
     return `#${num}`;
   }
 

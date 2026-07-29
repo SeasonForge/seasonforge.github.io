@@ -84,13 +84,17 @@ export class SeasonService {
         const rootUrl = new URL('/data/seasons.json', window.location.origin).href;
         pathsToTry.push(rootUrl + `?t=${Date.now()}`);
         pathsToTry.push(rootUrl);
-      } catch (e) {}
+      } catch (e) {
+        console.warn('SeasonService: Failed to resolve rootUrl', e);
+      }
 
       try {
         const relativeUrl = new URL('data/seasons.json', window.location.href).href;
         pathsToTry.push(relativeUrl + `?t=${Date.now()}`);
         pathsToTry.push(relativeUrl);
-      } catch (e) {}
+      } catch (e) {
+        console.warn('SeasonService: Failed to resolve relativeUrl', e);
+      }
 
       const isGamesSubdir = window.location.pathname.includes('/games/');
       if (isGamesSubdir && !fetchPath.startsWith('http') && !fetchPath.startsWith('/')) {
@@ -105,18 +109,28 @@ export class SeasonService {
     const uniquePaths = Array.from(new Set(pathsToTry));
 
     for (const pathUrl of uniquePaths) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
       try {
-        const response = await fetch(pathUrl);
+        const response = await fetch(pathUrl, { signal: controller.signal });
+        clearTimeout(timeoutId);
         if (response.ok) {
           const data = await response.json();
           if (data && Array.isArray(data.games) && data.games.length > 0) {
             if (typeof localStorage !== 'undefined') {
-              try { localStorage.setItem('cached_seasons_data', JSON.stringify(data)); } catch (e) {}
+              try {
+                localStorage.setItem('cached_seasons_data', JSON.stringify(data));
+              } catch (e) {
+                console.warn('SeasonService: Failed to write to localStorage', e);
+              }
             }
             return data;
           }
         }
-      } catch (err) {}
+      } catch (err) {
+        clearTimeout(timeoutId);
+        console.warn(`SeasonService: Failed to fetch seasons from ${pathUrl}`, err);
+      }
     }
 
     // Attempt retrieval from localStorage cache if fetch attempts fail
@@ -129,7 +143,9 @@ export class SeasonService {
             return parsed;
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('SeasonService: Failed to read/parse localStorage cache', e);
+      }
     }
 
     // Ultimate fallback if network and cache both fail

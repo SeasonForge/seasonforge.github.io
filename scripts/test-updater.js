@@ -7,16 +7,16 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
   switch (this.gameId) {
     case 'path-of-exile':
       return {
-        currentSeasonNameEn: "3.28: Necropolis Finale",
-        currentSeasonNameRu: "3.28: Necropolis Finale",
-        currentSeasonStartDate: "2026-03-30",
+        currentSeasonNameEn: "v3.29: Curse of the Allflame",
+        currentSeasonNameRu: "v3.29: Curse of the Allflame",
+        currentSeasonStartDate: "2026-07-24",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "Curse of the Allflame",
-        nextSeasonNameRu: "Curse of the Allflame",
-        nextSeasonStartDate: "2026-07-24",
+        nextSeasonNameEn: "3.30 League (Estimated)",
+        nextSeasonNameRu: "3.30 League (Estimated)",
+        nextSeasonStartDate: "2026-11-13",
         nextSeasonEndDate: "",
-        nextSeasonVerification: "official",
-        status: "in-development",
+        nextSeasonVerification: "estimated",
+        status: "active",
         featuresEn: [
           "Protection while channeling Verisium Ore",
           "Animate Guardian's inventory",

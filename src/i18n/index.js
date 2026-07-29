@@ -34,10 +34,11 @@ export function t(keyPath, variables = {}) {
     return keyPath;
   }
   
-  // Replace variables like {game}
+  // Replace variables like {game} safely
   let result = current;
   for (const [key, val] of Object.entries(variables)) {
-    result = result.replace(new RegExp(`{${key}}`, 'g'), val);
+    const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = result.replace(new RegExp(`\\{${escapedKey}\\}`, 'g'), () => String(val ?? ''));
   }
   
   return result;

@@ -127,7 +127,7 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
-          isActive: extracted.status === 'active',
+          isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: items[0].link || 'https://www.pathofexile.com/'
         },

@@ -1,7 +1,7 @@
 // Central application configuration.
 export const CONFIG = {
   projectName: 'SeasonForge',
-  version: '1.0.0',
+  version: '1.1.3',
   data: {
     seasonsPath: './data/seasons.json'
   },

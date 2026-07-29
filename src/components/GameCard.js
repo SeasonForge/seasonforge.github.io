@@ -170,7 +170,7 @@ export function render(game = {}, options = {}) {
   const moreDetailsUrl = isDetailPage 
     ? (game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website)
     : `./games/${game.id}/`;
-  const moreDetailsTarget = isDetailPage ? 'target="_blank"' : '';
+  const moreDetailsTarget = isDetailPage ? 'target="_blank" rel="noopener noreferrer"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
   const isForecastStatus = isNextSeasonEstimated;
@@ -193,7 +193,7 @@ export function render(game = {}, options = {}) {
       <p class="game-card__source-info">
         ${t('card.sourceLabel')}: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
         <span class="game-card__source-title" title="${newsTitle}">${newsTitle}</span>${dateText} • 
-        <a href="${newsUrl}" target="_blank" class="game-card__source-link" data-analytics-source="official_source" data-source-type="${newsSourceType}" data-date-status="${dateStatusVal}" data-game-id="${gameIdVal}">${t('card.readOriginal')}</a>
+        <a href="${newsUrl}" target="_blank" rel="noopener noreferrer" class="game-card__source-link" data-analytics-source="official_source" data-source-type="${newsSourceType}" data-date-status="${dateStatusVal}" data-game-id="${gameIdVal}">${t('card.readOriginal')}</a>
       </p>
     `;
   }

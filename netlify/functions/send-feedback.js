@@ -13,11 +13,11 @@ export async function handler(event, context) {
     const { type, message, email, telemetry } = data;
 
     const trimmedMessage = typeof message === 'string' ? message.trim() : '';
-    if (!trimmedMessage || trimmedMessage.length < 10 || trimmedMessage.length > 2000) {
+    if (!trimmedMessage || trimmedMessage.length < 10 || trimmedMessage.length > 3000) {
       return {
         statusCode: 400,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Message length must be between 10 and 2000 characters' })
+        body: JSON.stringify({ error: 'Message length must be between 10 and 3000 characters' })
       };
     }
 
@@ -30,7 +30,7 @@ export async function handler(event, context) {
       };
     }
 
-    const ALLOWED_TYPES = ['Bug', 'Idea', 'General', 'Feedback'];
+    const ALLOWED_TYPES = ['Bug', 'Idea', 'General', 'Feedback', 'Other'];
     const validatedType = ALLOWED_TYPES.includes(type) ? type : 'General';
 
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
@@ -56,7 +56,7 @@ export async function handler(event, context) {
     const typeEmoji = validatedType === 'Bug' ? '🐛' : validatedType === 'Idea' ? '💡' : '💬';
     const cleanType = escapeHtml(validatedType, 50);
     const cleanEmail = trimmedEmail ? escapeHtml(trimmedEmail, 100) : '<i>Не указан</i>';
-    const cleanMessage = escapeHtml(trimmedMessage, 2000);
+    const cleanMessage = escapeHtml(trimmedMessage, 3000);
 
     const cleanUrl = escapeHtml(telemetry?.url, 200) || 'N/A';
     const cleanLang = escapeHtml(telemetry?.lang, 20) || 'N/A';
@@ -80,25 +80,44 @@ ${cleanMessage}
 • <b>URL:</b> ${cleanUrl}
 • <b>User-Agent:</b> <code>${cleanUserAgent}</code>`;
 
-    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: text,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true
-      })
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-    const resData = await response.json();
+    let response;
+    let resData;
+
+    try {
+      response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: text,
+          parse_mode: 'HTML',
+          disable_web_page_preview: true
+        }),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      resData = await response.json();
+    } catch (fetchErr) {
+      clearTimeout(timeoutId);
+      if (fetchErr.name === 'AbortError') {
+        return {
+          statusCode: 502,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error: 'Telegram API request timed out' })
+        };
+      }
+      throw fetchErr;
+    }
 
     if (!response.ok || !resData.ok) {
       console.error('Telegram API error:', resData);
       return {
         statusCode: 502,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: 'Failed to send message to Telegram', details: resData.description })
+        body: JSON.stringify({ error: 'Failed to send message to Telegram', details: resData?.description })
       };
     }
 

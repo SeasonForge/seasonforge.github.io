@@ -104,7 +104,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
-          isActive: extracted.status === 'active',
+          isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: newsitems[0].url || 'https://torchlightinfinite.com/'
         },

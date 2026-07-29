@@ -5,7 +5,7 @@ import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
-import { escapeAttr } from './utils/helpers.js';
+import { escapeAttr, escapeHtml } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
 import { setMetaTags } from './utils/seo.js';
@@ -148,12 +148,12 @@ function renderApp() {
         const formattedEnd = end ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
         const itemSourceType = (item.sourceUrl || '').includes('steam') ? 'steam_news' : 'official_announcement';
         const linkHtml = item.sourceUrl 
-          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link" data-analytics-source="official_source" data-source-type="${itemSourceType}" data-date-status="official" data-game-id="${escapeAttr(activeGame.id)}">${t('card.readUrl')}</a>` 
+          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="history-table__link" data-analytics-source="official_source" data-source-type="${itemSourceType}" data-date-status="official" data-game-id="${escapeAttr(activeGame.id)}">${t('card.readUrl')}</a>`
           : '—';
           
         rows.push(`
           <tr style="border-bottom: 1px solid #1f2937;">
-            <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${seasonName}</td>
+            <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${escapeHtml(seasonName)}</td>
             <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
             <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
             <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
@@ -186,8 +186,8 @@ function renderApp() {
         
         boxes.push(`
           <div class="game-card__link-item">
-            <span class="game-card__link-category">${categoryLabel}</span>
-            <a href="${escapeAttr(url)}" target="_blank" class="game-card__link-anchor">${label}</a>
+            <span class="game-card__link-category">${escapeHtml(categoryLabel)}</span>
+            <a href="${escapeAttr(url)}" target="_blank" rel="noopener noreferrer" class="game-card__link-anchor">${escapeHtml(label)}</a>
           </div>
         `);
       }

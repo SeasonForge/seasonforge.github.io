@@ -19,16 +19,30 @@ export class BaseAdapter {
       'Accept-Language': 'en-US,en;q=0.5'
     };
 
-    const response = await fetch(url, {
-      headers: { ...defaultHeaders, ...options.headers },
-      ...options
-    });
+    const controller = new AbortController();
+    const timeoutMs = options.timeout || 15000;
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+    try {
+      const response = await fetch(url, {
+        headers: { ...defaultHeaders, ...options.headers },
+        ...options,
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch ${url}: ${response.status} ${response.statusText}`);
+      }
+
+      return await response.text();
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        throw new Error(`Fetch timeout (${timeoutMs}ms) for ${url}`);
+      }
+      throw err;
     }
-
-    return response.text();
   }
 
   // Strip unnecessary tags and extract clean text to save Gemini tokens
@@ -105,13 +119,27 @@ export class BaseAdapter {
       requestBody.generationConfig.responseSchema = schema;
     }
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(requestBody)
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+    let response;
+    try {
+      response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+    } catch (err) {
+      clearTimeout(timeoutId);
+      if (err.name === 'AbortError') {
+        throw new Error('Gemini API request timed out (15000ms)');
+      }
+      throw err;
+    }
 
     if (!response.ok) {
       const errText = await response.text();

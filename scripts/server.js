@@ -19,9 +19,21 @@ const MIME_TYPES = {
 const PUBLIC_DIR = process.cwd();
 
 const server = http.createServer((req, res) => {
-  const decodedUrl = decodeURIComponent(req.url);
+  let decodedUrl;
+  try {
+    const rawUrl = (req.url || '/').split('?')[0];
+    decodedUrl = decodeURIComponent(rawUrl);
+  } catch (err) {
+    res.writeHead(400, { 'Content-Type': 'text/html' });
+    res.end('<h1>400 Bad Request</h1>', 'utf-8');
+    return;
+  }
   const safePath = path.normalize(decodedUrl === '/' ? '/index.html' : decodedUrl).replace(/^(\.\.[\/\\])+/, '');
-  const filePath = path.resolve(PUBLIC_DIR, '.' + safePath);
+  let filePath = path.resolve(PUBLIC_DIR, '.' + safePath);
+
+  if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+    filePath = path.join(filePath, 'index.html');
+  }
 
   const relative = path.relative(PUBLIC_DIR, filePath);
   if (relative.startsWith('..') || path.isAbsolute(relative)) {

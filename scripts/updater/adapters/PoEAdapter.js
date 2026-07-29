@@ -57,7 +57,7 @@ export class PoEAdapter extends BaseAdapter {
 
       const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile RSS feed content.
 Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season/League name in English (e.g. "Settlers of Kalguur") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
+1. Current Season/League name in English including version number (e.g. "v3.29: Settlers of Kalguur" or "v3.29") in currentSeasonNameEn, and in currentSeasonNameRu.
 2. Current Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
 3. Next Season/League name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
 4. Next Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
@@ -90,13 +90,25 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           }
         },
         required: [
-          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate', 'currentSeasonEndDate', 
-          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate', 'nextSeasonEndDate', 
-          'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
+          'currentSeasonNameEn',
+          'currentSeasonNameRu',
+          'currentSeasonStartDate',
+          'nextSeasonNameEn',
+          'nextSeasonNameRu',
+          'nextSeasonStartDate',
+          'status',
+          'featuresEn',
+          'featuresRu'
         ]
       };
 
-      const extracted = await this.callGemini(feedContent, systemInstruction, schema);
+      const rawExtracted = await this.callGemini(feedContent, systemInstruction, schema);
+      const extracted = rawExtracted || {};
+
+      let seasonNameEn = extracted.currentSeasonNameEn || 'TBA';
+      if (seasonNameEn !== 'TBA' && !/^\s*v?\d+\.\d+/i.test(seasonNameEn)) {
+        seasonNameEn = `v3.29: ${seasonNameEn}`;
+      }
 
       const normalized = {
         id: this.gameId,
@@ -122,8 +134,8 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameEn || 'TBA'
+            en: seasonNameEn,
+            ru: seasonNameEn
           },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',

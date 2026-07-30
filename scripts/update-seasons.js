@@ -535,16 +535,25 @@ async function sendTelegramNotification(messageText) {
 
           if (oldNewsId && newNewsId && oldNewsId !== newNewsId && newsTitle) {
             detectedDiffs.push({
+              gameId: newG.id,
+              url: newG.latestNews?.url || newG.currentSeason?.sourceUrl || newG.website,
+              type: 'article',
               en: `${gNameEn}: New article published — "${newsTitle}"`,
               ru: `${gNameRu}: Опубликована новость — «${newsTitle}»`
             });
           } else if (oldCur !== newCur && newCur) {
             detectedDiffs.push({
+              gameId: newG.id,
+              url: newG.currentSeason?.sourceUrl || newG.website,
+              type: 'launch',
               en: `${gNameEn}: Current season updated — ${newG.currentSeason?.name?.en || 'TBA'}`,
               ru: `${gNameRu}: Текущий сезон обновлён — ${newG.currentSeason?.name?.ru || 'TBA'}`
             });
           } else if (oldNext !== newNext && newNext) {
             detectedDiffs.push({
+              gameId: newG.id,
+              url: newG.nextSeason?.sourceUrl || newG.website,
+              type: 'announcement',
               en: `${gNameEn}: Next season start date announced (${newG.nextSeason?.name?.en || 'TBA'})`,
               ru: `${gNameRu}: Анонсирована дата старта следующего сезона (${newG.nextSeason?.name?.ru || 'TBA'})`
             });
@@ -579,6 +588,9 @@ async function sendTelegramNotification(messageText) {
   if (hasActualChanges && detectedDiffs.length > 0) {
     const newEntries = detectedDiffs.map(d => ({
       timestamp: nowIso,
+      gameId: d.gameId,
+      url: d.url,
+      type: d.type,
       text: { en: d.en, ru: d.ru }
     }));
     existingChangelog = [...newEntries, ...existingChangelog].slice(0, 15);

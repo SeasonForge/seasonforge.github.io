@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-07-30T10:36:07.495Z",
+  "lastCheckedAt": "2026-07-30T10:44:13.152Z",
   "changelog": [
     {
       "timestamp": "2026-07-30T09:57:57.684Z",
@@ -69,7 +69,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-30T10:36:06.992Z"
+        "updatedAt": "2026-07-30T10:44:11.812Z"
       },
       "history": [
         {
@@ -158,7 +158,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-30T10:36:07.006Z"
+        "updatedAt": "2026-07-30T10:44:11.784Z"
       },
       "currentSeason": {
         "name": {
@@ -239,7 +239,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-30T10:36:07.200Z"
+        "updatedAt": "2026-07-30T10:44:12.796Z"
       },
       "history": [
         {
@@ -330,7 +330,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-30T10:36:07.494Z"
+        "updatedAt": "2026-07-30T10:44:13.151Z"
       },
       "history": [
         {
@@ -418,7 +418,7 @@
           "en": "Just Started",
           "ru": "Только начался"
         },
-        "updatedAt": "2026-07-30T10:36:07.479Z"
+        "updatedAt": "2026-07-30T10:44:13.077Z"
       },
       "history": [
         {

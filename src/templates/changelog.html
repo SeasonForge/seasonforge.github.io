@@ -12,25 +12,31 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ARPG Season Updates &amp; Changelog — SeasonForge</title>
-    <meta name="description" content="History of season start dates, patches, and league announcements for Path of Exile 1 &amp; 2, Diablo IV, Last Epoch, and Torchlight: Infinite." />
-    <meta name="keywords" content="ARPG season changelog, PoE league start history, Diablo 4 season updates log, ARPG release dates" />
+    <title>ARPG Event Feed &amp; Live Updates — SeasonForge</title>
+    <meta name="description" content="Real-time stream of season launches, league announcements, and official patch notes for Path of Exile 1 &amp; 2, Diablo IV, Last Epoch, and Torchlight: Infinite." />
+    <meta name="keywords" content="ARPG event feed, PoE league announcements, Diablo 4 season updates, Last Epoch release log, Torchlight Infinite news" />
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Facebook / Discord -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://seasonforge.online/changelog/" />
-    <meta property="og:title" content="ARPG Season Updates &amp; Changelog — SeasonForge" />
-    <meta property="og:description" content="Complete history of season start dates, patches, and league announcements for major ARPGs." />
+    <meta property="og:title" content="ARPG Event Feed &amp; Live Updates — SeasonForge" />
+    <meta property="og:description" content="Real-time stream of season launches, league announcements, and official patch notes for major ARPGs." />
     <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ARPG Event Feed &amp; Live Updates — SeasonForge" />
+    <meta name="twitter:description" content="Real-time stream of season launches, league announcements, and official patch notes for major ARPGs." />
+    <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
     
     <!-- Schema.org JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "ItemPage",
-      "name": "ARPG Season Updates & Changelog",
+      "name": "ARPG Event Feed & Live Updates",
       "url": "https://seasonforge.online/changelog/",
-      "description": "Complete history of season start dates, patches, and league announcements for major ARPGs."
+      "description": "Real-time stream of season launches, league announcements, and official patch notes for major ARPGs."
     }
     </script>
 
@@ -39,13 +45,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
-    <link rel="stylesheet" href="../src/styles/main.css?v=1.1.3" />
+    <link rel="stylesheet" href="../src/styles/main.css?v=1.1.4" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="canonical" href="https://seasonforge.online/changelog/" />
     <style>
-      .changelog-item__text { display: none; }
-      html[data-active-lang="ru"] .changelog-item__text[data-lang="ru"] { display: block; }
-      html[data-active-lang="en"] .changelog-item__text[data-lang="en"] { display: block; }
+      .event-feed-card__text { display: none; }
+      html[data-active-lang="ru"] .event-feed-card__text[data-lang="ru"] { display: block; }
+      html[data-active-lang="en"] .event-feed-card__text[data-lang="en"] { display: block; }
     </style>
   </head>
   <body>
@@ -69,25 +75,74 @@
       </div>
     </header>
 
-    <div class="app-layout" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
+    <div class="app-layout" style="max-width: 1240px; margin: 2rem auto; padding: 0 1.25rem;">
       <nav aria-label="Breadcrumb" style="margin-bottom: 1.5rem; font-size: 0.82rem; color: var(--muted);">
-        <a href="../" style="color: #818cf8; text-decoration: none;" id="changelog-crumb-home">Home</a> &nbsp;›&nbsp; <span id="changelog-crumb-title">Changelog</span>
+        <a href="../" style="color: #818cf8; text-decoration: none;" id="changelog-crumb-home">Home</a> &nbsp;›&nbsp; <span id="changelog-crumb-title">Event Feed</span>
       </nav>
 
-      <main>
-        <section class="changelog-page-card" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 2rem; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
-          <div style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 1.5rem;">
-            <h1 style="font-family: var(--font), sans-serif; font-size: 1.6rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem;" id="changelog-title">📜 ARPG Season Updates &amp; Changelog</h1>
-            <p style="font-size: 0.9rem; color: #94a3b8; line-height: 1.5; margin: 0;" id="changelog-subtitle">
-              Automated historical record of ARPG season dates and announcements.
-            </p>
+      <div style="margin-bottom: 2rem;">
+        <h1 style="font-family: var(--font), sans-serif; font-size: 1.8rem; font-weight: 800; color: #f8fafc; margin-bottom: 0.5rem;" id="changelog-title">ARPG Event Feed</h1>
+        <p style="font-size: 0.92rem; color: #94a3b8; line-height: 1.5; margin: 0;" id="changelog-subtitle">
+          Real-time updates, season launches, and news across major ARPGs
+        </p>
+      </div>
+
+      <!-- Filter Bar -->
+      <section class="feed-filter-bar">
+        <div class="feed-filter-row">
+          <div class="feed-filter-pills" id="feed-game-pills">
+            <button class="feed-pill feed-pill--active" data-filter-game="all" id="pill-game-all">All Games</button>
+            <button class="feed-pill" data-filter-game="path-of-exile">Path of Exile 1</button>
+            <button class="feed-pill" data-filter-game="path-of-exile-2">Path of Exile 2</button>
+            <button class="feed-pill" data-filter-game="diablo-iv">Diablo IV</button>
+            <button class="feed-pill" data-filter-game="last-epoch">Last Epoch</button>
+            <button class="feed-pill" data-filter-game="torchlight-infinite">Torchlight</button>
           </div>
 
-          <div class="changelog-list" style="max-height: none;">
+          <div class="feed-search-box">
+            <svg class="feed-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="feed-search-input" class="feed-search-input" placeholder="Search events..." />
+          </div>
+        </div>
+
+        <div class="feed-filter-row" style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.75rem;">
+          <div class="feed-filter-pills" id="feed-type-pills">
+            <button class="feed-pill feed-pill--active" data-filter-type="all" id="pill-type-all">All Types</button>
+            <button class="feed-pill" data-filter-type="launch" id="pill-type-launch">Season Launch</button>
+            <button class="feed-pill" data-filter-type="announcement" id="pill-type-announcement">Announcements</button>
+            <button class="feed-pill" data-filter-type="article" id="pill-type-article">Articles &amp; Patches</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2-Column Grid -->
+      <div class="feed-layout">
+        <!-- Left Main Column (75%) -->
+        <main style="min-width: 0;">
+          <div class="changelog-list" id="event-feed-list">
             {{CHANGELOG_ITEMS}}
           </div>
-        </section>
-      </main>
+
+          <!-- Empty State Block -->
+          <div id="feed-empty-state" class="feed-empty-state">
+            <div class="feed-empty-state__icon">🔍</div>
+            <div class="feed-empty-state__title" id="feed-empty-title">No events found matching your filter</div>
+            <div class="feed-empty-state__subtitle" id="feed-empty-subtitle">Try adjusting your search terms or resetting the active filters</div>
+            <button id="feed-reset-btn" class="feed-empty-state__reset-btn">Reset Filters</button>
+          </div>
+
+          <!-- Load More Button Container -->
+          <div id="feed-load-more-container" class="feed-load-more-container">
+            <button id="feed-load-more-btn" class="feed-load-more-btn">Load More Events</button>
+          </div>
+        </main>
+
+        <!-- Right Sidebar (25%) -->
+        <aside style="display: flex; flex-direction: column; gap: 1.5rem;">
+          {{SIDEBAR_UPCOMING_WIDGET}}
+          {{SIDEBAR_MOBILE_PROMO}}
+        </aside>
+      </div>
     </div>
 
     <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 3rem; padding-bottom: 2rem;">
@@ -103,55 +158,321 @@
       import { detectDefaultLocale } from '../src/i18n/index.js';
 
       let currentLang = detectDefaultLocale();
+      let activeGameFilter = 'all';
+      let activeTypeFilter = 'all';
+      let searchQuery = '';
+      let currentPage = 1;
+      const PAGE_SIZE = 15;
+
+      const dictionary = {
+        ru: {
+          headerSubtitle: 'Мониторинг сезонов главных ролевых экшенов',
+          backBtn: '← На главную',
+          crumbHome: 'Главная',
+          crumbTitle: 'Лента событий',
+          pageTitle: 'Лента событий ARPG',
+          pageSubtitle: 'Все ключевые события, старты лиг и новости ваших любимых ARPG в реальном времени',
+          searchPlaceholder: 'Поиск событий...',
+          pillGameAll: 'Все игры',
+          pillTypeAll: 'Все типы',
+          pillTypeLaunch: 'Старты сезонов',
+          pillTypeAnnouncement: 'Анонсы',
+          pillTypeArticle: 'Статьи и патчи',
+          emptyTitle: 'Событий по вашему запросу не найдено',
+          emptySubtitle: 'Попробуйте изменить параметры поиска или сбросить фильтры',
+          resetBtn: 'Сбросить фильтры',
+          loadMoreBtn: 'Показать ещё события',
+          readArticleBtn: 'Читать первоисточник →',
+          footCopy: '© 2026 SeasonForge. Трекер сезонов ARPG.',
+          footHome: 'Главная',
+          footPrivacy: 'Политика конфиденциальности'
+        },
+        en: {
+          headerSubtitle: 'ARPG Season Tracker & Updates',
+          backBtn: '← Back to Tracker',
+          crumbHome: 'Home',
+          crumbTitle: 'Event Feed',
+          pageTitle: 'ARPG Event Feed',
+          pageSubtitle: 'Real-time updates, season launches, and news across major ARPGs',
+          searchPlaceholder: 'Search events...',
+          pillGameAll: 'All Games',
+          pillTypeAll: 'All Types',
+          pillTypeLaunch: 'Season Launch',
+          pillTypeAnnouncement: 'Announcements',
+          pillTypeArticle: 'Articles & Patches',
+          emptyTitle: 'No events found matching your filter',
+          emptySubtitle: 'Try adjusting your search terms or resetting active filters',
+          resetBtn: 'Reset Filters',
+          loadMoreBtn: 'Load More Events',
+          readArticleBtn: 'Read Original Source →',
+          footCopy: '© 2026 SeasonForge. ARPG Season Tracker.',
+          footHome: 'Home',
+          footPrivacy: 'Privacy Policy'
+        }
+      };
 
       function updateLanguage(lang) {
         currentLang = lang;
         try { localStorage.setItem('seasonforge_lang', lang); } catch (e) {}
         document.documentElement.setAttribute('data-active-lang', lang);
 
-        const isRu = lang === 'ru';
-        
+        const dict = dictionary[lang] || dictionary.en;
+
         const subtitle = document.getElementById('changelog-header-subtitle');
-        if (subtitle) subtitle.textContent = isRu ? 'Мониторинг сезонов главных ролевых экшенов' : 'ARPG Season Tracker & Updates';
+        if (subtitle) subtitle.textContent = dict.headerSubtitle;
 
         const backBtn = document.getElementById('changelog-back-btn');
-        if (backBtn) backBtn.textContent = isRu ? '← На главную' : '← Back to Tracker';
+        if (backBtn) backBtn.textContent = dict.backBtn;
 
         const crumbHome = document.getElementById('changelog-crumb-home');
-        if (crumbHome) crumbHome.textContent = isRu ? 'Главная' : 'Home';
+        if (crumbHome) crumbHome.textContent = dict.crumbHome;
 
         const crumbTitle = document.getElementById('changelog-crumb-title');
-        if (crumbTitle) crumbTitle.textContent = isRu ? 'История обновлений' : 'Changelog';
+        if (crumbTitle) crumbTitle.textContent = dict.crumbTitle;
 
         const pageTitle = document.getElementById('changelog-title');
-        if (pageTitle) pageTitle.textContent = isRu ? '📜 История обновлений сезонов ARPG' : '📜 ARPG Season Updates & Changelog';
+        if (pageTitle) pageTitle.textContent = dict.pageTitle;
 
         const pageSubtitle = document.getElementById('changelog-subtitle');
-        if (pageSubtitle) pageSubtitle.textContent = isRu ? 'Автоматический архив дат сезонов и анонсов главных ролевых экшенов.' : 'Automated historical record of ARPG season dates and announcements.';
+        if (pageSubtitle) pageSubtitle.textContent = dict.pageSubtitle;
+
+        const searchInput = document.getElementById('feed-search-input');
+        if (searchInput) searchInput.placeholder = dict.searchPlaceholder;
+
+        const pillGameAll = document.getElementById('pill-game-all');
+        if (pillGameAll) pillGameAll.textContent = dict.pillGameAll;
+
+        const pillTypeAll = document.getElementById('pill-type-all');
+        if (pillTypeAll) pillTypeAll.textContent = dict.pillTypeAll;
+
+        const pillTypeLaunch = document.getElementById('pill-type-launch');
+        if (pillTypeLaunch) pillTypeLaunch.textContent = dict.pillTypeLaunch;
+
+        const pillTypeAnnouncement = document.getElementById('pill-type-announcement');
+        if (pillTypeAnnouncement) pillTypeAnnouncement.textContent = dict.pillTypeAnnouncement;
+
+        const pillTypeArticle = document.getElementById('pill-type-article');
+        if (pillTypeArticle) pillTypeArticle.textContent = dict.pillTypeArticle;
+
+        const emptyTitle = document.getElementById('feed-empty-title');
+        if (emptyTitle) emptyTitle.textContent = dict.emptyTitle;
+
+        const emptySubtitle = document.getElementById('feed-empty-subtitle');
+        if (emptySubtitle) emptySubtitle.textContent = dict.emptySubtitle;
+
+        const resetBtn = document.getElementById('feed-reset-btn');
+        if (resetBtn) resetBtn.textContent = dict.resetBtn;
+
+        const loadMoreBtn = document.getElementById('feed-load-more-btn');
+        if (loadMoreBtn) loadMoreBtn.textContent = dict.loadMoreBtn;
+
+        document.querySelectorAll('.event-feed-card__link-text').forEach(el => {
+          el.textContent = dict.readArticleBtn;
+        });
 
         const footCopy = document.getElementById('changelog-foot-copy');
-        if (footCopy) footCopy.textContent = isRu ? '© 2026 SeasonForge. Трекер сезонов ARPG.' : '© 2026 SeasonForge. ARPG Season Tracker.';
+        if (footCopy) footCopy.textContent = dict.footCopy;
 
         const footHome = document.getElementById('changelog-foot-home');
-        if (footHome) footHome.textContent = isRu ? 'Главная' : 'Home';
+        if (footHome) footHome.textContent = dict.footHome;
 
         const footPrivacy = document.getElementById('changelog-foot-privacy');
-        if (footPrivacy) footPrivacy.textContent = isRu ? 'Политика конфиденциальности' : 'Privacy Policy';
+        if (footPrivacy) footPrivacy.textContent = dict.footPrivacy;
 
         renderLangSwitcher('changelog-lang-switcher', lang, (newLang) => {
           updateLanguage(newLang);
         });
+
+        formatRelativeTimes();
+      }
+
+      function formatRelativeTimes() {
+        const cards = document.querySelectorAll('.event-feed-card');
+        const now = Date.now();
+        const isRu = currentLang === 'ru';
+
+        cards.forEach(card => {
+          const timeEl = card.querySelector('.event-feed-card__time');
+          const timestampStr = card.getAttribute('data-timestamp');
+          if (!timeEl || !timestampStr) return;
+
+          const date = new Date(timestampStr);
+          if (Number.isNaN(date.getTime())) return;
+
+          const diffMs = now - date.getTime();
+          const diffMinutes = Math.floor(diffMs / (1000 * 60));
+          const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+          const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+          let relative = '';
+          if (diffMinutes < 60) {
+            relative = isRu ? 'Только что' : 'Just now';
+          } else if (diffHours < 24) {
+            relative = isRu ? `${diffHours} ч. назад` : `${diffHours}h ago`;
+          } else if (diffDays < 14) {
+            relative = isRu ? `${diffDays} дн. назад` : `${diffDays}d ago`;
+          } else {
+            relative = new Intl.DateTimeFormat(isRu ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+          }
+
+          timeEl.textContent = relative;
+        });
+      }
+
+      function filterAndPaginateFeed() {
+        const cards = Array.from(document.querySelectorAll('.event-feed-card'));
+        let visibleMatching = [];
+
+        cards.forEach(card => {
+          const gameId = card.getAttribute('data-game-id') || '';
+          const eventType = card.getAttribute('data-event-type') || '';
+          const textRu = (card.querySelector('[data-lang="ru"]')?.textContent || '').toLowerCase();
+          const textEn = (card.querySelector('[data-lang="en"]')?.textContent || '').toLowerCase();
+
+          const matchesGame = activeGameFilter === 'all' || gameId === activeGameFilter;
+          const matchesType = activeTypeFilter === 'all' || eventType === activeTypeFilter;
+          const matchesSearch = !searchQuery || textRu.includes(searchQuery) || textEn.includes(searchQuery);
+
+          if (matchesGame && matchesType && matchesSearch) {
+            visibleMatching.push(card);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        const maxVisible = currentPage * PAGE_SIZE;
+
+        visibleMatching.forEach((card, index) => {
+          if (index < maxVisible) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        const emptyState = document.getElementById('feed-empty-state');
+        if (visibleMatching.length === 0) {
+          if (emptyState) emptyState.style.display = 'flex';
+        } else {
+          if (emptyState) emptyState.style.display = 'none';
+        }
+
+        const loadMoreContainer = document.getElementById('feed-load-more-container');
+        if (loadMoreContainer) {
+          if (visibleMatching.length > maxVisible) {
+            loadMoreContainer.style.display = 'flex';
+          } else {
+            loadMoreContainer.style.display = 'none';
+          }
+        }
+      }
+
+      function setupFilterListeners() {
+        // Game Pills
+        document.querySelectorAll('#feed-game-pills .feed-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            document.querySelectorAll('#feed-game-pills .feed-pill').forEach(p => p.classList.remove('feed-pill--active'));
+            pill.classList.add('feed-pill--active');
+            activeGameFilter = pill.getAttribute('data-filter-game') || 'all';
+            currentPage = 1;
+            updateUrlParams();
+            filterAndPaginateFeed();
+          });
+        });
+
+        // Type Pills
+        document.querySelectorAll('#feed-type-pills .feed-pill').forEach(pill => {
+          pill.addEventListener('click', () => {
+            document.querySelectorAll('#feed-type-pills .feed-pill').forEach(p => p.classList.remove('feed-pill--active'));
+            pill.classList.add('feed-pill--active');
+            activeTypeFilter = pill.getAttribute('data-filter-type') || 'all';
+            currentPage = 1;
+            filterAndPaginateFeed();
+          });
+        });
+
+        // Search Input
+        const searchInput = document.getElementById('feed-search-input');
+        if (searchInput) {
+          searchInput.addEventListener('input', (e) => {
+            searchQuery = (e.target.value || '').trim().toLowerCase();
+            currentPage = 1;
+            filterAndPaginateFeed();
+          });
+        }
+
+        // Reset Filters Button
+        const resetBtn = document.getElementById('feed-reset-btn');
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            activeGameFilter = 'all';
+            activeTypeFilter = 'all';
+            searchQuery = '';
+            currentPage = 1;
+
+            if (searchInput) searchInput.value = '';
+
+            document.querySelectorAll('#feed-game-pills .feed-pill').forEach(p => {
+              p.classList.toggle('feed-pill--active', p.getAttribute('data-filter-game') === 'all');
+            });
+            document.querySelectorAll('#feed-type-pills .feed-pill').forEach(p => {
+              p.classList.toggle('feed-pill--active', p.getAttribute('data-filter-type') === 'all');
+            });
+
+            updateUrlParams();
+            filterAndPaginateFeed();
+          });
+        }
+
+        // Load More Button
+        const loadMoreBtn = document.getElementById('feed-load-more-btn');
+        if (loadMoreBtn) {
+          loadMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            filterAndPaginateFeed();
+          });
+        }
+      }
+
+      function updateUrlParams() {
+        try {
+          const url = new URL(window.location.href);
+          if (activeGameFilter && activeGameFilter !== 'all') {
+            url.searchParams.set('game', activeGameFilter);
+          } else {
+            url.searchParams.delete('game');
+          }
+          window.history.replaceState({}, '', url.toString());
+        } catch (e) {}
+      }
+
+      function readUrlParams() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const gameParam = params.get('game');
+          if (gameParam) {
+            const targetPill = document.querySelector(`#feed-game-pills .feed-pill[data-filter-game="${gameParam}"]`);
+            if (targetPill) {
+              document.querySelectorAll('#feed-game-pills .feed-pill').forEach(p => p.classList.remove('feed-pill--active'));
+              targetPill.classList.add('feed-pill--active');
+              activeGameFilter = gameParam;
+            }
+          }
+        } catch (e) {}
       }
 
       window.addEventListener('DOMContentLoaded', () => {
         updateLanguage(currentLang);
+        readUrlParams();
+        setupFilterListeners();
+        filterAndPaginateFeed();
 
         const hash = window.location.hash;
         if (hash) {
           const target = document.querySelector(hash);
           if (target) {
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            target.classList.add('changelog-item--highlight');
+            target.classList.add('event-feed-card--highlight');
           }
         }
       });

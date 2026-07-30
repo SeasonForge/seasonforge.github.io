@@ -159,5 +159,25 @@ export const ru = {
     instructionsStep3: "3. В OBS добавьте новый источник типа «Браузер» (Browser).",
     instructionsStep4: "4. Вставьте ссылку в поле URL и укажите рекомендуемое разрешение.",
     btnCancel: "Закрыть"
+  },
+  feed: {
+    title: "Лента событий ARPG",
+    subtitle: "Все ключевые события, старты лиг и новости ваших любимых ARPG в реальном времени",
+    crumbTitle: "Лента событий",
+    filterAllGames: "Все игры",
+    filterAllTypes: "Все типы",
+    typeLaunch: "Старт сезона",
+    typeAnnouncement: "Анонс",
+    typeArticle: "Новость",
+    searchPlaceholder: "Поиск событий...",
+    emptyTitle: "Событий по вашему запросу не найдено",
+    emptySubtitle: "Попробуйте изменить параметры поиска или сбросить фильтры",
+    resetFiltersBtn: "Сбросить фильтры",
+    loadMoreBtn: "Показать ещё события",
+    readArticleBtn: "Читать первоисточник →",
+    justNow: "Только что",
+    hoursAgo: "ч. назад",
+    daysAgo: "дн. назад",
+    weeksAgo: "нед. назад"
   }
 };

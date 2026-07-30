@@ -299,9 +299,17 @@ async function build() {
   // 5.5 Generate changelog/index.html page
   const changelogTemplatePath = path.join(__dirname, '../src/templates/changelog.html');
   if (fs.existsSync(changelogTemplatePath)) {
-    console.log('[SSG] Compiling changelog page...');
+    console.log('[SSG] Compiling ARPG Event Feed page (changelog)...');
     const changelogTemplate = fs.readFileSync(changelogTemplatePath, 'utf-8');
     const changelogList = database.changelog || [];
+
+    const gameMetaMap = {
+      'path-of-exile': { id: 'path-of-exile', name: 'Path of Exile 1', icon: '🔥', color: '#d97706' },
+      'path-of-exile-2': { id: 'path-of-exile-2', name: 'Path of Exile 2', icon: '✨', color: '#4b6e9c' },
+      'diablo-iv': { id: 'diablo-iv', name: 'Diablo IV', icon: '🔥', color: '#b91c1c' },
+      'last-epoch': { id: 'last-epoch', name: 'Last Epoch', icon: '⏳', color: '#8b5cf6' },
+      'torchlight-infinite': { id: 'torchlight-infinite', name: 'Torchlight: Infinite', icon: '⚡', color: '#c27a2b' }
+    };
 
     const changelogItemsHtml = changelogList.map((item, index) => {
       let dateStr = '';
@@ -318,24 +326,102 @@ async function build() {
       }
       const itemKey = index === 0 ? 'latest' : anchorId;
 
+      let gameId = item.gameId;
       const textEn = item.text?.en || item.text?.ru || '';
       const textRu = item.text?.ru || item.text?.en || '';
+      const txtLower = textEn.toLowerCase();
+
+      if (!gameId) {
+        if (txtLower.includes('path of exile 2') || txtLower.includes('poe 2')) gameId = 'path-of-exile-2';
+        else if (txtLower.includes('path of exile') || txtLower.includes('poe')) gameId = 'path-of-exile';
+        else if (txtLower.includes('diablo')) gameId = 'diablo-iv';
+        else if (txtLower.includes('last epoch')) gameId = 'last-epoch';
+        else if (txtLower.includes('torchlight')) gameId = 'torchlight-infinite';
+        else gameId = 'path-of-exile';
+      }
+
+      let type = item.type;
+      if (!type) {
+        if (txtLower.includes('launched') || txtLower.includes('запущен') || txtLower.includes('season launched')) type = 'launch';
+        else if (txtLower.includes('exilecon') || txtLower.includes('announcement') || txtLower.includes('анонс') || txtLower.includes('showcase')) type = 'announcement';
+        else type = 'article';
+      }
+
+      const meta = gameMetaMap[gameId] || gameMetaMap['path-of-exile'];
+      const badgeLabelEn = type === 'launch' ? 'Season Launch' : (type === 'announcement' ? 'Announcement' : 'Article');
+
+      const sourceUrl = item.url || item.sourceUrl || '';
+
       return `
-        <article id="${itemKey}" class="changelog-item" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 1rem; margin-bottom: 0.75rem; scroll-margin-top: 2rem;">
-          <time datetime="${item.timestamp || ''}" style="font-size: 0.75rem; font-weight: 700; color: #a78bfa; display: block; margin-bottom: 0.35rem;">${dateStr}</time>
-          <div class="changelog-item__text" data-lang="ru" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">${escapeHtml(textRu)}</div>
-          <div class="changelog-item__text" data-lang="en" style="font-size: 0.9rem; color: #f1f5f9; line-height: 1.4;">${escapeHtml(textEn)}</div>
+        <article id="${itemKey}" class="event-feed-card" data-game-id="${gameId}" data-event-type="${type}" data-timestamp="${item.timestamp || ''}" style="--game-accent-color: ${meta.color};">
+          <div class="event-feed-card__header">
+            <div class="event-feed-card__game-tag">
+              <span class="event-feed-card__game-icon">${meta.icon}</span>
+              <span class="event-feed-card__game-name">${escapeHtml(meta.name)}</span>
+            </div>
+            <div class="event-feed-card__meta">
+              <span class="feed-badge feed-badge--${type}">${badgeLabelEn}</span>
+              <time class="event-feed-card__time" datetime="${item.timestamp || ''}">${dateStr}</time>
+            </div>
+          </div>
+          <div class="event-feed-card__body">
+            <div class="event-feed-card__text" data-lang="ru">${escapeHtml(textRu)}</div>
+            <div class="event-feed-card__text" data-lang="en">${escapeHtml(textEn)}</div>
+          </div>
+          ${sourceUrl ? `
+            <div class="event-feed-card__footer">
+              <a href="${escapeAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="event-feed-card__link">
+                <span class="event-feed-card__link-text">Read Original Source →</span>
+              </a>
+            </div>
+          ` : ''}
         </article>
       `;
     }).join('\n');
 
-    const changelogHtml = changelogTemplate.replace(/{{CHANGELOG_ITEMS}}/g, changelogItemsHtml);
+    // Build sidebar upcoming launches widget
+    const gamesList = database.games || [];
+    const upcomingMiniCardsHtml = gamesList.map(g => {
+      const gName = g.name?.en || g.id;
+      const nextName = g.nextSeason?.name?.en || 'TBA';
+      const nextDate = g.nextSeason?.startDate ? new Date(g.nextSeason.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBA';
+      return `
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+          <div>
+            <div style="font-size: 0.8rem; font-weight: 700; color: #f1f5f9;">${escapeHtml(gName)}</div>
+            <div style="font-size: 0.72rem; color: #94a3b8; max-width: 170px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(nextName)}</div>
+          </div>
+          <div style="font-size: 0.75rem; font-weight: 700; color: #818cf8;">${escapeHtml(nextDate)}</div>
+        </div>
+      `;
+    }).join('');
+
+    const sidebarUpcomingWidget = `
+      <section style="background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 1.25rem;">
+        <h3 style="font-family: var(--font-display); font-size: 0.8rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Upcoming Launches</h3>
+        ${upcomingMiniCardsHtml}
+      </section>
+    `;
+
+    const sidebarMobilePromo = `
+      <section style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
+        <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">📱</div>
+        <h4 style="font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: #f1f5f9; margin-bottom: 0.35rem;">SeasonForge Mobile</h4>
+        <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0.85rem;">Widgets &amp; season alerts for Android.</p>
+        <a href="https://github.com/SeasonForge/seasonforge.github.io/releases" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; font-size: 0.78rem; font-weight: 600; padding: 0.45rem 0.85rem; border-radius: 6px; transition: background 0.2s;">Download App</a>
+      </section>
+    `;
+
+    let changelogHtml = changelogTemplate.replace(/{{CHANGELOG_ITEMS}}/g, changelogItemsHtml);
+    changelogHtml = changelogHtml.replace(/{{SIDEBAR_UPCOMING_WIDGET}}/g, sidebarUpcomingWidget);
+    changelogHtml = changelogHtml.replace(/{{SIDEBAR_MOBILE_PROMO}}/g, sidebarMobilePromo);
+
     const changelogDir = path.join(__dirname, '../changelog');
     if (!fs.existsSync(changelogDir)) {
       fs.mkdirSync(changelogDir, { recursive: true });
     }
     fs.writeFileSync(path.join(changelogDir, 'index.html'), changelogHtml, 'utf-8');
-    console.log('[SSG] changelog/index.html generated.');
+    console.log('[SSG] changelog/index.html generated successfully.');
   }
 
   // 6. Generate sitemap.xml

@@ -157,7 +157,27 @@ export const en = {
     instructionsStep1: "1. Select the widget type and game.",
     instructionsStep2: "2. Copy the generated widget link above.",
     instructionsStep3: "3. In OBS, add a new 'Browser' source.",
-    instructionsStep4: "4. Paste the link into the URL field and enter the recommended resolution.",
+    instructionsStep4: "4. Paste the URL and enter the recommended resolution.",
     btnCancel: "Close"
+  },
+  feed: {
+    title: "ARPG Event Feed",
+    subtitle: "Real-time updates, season launches, and news across major ARPGs",
+    crumbTitle: "Event Feed",
+    filterAllGames: "All Games",
+    filterAllTypes: "All Types",
+    typeLaunch: "Season Launch",
+    typeAnnouncement: "Announcement",
+    typeArticle: "Article",
+    searchPlaceholder: "Search events...",
+    emptyTitle: "No events found matching your filter",
+    emptySubtitle: "Try adjusting your search terms or resetting the active filters",
+    resetFiltersBtn: "Reset Filters",
+    loadMoreBtn: "Load More Events",
+    readArticleBtn: "Read Original Source →",
+    justNow: "Just now",
+    hoursAgo: "h ago",
+    daysAgo: "d ago",
+    weeksAgo: "w ago"
   }
 };

@@ -7,42 +7,63 @@ export class PoE2Adapter extends BaseAdapter {
 
   async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
-    const appId = gameConfig.appId || 2694490;
-    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=3&maxlength=4000&format=json`;
+    const url = gameConfig.sourceUrl || 'https://www.pathofexile.com/news/rss';
 
     try {
-      const rawData = await this.fetchUrl(url);
-      const data = JSON.parse(rawData);
-      const newsitems = data.appnews?.newsitems || [];
+      const rssText = await this.fetchUrl(url);
 
-      if (newsitems.length === 0) {
-        throw new Error('No news items found in Steam API');
+      const items = [];
+      const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
+      let match;
+      while ((match = itemRegex.exec(rssText)) !== null && items.length < 15) {
+        const itemContent = match[1];
+        
+        const cleanCdata = (str) => str.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/i, '$1').trim();
+        
+        const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/i);
+        const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/i);
+        const guidMatch = itemContent.match(/<guid[^>]*?>([\s\S]*?)<\/guid>/i);
+        const descMatch = itemContent.match(/<description>([\s\S]*?)<\/description>/i);
+        const dateMatch = itemContent.match(/<pubDate>([\s\S]*?)<\/pubDate>/i);
+
+        const title = titleMatch ? cleanCdata(titleMatch[1]) : '';
+        const link = linkMatch ? cleanCdata(linkMatch[1]) : '';
+        const guid = guidMatch ? cleanCdata(guidMatch[1]) : '';
+        const description = descMatch ? cleanCdata(descMatch[1]) : '';
+        const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
+
+        items.push({ title, link, guid, description, pubDate });
       }
 
-      const latestNewsId = newsitems[0].gid;
+      if (items.length === 0) {
+        throw new Error('No items found in Path of Exile RSS feed');
+      }
+
+      const firstItem = items[0];
+      const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
 
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
-        console.log(`[Orchestrator] [Path of Exile 2] Latest news unchanged (gid=${latestNewsId}). Skipping Gemini call.`);
+        console.log(`[Orchestrator] [Path of Exile 2] Latest news unchanged (id=${latestNewsId}). Skipping Gemini call.`);
         return existingGame;
       }
 
-      console.log(`[Orchestrator] [Path of Exile 2] New article detected (gid=${latestNewsId}). Calling Gemini...`);
+      console.log(`[Orchestrator] [Path of Exile 2] New RSS article detected (id=${latestNewsId}). Calling Gemini...`);
 
-      const newsText = newsitems
-        .map(item => `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nContent: ${this.cleanHtml(item.contents)}`)
+      const feedContent = items
+        .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)
         .join('\n\n---\n\n');
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season/league details from the provided Steam news items for Path of Exile 2. Path of Exile 2 calls seasons "leagues".
+      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season/league and major event details from Path of Exile RSS feed content specifically for Path of Exile 2. Path of Exile 2 calls seasons "leagues".
 Currently, the year is ${new Date().getFullYear()}. Determine:
 1. Current Season/League name in English (e.g. "0.5.0: Return of the Ancients") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
 2. Current Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-3. Next Season/League name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
-4. Next Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
+3. Next Season/League or Major Event name in English (e.g. "ExileCon 2026 (Announcement)" or "Version 1.0 Release") in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu (e.g. "ExileCon 2026 (Анонс лиги)" or "Версия 1.0 (Релиз)").
+4. Next Season/League or Major Event start date (YYYY-MM-DD) and end date (YYYY-MM-DD). NOTE: ExileCon 2026 is scheduled for November 7-8, 2026 (2026-11-07). If ExileCon 2026 is mentioned as the next major announcement hub for PoE 2, use 2026-11-07 as the next start date and set nextSeasonVerification to "official".
 5. Game status: "active" (if a league is running), "in-development" (if in early access/beta/dev), "maintenance" (if offline), "early-access" (if in early access).
-6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
-7. Whether the next season/league start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+6. A list of 3-5 key features or major upcoming events (including ExileCon 2026 if mentioned). Store the original English list in featuresEn, and translate it to Russian in featuresRu.
+7. Whether the next season/event start date is officially confirmed by developers (use "official") or estimated (use "estimated").
 
-Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. Use the news article timestamps to calibrate what "current" or "next" league means relative to today.`;
+Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent fake dates.`;
 
       const schema = {
         type: 'OBJECT',
@@ -73,7 +94,7 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         ]
       };
 
-      const extracted = await this.callGemini(newsText, systemInstruction, schema);
+      const extracted = await this.callGemini(feedContent, systemInstruction, schema);
 
       const normalized = {
         id: this.gameId,
@@ -88,10 +109,10 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         website: 'https://pathofexile2.com',
         latestNews: {
           id: latestNewsId,
-          title: newsitems[0].title || 'Path of Exile 2 Steam Update',
-          url: newsitems[0].url || 'https://pathofexile2.com',
-          publishDate: new Date(newsitems[0].date * 1000).toISOString(),
-          source: 'Path of Exile 2 Steam News'
+          title: firstItem.title || 'Path of Exile News Update',
+          url: firstItem.link || 'https://www.pathofexile.com/news',
+          publishDate: firstItem.pubDate ? new Date(firstItem.pubDate).toISOString() : new Date().toISOString(),
+          source: 'Path of Exile Official RSS'
         },
         status: {
           ...this.normalizeStatus(extracted.status),
@@ -99,25 +120,25 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || 'TBA'
+            en: extracted.currentSeasonNameEn || '0.5.0: Return of the Ancients',
+            ru: extracted.currentSeasonNameRu || '0.5.0: Return of the Ancients'
           },
           startDate: extracted.currentSeasonStartDate || '',
           endDate: extracted.currentSeasonEndDate || '',
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
-          sourceUrl: newsitems[0].url || 'https://pathofexile2.com'
+          sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
+            en: extracted.nextSeasonNameEn || 'ExileCon 2026 (League & 1.0 Reveal)',
+            ru: extracted.nextSeasonNameRu || 'ExileCon 2026 (Анонс лиги и 1.0)'
           },
-          startDate: extracted.nextSeasonStartDate || '',
+          startDate: extracted.nextSeasonStartDate || '2026-11-07',
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
-          sourceUrl: newsitems[0].url || 'https://pathofexile2.com'
+          verification: 'announcement',
+          sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
         },
         features: {
           en: extracted.featuresEn || [],

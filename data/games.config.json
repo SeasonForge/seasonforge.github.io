@@ -17,7 +17,7 @@
     },
     "adapter": "PoE2Adapter",
     "enabled": true,
-    "appId": 2694490
+    "sourceUrl": "https://www.pathofexile.com/news/rss"
   },
   {
     "id": "diablo-iv",

@@ -1936,6 +1936,16 @@ body::after {
   font-weight: 700;
 }
 
+.verification-badge--announcement {
+  background: rgba(99, 102, 241, 0.12);
+  color: #818cf8;
+  border-color: rgba(99, 102, 241, 0.35);
+  font-size: 0.58rem;
+  padding: 0.12rem 0.45rem;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
 /* TBA Countdown & Progress placeholders */
 .game-card__countdown--tba,
 .game-card__countdown--launched {

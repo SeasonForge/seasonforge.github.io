@@ -38,23 +38,23 @@ BaseAdapter.prototype.callGemini = async function(text, systemInstruction, schem
         currentSeasonNameRu: "0.5.0: Return of the Ancients",
         currentSeasonStartDate: "2026-05-29",
         currentSeasonEndDate: "",
-        nextSeasonNameEn: "Version 1.0 (Release) (Estimated)",
-        nextSeasonNameRu: "Версия 1.0 (Релиз) (Прогноз)",
-        nextSeasonStartDate: "2026-12-15",
+        nextSeasonNameEn: "ExileCon 2026 (League & 1.0 Reveal)",
+        nextSeasonNameRu: "ExileCon 2026 (Анонс лиги и 1.0)",
+        nextSeasonStartDate: "2026-11-07",
         nextSeasonEndDate: "",
-        nextSeasonVerification: "estimated",
+        nextSeasonVerification: "announcement",
         status: "early-access",
         featuresEn: [
+          "ExileCon 2026 in Auckland, New Zealand (Nov 7-8)",
+          "Major announcements for Path of Exile 2 Version 1.0 & next league",
           "Runes of Aldur league testing",
-          "Atlas of Worlds rework for the sequel",
-          "New passive skill tree for early access",
-          "Full release and new campaign acts in December (Estimated)"
+          "Atlas of Worlds rework for the sequel"
         ],
         featuresRu: [
+          "ExileCon 2026 в Окленде, Новая Зеландия (7-8 ноября)",
+          "Крупные анонсы Path of Exile 2 Версии 1.0 и новой лиги",
           "Тестирование лиги Runes of Aldur",
-          "Переработка механики Атласа Миров под сиквел",
-          "Новое древо пассивных умений для раннего доступа",
-          "Полный релиз и новые акты кампании в декабре (прогноз)"
+          "Переработка механики Атласа Миров под сиквел"
         ]
       };
     case 'diablo-iv':

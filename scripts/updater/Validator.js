@@ -50,7 +50,7 @@ export class Validator {
         }
       }
 
-      const validVerifications = ['official', 'ai', 'estimated'];
+      const validVerifications = ['official', 'ai', 'estimated', 'announcement'];
       if (season.verification && !validVerifications.includes(season.verification)) {
         throw new Error(`Invalid verification value in ${label}: ${season.verification}. Must be one of ${validVerifications.join(', ')}`);
       }

@@ -1,6 +1,20 @@
 {
-  "lastCheckedAt": "2026-07-29T10:17:22.014Z",
+  "lastCheckedAt": "2026-07-30T10:09:53.679Z",
   "changelog": [
+    {
+      "timestamp": "2026-07-30T09:57:57.684Z",
+      "text": {
+        "en": "Path of Exile 1: New article published — \"Path of Exile 2: Shader and Device Removed Fixed\"",
+        "ru": "Path of Exile 1: Опубликована новость — «Path of Exile 2: Shader and Device Removed Fixed»"
+      }
+    },
+    {
+      "timestamp": "2026-07-30T09:57:57.684Z",
+      "text": {
+        "en": "Path of Exile 2: New article published — \"Path of Exile 2: Shader and Device Removed Fixed\"",
+        "ru": "Path of Exile 2: Опубликована новость — «Path of Exile 2: Shader and Device Removed Fixed»"
+      }
+    },
     {
       "timestamp": "2026-07-29T02:54:00Z",
       "text": {
@@ -43,10 +57,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3990635",
-        "title": "New Unique - The Draugur’s Lantern",
-        "url": "https://www.pathofexile.com/forum/view-thread/3990635",
-        "publishDate": "Tue, 28 Jul 2026 23:54:06 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3991262",
+        "title": "Path of Exile 2: Shader and Device Removed Fixed",
+        "url": "https://www.pathofexile.com/forum/view-thread/3991262",
+        "publishDate": "Thu, 30 Jul 2026 05:55:12 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -55,7 +69,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-29T10:17:21.867Z"
+        "updatedAt": "2026-07-30T10:09:52.332Z"
       },
       "history": [
         {
@@ -76,31 +90,33 @@
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991262"
       },
       "nextSeason": {
         "name": {
           "en": "3.30 League (Estimated)",
-          "ru": "Лига 3.30 (Прогноз)"
+          "ru": "3.30 League (Estimated)"
         },
         "startDate": "2026-11-13T20:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991262"
       },
       "features": {
         "en": [
-          "Curse of the Allflame expansion and league challenges",
-          "New unique items such as The Draugur's Lantern",
-          "Deep-sea themed challenge rewards",
-          "Curse of the Allflame Mystery Box featuring thematic microtransactions"
+          "Protection while channeling Verisium Ore",
+          "Animate Guardian's inventory",
+          "Crafting Bench in every town",
+          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
+          "ExileCon 2026 Race Qualifier Events"
         ],
         "ru": [
-          "Расширение «Проклятие Всепламени» и испытания лиги",
-          "Новые уникальные предметы, такие как «Фонарь Драугра»",
-          "Награды за испытания в глубоководной тематике",
-          "Загадочная коробка «Проклятие Всепламени» с тематической микротранзакцией"
+          "Защита во время поддержания жилы веризия",
+          "Инвентарь Анимированного стража",
+          "Верстак для создания предметов в каждом городе",
+          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
+          "Отборочные состязания к ExileCon 2026"
         ]
       },
       "links": {
@@ -130,11 +146,11 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1836506165584601",
-        "title": "Path of Exile 2 Build Showcase: Slowmaxing Chronomancer by TuskDeluxe",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165584601",
-        "publishDate": "2026-07-09T21:05:43.000Z",
-        "source": "Path of Exile 2 Steam News"
+        "id": "https://www.pathofexile.com/forum/view-thread/3991262",
+        "title": "Path of Exile 2: Shader and Device Removed Fixed",
+        "url": "https://www.pathofexile.com/forum/view-thread/3991262",
+        "publishDate": "2026-07-30T05:55:12.000Z",
+        "source": "Path of Exile Official RSS"
       },
       "status": {
         "code": "early-access",
@@ -142,7 +158,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-07-24T22:15:41.805Z"
+        "updatedAt": "2026-07-30T10:09:52.318Z"
       },
       "currentSeason": {
         "name": {
@@ -153,31 +169,31 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165584601"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991262"
       },
       "nextSeason": {
         "name": {
-          "en": "Version 1.0 (Release) (Estimated)",
-          "ru": "Версия 1.0 (Релиз) (Прогноз)"
+          "en": "ExileCon 2026 (League & 1.0 Reveal)",
+          "ru": "ExileCon 2026 (Анонс лиги и 1.0)"
         },
-        "startDate": "2026-12-15T20:00:00Z",
+        "startDate": "2026-11-07T20:00:00Z",
         "endDate": "",
         "isActive": false,
-        "verification": "estimated",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165584601"
+        "verification": "announcement",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991262"
       },
       "features": {
         "en": [
+          "ExileCon 2026 in Auckland, New Zealand (Nov 7-8)",
+          "Major announcements for Path of Exile 2 Version 1.0 & next league",
           "Runes of Aldur league testing",
-          "Atlas of Worlds rework for the sequel",
-          "New passive skill tree for early access",
-          "Full release and new campaign acts in December (Estimated)"
+          "Atlas of Worlds rework for the sequel"
         ],
         "ru": [
+          "ExileCon 2026 в Окленде, Новая Зеландия (7-8 ноября)",
+          "Крупные анонсы Path of Exile 2 Версии 1.0 и новой лиги",
           "Тестирование лиги Runes of Aldur",
-          "Переработка механики Атласа Миров под сиквел",
-          "Новое древо пассивных умений для раннего доступа",
-          "Полный релиз и новые акты кампании в декабре (прогноз)"
+          "Переработка механики Атласа Миров под сиквел"
         ]
       },
       "links": {
@@ -223,7 +239,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-24T22:15:43.113Z"
+        "updatedAt": "2026-07-30T10:09:53.365Z"
       },
       "history": [
         {
@@ -242,14 +258,14 @@
         },
         "startDate": "2026-07-01T17:00:00Z",
         "endDate": "",
-        "isActive": false,
+        "isActive": true,
         "verification": "official",
         "sourceUrl": "https://news.blizzard.com/en-us/article/24271884/raise-hell-with-the-diablo-iv-blizzcon-digital-bundle"
       },
       "nextSeason": {
         "name": {
           "en": "Season 15 (Estimated)",
-          "ru": "Сезон 15 (Прогноз)"
+          "ru": "Season 15 (Estimated)"
         },
         "startDate": "2026-09-19T17:00:00Z",
         "endDate": "",
@@ -314,7 +330,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-24T22:15:43.217Z"
+        "updatedAt": "2026-07-30T10:09:53.657Z"
       },
       "history": [
         {
@@ -340,7 +356,7 @@
       "nextSeason": {
         "name": {
           "en": "Cycle 5 (Estimated)",
-          "ru": "Цикл 5 (Прогноз)"
+          "ru": "Cycle 5 (Estimated)"
         },
         "startDate": "2026-09-11T16:00:00Z",
         "endDate": "",
@@ -382,7 +398,7 @@
       "id": "torchlight-infinite",
       "name": {
         "en": "Torchlight: Infinite",
-        "ru": "Torchlight: Infinite"
+        "ru": "Торчлайт: Инфинит"
       },
       "developer": "XD",
       "logo": "torchlight-infinite.png",
@@ -402,7 +418,7 @@
           "en": "Just Started",
           "ru": "Только начался"
         },
-        "updatedAt": "2026-07-24T22:15:43.356Z"
+        "updatedAt": "2026-07-30T10:09:53.677Z"
       },
       "history": [
         {
@@ -421,14 +437,14 @@
         },
         "startDate": "2026-07-18T02:00:00Z",
         "endDate": "",
-        "isActive": false,
+        "isActive": true,
         "verification": "official",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
       },
       "nextSeason": {
         "name": {
           "en": "SS14 (Estimated)",
-          "ru": "SS14 (Прогноз)"
+          "ru": "SS14 (Estimated)"
         },
         "startDate": "2026-10-24T02:00:00Z",
         "endDate": "",

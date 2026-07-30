@@ -70,10 +70,20 @@ export function render(game = {}, options = {}) {
   const nextSeasonDateShort = formatShortDate(game.nextSeason?.startDate);
   const nextSeasonDateFull = formatLocalDate(game.nextSeason?.startDate);
   
-  const isNextSeasonEstimated = game.nextSeason?.verification === 'ai' || game.nextSeason?.verification === 'estimated';
-  const nextSeasonDateBadge = isNextSeasonEstimated
-    ? `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`
-    : '';
+  const verificationType = game.nextSeason?.verification;
+  const isAnnouncement = verificationType === 'announcement' || 
+    (rawNextSeason && /announcement|анонс/i.test(rawNextSeason));
+
+  let nextSeasonDateBadge = '';
+  if (isAnnouncement || verificationType === 'announcement') {
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--announcement" title="${escapeAttr(t('card.announcementBadgeTitle'))}" style="cursor: help;">${t('card.announcementBadge')}</span>`;
+  } else if (verificationType === 'official') {
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--official" title="${escapeAttr(t('card.officialBadgeTitle'))}" style="cursor: help;">${t('card.officialBadge')}</span>`;
+  } else if (verificationType === 'ai' || verificationType === 'estimated') {
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`;
+  }
+
+  const sideHeaderLabel = isAnnouncement ? t('card.announcementCountdownPrefix') : t('card.countdownPrefix');
   
   const countdown = options.countdown || {};
   const progressBar = options.progressBar || '';
@@ -173,7 +183,7 @@ export function render(game = {}, options = {}) {
   const moreDetailsTarget = isDetailPage ? 'target="_blank" rel="noopener noreferrer"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
-  const isForecastStatus = isNextSeasonEstimated;
+  const isForecastStatus = verificationType === 'ai' || verificationType === 'estimated';
   const dateStatusVal = isForecastStatus ? 'forecast' : 'official';
   const gameIdVal = escapeAttr(game.id || '');
 
@@ -257,7 +267,7 @@ export function render(game = {}, options = {}) {
         <section class="game-card__panel game-card__panel--side">
           <div class="game-card__side-header">
             <div class="game-card__side-top-row">
-              <span class="game-card__side-label">${t('card.countdownPrefix')}</span>
+              <span class="game-card__side-label">${sideHeaderLabel}</span>
               ${nextSeasonDateBadge ? `<div class="game-card__badge-wrapper">${nextSeasonDateBadge}</div>` : ''}
             </div>
             <h3 class="game-card__side-season-name" title="${escapeAttr(rawNextSeason)}">${nextSeason}</h3>

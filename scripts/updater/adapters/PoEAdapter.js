@@ -33,6 +33,11 @@ export class PoEAdapter extends BaseAdapter {
         const description = descMatch ? cleanCdata(descMatch[1]) : '';
         const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
 
+        // Filter out articles specifically meant for PoE 2
+        if (title.toLowerCase().startsWith('path of exile 2:') || title.toLowerCase().startsWith('poe 2:')) {
+          continue;
+        }
+
         items.push({ title, link, guid, description, pubDate });
       }
 

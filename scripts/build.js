@@ -351,7 +351,7 @@ async function build() {
       const badgeLabelEn = type === 'launch' ? 'Season Launch' : (type === 'announcement' ? 'Announcement' : 'Article');
 
       const targetGame = (database.games || []).find(g => g.id === gameId);
-      const sourceUrl = item.url || item.sourceUrl || targetGame?.latestNews?.url || targetGame?.currentSeason?.sourceUrl || targetGame?.website || 'https://www.pathofexile.com/news';
+      const sourceUrl = item.url || item.sourceUrl || targetGame?.currentSeason?.sourceUrl || targetGame?.website || '';
 
       return `
         <article id="${itemKey}" class="event-feed-card" data-game-id="${gameId}" data-event-type="${type}" data-timestamp="${item.timestamp || ''}" style="--game-accent-color: ${meta.color};">

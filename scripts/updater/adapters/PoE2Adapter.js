@@ -32,7 +32,11 @@ export class PoE2Adapter extends BaseAdapter {
         const description = descMatch ? cleanCdata(descMatch[1]) : '';
         const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
 
-        items.push({ title, link, guid, description, pubDate });
+        // Include articles for PoE 2 or general ExileCon / Return of the Ancients announcements
+        const titleLower = title.toLowerCase();
+        if (titleLower.includes('poe 2') || titleLower.includes('path of exile 2') || titleLower.includes('exilecon') || titleLower.includes('ancients')) {
+          items.push({ title, link, guid, description, pubDate });
+        }
       }
 
       if (items.length === 0) {

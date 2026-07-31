@@ -72,12 +72,12 @@
       }
     },
     {
-      "timestamp": "2026-07-01T17:00:00Z",
+      "timestamp": "2026-06-30T17:00:00Z",
       "gameId": "diablo-iv",
       "url": "https://news.blizzard.com/en-us/diablo4",
       "type": "launch",
       "text": {
-        "ru": "Diablo IV: Старт Сесона 14 «Season of Death Awakening»",
+        "ru": "Diablo IV: Старт Сезона 14 «Season of Death Awakening»",
         "en": "Diablo IV: Season 14 \"Season of Death Awakening\" launched"
       }
     }
@@ -288,7 +288,7 @@
             "ru": "Season 13"
           },
           "startDate": "2026-04-16T17:00:00Z",
-          "endDate": "2026-07-01T17:00:00Z"
+          "endDate": "2026-06-30T17:00:00Z"
         }
       ],
       "currentSeason": {
@@ -296,7 +296,7 @@
           "en": "Season 14: Season of Death Awakening",
           "ru": "Season 14: Season of Death Awakening"
         },
-        "startDate": "2026-07-01T17:00:00Z",
+        "startDate": "2026-06-30T17:00:00Z",
         "endDate": "2026-09-15T17:00:00Z",
         "isActive": true,
         "verification": "official",

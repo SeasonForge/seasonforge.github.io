@@ -447,7 +447,7 @@ function getTimelineTooltipContent(gameId, seasonType) {
 
   if (isPtrType) {
     const ptrData = game.ptr || (game.events || []).find(e => e.type === 'ptr');
-    const ptrTitle = escapeHtml(getVal(ptrData?.title) || 'PTR Патч 3.2.0');
+    const ptrTitle = escapeHtml(getVal(ptrData?.name) || getVal(ptrData?.title) || (lang === 'ru' ? 'PTR Патч 3.2.0' : 'PTR Patch 3.2.0'));
     const startStr = ptrData?.startDate ? formatTooltipDate(ptrData.startDate, lang) : (lang === 'ru' ? '4 авг.' : 'Aug 4');
     const endStr = ptrData?.endDate ? formatTooltipDate(ptrData.endDate, lang) : (lang === 'ru' ? '11 авг.' : 'Aug 11');
     const platforms = ptrData?.platforms ? escapeHtml(getVal(ptrData.platforms)) : (lang === 'ru' ? 'Только ПК (Battle.net / Game Pass)' : 'PC Only (Battle.net / Game Pass)');
@@ -506,7 +506,7 @@ function getTimelineTooltipContent(gameId, seasonType) {
 
     eventsHtml = `
       <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.15);">
-        <div style="font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display);">${t('card.upcomingEventsHeader') || 'БЛИЖАЙШИЕ ЭТАПЫ:'}</div>
+        <div style="font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display);">${t('card.upcomingEventsHeader') || (lang === 'ru' ? 'БЛИЖАЙШИЕ ЭТАПЫ И ТЕСТЫ:' : 'UPCOMING STAGES & TESTS:')}</div>
         ${eventsList}
       </div>
     `;

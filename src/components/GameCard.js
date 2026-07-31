@@ -95,7 +95,11 @@ export function render(game = {}, options = {}) {
   let ptrBadgeHtml = '';
   if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
     const ptrItem = game.ptr || game.events.find(e => e.type === 'ptr');
-    const ptrText = ptrItem.startDate ? `PTR 3.2.0: Старт ${formatShortDate(ptrItem.startDate)}` : 'PTR 3.2.0';
+    const state = getState ? getState() : {};
+    const lang = state.settings?.lang || 'en';
+    const startVerb = lang === 'ru' ? 'Старт' : 'Starts';
+    const ptrTitle = escapeHtml(getVal(ptrItem.name) || getVal(ptrItem.title) || 'PTR 3.2.0');
+    const ptrText = ptrItem.startDate ? `${ptrTitle}: ${startVerb} ${formatShortDate(ptrItem.startDate)}` : ptrTitle;
     ptrBadgeHtml = `
       <div class="game-card__ptr-chip">
         <span class="game-card__ptr-chip-badge">PTR TEST</span>
@@ -192,7 +196,7 @@ export function render(game = {}, options = {}) {
       announcementsHtml = `
         <div class="game-card__feature-group" style="margin-bottom: 1rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="verification-badge verification-badge--announcement" style="font-size: 0.75rem;">🔵 ${t('card.announcementCategory') || 'Анонс / Презентация'}</span>
+            <span class="verification-badge verification-badge--announcement" style="font-size: 0.75rem;">🔵 ${t('card.announcementCategory') || (lang === 'ru' ? 'Анонс / Презентация' : 'Announcement / Reveal')}</span>
           </div>
           ${annBlocks}
         </div>

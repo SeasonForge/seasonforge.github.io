@@ -1,4 +1,5 @@
 import { t, getVal } from '../i18n/index.js';
+import { getState } from '../store/state.js';
 
 // Render navigation from a list of games and an active game.
 function escapeHtml(value) {
@@ -14,6 +15,8 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const items = Array.isArray(games) ? games : [];
   const activeId = activeGame?.id || activeGame?.slug || '';
   const now = new Date();
+  const state = getState ? getState() : {};
+  const lang = state.settings?.lang || (typeof document !== 'undefined' ? document.documentElement.lang : 'en') || 'en';
 
   let newestGameId = null;
   let minAgeMs = Infinity;
@@ -57,7 +60,20 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       
       let ptrBadge = '';
       if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
-        ptrBadge = `<span class="navbar__status navbar__status--ptr">PTR 4 АВГ</span>`;
+        const ptrItem = game.ptr || game.events.find(e => e.type === 'ptr');
+        let datePart = lang === 'ru' ? '4 АВГ' : 'AUG 4';
+        if (ptrItem?.startDate) {
+          const d = new Date(ptrItem.startDate);
+          if (!Number.isNaN(d.getTime())) {
+            const monthNames = lang === 'ru' 
+              ? ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК']
+              : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+            const m = monthNames[d.getMonth()];
+            const day = d.getDate();
+            datePart = lang === 'ru' ? `${day} ${m}` : `${m} ${day}`;
+          }
+        }
+        ptrBadge = `<span class="navbar__status navbar__status--ptr">PTR ${datePart}</span>`;
       }
 
       const isActive = (activeView === 'card' || activeView === 'game') && activeId && id === activeId;

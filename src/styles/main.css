@@ -4719,14 +4719,14 @@ body.overlay-type-countdown .game-card__panel--side {
 }
 
 .navbar__status--ptr {
-  background: rgba(16, 185, 129, 0.18);
-  border: 1px solid rgba(16, 185, 129, 0.45);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
   color: #34d399;
   font-weight: 700;
-  font-size: 0.65rem;
-  letter-spacing: 0.04em;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
   padding: 0.15rem 0.45rem;
-  border-radius: 12px;
+  border-radius: 999px;
 }
 
 .game-card__ptr-chip-badge {

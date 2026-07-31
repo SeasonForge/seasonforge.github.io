@@ -27,24 +27,23 @@ export class LastEpochAdapter extends BaseAdapter {
         return existingGame;
       }
 
-      console.log(`[Orchestrator] [Last Epoch] New article detected (gid=${latestNewsId}). Calling Gemini...`);
+      console.log(`[Orchestrator] [Last Epoch] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
-      // Combine headlines and body text to extract info
-      const newsText = newsitems
-        .map(item => `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nContent: ${this.cleanHtml(item.contents)}`)
-        .join('\n\n---\n\n');
+      const filteredItems = this.filterRelevantNews(newsitems, ['cycle', 'patch', 'ptr', 'beta', 'launch']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : newsitems.slice(0, 5);
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season/cycle details from the provided Steam news items. Last Epoch seasons are called "Cycles".
-Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season/Cycle name in English (e.g. "Harbingers of Ruin") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
-2. Current Season/Cycle start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-3. Next Season/Cycle name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
-4. Next Season/Cycle start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-5. Game status: "active" (if a season is running), "in-development" (if in beta/dev), "maintenance" (if offline).
-6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
-7. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+      const newsText = targetItems.map(item => 
+        `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nSummary: ${this.cleanHtml(item.contents)}`
+      ).join('\n\n---\n\n');
 
-Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. Use the news article timestamps to calibrate what "current" or "next" cycle means relative to today.`;
+      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game cycle/season details for Last Epoch:
+1. Current Cycle name EN/RU, startDate, endDate.
+2. Next Cycle name EN/RU, startDate, endDate, verification.
+3. Timeline events (Beta, EHG Livestreams, Cycle launches, PTR) with EN/RU titles and dates.
+4. Game status: "active", "in-development", "maintenance".
+5. Key features list EN/RU.
+
+Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
 
       const schema = {
         type: 'OBJECT',
@@ -57,32 +56,48 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           nextSeasonNameRu: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
-          nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
+          nextSeasonVerification: { type: 'STRING' },
           status: { type: 'STRING' },
-          featuresEn: {
+          featuresEn: { type: 'ARRAY', items: { type: 'STRING' } },
+          featuresRu: { type: 'ARRAY', items: { type: 'STRING' } },
+          events: {
             type: 'ARRAY',
-            items: { type: 'STRING' }
-          },
-          featuresRu: {
-            type: 'ARRAY',
-            items: { type: 'STRING' }
+            items: {
+              type: 'OBJECT',
+              properties: {
+                id: { type: 'STRING' },
+                type: { type: 'STRING', description: 'One of: ptr, livestream, season_start, expansion' },
+                titleEn: { type: 'STRING' },
+                titleRu: { type: 'STRING' },
+                startDate: { type: 'STRING' },
+                endDate: { type: 'STRING' },
+                verification: { type: 'STRING' }
+              },
+              required: ['type', 'titleEn', 'startDate']
+            }
           }
         },
         required: [
-          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate', 'currentSeasonEndDate', 
-          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate', 'nextSeasonEndDate', 
+          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate',
+          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate',
           'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
         ]
       };
 
       const extracted = await this.callGemini(newsText, systemInstruction, schema);
 
+      const parsedEvents = (extracted.events || []).map(ev => ({
+        id: ev.id || `${ev.type}-${this.hashString(ev.titleEn + ev.startDate).slice(0, 6)}`,
+        type: ev.type || 'season_start',
+        title: { en: ev.titleEn || '', ru: ev.titleRu || ev.titleEn || '' },
+        startDate: this.normalizeAndValidateDate(ev.startDate),
+        endDate: this.normalizeAndValidateDate(ev.endDate),
+        verification: ev.verification || 'official'
+      })).filter(ev => ev.startDate !== '');
+
       const normalized = {
         id: this.gameId,
-        name: {
-          en: 'Last Epoch',
-          ru: 'Last Epoch'
-        },
+        name: { en: 'Last Epoch', ru: 'Last Epoch' },
         developer: 'Eleventh Hour Games',
         logo: 'last-epoch.png',
         color: '#6b3fa0',
@@ -102,10 +117,10 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         currentSeason: {
           name: {
             en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameEn || 'TBA'
+            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || 'TBA'
           },
-          startDate: extracted.currentSeasonStartDate || '',
-          endDate: extracted.currentSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: newsitems[0].url || 'https://www.lastepoch.com/'
@@ -113,28 +128,22 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         nextSeason: {
           name: {
             en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameEn || 'TBA'
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
           },
-          startDate: extracted.nextSeasonStartDate || '',
-          endDate: extracted.nextSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
+          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
           sourceUrl: newsitems[0].url || 'https://www.lastepoch.com/'
         },
         features: {
           en: extracted.featuresEn || [],
           ru: extracted.featuresRu || []
         },
-        links: {
-          official: 'https://www.lastepoch.com/',
-          wiki: '',
-          community: ''
-        },
-        metadata: {
-          region: 'Global',
-          platforms: ['PC'],
-          tags: ['ARPG', 'Crafting']
-        }
+        ptr: existingGame?.ptr || null,
+        events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
+        links: { official: 'https://www.lastepoch.com/', wiki: '', community: '' },
+        metadata: { region: 'Global', platforms: ['PC'], tags: ['ARPG', 'Crafting'] }
       };
 
       return normalized;

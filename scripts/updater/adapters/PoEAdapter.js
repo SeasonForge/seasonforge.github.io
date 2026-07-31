@@ -56,21 +56,21 @@ export class PoEAdapter extends BaseAdapter {
 
       console.log(`[Orchestrator] [PoE] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
-      const feedContent = items
+      const filteredItems = this.filterRelevantNews(items, ['league', 'expansion', 'livestream', 'teaser']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : items.slice(0, 5);
+
+      const feedContent = targetItems
         .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)
         .join('\n\n---\n\n');
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile RSS feed content.
-Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season/League name in English including version number (e.g. "v3.29: Settlers of Kalguur" or "v3.29") in currentSeasonNameEn, and in currentSeasonNameRu.
-2. Current Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
-3. Next Season/League name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
-4. Next Season/League start date (YYYY-MM-DD) and end date (YYYY-MM-DD). If unknown, use empty string.
-5. Game status: "active" (if a league is currently running), "in-development" (if between leagues), "maintenance" (if offline).
-6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
-7. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile 1 RSS feed content.
+1. Current League name EN/RU, startDate, endDate.
+2. Next League name EN/RU, startDate, endDate, verification ("official" or "estimated").
+3. Events (livestreams, teaser schedules, league launches) with titles EN/RU and dates.
+4. Game status: "active", "in-development", "maintenance".
+5. Key features list EN/RU.
 
-Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. PoE league launches are usually on Fridays.`;
+Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launches are almost always on Fridays.`;
 
       const schema = {
         type: 'OBJECT',
@@ -83,27 +83,31 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
           nextSeasonNameRu: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
-          nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
+          nextSeasonVerification: { type: 'STRING' },
           status: { type: 'STRING' },
-          featuresEn: {
+          featuresEn: { type: 'ARRAY', items: { type: 'STRING' } },
+          featuresRu: { type: 'ARRAY', items: { type: 'STRING' } },
+          events: {
             type: 'ARRAY',
-            items: { type: 'STRING' }
-          },
-          featuresRu: {
-            type: 'ARRAY',
-            items: { type: 'STRING' }
+            items: {
+              type: 'OBJECT',
+              properties: {
+                id: { type: 'STRING' },
+                type: { type: 'STRING', description: 'One of: livestream, season_start, expansion, convention' },
+                titleEn: { type: 'STRING' },
+                titleRu: { type: 'STRING' },
+                startDate: { type: 'STRING' },
+                endDate: { type: 'STRING' },
+                verification: { type: 'STRING' }
+              },
+              required: ['type', 'titleEn', 'startDate']
+            }
           }
         },
         required: [
-          'currentSeasonNameEn',
-          'currentSeasonNameRu',
-          'currentSeasonStartDate',
-          'nextSeasonNameEn',
-          'nextSeasonNameRu',
-          'nextSeasonStartDate',
-          'status',
-          'featuresEn',
-          'featuresRu'
+          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate',
+          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate',
+          'status', 'featuresEn', 'featuresRu'
         ]
       };
 
@@ -115,12 +119,18 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         seasonNameEn = `v3.29: ${seasonNameEn}`;
       }
 
+      const parsedEvents = (extracted.events || []).map(ev => ({
+        id: ev.id || `${ev.type}-${this.hashString(ev.titleEn + ev.startDate).slice(0, 6)}`,
+        type: ev.type || 'livestream',
+        title: { en: ev.titleEn || '', ru: ev.titleRu || ev.titleEn || '' },
+        startDate: this.normalizeAndValidateDate(ev.startDate),
+        endDate: this.normalizeAndValidateDate(ev.endDate),
+        verification: ev.verification || 'official'
+      })).filter(ev => ev.startDate !== '');
+
       const normalized = {
         id: this.gameId,
-        name: {
-          en: 'Path of Exile 1',
-          ru: 'Path of Exile 1'
-        },
+        name: { en: 'Path of Exile 1', ru: 'Path of Exile 1' },
         developer: 'Grinding Gear Games',
         logo: 'path-of-exile.png',
         color: '#f5c342',
@@ -140,29 +150,32 @@ Ensure dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent
         currentSeason: {
           name: {
             en: seasonNameEn,
-            ru: seasonNameEn
+            ru: extracted.currentSeasonNameRu || seasonNameEn
           },
-          startDate: extracted.currentSeasonStartDate || '',
-          endDate: extracted.currentSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
-          sourceUrl: items[0].link || 'https://www.pathofexile.com/'
+          sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
         },
         nextSeason: {
           name: {
             en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameEn || 'TBA'
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
           },
-          startDate: extracted.nextSeasonStartDate || '',
-          endDate: extracted.nextSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
-          sourceUrl: items[0].link || 'https://www.pathofexile.com/'
+          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verificationNote: existingGame?.nextSeason?.verificationNote || null,
+          sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
         },
         features: {
           en: extracted.featuresEn || [],
           ru: extracted.featuresRu || []
         },
+        ptr: existingGame?.ptr || null,
+        events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
         links: {
           official: 'https://www.pathofexile.com/',
           wiki: '',

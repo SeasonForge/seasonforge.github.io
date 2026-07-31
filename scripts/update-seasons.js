@@ -141,6 +141,50 @@ function mergeGameData(existingGame, newGame) {
       ru: newGame.features.ru || existingGame.features.ru || []
     };
   }
+
+  // Merge events with fuzzy deduplication (type + ±2 days window)
+  const existingEvents = Array.isArray(existingGame.events) ? existingGame.events : [];
+  const newEvents = Array.isArray(newGame.events) ? newGame.events : [];
+
+  if (existingEvents.length === 0) {
+    merged.events = newEvents;
+  } else if (newEvents.length === 0) {
+    merged.events = existingEvents;
+  } else {
+    const mergedEvents = [...existingEvents];
+
+    for (const newEv of newEvents) {
+      const newTime = newEv.startDate ? new Date(newEv.startDate).getTime() : null;
+      
+      const matchIndex = mergedEvents.findIndex(exEv => {
+        if (exEv.id && newEv.id && exEv.id === newEv.id) return true;
+        if (exEv.type && newEv.type && exEv.type === newEv.type && newTime && exEv.startDate) {
+          const exTime = new Date(exEv.startDate).getTime();
+          const diffHours = Math.abs(newTime - exTime) / (1000 * 60 * 60);
+          return diffHours <= 48; // Within ±2 days window
+        }
+        return false;
+      });
+
+      if (matchIndex >= 0) {
+        // Merge & enrich existing event without destroying manual/confirmed data
+        const exEv = mergedEvents[matchIndex];
+        mergedEvents[matchIndex] = {
+          ...exEv,
+          ...newEv,
+          title: {
+            en: newEv.title?.en || exEv.title?.en || '',
+            ru: newEv.title?.ru || exEv.title?.ru || ''
+          },
+          verification: exEv.verification === 'official' ? 'official' : (newEv.verification || exEv.verification)
+        };
+      } else {
+        mergedEvents.push(newEv);
+      }
+    }
+
+    merged.events = mergedEvents;
+  }
   
   return merged;
 }
@@ -481,10 +525,10 @@ async function main() {
     process.exit(1);
   }
 
-async function sendTelegramNotification(messageText) {
+async function sendTelegramApprovalMessage(messageText, draftId) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_FEEDBACK_CHAT_ID;
-  if (!botToken || !chatId) return;
+  if (!botToken || !chatId) return null;
 
   try {
     const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
@@ -495,16 +539,79 @@ async function sendTelegramNotification(messageText) {
         chat_id: chatId,
         text: messageText,
         parse_mode: 'HTML',
-        disable_web_page_preview: true
+        disable_web_page_preview: true,
+        reply_markup: {
+          inline_keyboard: [
+            [
+              { text: '✅ Одобрить и выпустить', callback_data: `approve_${draftId}` },
+              { text: '❌ Отклонить', callback_data: `reject_${draftId}` }
+            ]
+          ]
+        }
       })
     });
     if (res.ok) {
-      console.log('[Orchestrator] Telegram update notification sent.');
+      const data = await res.json();
+      console.log('[Orchestrator] Telegram moderation request sent successfully.');
+      return data.result?.message_id;
     }
   } catch (err) {
-    console.warn('[Orchestrator] Failed to send Telegram notification:', err.message);
+    console.warn('[Orchestrator] Failed to send Telegram moderation request:', err.message);
   }
+  return null;
 }
+
+async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
+  if (!botToken || !messageId) return false;
+
+  console.log(`[Orchestrator] Waiting up to ${timeoutMinutes} minutes for Telegram approval (draftId: ${draftId})...`);
+  const startTime = Date.now();
+  let offset = 0;
+
+  while (Date.now() - startTime < timeoutMinutes * 60 * 1000) {
+    try {
+      const url = `https://api.telegram.org/bot${botToken}/getUpdates?offset=${offset}&timeout=10`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        for (const update of (data.result || [])) {
+          offset = update.update_id + 1;
+          if (update.callback_query && update.callback_query.message?.message_id === messageId) {
+            const cbData = update.callback_query.callback_data;
+            const callbackId = update.callback_query.id;
+
+            // Answer callback query to remove spinner
+            fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ callback_query_id: callbackId, text: cbData.startsWith('approve') ? 'Одобрено!' : 'Отклонено!' })
+            }).catch(() => {});
+
+            if (cbData === `approve_${draftId}`) {
+              console.log('[Orchestrator] Update APPROVED via Telegram.');
+              return true;
+            } else if (cbData === `reject_${draftId}`) {
+              console.log('[Orchestrator] Update REJECTED via Telegram.');
+              return false;
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Ignore polling transient errors
+    }
+    await new Promise(r => setTimeout(r, 3000));
+  }
+
+  console.log('[Orchestrator] Approval timeout reached. Auto-rejecting changes.');
+  return false;
+}
+
+  // Check CLI arguments for dry-run or auto mode
+  const args = process.argv.slice(2);
+  const isDryRun = args.includes('--dry-run');
+  const isAutoApprove = args.includes('--auto');
 
   // 3. Compare with old seasons.json to check if we have actual changes
   let hasActualChanges = true;
@@ -582,8 +689,34 @@ async function sendTelegramNotification(messageText) {
     }
   }
 
-  // 4. Save seasons.json (always update lastCheckedAt timestamp)
+  // 4. Save seasons.json or request Telegram approval
   const nowIso = new Date().toISOString();
+
+  if (isDryRun) {
+    console.log('\n--- DRY RUN MODE: Outputting detected diffs ---');
+    console.log(detectedDiffs.length > 0 ? detectedDiffs : 'No diffs detected.');
+    console.log('Skipping file write and build due to --dry-run.\n');
+    return;
+  }
+
+  let isApproved = true;
+
+  if (hasActualChanges && detectedDiffs.length > 0 && !isAutoApprove) {
+    const draftId = `draft-${Date.now().toString(36)}`;
+    const tgMsg = `<b>🔍 SeasonForge: Обнаружены новые данные!</b>\n\n` + 
+      detectedDiffs.map(d => `• ${d.ru}`).join('\n') + 
+      `\n\n<i>Требуется подтверждение публикации на сайте.</i>`;
+
+    const messageId = await sendTelegramApprovalMessage(tgMsg, draftId);
+    if (messageId) {
+      isApproved = await waitForTelegramApproval(draftId, messageId, 15);
+    }
+  }
+
+  if (!isApproved) {
+    console.log('[Orchestrator] Update was not approved. Aborting website deployment.');
+    return;
+  }
 
   if (hasActualChanges && detectedDiffs.length > 0) {
     const newEntries = detectedDiffs.map(d => ({
@@ -594,9 +727,6 @@ async function sendTelegramNotification(messageText) {
       text: { en: d.en, ru: d.ru }
     }));
     existingChangelog = [...newEntries, ...existingChangelog].slice(0, 15);
-
-    const tgMsg = `<b>⚡ SeasonForge Data Update</b>\n\n` + detectedDiffs.map(d => `• ${d.ru}`).join('\n');
-    await sendTelegramNotification(tgMsg);
   }
 
   atomicWriteFileSync(seasonsPath, JSON.stringify({

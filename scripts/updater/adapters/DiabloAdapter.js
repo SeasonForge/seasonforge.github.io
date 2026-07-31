@@ -29,21 +29,23 @@ export class DiabloAdapter extends BaseAdapter {
 
       console.log(`[Orchestrator] [Diablo IV] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
-      const newsText = items.slice(0, 5).map(item => 
+      // Pre-filter up to 20 news items by timeline keywords to capture PTR, BlizzCon, Livestreams & Season launches
+      const filteredItems = this.filterRelevantNews(items.slice(0, 20));
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : items.slice(0, 5);
+
+      const newsText = targetItems.map(item => 
         `Title: ${item.properties.title}\nDate: ${item.properties.lastUpdated}\nSummary: ${item.properties.summary}`
       ).join('\n\n---\n\n');
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season details from the provided Diablo IV Blizzard news titles and summaries.
-Currently, the year is ${new Date().getFullYear()}. Determine:
-1. Current Season name in English (e.g. "Season of the Hatred") in currentSeasonNameEn, and translated to Russian in currentSeasonNameRu.
-2. Current Season start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-3. Next Season name in English in nextSeasonNameEn, and translated to Russian in nextSeasonNameRu.
-4. Next Season start date (YYYY-MM-DD) and end date (YYYY-MM-DD). Use empty string if unknown.
-5. Game status: "active" (if a season is running), "in-development" (if between seasons), "maintenance" (if offline).
-6. A list of 3-5 key features introduced or planned. Store the original English list in featuresEn, and translate it to Russian in featuresRu.
-7. Whether the next season start date is officially confirmed by developers (use "official") or estimated/predicted based on patterns/intervals (use "estimated").
+      const systemInstruction = `You are a data extractor for SeasonForge. Focus strictly on extracting timeline dates for Diablo IV:
+1. Current Season details (name EN/RU, startDate, endDate).
+2. Next Season details (name EN/RU, startDate, endDate, verification: "official" or "estimated").
+3. Public Test Realm (PTR) dates if mentioned (startDate, endDate, patch version/title EN/RU).
+4. Major events (BlizzCon, developer livestreams, expansion reveals, season launches) with dates and titles.
+5. Game status: "active", "in-development", "maintenance", "ending".
+6. Key features list (EN and RU).
 
-Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not invent dates. Reference news headlines and publication dates in the text to understand when events happen.`;
+Formatting rule: Format all dates strictly as YYYY-MM-DD or full ISO-8601 strings. Do not guess non-existent dates. Use empty strings for unknown dates.`;
 
       const schema = {
         type: 'OBJECT',
@@ -56,15 +58,34 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           nextSeasonNameRu: { type: 'STRING' },
           nextSeasonStartDate: { type: 'STRING' },
           nextSeasonEndDate: { type: 'STRING' },
-          nextSeasonVerification: { type: 'STRING', description: 'Must be "official" if date is officially announced, or "estimated" if it is a prediction/forecast.' },
+          nextSeasonVerification: { type: 'STRING' },
           status: { type: 'STRING' },
-          featuresEn: {
-            type: 'ARRAY',
-            items: { type: 'STRING' }
+          featuresEn: { type: 'ARRAY', items: { type: 'STRING' } },
+          featuresRu: { type: 'ARRAY', items: { type: 'STRING' } },
+          ptr: {
+            type: 'OBJECT',
+            properties: {
+              startDate: { type: 'STRING' },
+              endDate: { type: 'STRING' },
+              titleEn: { type: 'STRING' },
+              titleRu: { type: 'STRING' }
+            }
           },
-          featuresRu: {
+          events: {
             type: 'ARRAY',
-            items: { type: 'STRING' }
+            items: {
+              type: 'OBJECT',
+              properties: {
+                id: { type: 'STRING' },
+                type: { type: 'STRING', description: 'One of: ptr, convention, livestream, season_start, expansion' },
+                titleEn: { type: 'STRING' },
+                titleRu: { type: 'STRING' },
+                startDate: { type: 'STRING' },
+                endDate: { type: 'STRING' },
+                verification: { type: 'STRING', description: 'official, estimated, or announcement' }
+              },
+              required: ['type', 'titleEn', 'startDate']
+            }
           }
         },
         required: [
@@ -76,12 +97,18 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
 
       const extracted = await this.callGemini(newsText, systemInstruction, schema);
 
+      const parsedEvents = (extracted.events || []).map(ev => ({
+        id: ev.id || `${ev.type}-${this.hashString(ev.titleEn + ev.startDate).slice(0, 6)}`,
+        type: ev.type || 'convention',
+        title: { en: ev.titleEn || '', ru: ev.titleRu || ev.titleEn || '' },
+        startDate: this.normalizeAndValidateDate(ev.startDate),
+        endDate: this.normalizeAndValidateDate(ev.endDate),
+        verification: ev.verification || 'official'
+      })).filter(ev => ev.startDate !== '');
+
       const normalized = {
         id: this.gameId,
-        name: {
-          en: 'Diablo IV',
-          ru: 'Diablo IV'
-        },
+        name: { en: 'Diablo IV', ru: 'Diablo IV' },
         developer: 'Blizzard Entertainment',
         logo: 'diablo-iv.png',
         color: '#8b1f1f',
@@ -101,10 +128,10 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         currentSeason: {
           name: {
             en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameEn || 'TBA'
+            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || 'TBA'
           },
-          startDate: extracted.currentSeasonStartDate || '',
-          endDate: extracted.currentSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
@@ -112,10 +139,10 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
         nextSeason: {
           name: {
             en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameEn || 'TBA'
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
           },
-          startDate: extracted.nextSeasonStartDate || '',
-          endDate: extracted.nextSeasonEndDate || '',
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
           verificationNote: existingGame?.nextSeason?.verificationNote || null,
@@ -125,45 +152,15 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           en: extracted.featuresEn || [],
           ru: extracted.featuresRu || []
         },
-        ptr: existingGame?.ptr || null,
-        events: (existingGame?.events && existingGame.events.length > 0) ? existingGame.events : [
-          {
-            id: "ptr-3.2.0",
-            type: "ptr",
-            title: { en: "PTR Patch 3.2.0", ru: "PTR Патч 3.2.0" },
-            startDate: "2026-08-04T17:00:00Z",
-            endDate: "2026-08-11T17:00:00Z",
-            verification: "official",
-            platformNote: { en: "PC Only (Battle.net & Game Pass)", ru: "Только ПК (Battle.net / Game Pass)" }
-          },
-          {
-            id: "blizzcon-2026",
-            type: "convention",
-            title: { en: "BlizzCon 2026 (Season 15 Reveal)", ru: "BlizzCon 2026 (Анонс Сезона 15)" },
-            startDate: "2026-09-12T17:00:00Z",
-            endDate: "2026-09-13T23:59:59Z",
-            verification: "announcement",
-            location: { en: "Anaheim Convention Center & Livestream", ru: "Анахайм (Калифорния) и Прямая трансляция" }
-          },
-          {
-            id: "season-15-launch",
-            type: "season_start",
-            title: { en: "Season 15 Launch", ru: "Запуск Сезона 15" },
-            startDate: "2026-09-15T17:00:00Z",
-            verification: "estimated"
-          }
-        ],
+        ptr: extracted.ptr?.startDate ? {
+          startDate: this.normalizeAndValidateDate(extracted.ptr.startDate),
+          endDate: this.normalizeAndValidateDate(extracted.ptr.endDate),
+          title: { en: extracted.ptr.titleEn || 'PTR', ru: extracted.ptr.titleRu || 'PTR' }
+        } : (existingGame?.ptr || null),
+        events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
         featureCategories: existingGame?.featureCategories || null,
-        links: {
-          official: 'https://diablo4.blizzard.com/',
-          wiki: '',
-          community: ''
-        },
-        metadata: {
-          region: 'Global',
-          platforms: ['PC', 'Console'],
-          tags: ['ARPG', 'Action']
-        }
+        links: { official: 'https://diablo4.blizzard.com/', wiki: '', community: '' },
+        metadata: { region: 'Global', platforms: ['PC', 'Console'], tags: ['ARPG', 'Action'] }
       };
 
       return normalized;

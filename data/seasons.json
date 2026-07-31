@@ -1,6 +1,26 @@
 {
-  "lastCheckedAt": "2026-07-30T17:13:10.968Z",
+  "lastCheckedAt": "2026-07-31T00:46:52.437Z",
   "changelog": [
+    {
+      "timestamp": "2026-07-31T00:46:52.437Z",
+      "gameId": "path-of-exile",
+      "url": "https://www.pathofexile.com/forum/view-thread/3991633",
+      "type": "article",
+      "text": {
+        "en": "Path of Exile 1: New article published — \"Curse of the Allflame Patch Notes 3.29.1 Preview\"",
+        "ru": "Path of Exile 1: Опубликована новость — «Curse of the Allflame Patch Notes 3.29.1 Preview»"
+      }
+    },
+    {
+      "timestamp": "2026-07-31T00:46:52.437Z",
+      "gameId": "diablo-iv",
+      "url": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know",
+      "type": "article",
+      "text": {
+        "en": "Diablo IV: New article published — \"The 3.2.0 PTR: What You Need to Know\"",
+        "ru": "Diablo IV: Опубликована новость — «The 3.2.0 PTR: What You Need to Know»"
+      }
+    },
     {
       "timestamp": "2026-07-30T17:13:10.968Z",
       "gameId": "path-of-exile",
@@ -75,10 +95,10 @@
       "icon": "💀",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3990635",
-        "title": "New Unique - The Draugur’s Lantern",
-        "url": "https://www.pathofexile.com/forum/view-thread/3990635",
-        "publishDate": "Tue, 28 Jul 2026 23:54:06 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3991633",
+        "title": "Curse of the Allflame Patch Notes 3.29.1 Preview",
+        "url": "https://www.pathofexile.com/forum/view-thread/3991633",
+        "publishDate": "Thu, 30 Jul 2026 20:52:54 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -87,7 +107,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-30T17:13:10.769Z"
+        "updatedAt": "2026-07-30T23:23:33.609Z"
       },
       "history": [
         {
@@ -108,7 +128,7 @@
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991633"
       },
       "nextSeason": {
         "name": {
@@ -119,18 +139,22 @@
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3990635"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3991633"
       },
       "features": {
         "en": [
-          "Curse of the Allflame league challenges and cosmetic rewards",
-          "Curse of the Allflame Mystery Box with no duplicate microtransactions",
-          "New unique items introduced in update 3.29.1, such as The Draugur's Lantern"
+          "Protection while channeling Verisium Ore",
+          "Animate Guardian's inventory",
+          "Crafting Bench in every town",
+          "New underwater Uniques including The Crustacean's Call and Subsume the Source",
+          "ExileCon 2026 Race Qualifier Events"
         ],
         "ru": [
-          "Испытания лиги «Проклятие Всепламени» и косметические награды",
-          "Таинственная коробка «Проклятие Всепламени» без дубликатов микротранзакций",
-          "Новые уникальные предметы в обновлении 3.29.1, такие как Фонарь Драугра"
+          "Защита во время поддержания жилы веризия",
+          "Инвентарь Анимированного стража",
+          "Верстак для создания предметов в каждом городе",
+          "Новые подводные уникальные предметы, включая Призыв ракообразного и Поглощение истока",
+          "Отборочные состязания к ExileCon 2026"
         ]
       },
       "links": {
@@ -147,7 +171,8 @@
           "ARPG",
           "Live Service"
         ]
-      }
+      },
+      "events": []
     },
     {
       "id": "path-of-exile-2",
@@ -227,7 +252,8 @@
           "Dark Fantasy"
         ]
       },
-      "icon": "✨"
+      "icon": "✨",
+      "events": []
     },
     {
       "id": "diablo-iv",
@@ -241,10 +267,10 @@
       "icon": "🔥",
       "website": "https://diablo4.blizzard.com/",
       "latestNews": {
-        "id": "24271884",
-        "title": "Raise Hell with the Diablo IV BlizzCon Digital Bundle",
-        "url": "https://news.blizzard.com/en-us/article/24271884/raise-hell-with-the-diablo-iv-blizzcon-digital-bundle",
-        "publishDate": "2026-07-22T17:30:00Z",
+        "id": "24292852",
+        "title": "The 3.2.0 PTR: What You Need to Know",
+        "url": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know",
+        "publishDate": "2026-07-30T17:00:00Z",
         "source": "Official Diablo IV News"
       },
       "status": {
@@ -253,7 +279,7 @@
           "en": "In Progress",
           "ru": "В разгаре"
         },
-        "updatedAt": "2026-07-30T10:44:12.796Z"
+        "updatedAt": "2026-07-30T23:23:34.443Z"
       },
       "history": [
         {
@@ -271,10 +297,10 @@
           "ru": "Season 14: Season of Death Awakening"
         },
         "startDate": "2026-07-01T17:00:00Z",
-        "endDate": "",
+        "endDate": "2026-09-15T17:00:00Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://news.blizzard.com/en-us/article/24271884/raise-hell-with-the-diablo-iv-blizzcon-digital-bundle"
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know"
       },
       "nextSeason": {
         "name": {
@@ -556,7 +582,8 @@
           "ARPG",
           "Crafting"
         ]
-      }
+      },
+      "events": []
     },
     {
       "id": "torchlight-infinite",
@@ -644,7 +671,8 @@
           "ARPG",
           "Free-to-play"
         ]
-      }
+      },
+      "events": []
     }
   ]
 }

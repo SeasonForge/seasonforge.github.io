@@ -60,6 +60,36 @@ export class BaseAdapter {
       .trim();
   }
 
+  // Pre-filter raw news items by timeline keywords to save Gemini tokens and reduce noise
+  filterRelevantNews(items, extraKeywords = []) {
+    if (!Array.isArray(items)) return [];
+    const defaultKeywords = ['season', 'league', 'ptr', 'public test', 'beta', 'reveal', 'livestream', 'schedule', 'announce', 'blizzcon', 'exilecon', 'launch', 'patch', 'expansion', 'update'];
+    const keywords = [...defaultKeywords, ...extraKeywords].map(k => k.toLowerCase());
+
+    return items.filter(item => {
+      const title = (item.title || item.properties?.title || '').toLowerCase();
+      const desc = (item.description || item.properties?.summary || '').toLowerCase();
+      return keywords.some(kw => title.includes(kw) || desc.includes(kw));
+    });
+  }
+
+  // Validate and normalize dates returned by Gemini strictly to ISO 8601 strings (YYYY-MM-DD or full ISO)
+  normalizeAndValidateDate(dateStr) {
+    if (!dateStr || typeof dateStr !== 'string') return '';
+    const trimmed = dateStr.trim();
+    if (trimmed === '' || trimmed.toUpperCase() === 'TBA') return '';
+
+    const d = new Date(trimmed);
+    if (Number.isNaN(d.getTime())) return '';
+
+    // Check year range safety
+    const year = d.getFullYear();
+    const currentYear = new Date().getFullYear();
+    if (year < currentYear - 2 || year > currentYear + 5) return '';
+
+    return d.toISOString();
+  }
+
   // Get cached game data if it exists
   async getCache() {
     const cachePath = path.join(process.cwd(), 'data', 'cache', `${this.gameId}.json`);

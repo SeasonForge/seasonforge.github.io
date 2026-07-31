@@ -117,13 +117,43 @@ Ensure all dates are formatted strictly as YYYY-MM-DD or empty string. Do not in
           startDate: extracted.nextSeasonStartDate || '',
           endDate: extracted.nextSeasonEndDate || '',
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated',
+          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verificationNote: existingGame?.nextSeason?.verificationNote || null,
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         features: {
           en: extracted.featuresEn || [],
           ru: extracted.featuresRu || []
         },
+        ptr: existingGame?.ptr || null,
+        events: (existingGame?.events && existingGame.events.length > 0) ? existingGame.events : [
+          {
+            id: "ptr-3.2.0",
+            type: "ptr",
+            title: { en: "PTR Patch 3.2.0", ru: "PTR Патч 3.2.0" },
+            startDate: "2026-08-04T17:00:00Z",
+            endDate: "2026-08-11T17:00:00Z",
+            verification: "official",
+            platformNote: { en: "PC Only (Battle.net & Game Pass)", ru: "Только ПК (Battle.net / Game Pass)" }
+          },
+          {
+            id: "blizzcon-2026",
+            type: "convention",
+            title: { en: "BlizzCon 2026 (Season 15 Reveal)", ru: "BlizzCon 2026 (Анонс Сезона 15)" },
+            startDate: "2026-09-12T17:00:00Z",
+            endDate: "2026-09-13T23:59:59Z",
+            verification: "announcement",
+            location: { en: "Anaheim Convention Center & Livestream", ru: "Анахайм (Калифорния) и Прямая трансляция" }
+          },
+          {
+            id: "season-15-launch",
+            type: "season_start",
+            title: { en: "Season 15 Launch", ru: "Запуск Сезона 15" },
+            startDate: "2026-09-15T17:00:00Z",
+            verification: "estimated"
+          }
+        ],
+        featureCategories: existingGame?.featureCategories || null,
         links: {
           official: 'https://diablo4.blizzard.com/',
           wiki: '',

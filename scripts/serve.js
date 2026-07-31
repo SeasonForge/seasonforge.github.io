@@ -58,8 +58,21 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, '127.0.0.1', () => {
-  console.log(`=== SeasonForge Local Server Started ===`);
-  console.log(`URL: http://127.0.0.1:${PORT}`);
-  console.log(`Press Ctrl+C to stop.`);
+function startServer(port) {
+  server.listen(port, '127.0.0.1', () => {
+    console.log(`=== SeasonForge Local Server Started ===`);
+    console.log(`URL: http://127.0.0.1:${port}`);
+    console.log(`Press Ctrl+C to stop.`);
+  });
+}
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`Port ${PORT} is in use, trying ${PORT + 1}...`);
+    startServer(PORT + 1);
+  } else {
+    console.error(err);
+  }
 });
+
+startServer(PORT);

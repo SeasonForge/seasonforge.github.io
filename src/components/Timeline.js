@@ -281,6 +281,17 @@ export function render(games = []) {
               ${elapsedWidth === 0 ? `<span class="timeline-bar__title">${escapeHtml(getCleanSeasonTag(getVal(game.currentSeason?.name), game.id))}</span>` : ''}
             </div>
           ` : ''}
+          <!-- PTR Duration Bar Segment (Aug 4 - Aug 11) -->
+          ${(game.events || []).filter(e => e.type === 'ptr').map(ev => {
+            if (!ev.startDate) return '';
+            const ptrStartPos = getPercent(ev.startDate);
+            const ptrEndPos = ev.endDate ? getPercent(ev.endDate) : ptrStartPos + 3;
+            const ptrWidth = Math.max(1.5, ptrEndPos - ptrStartPos);
+            if (ptrStartPos <= 0 || ptrStartPos >= 100) return '';
+            return `
+              <div class="timeline-bar timeline-bar--ptr" style="left: ${ptrStartPos}%; width: ${ptrWidth}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="ptr"></div>
+            `;
+          }).join('\n')}
           <!-- Next season start circle node -->
           ${game.nextSeason?.startDate ? `
             <div class="timeline-circle ${isHype ? 'timeline-circle--hype' : ''}" style="left: ${nextStart}%;" data-game-id="${escapeHtml(game.id)}" data-season-type="next">
@@ -299,45 +310,94 @@ export function render(games = []) {
     `;
   }).join('\n');
 
-  // 5. Render Upcoming Launches Cards
-  const upcoming = items
-    .filter(g => g.nextSeason?.startDate)
+  // 5. Render Upcoming Cards (STRICTLY 1 Card Per Game, Earliest Milestone First)
+  const upcomingCards = items
     .map(g => {
-      const date = new Date(g.nextSeason.startDate);
-      return { game: g, date };
+      const milestones = [];
+      
+      if (g.events && Array.isArray(g.events)) {
+        g.events.forEach(ev => {
+          if (ev.startDate) {
+            const d = new Date(ev.startDate);
+            if (d.getTime() > Date.now()) {
+              milestones.push({
+                date: d,
+                startDateStr: ev.startDate,
+                name: getVal(ev.title),
+                type: ev.type || 'event'
+              });
+            }
+          }
+        });
+      }
+      
+      if (g.nextSeason?.startDate) {
+        const d = new Date(g.nextSeason.startDate);
+        if (d.getTime() > Date.now()) {
+          milestones.push({
+            date: d,
+            startDateStr: g.nextSeason.startDate,
+            name: getVal(g.nextSeason.name),
+            type: 'season'
+          });
+        }
+      }
+      
+      if (milestones.length === 0) return null;
+
+      milestones.sort((a, b) => a.date - b.date);
+      const earliest = milestones[0];
+      
+      let seasonSubtext = '';
+      if (earliest.type !== 'season' && g.nextSeason?.startDate) {
+        const nextSeasonName = escapeHtml(getVal(g.nextSeason.name) || 'TBA');
+        const nextSeasonFormatted = formatDate(g.nextSeason.startDate, lang);
+        seasonSubtext = `${nextSeasonName}: ${nextSeasonFormatted}`;
+      }
+
+      return {
+        game: g,
+        earliest,
+        seasonSubtext
+      };
     })
-    .filter(({ date }) => date.getTime() > Date.now())
-    .sort((a, b) => a.date - b.date);
+    .filter(Boolean)
+    .sort((a, b) => a.earliest.date - b.earliest.date);
 
   let upcomingLaunchesHtml = '';
-  if (upcoming.length > 0) {
-    const cardsHtml = upcoming.map(({ game, date }) => {
+  if (upcomingCards.length > 0) {
+    const cardsHtml = upcomingCards.map(({ game, earliest, seasonSubtext }) => {
       const gameName = escapeHtml(getVal(game.name));
-      const nextSeasonName = escapeHtml(getVal(game.nextSeason?.name) || 'TBA');
+      const eventTitle = escapeHtml(earliest.name || 'TBA');
       const rawColor = String(game.color || '#6366f1');
       const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#6366f1';
-      const formattedDate = formatFullDate(game.nextSeason.startDate, lang);
+      const formattedDate = formatFullDate(earliest.startDateStr, lang);
       
-      const diff = date.getTime() - Date.now();
+      const diff = earliest.date.getTime() - Date.now();
       const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
       const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
       const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
       
-      const daysUntil = game.nextSeason?.startDate 
-        ? (new Date(game.nextSeason.startDate).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-        : Infinity;
-      const isHype = daysUntil >= 0 && daysUntil <= 14;
+      const isHype = days <= 14;
+      const isPtr = earliest.type === 'ptr';
+      const badgeText = isPtr ? 'PTR TEST' : (earliest.type === 'convention' ? 'BLIZZCON' : (isHype ? t('timeline.hype') : ''));
       
+      const subtextHtml = seasonSubtext ? `
+        <div class="upcoming-card__season-subtext">
+          ${seasonSubtext}
+        </div>
+      ` : '';
+
       return `
-        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
+        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
           <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
           <div class="upcoming-card__date-wrapper">
             <span class="upcoming-card__date">${formattedDate}</span>
-            ${isHype ? `<span class="upcoming-card__hype-badge">${t('timeline.hype')}</span>` : ''}
+            ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
           </div>
           <h4 class="upcoming-card__game-name">${gameName}</h4>
-          <div class="upcoming-card__season-name">${nextSeasonName}</div>
-          
+          <div class="upcoming-card__season-name">${eventTitle}</div>
+          ${subtextHtml}
           <div class="upcoming-card__countdown">
             <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
             <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>

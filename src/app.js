@@ -210,15 +210,19 @@ function renderApp() {
   if (footerChangelog) footerChangelog.textContent = t('footer.changelog') || 'Changelog';
   if (footerPrivacy) footerPrivacy.textContent = t('footer.privacy') || 'Privacy Policy';
 
-  // Attach click listener for header meta date to navigate to ./changelog/ as an easter egg
+  // Attach click listener for header meta date to navigate to ./changelog/ with custom glassmorphic tooltip
   const headerMeta = document.querySelector('.app-header__meta');
-  if (headerMeta && !headerMeta.dataset.changelogBound) {
-    headerMeta.dataset.changelogBound = 'true';
-    headerMeta.style.cursor = 'pointer';
-    headerMeta.title = state.settings?.lang === 'ru' ? 'Открыть историю обновлений' : 'View update history';
-    headerMeta.addEventListener('click', () => {
-      window.location.href = './changelog/';
-    });
+  if (headerMeta) {
+    headerMeta.removeAttribute('title');
+    const tooltipText = state.settings?.lang === 'ru' ? 'История обновлений ↗' : 'View Update History ↗';
+    headerMeta.setAttribute('data-tooltip', tooltipText);
+    if (!headerMeta.dataset.changelogBound) {
+      headerMeta.dataset.changelogBound = 'true';
+      headerMeta.style.cursor = 'pointer';
+      headerMeta.addEventListener('click', () => {
+        window.location.href = './changelog/';
+      });
+    }
   }
 
   // Render main content depending on activeView
@@ -436,9 +440,30 @@ function getTimelineTooltipContent(gameId, seasonType) {
 
   const isNext = seasonType === 'next';
   const isHistory = String(seasonType).startsWith('history');
+  const isPtrType = seasonType === 'ptr';
   const lang = currentState.settings?.lang || 'en';
 
   const gameName = escapeHtml(getVal(game.name));
+
+  if (isPtrType) {
+    const ptrData = game.ptr || (game.events || []).find(e => e.type === 'ptr');
+    const ptrTitle = escapeHtml(getVal(ptrData?.title) || 'PTR Патч 3.2.0');
+    const startStr = ptrData?.startDate ? formatTooltipDate(ptrData.startDate, lang) : (lang === 'ru' ? '4 авг.' : 'Aug 4');
+    const endStr = ptrData?.endDate ? formatTooltipDate(ptrData.endDate, lang) : (lang === 'ru' ? '11 авг.' : 'Aug 11');
+    const platforms = ptrData?.platforms ? escapeHtml(getVal(ptrData.platforms)) : (lang === 'ru' ? 'Только ПК (Battle.net / Game Pass)' : 'PC Only (Battle.net / Game Pass)');
+    const note = ptrData?.note ? escapeHtml(getVal(ptrData.note)) : (lang === 'ru' ? 'Часть контента S15 скрыта до BlizzCon' : 'Season 15 content held for BlizzCon');
+
+    return `
+      <div class="timeline-tooltip__title" style="color: #34d399; font-weight: 700; font-family: var(--font-display);">PTR Test: ${ptrTitle}</div>
+      <div class="timeline-tooltip__season" style="color: #a7f3d0; font-size: 0.82rem;">${gameName}</div>
+      <div class="timeline-tooltip__detail" style="margin-top: 0.35rem;"><strong>${lang === 'ru' ? 'Старт тестов' : 'PTR Start'}:</strong> ${startStr}</div>
+      <div class="timeline-tooltip__detail"><strong>${lang === 'ru' ? 'Завершение' : 'PTR End'}:</strong> ${endStr}</div>
+      <div class="timeline-tooltip__detail" style="color: #94a3b8; font-size: 0.75rem; margin-top: 0.2rem;">🎮 <strong>${lang === 'ru' ? 'Платформы' : 'Platforms'}:</strong> ${platforms}</div>
+      <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.15); font-style: italic;">
+        ℹ️ ${note}
+      </div>
+    `;
+  }
   let seasonName = 'TBA';
   let start = null;
   let end = null;
@@ -468,12 +493,32 @@ function getTimelineTooltipContent(gameId, seasonType) {
     durationStr = `${diff} ${lang === 'ru' ? 'дней' : 'days'}`;
   }
 
+  let eventsHtml = '';
+  if (game.events && game.events.length > 0) {
+    const eventsList = game.events.map(ev => {
+      const title = escapeHtml(getVal(ev.title));
+      const range = ev.startDate ? formatTooltipDate(ev.startDate, lang) : '';
+      const isPtr = ev.type === 'ptr';
+      const tag = isPtr ? 'PTR' : (ev.type === 'convention' ? 'EVENT' : 'LAUNCH');
+      const tagColor = isPtr ? '#34d399' : (ev.type === 'convention' ? '#fbbf24' : '#818cf8');
+      return `<div style="font-size: 0.76rem; color: #cbd5e1; margin-top: 0.25rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;"><span style="color: ${tagColor}; font-weight: 600;">[${tag}] ${title}</span><span style="color: #94a3b8; font-size: 0.72rem;">${range}</span></div>`;
+    }).join('');
+
+    eventsHtml = `
+      <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.15);">
+        <div style="font-size: 0.7rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display);">${t('card.upcomingEventsHeader') || 'БЛИЖАЙШИЕ ЭТАПЫ:'}</div>
+        ${eventsList}
+      </div>
+    `;
+  }
+
   return `
     <div class="timeline-tooltip__title">${gameName}</div>
     <div class="timeline-tooltip__season">${seasonName}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>
+    ${eventsHtml}
   `;
 }
 

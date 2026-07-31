@@ -75,12 +75,14 @@ export function render(game = {}, options = {}) {
     (rawNextSeason && /announcement|анонс/i.test(rawNextSeason));
 
   let nextSeasonDateBadge = '';
+  const customTooltip = game.nextSeason?.verificationNote ? getVal(game.nextSeason.verificationNote) : '';
   if (isAnnouncement || verificationType === 'announcement') {
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--announcement" title="${escapeAttr(t('card.announcementBadgeTitle'))}" style="cursor: help;">${t('card.announcementBadge')}</span>`;
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--announcement" title="${escapeAttr(customTooltip || t('card.announcementBadgeTitle'))}" style="cursor: help;">${t('card.announcementBadge')}</span>`;
   } else if (verificationType === 'official') {
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--official" title="${escapeAttr(t('card.officialBadgeTitle'))}" style="cursor: help;">${t('card.officialBadge')}</span>`;
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--official" title="${escapeAttr(customTooltip || t('card.officialBadgeTitle'))}" style="cursor: help;">${t('card.officialBadge')}</span>`;
   } else if (verificationType === 'ai' || verificationType === 'estimated') {
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(t('card.estimatedBadgeTitle'))}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`;
+    const defaultEstimatedTooltip = t('card.battlePassEstimateTooltip') || t('card.estimatedBadgeTitle');
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(customTooltip || defaultEstimatedTooltip)}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`;
   }
 
   const sideHeaderLabel = isAnnouncement ? t('card.announcementCountdownPrefix') : t('card.countdownPrefix');
@@ -90,18 +92,152 @@ export function render(game = {}, options = {}) {
   const website = escapeAttr(game.website || '#');
   const features = Array.isArray(getVal(game.features)) ? getVal(game.features) : [];
   
-  const pillModifier = statusCode && statusCode !== 'default' ? ` game-card__pill--${escapeAttr(statusCode)}` : '';
-  const featureItems = features
-    .map((feature) => `
-      <li class="game-card__feature-item">
-        <span class="game-card__feature-check">✓</span>
-        <span class="game-card__feature-text">${escapeHtml(getVal(feature))}</span>
-      </li>
-    `)
-    .join('');
+  let ptrBadgeHtml = '';
+  if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
+    const ptrItem = game.ptr || game.events.find(e => e.type === 'ptr');
+    const ptrText = ptrItem.startDate ? `PTR 3.2.0: Старт ${formatShortDate(ptrItem.startDate)}` : 'PTR 3.2.0';
+    ptrBadgeHtml = `
+      <div class="game-card__ptr-chip">
+        <span class="game-card__ptr-chip-badge">PTR TEST</span>
+        <span class="game-card__ptr-chip-text">${ptrText}</span>
+      </div>
+    `;
+  }
 
+  let eventsBannerHtml = '';
+  if (game.events && game.events.length > 0) {
+    const eventItemsHtml = game.events.map(ev => {
+      const title = escapeHtml(getVal(ev.title));
+      const dateRange = ev.startDate ? `${formatShortDate(ev.startDate)}${ev.endDate ? ' — ' + formatShortDate(ev.endDate) : ''}` : '';
+      const platform = ev.platformNote ? ` • ${escapeHtml(getVal(ev.platformNote))}` : '';
+      const isPtr = ev.type === 'ptr';
+      const itemCls = isPtr ? 'game-card__event-item--ptr' : (ev.type === 'convention' ? 'game-card__event-item--convention' : 'game-card__event-item--launch');
+      const tagLabel = isPtr ? 'PTR' : (ev.type === 'convention' ? 'EVENT' : 'LAUNCH');
+      
+      return `
+        <div class="game-card__event-item ${itemCls}">
+          <div class="game-card__event-title-group">
+            <span class="game-card__event-tag game-card__event-tag--${ev.type || 'event'}">${tagLabel}</span>
+            <strong class="game-card__event-name">${title}</strong>
+          </div>
+          <div class="game-card__event-date">${dateRange}${platform}</div>
+        </div>
+      `;
+    }).join('');
+
+    eventsBannerHtml = `
+      <div class="game-card__events-preview">
+        <div class="game-card__events-preview-header">${t('card.upcomingEventsHeader') || t('card.eventsTitle')}</div>
+        <div class="game-card__events-list">
+          ${eventItemsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  const pillModifier = statusCode && statusCode !== 'default' ? ` game-card__pill--${escapeAttr(statusCode)}` : '';
+  
   let featuresHtml = '';
-  if (features.length > 0) {
+  if (game.featureCategories && (game.featureCategories.official || game.featureCategories.announcements || game.featureCategories.expectations)) {
+    const officialCats = game.featureCategories.official || [];
+    const announcements = game.featureCategories.announcements || [];
+    const expectations = game.featureCategories.expectations || [];
+    
+    let officialHtml = '';
+    if (officialCats.length > 0) {
+      const catBlocks = officialCats.map(c => {
+        const catTitle = escapeHtml(getVal(c.category));
+        const items = (getVal(c.items) || []).map(item => `
+          <li class="game-card__feature-item">
+            <span class="game-card__feature-check">✓</span>
+            <span class="game-card__feature-text">${escapeHtml(item)}</span>
+          </li>
+        `).join('');
+        return `
+          <div class="game-card__category-block" style="margin-bottom: 0.75rem;">
+            <div style="font-weight: 600; font-size: 0.85rem; color: #a7f3d0; margin-bottom: 0.35rem; font-family: var(--font-display);">${catTitle}</div>
+            <ul class="game-card__feature-grid" style="margin: 0;">${items}</ul>
+          </div>
+        `;
+      }).join('');
+      
+      officialHtml = `
+        <div class="game-card__feature-group" style="margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class="verification-badge verification-badge--official" style="font-size: 0.75rem;">🟢 ${t('card.officialCategory')}</span>
+          </div>
+          ${catBlocks}
+        </div>
+      `;
+    }
+
+    let announcementsHtml = '';
+    if (announcements.length > 0) {
+      const annBlocks = announcements.map(c => {
+        const catTitle = escapeHtml(getVal(c.category));
+        const items = (getVal(c.items) || []).map(item => `
+          <li class="game-card__feature-item">
+            <span class="game-card__feature-check" style="color: #818cf8;">🔹</span>
+            <span class="game-card__feature-text">${escapeHtml(item)}</span>
+          </li>
+        `).join('');
+        return `
+          <div class="game-card__category-block" style="margin-bottom: 0.75rem;">
+            <div style="font-weight: 600; font-size: 0.85rem; color: #93c5fd; margin-bottom: 0.35rem; font-family: var(--font-display);">${catTitle}</div>
+            <ul class="game-card__feature-grid" style="margin: 0;">${items}</ul>
+          </div>
+        `;
+      }).join('');
+      
+      announcementsHtml = `
+        <div class="game-card__feature-group" style="margin-bottom: 1rem;">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class="verification-badge verification-badge--announcement" style="font-size: 0.75rem;">🔵 ${t('card.announcementCategory') || 'Анонс / Презентация'}</span>
+          </div>
+          ${annBlocks}
+        </div>
+      `;
+    }
+
+    let expHtml = '';
+    if (expectations.length > 0) {
+      const expItems = expectations.map(exp => `
+        <li class="game-card__feature-item">
+          <span class="game-card__feature-check" style="color: #fde047;">★</span>
+          <span class="game-card__feature-text" style="color: #cbd5e1;">${escapeHtml(getVal(exp))}</span>
+        </li>
+      `).join('');
+
+      expHtml = `
+        <div class="game-card__feature-group">
+          <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <span class="verification-badge verification-badge--estimated" style="font-size: 0.75rem;">🟡 ${t('card.expectationsCategory')}</span>
+          </div>
+          <ul class="game-card__feature-grid">${expItems}</ul>
+        </div>
+      `;
+    }
+
+    featuresHtml = `
+      <section class="game-card__panel game-card__panel--features">
+        <div class="game-card__features-header">
+          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+        </div>
+        ${officialHtml}
+        ${announcementsHtml}
+        ${expHtml}
+      </section>
+    `;
+  } else if (features.length > 0) {
+    const featureItems = features
+      .map((feature) => `
+        <li class="game-card__feature-item">
+          <span class="game-card__feature-check">✓</span>
+          <span class="game-card__feature-text">${escapeHtml(getVal(feature))}</span>
+        </li>
+      `)
+      .join('');
+
     featuresHtml = `
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
@@ -218,7 +354,10 @@ export function render(game = {}, options = {}) {
       <div class="game-card__glow"></div>
       <div class="game-card__header">
         <div class="game-card__title-block">
-          <span class="game-card__pill${pillModifier}">${uppercaseStatusPill}</span>
+          <div class="game-card__badge-row">
+            <span class="game-card__pill${pillModifier}">${uppercaseStatusPill}</span>
+            ${ptrBadgeHtml}
+          </div>
           <h2 class="game-card__title">${name}</h2>
           <p class="game-card__subtitle">${t('card.currentSeasonLabel')}: ${currentSeason}</p>
           ${sourceHtml}
@@ -242,6 +381,7 @@ export function render(game = {}, options = {}) {
             </div>
             ${game.currentSeason?.startDate ? progressBar : '<div class="game-card__progress-bar-placeholder"></div>'}
           </div>
+          ${eventsBannerHtml}
           ${!isDetailPage ? `
             <a class="game-card__cta-block" href="./games/${game.id}/">
               <div class="game-card__cta-icon-box">

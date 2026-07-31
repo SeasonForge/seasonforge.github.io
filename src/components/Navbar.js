@@ -55,6 +55,11 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       const icon = escapeHtml(game.icon || '🎮');
       const logo = game.logo ? escapeHtml(game.logo) : '';
       
+      let ptrBadge = '';
+      if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
+        ptrBadge = `<span class="navbar__status navbar__status--ptr">PTR 4 АВГ</span>`;
+      }
+
       const isActive = (activeView === 'card' || activeView === 'game') && activeId && id === activeId;
       const activeClass = isActive ? 'navbar__link--active' : '';
 
@@ -71,7 +76,10 @@ export function render(games = [], activeGame = null, activeView = 'card') {
               <p class="navbar__season">${currentSeason}</p>
             </div>
           </div>
-          <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
+          <div class="navbar__status-stack">
+            ${ptrBadge}
+            <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
+          </div>
         </div>
       `;
     })

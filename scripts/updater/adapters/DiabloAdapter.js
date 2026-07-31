@@ -127,37 +127,37 @@ Formatting rule: Format all dates strictly as YYYY-MM-DD or full ISO-8601 string
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || 'TBA'
+            en: extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || 'TBA',
+            ru: extracted.currentSeasonNameRu || existingGame?.currentSeason?.name?.ru || 'TBA'
           },
-          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
+          startDate: existingGame?.currentSeason?.startDate || this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
+          endDate: existingGame?.currentSeason?.endDate || this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
+            en: existingGame?.nextSeason?.name?.en || extracted.nextSeasonNameEn || 'TBA',
+            ru: existingGame?.nextSeason?.name?.ru || extracted.nextSeasonNameRu || 'TBA'
           },
-          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
+          startDate: existingGame?.nextSeason?.startDate || this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
+          endDate: existingGame?.nextSeason?.endDate || this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verification: existingGame?.nextSeason?.verification || (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated'),
           verificationNote: existingGame?.nextSeason?.verificationNote || null,
           sourceUrl: firstItem.properties.newsUrl || 'https://diablo4.blizzard.com/'
         },
         features: {
-          en: extracted.featuresEn || [],
-          ru: extracted.featuresRu || []
+          en: (extracted.featuresEn && extracted.featuresEn.length > 0) ? extracted.featuresEn : (existingGame?.features?.en || []),
+          ru: (extracted.featuresRu && extracted.featuresRu.length > 0) ? extracted.featuresRu : (existingGame?.features?.ru || [])
         },
-        ptr: extracted.ptr?.startDate ? {
+        ptr: existingGame?.ptr || (extracted.ptr?.startDate ? {
           startDate: this.normalizeAndValidateDate(extracted.ptr.startDate),
           endDate: this.normalizeAndValidateDate(extracted.ptr.endDate),
           title: { en: extracted.ptr.titleEn || 'PTR', ru: extracted.ptr.titleRu || 'PTR' }
-        } : (existingGame?.ptr || null),
-        events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
+        } : null),
+        events: (existingGame?.events && existingGame.events.length > 0) ? existingGame.events : parsedEvents,
         featureCategories: existingGame?.featureCategories || null,
         links: { official: 'https://diablo4.blizzard.com/', wiki: '', community: '' },
         metadata: { region: 'Global', platforms: ['PC', 'Console'], tags: ['ARPG', 'Action'] }

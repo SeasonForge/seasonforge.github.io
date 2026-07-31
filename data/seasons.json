@@ -278,14 +278,164 @@
       },
       "nextSeason": {
         "name": {
-          "en": "Season 15 (Estimated)",
-          "ru": "Season 15 (Estimated)"
+          "en": "Season 15",
+          "ru": "Сезон 15"
         },
-        "startDate": "2026-09-19T17:00:00Z",
+        "startDate": "2026-09-15T17:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://news.blizzard.com/en-us/article/24271884/raise-hell-with-the-diablo-iv-blizzcon-digital-bundle"
+        "verificationNote": {
+          "en": "Estimated date based on in-game Season 14 Battle Pass end (Sept 15)",
+          "ru": "Расчётная дата по окончанию Battle Pass Сезона 14 в игре (15 сентября)"
+        },
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know"
+      },
+      "ptr": {
+        "name": {
+          "en": "PTR Patch 3.2.0 (Season 15 Test)",
+          "ru": "PTR Патч 3.2.0 (Тест Сезона 15)"
+        },
+        "startDate": "2026-08-04T17:00:00Z",
+        "endDate": "2026-08-11T17:00:00Z",
+        "platformNote": {
+          "en": "PC Only (Battle.net & Game Pass)",
+          "ru": "Только ПК (Battle.net / Game Pass)"
+        },
+        "verification": "official",
+        "disclaimer": {
+          "en": "Test build mechanics. Final Season 15 theme and content will be revealed at BlizzCon.",
+          "ru": "Тестовая сборка систем. Финальная тема и контент Сезона 15 будут раскрыты на BlizzCon."
+        }
+      },
+      "events": [
+        {
+          "id": "ptr-3.2.0",
+          "type": "ptr",
+          "title": {
+            "en": "PTR Patch 3.2.0",
+            "ru": "PTR Патч 3.2.0"
+          },
+          "startDate": "2026-08-04T17:00:00Z",
+          "endDate": "2026-08-11T17:00:00Z",
+          "verification": "official",
+          "platformNote": {
+            "en": "PC Only (Battle.net & Game Pass)",
+            "ru": "Только ПК (Battle.net / Game Pass)"
+          }
+        },
+        {
+          "id": "blizzcon-2026",
+          "type": "convention",
+          "title": {
+            "en": "BlizzCon 2026 (Season 15 Reveal)",
+            "ru": "BlizzCon 2026 (Анонс Сезона 15)"
+          },
+          "startDate": "2026-09-12T17:00:00Z",
+          "endDate": "2026-09-13T23:59:59Z",
+          "verification": "announcement",
+          "location": {
+            "en": "Anaheim Convention Center & Livestream",
+            "ru": "Анахайм (Калифорния) и Прямая трансляция"
+          }
+        },
+        {
+          "id": "season-15-launch",
+          "type": "season_start",
+          "title": {
+            "en": "Season 15 Launch",
+            "ru": "Запуск Сезона 15"
+          },
+          "startDate": "2026-09-15T17:00:00Z",
+          "verification": "estimated"
+        }
+      ],
+      "featureCategories": {
+        "official": [
+          {
+            "category": {
+              "en": "Soul Splinters (Jewelry Gems)",
+              "ru": "Soul Splinters (Душевные осколки)"
+            },
+            "items": {
+              "en": [
+                "7 types & 5 rarities of socketable jewelry items (upgradeable in Cube). Strong stat boosts paired with resource/defense trade-offs."
+              ],
+              "ru": [
+                "7 типов и 5 редкостей предметов для гнезд украшений (апгрейд в Кубе). Дают мощные бонусы взамен на штрафы к ресурсам или защите."
+              ]
+            }
+          },
+          {
+            "category": {
+              "en": "Open World & Dungeons (PTR 3.2.0 Testbed)",
+              "ru": "Открытый мир и Подземелья (Тесты на PTR 3.2.0)"
+            },
+            "items": {
+              "en": [
+                "Challenge Dungeons: World portals leading to boss fights with up to +3 Torment difficulty scaling.",
+                "Overland Ambush: Rare high-difficulty open-world ambushes with a 30-second warning."
+              ],
+              "ru": [
+                "Challenge Dungeons: Порталы в открытом мире к босс-файтам с возможностью повысить сложность до +3 тиров.",
+                "Overland Ambush: Редкие сложные засады в открытом мире с 30-секундным предупреждением."
+              ]
+            }
+          },
+          {
+            "category": {
+              "en": "Uniques & Mythic Crafting Rework",
+              "ru": "Уникальные предметы и Реворк Мификов"
+            },
+            "items": {
+              "en": [
+                "Legacy Uniques: 9–10 iconic items from D1/D2/D3 (Leoric's Crown, Nemesis Bracers, Stone of Jordan, Squirt's Blouse, In-Geom, The Furnace, etc.).",
+                "Cube Upgrade: Direct item upgrade to Mythic keeping 100% of existing affixes, GA, tempering and masterworking (limit 1 equipped).",
+                "Jeweler & Blacksmith: Targeted class-specific Mythics at Jeweler & Mythic cache drops at Blacksmith."
+              ],
+              "ru": [
+                "Legacy Uniques: 9–10 классических предметов из D1/D2/D3 (Leoric's Crown, Nemesis Bracers, Stone of Jordan, Squirt's Blouse, In-Geom, The Furnace и др.).",
+                "Upgrade в Кубе: Прямой апгрейд предмета в Мифик с сохранением всех аффиксов и закалки 1:1 (лимит: 1 экипированный).",
+                "Ювелир и Кузнец: Классовый крафт мификов у Ювелира и кэши с мификами у Кузнеца."
+              ]
+            }
+          },
+          {
+            "category": {
+              "en": "Systems & QoL",
+              "ru": "Системы и QoL"
+            },
+            "items": {
+              "en": [
+                "Rebirth System: Convert Eternal character into Level 1 Seasonal while preserving name, cosmetics, play hours and appearance.",
+                "Horadric Post: Account-wide in-game delivery system for rewards and announcements."
+              ],
+              "ru": [
+                "Перерождение (Rebirth): Сброс персонажа Вечного мира до 1 уровня Сезонного с сохранением имени, внешности, косметики и наигранных часов.",
+                "Horadric Post: Внутриигровая почтовая система доставки наград и сообщений прямо на аккаунт."
+              ]
+            }
+          }
+        ],
+        "announcements": [
+          {
+            "category": {
+              "en": "BlizzCon 2026 Live Reveal (Sep 12–13)",
+              "ru": "Презентация на BlizzCon 2026 (12–13 сентября)"
+            },
+            "items": {
+              "en": [
+                "Full Season 15 theme, storyline, and major gameplay features revealed live at BlizzCon.",
+                "PTR 3.2.0 features (Challenge Dungeons & Overland Ambush) serve as live technical testbeds ahead of the main reveal."
+              ],
+              "ru": [
+                "Прямая презентация темы Сезона 15, сюжетной линии и всех главных механик на BlizzCon.",
+                "Системы PTR 3.2.0 (Challenge Dungeons и Overland Ambush) служат предваряющим техническим тестом."
+              ]
+            }
+          }
+        ],
+        "expectations": []
       },
       "features": {
         "en": [

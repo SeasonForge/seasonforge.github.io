@@ -7,3 +7,9 @@ data/logs/*
 .gemini/
 .env
 package-lock.json
+
+# IDE & Tooling cache
+.vscode/
+.agents/
+.freebuff/
+"%ANDROID_HOME%"/

@@ -41,6 +41,10 @@ export const en = {
     'in-progress': "In Progress",
     active: "Active",
     'just-started': "Just Started",
+    'late-season': "Late Season",
+    'final-days': "Final Days",
+    upcoming: "Upcoming",
+    ended: "Season Ended",
     'in-development': "In Development",
     maintenance: "Maintenance"
   },

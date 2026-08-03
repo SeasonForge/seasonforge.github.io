@@ -1,5 +1,6 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
+import { calculateDynamicStatus } from '../utils/status.js';
 
 // Render navigation from a list of games and an active game.
 function escapeHtml(value) {
@@ -40,19 +41,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       const name = escapeHtml(getVal(game.name) || 'Untitled Game');
       const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
       
-      let statusCode = game.status?.code || 'active';
-      if (id === newestGameId) {
-        statusCode = 'newest';
-      } else if (game.currentSeason?.startDate) {
-        const st = new Date(game.currentSeason.startDate);
-        if (!Number.isNaN(st.getTime())) {
-          const days = Math.floor((now.getTime() - st.getTime()) / (1000 * 60 * 60 * 24));
-          if (days >= 0 && days <= 14) {
-            statusCode = 'just-started';
-          }
-        }
-      }
-
+      let statusCode = id === newestGameId ? 'newest' : calculateDynamicStatus(game);
       const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
       const color = escapeHtml(game.color || '#6366f1');
       const icon = escapeHtml(game.icon || '🎮');

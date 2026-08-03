@@ -158,7 +158,10 @@ Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
-          verificationNote: existingGame?.nextSeason?.verificationNote || null,
+          verificationNote: existingGame?.nextSeason?.verificationNote || {
+            en: "Official ExileCon 2026 presentation & 1.0 reveal dates",
+            ru: "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"
+          },
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
         },
         features: {

@@ -135,6 +135,10 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verificationNote: existingGame?.nextSeason?.verificationNote || {
+            en: "Estimated date based on standard 3-month seasonal cycle of Torchlight: Infinite",
+            ru: "Расчётная дата запуска на основе стандартного 3-месячного сезонного цикла Torchlight: Infinite"
+          },
           sourceUrl: newsitems[0].url || 'https://torchlightinfinite.com/'
         },
         features: {

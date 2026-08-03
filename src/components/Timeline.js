@@ -39,15 +39,39 @@ function getCleanSeasonTag(name, gameId) {
     return `#${num}`;
   }
 
-  // Known PoE league name fallbacks if version number is missing from name string
+  // Fallbacks for known league names when version number is missing from string
   if (gameId === 'path-of-exile') {
-    if (/Curse of the Allflame/i.test(str)) return 'v3.29';
-    if (/Necropolis/i.test(str)) return 'v3.28';
+    if (/(?:Curse of the Allflame|Проклятие Всепламени)/i.test(str)) return 'v3.29';
+    if (/(?:Necropolis|Некрополь)/i.test(str)) return 'v3.28';
+    if (/(?:Settlers of Kalguur|Поселенцы Кальгуура)/i.test(str)) return 'v3.27';
+    if (/(?:Affliction|Аффликшн)/i.test(str)) return 'v3.25';
+    if (/(?:Ancestors|Предки)/i.test(str)) return 'v3.24';
+    if (/(?:Crucible|Горнило)/i.test(str)) return 'v3.23';
+    if (/(?:Sanctum|Святилище)/i.test(str)) return 'v3.22';
+  } else if (gameId === 'path-of-exile-2') {
+    if (/(?:Return of the Ancients|Возвращение Древних)/i.test(str)) return 'v0.5.0';
+    if (/(?:ExileCon)/i.test(str)) return 'v1.0';
+  } else if (gameId === 'diablo-iv') {
+    if (/(?:Death Awakening|Пробуждение смерти)/i.test(str)) return 'S14';
+  } else if (gameId === 'last-epoch') {
+    if (/(?:Shattered Omens|Разрушенные знамения)/i.test(str)) return 'C4';
+  } else if (gameId === 'torchlight-infinite') {
+    if (/(?:Afterlight)/i.test(str)) return 'SS13';
   }
 
   const clean = str.replace(/\s*\((Estimated|Release|Прогноз|Релиз)\)/gi, '').trim();
   const parts = clean.split(/[:—-]/);
-  return parts[0].trim();
+  const candidate = parts[0].trim();
+
+  // Strict check: never allow long text strings without digits on timeline
+  if (!/\d/.test(candidate) && candidate.length > 6) {
+    if (gameId === 'path-of-exile' || gameId === 'path-of-exile-2') return 'v--';
+    if (gameId === 'diablo-iv') return 'S--';
+    if (gameId === 'last-epoch') return 'C--';
+    if (gameId === 'torchlight-infinite') return 'SS--';
+  }
+
+  return candidate;
 }
 
 function formatFullDate(dateStr, lang = 'en') {

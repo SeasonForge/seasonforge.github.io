@@ -167,7 +167,10 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
-          verificationNote: existingGame?.nextSeason?.verificationNote || null,
+          verificationNote: existingGame?.nextSeason?.verificationNote || {
+            en: "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
+            ru: "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
+          },
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
         },
         features: {

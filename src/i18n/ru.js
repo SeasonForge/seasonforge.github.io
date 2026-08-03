@@ -40,7 +40,11 @@ export const ru = {
     'early-access': "Ранний доступ",
     'in-progress': "В разгаре",
     active: "Активен",
-    'just-started': "Только начался",
+    'just-started': "Только стартовал",
+    'late-season': "Поздний сезон",
+    'final-days': "Финальные дни",
+    upcoming: "Скоро",
+    ended: "Завершился",
     'in-development': "В разработке",
     maintenance: "Техобслуживание"
   },

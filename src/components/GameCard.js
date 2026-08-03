@@ -1,5 +1,6 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
+import { calculateDynamicStatus } from '../utils/status.js';
 
 // Render a game card from provided props only.
 function escapeHtml(value) {
@@ -57,7 +58,7 @@ export function render(game = {}, options = {}) {
   const developer = escapeHtml(game.developer || 'Unknown developer');
   const rawColor = String(game.color || '#4b5563');
   const color = /^#[0-9a-fA-F]{3,8}$/.test(rawColor) ? rawColor : '#4b5563';
-  const statusCode = (game.status?.code || 'default');
+  const statusCode = calculateDynamicStatus(game);
   const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Unknown');
   
   const currentSeason = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
@@ -77,12 +78,12 @@ export function render(game = {}, options = {}) {
   let nextSeasonDateBadge = '';
   const customTooltip = game.nextSeason?.verificationNote ? getVal(game.nextSeason.verificationNote) : '';
   if (isAnnouncement || verificationType === 'announcement') {
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--announcement" title="${escapeAttr(customTooltip || t('card.announcementBadgeTitle'))}" style="cursor: help;">${t('card.announcementBadge')}</span>`;
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--announcement" data-tooltip="${escapeAttr(customTooltip || t('card.announcementBadgeTitle'))}" style="cursor: help;">${t('card.announcementBadge')}</span>`;
   } else if (verificationType === 'official') {
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--official" title="${escapeAttr(customTooltip || t('card.officialBadgeTitle'))}" style="cursor: help;">${t('card.officialBadge')}</span>`;
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--official" data-tooltip="${escapeAttr(customTooltip || t('card.officialBadgeTitle'))}" style="cursor: help;">${t('card.officialBadge')}</span>`;
   } else if (verificationType === 'ai' || verificationType === 'estimated') {
-    const defaultEstimatedTooltip = t('card.battlePassEstimateTooltip') || t('card.estimatedBadgeTitle');
-    nextSeasonDateBadge = `<span class="verification-badge verification-badge--estimated" title="${escapeAttr(customTooltip || defaultEstimatedTooltip)}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`;
+    const defaultEstimatedTooltip = customTooltip || t('card.estimatedBadgeTitle');
+    nextSeasonDateBadge = `<span class="verification-badge verification-badge--estimated" data-tooltip="${escapeAttr(defaultEstimatedTooltip)}" style="cursor: help;">▲ ${t('card.estimatedBadge')}</span>`;
   }
 
   const sideHeaderLabel = isAnnouncement ? t('card.announcementCountdownPrefix') : t('card.countdownPrefix');

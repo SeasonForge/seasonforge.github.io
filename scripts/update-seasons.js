@@ -525,83 +525,135 @@ async function main() {
     process.exit(1);
   }
 
+const FUNCTION_ENDPOINT = process.env.NETLIFY_APPROVAL_ENDPOINT || 'https://seasonforge.online/.netlify/functions/request-approval';
+
 async function sendTelegramApprovalMessage(messageText, draftId) {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID || process.env.TELEGRAM_FEEDBACK_CHAT_ID;
-  if (!botToken || !chatId) return null;
 
+  // 1. Direct call if local tokens are present
+  if (botToken && chatId) {
+    try {
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: messageText,
+          parse_mode: 'HTML',
+          disable_web_page_preview: true,
+          reply_markup: {
+            inline_keyboard: [
+              [
+                { text: '✅ Одобрить и выпустить', callback_data: `approve_${draftId}` },
+                { text: '❌ Отклонить', callback_data: `reject_${draftId}` }
+              ]
+            ]
+          }
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        console.log('[Orchestrator] Telegram moderation request sent successfully.');
+        return data.result?.message_id;
+      }
+    } catch (err) {
+      console.warn('[Orchestrator] Direct Telegram call failed, trying Netlify endpoint fallback:', err.message);
+    }
+  }
+
+  // 2. Netlify Function endpoint call (secure relay without local keys)
   try {
-    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-    const res = await fetch(url, {
+    const res = await fetch(FUNCTION_ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        chat_id: chatId,
+        action: 'send_request',
         text: messageText,
-        parse_mode: 'HTML',
-        disable_web_page_preview: true,
-        reply_markup: {
-          inline_keyboard: [
-            [
-              { text: '✅ Одобрить и выпустить', callback_data: `approve_${draftId}` },
-              { text: '❌ Отклонить', callback_data: `reject_${draftId}` }
-            ]
-          ]
-        }
+        draftId
       })
     });
     if (res.ok) {
       const data = await res.json();
-      console.log('[Orchestrator] Telegram moderation request sent successfully.');
-      return data.result?.message_id;
+      if (data.ok && data.messageId) {
+        console.log('[Orchestrator] Telegram moderation request sent via Netlify function.');
+        return data.messageId;
+      }
     }
   } catch (err) {
-    console.warn('[Orchestrator] Failed to send Telegram moderation request:', err.message);
+    console.warn('[Orchestrator] Netlify moderation endpoint call failed:', err.message);
   }
+
   return null;
 }
 
 async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) {
-  const botToken = process.env.TELEGRAM_BOT_TOKEN;
-  if (!botToken || !messageId) return false;
+  if (!messageId) return false;
 
   console.log(`[Orchestrator] Waiting up to ${timeoutMinutes} minutes for Telegram approval (draftId: ${draftId})...`);
   const startTime = Date.now();
   let offset = 0;
+  const botToken = process.env.TELEGRAM_BOT_TOKEN;
 
   while (Date.now() - startTime < timeoutMinutes * 60 * 1000) {
     try {
-      const url = `https://api.telegram.org/bot${botToken}/getUpdates?offset=${offset}&timeout=10`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        for (const update of (data.result || [])) {
-          offset = update.update_id + 1;
-          if (update.callback_query && update.callback_query.message?.message_id === messageId) {
-            const cbData = update.callback_query.callback_data;
-            const callbackId = update.callback_query.id;
+      if (botToken) {
+        const url = `https://api.telegram.org/bot${botToken}/getUpdates?offset=${offset}&timeout=10`;
+        const res = await fetch(url);
+        if (res.ok) {
+          const data = await res.json();
+          for (const update of (data.result || [])) {
+            offset = update.update_id + 1;
+            if (update.callback_query && update.callback_query.message?.message_id === Number(messageId)) {
+              const cbData = update.callback_query.callback_data;
+              const callbackId = update.callback_query.id;
 
-            // Answer callback query to remove spinner
-            fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ callback_query_id: callbackId, text: cbData.startsWith('approve') ? 'Одобрено!' : 'Отклонено!' })
-            }).catch(() => {});
+              fetch(`https://api.telegram.org/bot${botToken}/answerCallbackQuery`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ callback_query_id: callbackId, text: cbData.startsWith('approve') ? 'Одобрено!' : 'Отклонено!' })
+              }).catch(() => {});
 
-            if (cbData === `approve_${draftId}`) {
-              console.log('[Orchestrator] Update APPROVED via Telegram.');
+              if (cbData === `approve_${draftId}`) {
+                console.log('[Orchestrator] Update APPROVED via Telegram.');
+                return true;
+              } else if (cbData === `reject_${draftId}`) {
+                console.log('[Orchestrator] Update REJECTED via Telegram.');
+                return false;
+              }
+            }
+          }
+        }
+      } else {
+        const res = await fetch(FUNCTION_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'check_status',
+            draftId,
+            messageId,
+            offset
+          })
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.ok) {
+            if (typeof data.newOffset === 'number') offset = data.newOffset;
+            if (data.status === 'approved') {
+              console.log('[Orchestrator] Update APPROVED via Telegram (Netlify relay).');
               return true;
-            } else if (cbData === `reject_${draftId}`) {
-              console.log('[Orchestrator] Update REJECTED via Telegram.');
+            } else if (data.status === 'rejected') {
+              console.log('[Orchestrator] Update REJECTED via Telegram (Netlify relay).');
               return false;
             }
           }
         }
       }
     } catch (e) {
-      // Ignore polling transient errors
+      // Ignore transient errors
     }
-    await new Promise(r => setTimeout(r, 3000));
+    await new Promise(r => setTimeout(r, 4000));
   }
 
   console.log('[Orchestrator] Approval timeout reached. Auto-rejecting changes.');

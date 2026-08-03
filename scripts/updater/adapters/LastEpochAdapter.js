@@ -134,6 +134,10 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
           isActive: false,
           verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verificationNote: existingGame?.nextSeason?.verificationNote || {
+            en: "Estimated launch date based on ~3-4 month EHG Cycle cadence after Cycle 4",
+            ru: "Расчётная дата запуска на основе стандартного цикла EHG (~3–4 месяца) после Цикла 4"
+          },
           sourceUrl: newsitems[0].url || 'https://www.lastepoch.com/'
         },
         features: {

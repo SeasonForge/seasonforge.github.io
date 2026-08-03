@@ -126,9 +126,12 @@ function renderApp() {
       const activeLang = getState().settings?.lang || 'en';
       const locale = activeLang === 'ru' ? 'ru-RU' : 'en-US';
       
+      const slugify = (str) => String(str || '').toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
       const rows = [];
       for (const item of historyData) {
         const seasonName = item.season[activeLang] || item.season.en || '';
+        const seasonSlug = item.slug || slugify(item.season.en || seasonName);
+        const seasonUrl = `./${seasonSlug}/`;
         const start = item.startDate;
         const end = item.endDate;
         
@@ -153,7 +156,9 @@ function renderApp() {
           
         rows.push(`
           <tr style="border-bottom: 1px solid #1f2937;">
-            <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${escapeHtml(seasonName)}</td>
+            <td style="padding: 0.75rem 0.5rem; font-weight: 600;">
+              <a href="${escapeAttr(seasonUrl)}" class="history-table__season-link" style="color: #818cf8; text-decoration: none; transition: color 0.2s;">${escapeHtml(seasonName)} →</a>
+            </td>
             <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
             <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
             <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
@@ -201,9 +206,9 @@ function renderApp() {
   const progress = getProgressPercent(activeGame);
   const progressBarHtml = renderProgressBar(progress);
 
-  // 4. Render Game Card into game page container
+  // 4. Render Game Card into game page container (only if on main game detail page, not season page)
   const gameRoot = document.getElementById('game-page-root');
-  if (gameRoot) {
+  if (gameRoot && gameRoot.classList.contains('game-page-content')) {
     gameRoot.innerHTML = renderGameCard(activeGame, { 
       countdown, 
       progressBar: progressBarHtml,

@@ -39,20 +39,27 @@ function escapeJsonForScript(str) {
     .replace(/\u2029/g, '\\u2029');
 }
 
+function slugify(str) {
+  return String(str || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/[\s_]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const dataDir = path.join(__dirname, '../data');
 const templatePath = path.join(__dirname, '../src/templates/game.html');
-
-
+const seasonTemplatePath = path.join(__dirname, '../src/templates/season.html');
 
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');
 
   const BASE_URL = process.env.BASE_URL || 'https://seasonforge.online';
-
-  // Feedback config loaded statically without secrets
+  const generatedSeasonUrls = [];
 
   const seasonsPath = path.join(dataDir, 'seasons.json');
   if (!fs.existsSync(seasonsPath)) {
@@ -111,10 +118,16 @@ async function build() {
         const historyData = JSON.parse(fs.readFileSync(historyPath, 'utf-8'));
         timelineJson = JSON.stringify(historyData);
         
-        // Render timeline rows in English for static HTML
+        const seasonTemplate = fs.existsSync(seasonTemplatePath) ? fs.readFileSync(seasonTemplatePath, 'utf-8') : '';
         const rows = [];
-        for (const item of historyData) {
-          const seasonName = item.season.en || '';
+
+        for (let i = 0; i < historyData.length; i++) {
+          const item = historyData[i];
+          const seasonName = item.season?.en || item.season?.ru || 'Season';
+          const seasonSlug = item.slug || slugify(seasonName) || `season-${i + 1}`;
+          const seasonUrl = `./${seasonSlug}/`;
+          generatedSeasonUrls.push(`${BASE_URL}/games/${gameId}/${seasonSlug}/`);
+
           const start = item.startDate;
           const end = item.endDate;
           
@@ -130,21 +143,146 @@ async function build() {
             }
           }
           
-          const formattedStart = start ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
-          const formattedEnd = end ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
+          const formattedStart = start ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : 'TBA';
+          const formattedEnd = end ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : (start ? 'Ongoing' : 'TBA');
           const linkHtml = item.sourceUrl 
             ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link">Read ↗</a>` 
             : '—';
             
           rows.push(`
             <tr style="border-bottom: 1px solid #1f2937;">
-              <td style="padding: 0.75rem 0.5rem; font-weight: 600; color: #ffffff;">${escapeHtml(seasonName)}</td>
+              <td style="padding: 0.75rem 0.5rem; font-weight: 600;">
+                <a href="${escapeAttr(seasonUrl)}" class="history-table__season-link" style="color: #818cf8; text-decoration: none; transition: color 0.2s;">${escapeHtml(seasonName)} →</a>
+              </td>
               <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
               <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
               <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
               <td style="padding: 0.75rem 0.5rem;">${linkHtml}</td>
             </tr>
           `);
+
+          // Build individual SSG Season Page if seasonTemplate exists
+          if (seasonTemplate) {
+            const seasonTargetDir = path.join(__dirname, `../games/${gameId}/${seasonSlug}`);
+            if (!fs.existsSync(seasonTargetDir)) {
+              fs.mkdirSync(seasonTargetDir, { recursive: true });
+            }
+
+            const prevItem = historyData[i + 1];
+            const nextItem = historyData[i - 1];
+
+            const prevSlug = prevItem ? (prevItem.slug || slugify(prevItem.season?.en || '')) : null;
+            const nextSlug = nextItem ? (nextItem.slug || slugify(nextItem.season?.en || '')) : null;
+
+            const prevHtml = prevItem && prevSlug 
+              ? `<a href="../${prevSlug}/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">← ${escapeHtml(prevItem.season?.en || 'Previous Season')}</a>` 
+              : '';
+
+            const nextHtml = nextItem && nextSlug 
+              ? `<a href="../${nextSlug}/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">${escapeHtml(nextItem.season?.en || 'Next Season')} →</a>` 
+              : '';
+
+            let statusBadge = '<span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span>';
+            const now = new Date();
+            if (start && new Date(start) > now) {
+              statusBadge = '<span style="background: rgba(99,102,241,0.15); color: #818cf8; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Upcoming</span>';
+            } else if (!end && start) {
+              statusBadge = '<span style="background: rgba(34,197,94,0.15); color: #4ade80; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Active Season</span>';
+            } else if (!start) {
+              statusBadge = '<span style="background: rgba(99,102,241,0.15); color: #818cf8; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Upcoming</span>';
+            }
+
+            const seasonDesc = item.summary?.en || `${gameName} ${seasonName}: start date, end date, duration and full season timeline.`;
+            const seasonCanonicalUrl = `${BASE_URL}/games/${gameId}/${seasonSlug}/`;
+            const todayISO = now.toISOString().split('T')[0];
+
+            // Schema.org for Season Page
+            const seasonSchema = {
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "BreadcrumbList",
+                  "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "Home", "item": BASE_URL },
+                    { "@type": "ListItem", "position": 2, "name": gameName, "item": `${BASE_URL}/games/${gameId}/` },
+                    { "@type": "ListItem", "position": 3, "name": seasonName, "item": seasonCanonicalUrl }
+                  ]
+                },
+                {
+                  "@type": "Event",
+                  "name": `${gameName} - ${seasonName}`,
+                  "startDate": start || todayISO,
+                  ...(end ? { "endDate": end } : {}),
+                  "dateModified": todayISO,
+                  "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+                  "eventStatus": "https://schema.org/EventScheduled",
+                  "location": {
+                    "@type": "VirtualLocation",
+                    "url": seasonCanonicalUrl
+                  },
+                  "description": seasonDesc,
+                  "organizer": {
+                    "@type": "Organization",
+                    "name": game.developer || "Developer"
+                  }
+                },
+                {
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    {
+                      "@type": "Question",
+                      "name": `When did ${seasonName} start?`,
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": `${seasonName} for ${gameName} started on ${formattedStart}.`
+                      }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": `How long is ${seasonName}?`,
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": `The total duration of ${seasonName} is ${durationStr}.`
+                      }
+                    }
+                  ]
+                }
+              ]
+            };
+
+            const faqHtml = `
+              <div style="display: flex; flex-direction: column; gap: 1rem; color: #d1d5db; font-size: 0.95rem;">
+                <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">When did ${escapeHtml(seasonName)} start?</strong>
+                  <p style="margin: 0; color: #9ca3af;">${escapeHtml(seasonName)} for ${escapeHtml(gameName)} started on <strong>${formattedStart}</strong>.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
+                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">How long does ${escapeHtml(seasonName)} last?</strong>
+                  <p style="margin: 0; color: #9ca3af;">The duration for ${escapeHtml(seasonName)} is <strong>${durationStr}</strong> (End date: ${formattedEnd}).</p>
+                </div>
+              </div>
+            `;
+
+            let sPageHtml = seasonTemplate;
+            sPageHtml = sPageHtml.replace(/{{GAME_ID}}/g, gameId);
+            sPageHtml = sPageHtml.replace(/{{GAME_NAME}}/g, escapeHtml(gameName));
+            sPageHtml = sPageHtml.replace(/{{SEASON_NAME}}/g, escapeHtml(seasonName));
+            sPageHtml = sPageHtml.replace(/{{SEASON_SLUG}}/g, seasonSlug);
+            sPageHtml = sPageHtml.replace(/{{SEASON_DESCRIPTION}}/g, escapeAttr(seasonDesc));
+            sPageHtml = sPageHtml.replace(/{{BASE_URL}}/g, BASE_URL);
+            sPageHtml = sPageHtml.replace(/{{CANONICAL_URL}}/g, escapeAttr(seasonCanonicalUrl));
+            sPageHtml = sPageHtml.replace(/{{START_DATE}}/g, formattedStart);
+            sPageHtml = sPageHtml.replace(/{{END_DATE}}/g, formattedEnd);
+            sPageHtml = sPageHtml.replace(/{{DURATION}}/g, durationStr);
+            sPageHtml = sPageHtml.replace(/{{STATUS_BADGE}}/g, statusBadge);
+            sPageHtml = sPageHtml.replace(/{{SOURCE_LINK_HTML}}/g, linkHtml);
+            sPageHtml = sPageHtml.replace(/{{PREV_SEASON_HTML}}/g, prevHtml);
+            sPageHtml = sPageHtml.replace(/{{NEXT_SEASON_HTML}}/g, nextHtml);
+            sPageHtml = sPageHtml.replace(/{{FAQ_HTML}}/g, faqHtml);
+            sPageHtml = sPageHtml.replace(/{{SCHEMA_JSONLD}}/g, escapeJsonForScript(JSON.stringify(seasonSchema, null, 2)));
+
+            fs.writeFileSync(path.join(seasonTargetDir, 'index.html'), sPageHtml, 'utf-8');
+          }
         }
         timelineHtml = rows.join('\n');
       } catch (err) {
@@ -450,6 +588,16 @@ async function build() {
     <lastmod>${todayStr}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+  </url>
+`;
+  }
+
+  for (const seasonUrl of generatedSeasonUrls) {
+    sitemapXml += `  <url>
+    <loc>${escapeAttr(seasonUrl)}</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 `;
   }

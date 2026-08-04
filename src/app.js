@@ -298,6 +298,10 @@ function renderApp() {
                 <span class="more-panel__tool-icon">🎥</span>
                 <span>${t('streamer.btnLabel') || 'OBS Widgets'}</span>
               </button>
+              <button id="mob-app-trigger" class="more-panel__tool-btn mobile-app-trigger-btn">
+                <span class="more-panel__tool-icon">📱</span>
+                <span>${t('mobileApp.btnLabel') || 'Mobile App'}</span>
+              </button>
             </div>
           </div>
 
@@ -305,7 +309,7 @@ function renderApp() {
             <span class="more-panel__label">About / О проекте</span>
             <div class="more-panel__about-box">
               <p><strong>SeasonForge</strong> — ${t('header.subtitle') || 'Monitoring current and upcoming seasons of major action RPGs.'}</p>
-              <p>Data source: <strong>Official Game Feeds</strong></p>
+              <p>${t('header.dataSource') || 'Data source'}: <strong>Official Game Feeds</strong></p>
             </div>
           </div>
         </div>
@@ -900,6 +904,14 @@ async function initializeApp() {
           // Default fallback: show Card if game is selected, else Timeline
           setActiveView(matchedGame ? 'card' : 'timeline', false);
         }
+      }
+
+      // URL hash or view parameter override
+      const hashView = window.location.hash.replace('#', '').toLowerCase();
+      const queryView = params.get('view')?.toLowerCase();
+      const overrideView = ['timeline', 'games', 'more', 'card'].includes(hashView) ? hashView : (['timeline', 'games', 'more', 'card'].includes(queryView) ? queryView : null);
+      if (overrideView) {
+        setActiveView(overrideView, false);
       }
 
       // Update lastVisit timestamp

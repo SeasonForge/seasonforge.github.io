@@ -21,37 +21,61 @@ export class MoreMenuModal {
       modalRoot.appendChild(modal);
     }
 
-    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible';
-    modal.style.cssText = 'position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); padding: 1rem;';
+    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible more-menu-overlay';
+    modal.style.cssText = '';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
 
     const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
     modal.innerHTML = `
-      <div class="feedback-modal-container more-panel" style="max-width: 400px; width: 100%; position: relative; background: #111827; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 1rem; padding: 1.5rem; color: #fff; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5);">
-        <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-          <h3 style="margin: 0; font-size: 1.2rem; font-weight: 700; color: #fff;">${t('navbar.btnMore')}</h3>
-          <button class="modal-close" id="close-more-menu-btn" style="background: none; border: none; color: #9ca3af; font-size: 1.5rem; cursor: pointer; padding: 0.25rem 0.5rem; line-height: 1;">&times;</button>
+      <div class="feedback-modal-container more-menu-panel">
+        <div class="more-menu-header">
+          <h3 class="more-menu-title">${t('navbar.btnMore')}</h3>
+          <button class="modal-close" id="close-more-menu-btn" aria-label="Close">&times;</button>
         </div>
-        <div class="more-menu-grid" style="display: flex; flex-direction: column; gap: 0.75rem;">
-          <a href="${cleanBase}" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('home', { size: 20 })}</span> <span>${t('breadcrumbs.home')}</span>
+        <div class="more-menu-grid">
+          <a href="${cleanBase}" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('home', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('breadcrumbs.home')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <a href="${cleanBase}#games" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('gamepad', { size: 20 })}</span> <span>${t('navbar.btnGames')}</span>
+          <a href="${cleanBase}#games" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('gamepad', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('navbar.btnGames')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <a href="${cleanBase}#timeline" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('hourglass', { size: 20 })}</span> <span>${t('navbar.btnTimeline')}</span>
+          <a href="${cleanBase}#timeline" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('hourglass', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('navbar.btnTimeline')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <a href="${cleanBase}changelog/" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('clipboard-list', { size: 20 })}</span> <span>${t('footer.changelog')}</span>
+          <a href="${cleanBase}changelog/" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('clipboard-list', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('footer.changelog')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <button id="more-menu-feedback-btn" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('message-square', { size: 20 })}</span> <span>${t('feedback.btnLabel')}</span>
+          <button id="more-menu-feedback-btn" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('message-square', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('feedback.btnLabel')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </button>
-          <button id="more-menu-app-btn" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: background 0.2s;">
-            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('smartphone', { size: 20 })}</span> <span>${t('mobileApp.headerBtn')}</span>
+          <button id="more-menu-app-btn" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('smartphone', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('mobileApp.headerBtn')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </button>
         </div>
       </div>

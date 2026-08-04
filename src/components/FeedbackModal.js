@@ -8,7 +8,10 @@ export function render() {
         
         <!-- Standard Form View -->
         <form id="feedback-form" class="feedback-form">
-          <h3 class="feedback-modal__title">${t('feedback.title')}</h3>
+          <div class="feedback-modal__header">
+            <h3 class="feedback-modal__title">${t('feedback.title')}</h3>
+            <button type="button" class="modal-close" id="feedback-header-close-btn" aria-label="Close">&times;</button>
+          </div>
           <p class="feedback-modal__subtitle">${t('feedback.subtitle')}</p>
           
           <!-- Honeypot anti-spam field -->

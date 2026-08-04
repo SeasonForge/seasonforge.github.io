@@ -1,5 +1,6 @@
 import { t } from '../i18n/index.js';
 import { formatLastUpdated } from '../utils/date.js';
+import { getState } from '../store/state.js';
 
 /**
  * Header component to update header elements and labels.
@@ -12,8 +13,11 @@ export class Header {
    * @param {string} [options.lastChecked]
    * @param {string} [options.lastUpdated]
    */
-  static update({ lang = 'en', lastChecked, lastUpdated } = {}) {
+  static update({ lang, lastChecked, lastUpdated } = {}) {
     if (typeof document === 'undefined') return;
+
+    const state = getState();
+    const activeLang = lang || state.settings?.lang || 'en';
 
     // Subtitle
     const subtitleEl = document.getElementById('app-header-subtitle');
@@ -49,14 +53,21 @@ export class Header {
       lblStreamer.textContent = t('streamer.btnLabel');
     }
 
-    // Timestamps
-    if (lastChecked) {
-      const checkedTimeEl = document.getElementById('last-checked-time');
-      if (checkedTimeEl) checkedTimeEl.textContent = formatLastUpdated(lastChecked);
+    // Timestamps (fallback to state.rawData / state.games if not explicitly passed)
+    const checkedTs = lastChecked || state.rawData?.lastCheckedAt || state.lastCheckedAt;
+    const checkedTimeEl = document.getElementById('last-checked-time');
+    if (checkedTimeEl && checkedTs) {
+      checkedTimeEl.textContent = formatLastUpdated(checkedTs);
     }
-    if (lastUpdated) {
-      const updatedTimeEl = document.getElementById('last-updated-time');
-      if (updatedTimeEl) updatedTimeEl.textContent = formatLastUpdated(lastUpdated);
+
+    let updatedTs = lastUpdated;
+    if (!updatedTs && state.games && state.games.length > 0) {
+      const times = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+      if (times.length > 0) updatedTs = Math.max(...times);
+    }
+    const updatedTimeEl = document.getElementById('last-updated-time');
+    if (updatedTimeEl && updatedTs) {
+      updatedTimeEl.textContent = formatLastUpdated(updatedTs);
     }
   }
 }

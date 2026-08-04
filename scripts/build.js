@@ -30,6 +30,7 @@ const { getVal } = await import('../src/i18n/index.js');
 const { getProgressPercent, calculateCountdown } = await import('../src/utils/countdown.js');
 const { escapeAttr, escapeHtml } = await import('../src/utils/helpers.js');
 const { SeoGenerator } = await import('../src/utils/SeoGenerator.js');
+const { formatLastUpdated } = await import('../src/utils/date.js');
 
 function escapeJsonForScript(str) {
   return String(str || '')
@@ -75,7 +76,19 @@ async function build() {
 
   const database = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
   const games = database.games || [];
-  const template = fs.readFileSync(templatePath, 'utf-8');
+  let template = fs.readFileSync(templatePath, 'utf-8');
+
+  // Format header timestamps for static pre-rendering
+  const lastCheckedAt = database.lastCheckedAt || new Date().toISOString();
+  const updateTimes = games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  const latestUpdateTime = updateTimes.length > 0 ? Math.max(...updateTimes) : Date.now();
+  
+  const lastCheckedFormatted = formatLastUpdated(lastCheckedAt);
+  const lastUpdatedFormatted = formatLastUpdated(latestUpdateTime);
+
+  template = template
+    .replace(/<strong id="last-checked-time">-<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+    .replace(/<strong id="last-updated-time">-<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
 
   for (const game of games) {
     const gameId = game.id;
@@ -131,7 +144,11 @@ async function build() {
           }
         }
 
-        const seasonTemplate = fs.existsSync(seasonTemplatePath) ? fs.readFileSync(seasonTemplatePath, 'utf-8') : '';
+        let seasonTemplate = fs.existsSync(seasonTemplatePath) ? fs.readFileSync(seasonTemplatePath, 'utf-8') : '';
+        seasonTemplate = seasonTemplate
+          .replace(/<strong id="last-checked-time">-<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+          .replace(/<strong id="last-updated-time">-<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
+
         const rows = [];
 
         for (let i = 0; i < historyData.length; i++) {

@@ -69,7 +69,8 @@ function renderLangSwitcher() {
 }
 
 function renderApp() {
-  const activeLang = getState().settings?.lang || 'en';
+  const state = getState();
+  const activeLang = state.settings?.lang || 'en';
 
   // 1. Sync lang switcher component & season page translations
   renderLangSwitcher();
@@ -270,6 +271,11 @@ function renderApp() {
   if (timeEl && latestTime) {
     timeEl.textContent = formatLastUpdated(latestTime, state.settings?.lang);
   }
+
+  // Ensure countdown loop is active for activeGame
+  if (activeGame) {
+    startCountdownLoop();
+  }
 }
 
 let isExpiredRendered = false;
@@ -295,16 +301,19 @@ function tickCountdown() {
   }
 
   const countdownValues = calculateCountdown(targetDateStr);
-  const container = document.querySelector('.game-card') || document.body;
-  if (container) {
-    updateCountdownDOM(container, countdownValues);
+  if (typeof document !== 'undefined') {
+    const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(activeGame.id) : activeGame.id;
+    const cardEl = document.querySelector(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
+    if (cardEl) {
+      updateCountdownDOM(cardEl, countdownValues);
+    }
   }
 }
 
 function startCountdownLoop() {
   if (countdownTimer) clearInterval(countdownTimer);
   tickCountdown();
-  countdownTimer = setInterval(tickCountdown, 1000);
+  countdownTimer = window.setInterval(tickCountdown, 1000);
 }
 
 async function init() {

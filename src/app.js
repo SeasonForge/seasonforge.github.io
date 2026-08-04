@@ -31,18 +31,9 @@ import { ModalManager } from './components/ModalManager.js';
 import { MobileNav } from './components/MobileNav.js';
 import { MoreMenuModal } from './components/MoreMenuModal.js';
 import { trackEvent } from './utils/analytics.js';
+import { escapeHtml, escapeAttr } from './utils/helpers.js';
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-function escapeAttr(value) {
-  return escapeHtml(value);
-}
+
 
 const seasonService = new SeasonService();
 let countdownTimer = null;
@@ -873,9 +864,9 @@ async function initializeApp() {
       renderToast(t('toasts.loadFailed'), 'error');
     }
     console.error('SeasonForge initialization failed', error);
+    renderApp();
   } finally {
     setLoading(false);
-    renderApp();
   }
 }
 

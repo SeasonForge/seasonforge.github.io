@@ -1,20 +1,8 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
+import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 
-// Render a game card from provided props only.
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function escapeAttr(value) {
-  return escapeHtml(value);
-}
 
 function formatLocalDate(dateStr) {
   if (!dateStr) return '';

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Validator } from './updater/Validator.js';
+import { atomicWriteFileSync } from './updater/fileUtils.js';
 
 // Setup directories
 const dataDir = path.join(process.cwd(), 'data');
@@ -13,11 +14,7 @@ const logsDir = path.join(dataDir, 'logs');
   }
 });
 
-function atomicWriteFileSync(filePath, content, encoding = 'utf-8') {
-  const tmpPath = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
-  fs.writeFileSync(tmpPath, content, encoding);
-  fs.renameSync(tmpPath, filePath);
-}
+
 
 function isNameEmptyOrTba(name) {
   if (!name) return true;
@@ -296,68 +293,64 @@ function upgradeToBilingualSchema(game) {
   return upgraded;
 }
 
-function normalizeGameDates(gameData) {
+function normalizeGameDates(gameData, defaultTime = 'T00:00:00Z') {
   if (!gameData) return gameData;
-  const gameId = gameData.id;
-  
+
+  // Work on shallow copies — never mutate the input object
+  const result = { ...gameData };
+  if (result.currentSeason) result.currentSeason = { ...result.currentSeason };
+  if (result.nextSeason)    result.nextSeason    = { ...result.nextSeason };
+  if (result.status)        result.status        = { ...result.status };
+
   const appendDefaultTime = (dateStr) => {
     if (!dateStr || dateStr === 'TBA') return dateStr;
     if (dateStr.includes('T') || dateStr.includes(':')) return dateStr;
     if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-      const defaultTimes = {
-        'path-of-exile': 'T20:00:00Z',
-        'path-of-exile-2': 'T20:00:00Z',
-        'diablo-iv': 'T17:00:00Z',
-        'last-epoch': 'T16:00:00Z',
-        'torchlight-infinite': 'T02:00:00Z'
-      };
-      return `${dateStr}${defaultTimes[gameId] || 'T00:00:00Z'}`;
+      return `${dateStr}${defaultTime}`;
     }
     return dateStr;
   };
 
-  if (gameData.currentSeason) {
-    gameData.currentSeason.startDate = appendDefaultTime(gameData.currentSeason.startDate);
-    gameData.currentSeason.endDate = appendDefaultTime(gameData.currentSeason.endDate);
+  if (result.currentSeason) {
+    result.currentSeason.startDate = appendDefaultTime(result.currentSeason.startDate);
+    result.currentSeason.endDate   = appendDefaultTime(result.currentSeason.endDate);
   }
-  if (gameData.nextSeason) {
-    gameData.nextSeason.startDate = appendDefaultTime(gameData.nextSeason.startDate);
-    gameData.nextSeason.endDate = appendDefaultTime(gameData.nextSeason.endDate);
+  if (result.nextSeason) {
+    result.nextSeason.startDate = appendDefaultTime(result.nextSeason.startDate);
+    result.nextSeason.endDate   = appendDefaultTime(result.nextSeason.endDate);
   }
 
-  // Auto-transition: If nextSeason startDate has passed or matches currentSeason startDate, shift nextSeason -> currentSeason and set nextSeason -> TBA
-  if (gameData.nextSeason?.startDate && gameData.nextSeason.startDate !== 'TBA') {
-    const nextStartMs = new Date(gameData.nextSeason.startDate).getTime();
+  // Auto-transition: if nextSeason startDate has passed, shift nextSeason → currentSeason
+  if (result.nextSeason?.startDate && result.nextSeason.startDate !== 'TBA') {
+    const nextStartMs = new Date(result.nextSeason.startDate).getTime();
     const nowMs = Date.now();
-    
+
     if (!Number.isNaN(nextStartMs) && nextStartMs <= nowMs) {
-      const curStartMs = gameData.currentSeason?.startDate ? new Date(gameData.currentSeason.startDate).getTime() : 0;
-      
+      const curStartMs = result.currentSeason?.startDate ? new Date(result.currentSeason.startDate).getTime() : 0;
+
       if (nextStartMs >= curStartMs) {
-        gameData.currentSeason = {
-          ...gameData.nextSeason,
-          isActive: true
-        };
+        result.currentSeason = { ...result.nextSeason, isActive: true };
       }
-      
-      gameData.nextSeason = {
+
+      result.nextSeason = {
         name: { en: 'TBA', ru: 'TBA' },
         startDate: '',
         endDate: '',
         isActive: false,
         verification: 'estimated',
-        sourceUrl: gameData.currentSeason?.sourceUrl || ''
+        sourceUrl: result.currentSeason?.sourceUrl || ''
       };
 
-      if (gameData.status) {
-        gameData.status.code = 'active';
-        gameData.status.label = { en: 'Active', ru: 'Активен' };
+      if (result.status) {
+        result.status.code  = 'active';
+        result.status.label = { en: 'Active', ru: 'Активен' };
       }
     }
   }
-  
-  return gameData;
+
+  return result;
 }
+
 
 
 async function main() {
@@ -381,7 +374,10 @@ async function main() {
   if (fs.existsSync(seasonsPath)) {
     try {
       const oldSeasons = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
-      existingGames = (oldSeasons.games || []).map(g => normalizeGameDates(upgradeToBilingualSchema(g)));
+      existingGames = (oldSeasons.games || []).map(g => {
+        const cfg = gamesConfig.find(c => c.id === g.id);
+        return normalizeGameDates(upgradeToBilingualSchema(g), cfg?.defaultLaunchTime);
+      });
     } catch (e) {
       console.warn('[Orchestrator] Could not load existing seasons.json for merging:', e.message);
     }
@@ -416,7 +412,7 @@ async function main() {
 
       // Merge with existing data to preserve dates/features if scraper returned TBA
       gameData = mergeGameData(existingGame, gameData);
-      gameData = normalizeGameDates(gameData);
+      gameData = normalizeGameDates(gameData, gameConfig.defaultLaunchTime);
 
       // Validate
       Validator.validateGame(gameData);
@@ -491,7 +487,7 @@ async function main() {
     if (res.status === 'fulfilled') {
       const outcome = res.value;
       if (outcome.status === 'success' || outcome.status === 'fallback') {
-        finalGames.push(normalizeGameDates(outcome.data));
+        finalGames.push(normalizeGameDates(outcome.data, configGame?.defaultLaunchTime));
         
         logSummary.updates.push({
           game: outcome.gameId,

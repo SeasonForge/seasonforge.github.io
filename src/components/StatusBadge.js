@@ -1,12 +1,5 @@
 // Render a status badge from a status value.
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+import { escapeHtml } from '../utils/helpers.js';
 
 export function render(status) {
   const label = escapeHtml(typeof status === 'string' ? status : status?.label || status?.code || 'Unknown');

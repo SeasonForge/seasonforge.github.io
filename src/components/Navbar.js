@@ -1,16 +1,8 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
+import { escapeHtml } from '../utils/helpers.js';
 
-// Render navigation from a list of games and an active game.
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
 
 export function render(games = [], activeGame = null, activeView = 'card') {
   const items = Array.isArray(games) ? games : [];

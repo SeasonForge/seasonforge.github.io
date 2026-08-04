@@ -1,12 +1,5 @@
 // Render and control a simple toast notification.
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+import { escapeHtml } from '../utils/helpers.js';
 
 const TITLE_MAP = {
   info: 'Information',

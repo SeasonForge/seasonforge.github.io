@@ -7,7 +7,8 @@
     },
     "adapter": "PoEAdapter",
     "enabled": true,
-    "sourceUrl": "https://www.pathofexile.com/news/rss"
+    "sourceUrl": "https://www.pathofexile.com/news/rss",
+    "defaultLaunchTime": "T20:00:00Z"
   },
   {
     "id": "path-of-exile-2",
@@ -17,7 +18,8 @@
     },
     "adapter": "PoE2Adapter",
     "enabled": true,
-    "sourceUrl": "https://www.pathofexile.com/news/rss"
+    "sourceUrl": "https://www.pathofexile.com/news/rss",
+    "defaultLaunchTime": "T20:00:00Z"
   },
   {
     "id": "diablo-iv",
@@ -27,7 +29,8 @@
     },
     "adapter": "DiabloAdapter",
     "enabled": true,
-    "sourceUrl": "https://news.blizzard.com/en-us/diablo4"
+    "sourceUrl": "https://news.blizzard.com/en-us/diablo4",
+    "defaultLaunchTime": "T17:00:00Z"
   },
   {
     "id": "last-epoch",
@@ -37,7 +40,8 @@
     },
     "adapter": "LastEpochAdapter",
     "enabled": true,
-    "appId": 899770
+    "appId": 899770,
+    "defaultLaunchTime": "T16:00:00Z"
   },
   {
     "id": "torchlight-infinite",
@@ -47,6 +51,7 @@
     },
     "adapter": "TorchlightAdapter",
     "enabled": true,
-    "appId": 1974050
+    "appId": 1974050,
+    "defaultLaunchTime": "T02:00:00Z"
   }
 ]

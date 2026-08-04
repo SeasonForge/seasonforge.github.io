@@ -1,14 +1,8 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
+import { escapeHtml } from '../utils/helpers.js';
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+
 
 function formatDate(dateStr, lang = 'en') {
   if (!dateStr) return '';

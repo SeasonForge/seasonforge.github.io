@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
+import { atomicWriteFileSync } from '../fileUtils.js';
 
 export class BaseAdapter {
   constructor(gameId) {
@@ -104,14 +105,14 @@ export class BaseAdapter {
     return null;
   }
 
-  // Write game data to cache
+  // Write game data to cache atomically (prevents corrupt files on crash)
   async writeCache(data) {
     const cacheDir = path.join(process.cwd(), 'data', 'cache');
     if (!fs.existsSync(cacheDir)) {
       fs.mkdirSync(cacheDir, { recursive: true });
     }
     const cachePath = path.join(cacheDir, `${this.gameId}.json`);
-    fs.writeFileSync(cachePath, JSON.stringify(data, null, 2), 'utf-8');
+    atomicWriteFileSync(cachePath, JSON.stringify(data, null, 2));
   }
 
   // Call Gemini API to extract structured fields

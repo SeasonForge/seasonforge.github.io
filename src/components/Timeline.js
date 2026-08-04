@@ -1,6 +1,8 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 import { escapeHtml } from '../utils/helpers.js';
+import { calculateDynamicStatus } from '../utils/status.js';
+import { getProgressPercent } from '../utils/countdown.js';
 
 
 
@@ -76,7 +78,7 @@ function formatFullDate(dateStr, lang = 'en') {
   return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' }).format(date).toUpperCase();
 }
 
-export function render(games = []) {
+export function render(games = [], viewMode = 'all') {
   const items = Array.isArray(games) ? games : [];
   const state = getState();
   const lang = state.settings?.lang || 'en';
@@ -399,13 +401,86 @@ export function render(games = []) {
       const isHype = days <= 14;
       const isPtr = earliest.type === 'ptr';
       const badgeText = isPtr ? 'PTR TEST' : (earliest.type === 'convention' ? 'BLIZZCON' : (isHype ? t('timeline.hype') : ''));
-      
+
+      const currentSeasonName = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
+      const progressPercent = Math.round(getProgressPercent(game));
+      const statusCode = calculateDynamicStatus(game);
+      const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
+      const logo = game.logo ? escapeHtml(game.logo) : '';
+      const icon = escapeHtml(game.icon || '🎮');
+
+      const iconHtml = logo 
+        ? `<img src="./assets/logos/${logo}" alt="${gameName}" class="unified-card__logo" />`
+        : `<span class="unified-card__emoji">${icon}</span>`;
+
       const subtextHtml = seasonSubtext ? `
         <div class="upcoming-card__season-subtext">
           ${seasonSubtext}
         </div>
       ` : '';
 
+      if (viewMode === 'home') {
+        return `
+          <div class="upcoming-card unified-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color};" data-game-countdown="${game.id}">
+            <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
+            
+            <!-- Top Section: Current Season & Status -->
+            <div class="unified-card__top">
+              <div class="unified-card__header-row">
+                <div class="unified-card__game-title-group">
+                  <div class="unified-card__icon-box">${iconHtml}</div>
+                  <h4 class="unified-card__game-name">${gameName}</h4>
+                </div>
+                <span class="game-card__pill game-card__pill--${statusCode}">${statusLabel.toUpperCase()}</span>
+              </div>
+
+              <div class="unified-card__season-info">
+                <span class="unified-card__season-label">${t('card.currentSeasonLabel') || 'Текущий сезон'}:</span>
+                <strong class="unified-card__season-title">${currentSeasonName}</strong>
+              </div>
+
+              <div class="unified-card__progress-block">
+                <div class="unified-card__progress-bar-bg">
+                  <div class="unified-card__progress-bar-fill" style="width: ${progressPercent}%; background: ${color};"></div>
+                </div>
+                <span class="unified-card__progress-val">${progressPercent}%</span>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="unified-card__divider"></div>
+
+            <!-- Bottom Section: Next Season & Countdown -->
+            <div class="unified-card__bottom">
+              <div class="unified-card__next-header">
+                <div class="unified-card__next-label-group">
+                  <span class="unified-card__next-eyebrow">⏳ ${lang === 'ru' ? 'ДО СТАРТА:' : 'NEXT SEASON:'}</span>
+                  <strong class="unified-card__next-title">${eventTitle}</strong>
+                </div>
+                ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+              </div>
+
+              <div class="upcoming-card__countdown unified-card__countdown">
+                <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
+                <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>
+                <div class="upcoming-card__countdown-item"><strong data-countdown="minutes">${minutes}</strong><span>${t('card.minutes') || 'min'}</span></div>
+              </div>
+
+              ${formattedDate ? `
+                <div class="unified-card__footer-date">
+                  <span>📅 ${lang === 'ru' ? 'Старт:' : 'Launch:'} ${formattedDate}</span>
+                  <a href="./games/${game.id}/" class="unified-card__arrow-btn">
+                    <span>${lang === 'ru' ? 'Перейти к игре' : 'View Game'}</span>
+                    <span class="unified-card__arrow-icon">→</span>
+                  </a>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }
+
+      // Default Compact Card for Desktop Timeline View
       return `
         <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
           <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
@@ -438,12 +513,15 @@ export function render(games = []) {
     `;
   }
 
+  if (viewMode === 'home') {
+    return `<div class="home-view-wrapper">${upcomingLaunchesHtml}</div>`;
+  }
+
   const startYear = startTimelineDate.getFullYear();
   const endYear = endTimelineDate.getFullYear();
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
-  // 6. Main timeline structure output
-  return `
+  const timelineChartHtml = `
     <div class="timeline-view-wrapper">
       <section class="timeline-card">
         <div class="timeline-card__header">
@@ -484,11 +562,19 @@ export function render(games = []) {
         </div>
       </section>
 
-      <!-- Bottom launches section -->
-      ${upcomingLaunchesHtml}
-
       <!-- Dynamic tooltip element -->
       <div id="timeline-tooltip" class="timeline-tooltip" style="display: none;"></div>
+    </div>
+  `;
+
+  if (viewMode === 'timeline') {
+    return timelineChartHtml;
+  }
+
+  return `
+    <div class="timeline-view-wrapper">
+      ${timelineChartHtml}
+      ${upcomingLaunchesHtml}
     </div>
   `;
 }

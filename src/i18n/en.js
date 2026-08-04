@@ -11,6 +11,7 @@ export const en = {
     btnCard: "Game Card",
     btnTimeline: "Timeline 2026",
     btnGames: "Games",
+    btnChangelog: "Changelog",
     btnMore: "More"
   },
   mobileApp: {

@@ -29,9 +29,9 @@ export class MobileNav {
       btnTimeline.setAttribute('href', `${cleanBase}#timeline`);
     }
 
-    const btnGames = document.getElementById('mob-btn-games');
-    if (btnGames) {
-      btnGames.setAttribute('href', `${cleanBase}#games`);
+    const btnChangelog = document.getElementById('mob-btn-changelog');
+    if (btnChangelog) {
+      btnChangelog.setAttribute('href', `${cleanBase}changelog/`);
     }
 
     // 2. Attach "More" button listener
@@ -56,8 +56,8 @@ export class MobileNav {
     const lblTimeline = document.getElementById('mob-lbl-timeline');
     if (lblTimeline) lblTimeline.textContent = t('navbar.btnTimeline');
 
-    const lblGames = document.getElementById('mob-lbl-games');
-    if (lblGames) lblGames.textContent = t('navbar.btnGames');
+    const lblChangelog = document.getElementById('mob-lbl-changelog');
+    if (lblChangelog) lblChangelog.textContent = t('navbar.btnChangelog');
 
     const lblMore = document.getElementById('mob-lbl-more');
     if (lblMore) lblMore.textContent = t('navbar.btnMore');

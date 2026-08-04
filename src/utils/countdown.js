@@ -29,7 +29,7 @@ export function getProgressPercent(game) {
   const total = endMs - start.getTime();
   const elapsed = now.getTime() - start.getTime();
 
-  return Math.max(0, Math.min(100, (elapsed / total) * 100));
+  return Math.max(0, Math.min(100, Math.round((elapsed / total) * 100)));
 }
 
 /**

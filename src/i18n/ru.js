@@ -11,6 +11,7 @@ export const ru = {
     btnCard: "Карточка игры",
     btnTimeline: "Хронология 2026",
     btnGames: "Игры",
+    btnChangelog: "Чейнджлог",
     btnMore: "Ещё"
   },
   mobileApp: {

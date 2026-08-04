@@ -220,10 +220,42 @@ function renderApp() {
     }
   }
 
-  // Render main content depending on activeView
+  // Render main content depending on activeView and device viewport
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+
   if (contentRoot) {
-    if (state.activeView === 'timeline') {
-      contentRoot.innerHTML = renderTimeline(state.games);
+    if (state.activeView === 'card') {
+      if (isMobile) {
+        contentRoot.innerHTML = renderTimeline(state.games, 'home');
+      } else {
+        let activeGame = state.activeGame;
+        if (!activeGame && state.games.length > 0) {
+          activeGame = state.games[0];
+          setActiveGame(activeGame, false);
+        }
+
+        const cardsHtml = state.games.map((game) => {
+          const isActive = activeGame && game.id === activeGame.id;
+          const countdown = calculateCountdown(game.nextSeason?.startDate || game.currentSeason?.startDate);
+          const progressBar = renderProgressBar(getProgressPercent(game), game.color);
+          const statusBadge = renderStatusBadge(game.status);
+
+          const card = renderGameCard(game, {
+            countdown,
+            progressBar,
+            statusBadge
+          });
+
+          return card.replace('class="game-card"', `class="game-card ${isActive ? 'game-card--active' : ''}"`);
+        }).join('');
+        contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
+      }
+    } else if (state.activeView === 'timeline') {
+      if (isMobile) {
+        contentRoot.innerHTML = renderTimeline(state.games, 'timeline');
+      } else {
+        contentRoot.innerHTML = renderTimeline(state.games, 'all');
+      }
     } else if (state.activeView === 'games') {
       const catalogCards = state.games.map(game => {
         const id = game.id;
@@ -267,30 +299,6 @@ function renderApp() {
       `;
     } else if (state.activeView === 'more') {
       MoreMenuModal.open('./');
-    } else {
-      let activeGame = state.activeGame;
-      if (!activeGame && state.games.length > 0) {
-        activeGame = state.games[0];
-        setActiveGame(activeGame, false);
-      }
-
-      // Render feed of all games
-      const cardsHtml = state.games.map((game) => {
-        const isActive = activeGame && game.id === activeGame.id;
-        const countdown = calculateCountdown(game.nextSeason?.startDate || game.currentSeason?.startDate);
-        const progressBar = renderProgressBar(getProgressPercent(game), game.color);
-        const statusBadge = renderStatusBadge(game.status);
-
-        const card = renderGameCard(game, {
-          countdown,
-          progressBar,
-          statusBadge
-        });
-
-        // Add active class for desktop filtering
-        return card.replace('class="game-card"', `class="game-card ${isActive ? 'game-card--active' : ''}"`);
-      }).join('');
-      contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
     }
   }
 
@@ -300,7 +308,7 @@ function renderApp() {
   initStreamer(state.games);
   initMobileAppModal();
   
-  if (state.activeView === 'timeline') {
+  if (state.activeView === 'timeline' || state.activeView === 'card') {
     attachTimelineTooltipEvents();
   }
   checkForecastViewed();
@@ -720,7 +728,7 @@ function tickCountdown() {
   }
 
   // 2. Update Timeline Upcoming Launches Countdowns (if visible)
-  if (state.activeView === 'timeline') {
+  if (state.activeView === 'timeline' || state.activeView === 'card') {
     state.games.forEach((game) => {
       const targetDateStr = game.nextSeason?.startDate;
       if (!targetDateStr) return;

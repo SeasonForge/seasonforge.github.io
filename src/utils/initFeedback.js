@@ -167,8 +167,14 @@ export function initFeedback(getCurrentGameId) {
     btn.onclick = openModal;
   });
 
+  const headerCloseBtn = document.getElementById('feedback-header-close-btn');
+
   if (!cancelBtn.dataset.bound) {
     cancelBtn.dataset.bound = 'true';
     cancelBtn.addEventListener('click', closeModal);
+  }
+  if (headerCloseBtn && !headerCloseBtn.dataset.bound) {
+    headerCloseBtn.dataset.bound = 'true';
+    headerCloseBtn.addEventListener('click', closeModal);
   }
 }

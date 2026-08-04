@@ -3,26 +3,11 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { getIconSvg } from '../src/utils/icons.js';
 
+import { initDomMock } from './builder/domMock.js';
+import { validatePages } from './builder/pageValidator.js';
+
 // 1. Mock browser globals for Node.js SSG execution
-globalThis.localStorage = {
-  getItem: () => 'en',
-  setItem: () => {}
-};
-Object.defineProperty(globalThis, 'navigator', {
-  value: {
-    language: 'en-US',
-    userLanguage: 'en-US'
-  },
-  configurable: true,
-  writable: true
-});
-globalThis.document = {
-  documentElement: {
-    lang: 'en'
-  },
-  querySelector: () => null
-};
-globalThis.window = globalThis;
+initDomMock();
 
 // 2. Import frontend components dynamically after mocks are set
 const { render: renderGameCard } = await import('../src/components/GameCard.js');
@@ -703,89 +688,11 @@ Sitemap: ${BASE_URL}/sitemap.xml
   console.log(`=== SSG Complete: Generated detail pages for ${games.length} games ===`);
 
   // 8. Automated verification of all generated pages
-  validateGeneratedPages(games, generatedSeasonUrls);
+  validateGeneratedPages(BASE_URL, games, generatedSeasonUrls);
 }
 
-function validateGeneratedPages(games, generatedSeasonUrls) {
-  console.log('\n=== Automated SSG Page Verification ===');
-  const BASE_URL = process.env.BASE_URL || 'https://seasonforge.online';
-  let errors = [];
-  let checkedCount = 0;
-
-  const pagesToValidate = [
-    path.join(__dirname, '../changelog/index.html')
-  ];
-
-  for (const game of games) {
-    pagesToValidate.push(path.join(__dirname, `../games/${game.id}/index.html`));
-  }
-
-  for (const seasonUrl of generatedSeasonUrls) {
-    const relativePath = seasonUrl.replace(BASE_URL, '');
-    const filePath = path.join(__dirname, '..', relativePath, 'index.html');
-    pagesToValidate.push(filePath);
-  }
-
-  for (const filePath of pagesToValidate) {
-    checkedCount++;
-    const relName = path.relative(path.join(__dirname, '..'), filePath);
-
-    if (!fs.existsSync(filePath)) {
-      errors.push(`[MISSING] ${relName} does not exist.`);
-      continue;
-    }
-
-    const stat = fs.statSync(filePath);
-    if (stat.size === 0) {
-      errors.push(`[EMPTY] ${relName} is 0 bytes.`);
-      continue;
-    }
-
-    const content = fs.readFileSync(filePath, 'utf-8');
-
-    if (!/<title>(.*?)<\/title>/i.test(content)) {
-      errors.push(`[NO_TITLE] ${relName} missing <title> tag.`);
-    }
-
-    if (!/<meta\s+name="description"\s+content="([^"]*)"/i.test(content) && !/<meta\s+content="([^"]*)"\s+name="description"/i.test(content)) {
-      errors.push(`[NO_DESC] ${relName} missing <meta name="description">.`);
-    }
-
-    if (!/<link\s+rel="canonical"\s+href="([^"]*)"/i.test(content)) {
-      errors.push(`[NO_CANONICAL] ${relName} missing canonical link.`);
-    }
-
-    const jsonLdMatch = content.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/i);
-    if (!jsonLdMatch) {
-      errors.push(`[NO_JSONLD] ${relName} missing Schema.org JSON-LD.`);
-    } else {
-      try {
-        JSON.parse(jsonLdMatch[1]);
-      } catch (e) {
-        errors.push(`[BAD_JSONLD] ${relName} invalid JSON-LD: ${e.message}`);
-      }
-    }
-
-    const assetRegex = /(?:src|href)="(\.\.\/[^"]+)"/g;
-    let match;
-    while ((match = assetRegex.exec(content)) !== null) {
-      const assetRelPath = match[1].split('?')[0].split('#')[0];
-      const pageDir = path.dirname(filePath);
-      const targetAssetPath = path.resolve(pageDir, assetRelPath);
-      if (!fs.existsSync(targetAssetPath)) {
-        errors.push(`[BROKEN_ASSET] ${relName} references missing asset: ${assetRelPath} -> ${targetAssetPath}`);
-      }
-    }
-  }
-
-  console.log(`[SSG Validator] Checked ${checkedCount} HTML pages.`);
-  if (errors.length > 0) {
-    console.error(`[SSG Validator] FAILED with ${errors.length} errors:`);
-    errors.forEach(e => console.error(`  - ${e}`));
-    process.exit(1);
-  } else {
-    console.log(`[SSG Validator] SUCCESS: All ${checkedCount} pages passed validation checks clean!`);
-  }
+function validateGeneratedPages(BASE_URL, games, generatedSeasonUrls) {
+  validatePages(BASE_URL, games, generatedSeasonUrls, path.join(__dirname, '..'));
 }
 
 build().catch(error => {

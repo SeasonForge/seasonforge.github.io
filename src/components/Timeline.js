@@ -398,6 +398,7 @@ export function render(games = [], viewMode = 'all') {
       const days = Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
       const hours = Math.max(0, Math.floor((diff / (1000 * 60 * 60)) % 24));
       const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
+      const seconds = Math.max(0, Math.floor((diff / 1000) % 60));
       
       const isHype = days <= 14;
       const isPtr = earliest.type === 'ptr';
@@ -465,6 +466,7 @@ export function render(games = [], viewMode = 'all') {
                 <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
                 <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>
                 <div class="upcoming-card__countdown-item"><strong data-countdown="minutes">${minutes}</strong><span>${t('card.minutes') || 'min'}</span></div>
+                <div class="upcoming-card__countdown-item"><strong data-countdown="seconds">${seconds}</strong><span>${t('card.seconds') || 'sec'}</span></div>
               </div>
 
               ${formattedDate ? `
@@ -496,6 +498,7 @@ export function render(games = [], viewMode = 'all') {
             <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
             <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>
             <div class="upcoming-card__countdown-item"><strong data-countdown="minutes">${minutes}</strong><span>${t('card.minutes') || 'min'}</span></div>
+            <div class="upcoming-card__countdown-item"><strong data-countdown="seconds">${seconds}</strong><span>${t('card.seconds') || 'sec'}</span></div>
           </div>
         </div>
       `;

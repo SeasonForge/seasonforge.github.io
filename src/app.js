@@ -766,6 +766,7 @@ function tickCountdown() {
       update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
       update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
       update('minutes', Math.floor((total / (1000 * 60)) % 60));
+      update('seconds', Math.floor((total / 1000) % 60));
     });
   }
 }

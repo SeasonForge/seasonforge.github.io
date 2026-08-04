@@ -25,6 +25,27 @@ export function formatLocalDate(dateStr) {
 }
 
 /**
+ * Formats a date string into a short localized date.
+ * @param {string} dateStr - ISO date string
+ * @returns {string}
+ */
+export function formatShortDate(dateStr) {
+  if (!dateStr) return '';
+  const date = new Date(dateStr);
+  if (Number.isNaN(date.getTime())) return dateStr;
+
+  const state = getState();
+  const lang = state.settings?.lang || 'en';
+  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
+
+  return new Intl.DateTimeFormat(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date);
+}
+
+/**
  * Formats a timestamp into a localized date+time string with UTC suffix.
  * @param {string|number} timestamp
  * @returns {string}

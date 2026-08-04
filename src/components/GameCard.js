@@ -3,44 +3,7 @@ import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
 import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 import { getIconSvg } from '../utils/icons.js';
-
-
-function formatLocalDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  
-  const state = getState();
-  const lang = state.settings?.lang || 'en';
-  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
-  
-  const hasTime = dateStr.includes('T') || dateStr.includes(':');
-  
-  const options = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    ...(hasTime ? { hour: '2-digit', minute: '2-digit' } : {})
-  };
-  
-  return new Intl.DateTimeFormat(locale, options).format(date);
-}
-
-function formatShortDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  
-  const state = getState();
-  const lang = state.settings?.lang || 'en';
-  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
-  
-  return new Intl.DateTimeFormat(locale, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  }).format(date);
-}
+import { formatLocalDate, formatShortDate } from '../utils/date.js';
 
 export function render(game = {}, options = {}) {
   const name = escapeHtml(getVal(game.name) || 'Untitled Game');
@@ -299,6 +262,7 @@ export function render(game = {}, options = {}) {
         <div class="game-card__countdown-item"><strong data-countdown="days">${countdown.days ?? 0}</strong><span>${t('card.days')}</span></div>
         <div class="game-card__countdown-item"><strong data-countdown="hours">${countdown.hours ?? 0}</strong><span>${t('card.hours')}</span></div>
         <div class="game-card__countdown-item"><strong data-countdown="minutes">${countdown.minutes ?? 0}</strong><span>${t('card.minutes')}</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="seconds">${countdown.seconds ?? 0}</strong><span>${t('card.seconds')}</span></div>
       </div>
     `;
   }

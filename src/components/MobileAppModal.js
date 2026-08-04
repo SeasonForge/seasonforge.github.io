@@ -1,9 +1,9 @@
 import { t } from '../i18n/index.js';
 import { getIconSvg } from '../utils/icons.js';
+import { trackEvent } from '../utils/analytics.js';
 
 export function render() {
   const latestReleaseUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest";
-  const apkDownloadUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest";
 
   return `
     <div id="mobile-app-modal-overlay" class="feedback-modal-overlay" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="app-modal-title">
@@ -86,4 +86,96 @@ export function render() {
       </div>
     </div>
   `;
+}
+
+export function initMobileAppModal() {
+  const modalRoot = document.getElementById('modal-root');
+  if (!modalRoot) return;
+
+  const existingOverlay = document.getElementById('mobile-app-modal-overlay');
+  if (existingOverlay) {
+    existingOverlay.remove();
+  }
+  modalRoot.insertAdjacentHTML('beforeend', render());
+
+  const overlay = document.getElementById('mobile-app-modal-overlay');
+  const closeBtn = document.getElementById('mobile-app-modal-close');
+
+  function openModal(placement = 'header') {
+    if (!overlay) return;
+    overlay.style.display = 'flex';
+    setTimeout(() => {
+      overlay.classList.add('feedback-modal-overlay--visible');
+    }, 10);
+
+    trackEvent('android_modal_opened', { placement });
+
+    document.addEventListener('keydown', handleEsc);
+    overlay.addEventListener('click', handleOutsideClick);
+  }
+
+  function closeModal() {
+    if (!overlay) return;
+    overlay.classList.remove('feedback-modal-overlay--visible');
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 300);
+
+    document.removeEventListener('keydown', handleEsc);
+    overlay.removeEventListener('click', handleOutsideClick);
+  }
+
+  function handleEsc(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
+  function handleOutsideClick(e) {
+    if (e.target === overlay) closeModal();
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  const triggers = document.querySelectorAll('.mobile-app-trigger-btn');
+  triggers.forEach((btn) => {
+    btn.onclick = (e) => {
+      e.preventDefault();
+      let placement = 'header';
+      if (btn.closest('.navbar-panel') || btn.closest('.navbar') || btn.closest('.navbar-app-card')) {
+        placement = 'sidebar';
+      } else if (btn.closest('.mobile-nav') || btn.closest('.more-panel')) {
+        placement = 'mobile_menu';
+      }
+      openModal(placement);
+    };
+  });
+
+  const feedbackLink = overlay.querySelector('.mobile-app-modal__feedback-link');
+  if (feedbackLink) {
+    feedbackLink.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModal();
+      setTimeout(() => {
+        const feedbackBtn = document.getElementById('feedback-trigger-btn') || document.querySelector('.feedback-trigger-btn');
+        if (feedbackBtn) {
+          feedbackBtn.click();
+        }
+      }, 150);
+    };
+  }
+
+  const downloadBtns = document.querySelectorAll('.mobile-app-modal__btn, .navbar-app-card__btn-download');
+  downloadBtns.forEach((btn) => {
+    if (btn.dataset.boundDownloadTrack) return;
+    btn.dataset.boundDownloadTrack = 'true';
+    btn.addEventListener('click', () => {
+      const placement = btn.closest('.navbar-app-card') ? 'sidebar' : 'header';
+      trackEvent('android_download_clicked', {
+        placement,
+        destination: 'github_releases'
+      });
+    });
+  });
 }

@@ -8,12 +8,16 @@ import { formatLastUpdated } from './utils/date.js';
 import { escapeAttr, escapeHtml } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
+import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 import { trackEvent } from './utils/analytics.js';
 
-// SeasonService receives the path directly to avoid mutating the shared CONFIG object
-const seasonService = new SeasonService('../../data/seasons.json');
+// Dynamic relative path for SeasonService based on URL depth
+const isSeasonPage = typeof document !== 'undefined' && document.getElementById('game-page-root')?.classList.contains('season-page-root');
+const seasonsDataPath = isSeasonPage ? '../../../data/seasons.json' : '../../data/seasons.json';
+const seasonService = new SeasonService(seasonsDataPath);
+
 let activeGame = null;
 let countdownTimer = null;
 let _analyticsPageSourceBound = false;
@@ -59,20 +63,19 @@ function renderLangSwitcher() {
   });
 }
 
-
-
 function renderApp() {
-  if (!activeGame) return;
+  const activeLang = getState().settings?.lang || 'en';
 
-  // 1. Sync translations & seo tags
-  updateSeo(activeGame);
+  // 1. Sync lang switcher component & season page translations
   renderLangSwitcher();
 
-  // 2. Translate header & breadcrumbs
+  // 2. Always translate shared header, breadcrumbs, footer, tool buttons, and mobile nav
   const appHeaderSubtitle = document.getElementById('app-header-subtitle');
   if (appHeaderSubtitle) appHeaderSubtitle.textContent = t('header.subtitle');
   const lblLastUpdated = document.getElementById('lbl-last-updated');
   if (lblLastUpdated) lblLastUpdated.textContent = t('header.lastUpdated');
+  const lblStatusCheck = document.getElementById('lbl-status-check');
+  if (lblStatusCheck) lblStatusCheck.innerHTML = `<span class="status-dot"></span> ${t('header.statusCheck')}`;
   const lblDataSource = document.getElementById('lbl-data-source');
   if (lblDataSource) lblDataSource.textContent = t('header.dataSource');
   const lblFooterCopy = document.getElementById('lbl-footer-copy');
@@ -87,6 +90,47 @@ function renderApp() {
   const breadGames = document.getElementById('breadcrumbs-games');
   if (breadGames) breadGames.textContent = t('breadcrumbs.games');
 
+  const feedbackBtn = document.getElementById('lbl-feedback-btn');
+  if (feedbackBtn) feedbackBtn.textContent = t('feedback.btnLabel');
+  const streamerBtn = document.getElementById('lbl-streamer-btn');
+  if (streamerBtn) streamerBtn.textContent = t('streamer.btnLabel');
+  const mobileAppBtn = document.getElementById('lbl-mobile-app-btn');
+  if (mobileAppBtn) mobileAppBtn.textContent = t('mobileApp.headerBtn') || t('mobileApp.btnLabel') || (activeLang === 'ru' ? 'Приложение' : 'App');
+
+  const mobLblTracker = document.getElementById('mob-lbl-tracker');
+  if (mobLblTracker) mobLblTracker.textContent = t('nav.tracker');
+  const mobLblTimeline = document.getElementById('mob-lbl-timeline');
+  if (mobLblTimeline) mobLblTimeline.textContent = t('nav.timeline');
+  const mobLblGames = document.getElementById('mob-lbl-games');
+  if (mobLblGames) mobLblGames.textContent = t('nav.games');
+  const mobLblMore = document.getElementById('mob-lbl-more');
+  if (mobLblMore) mobLblMore.textContent = t('nav.more');
+
+  // Initialize modal handlers so header buttons (App, Feedback, OBS Widgets) work immediately
+  const state = getState();
+  initFeedback(() => activeGame?.id || 'None');
+  initStreamer(state.games || []);
+  initMobileAppModal();
+
+  const mobMoreBtn = document.getElementById('mob-btn-more');
+  if (mobMoreBtn && !mobMoreBtn.dataset.bound) {
+    mobMoreBtn.dataset.bound = 'true';
+    mobMoreBtn.addEventListener('click', () => {
+      const trigger = document.getElementById('feedback-trigger-btn');
+      if (trigger) trigger.click();
+    });
+  }
+
+  const gameRoot = document.getElementById('game-page-root');
+  if (gameRoot && gameRoot.classList.contains('season-page-root')) {
+    updateSeasonPageTranslations(activeLang);
+  }
+
+  if (!activeGame) return;
+
+  // 3. Sync translations & seo tags
+  updateSeo(activeGame);
+
   // Translate About section heading and description
   const lblAboutTitle = document.getElementById('lbl-about-title');
   if (lblAboutTitle) lblAboutTitle.textContent = t('card.aboutTitle');
@@ -96,7 +140,6 @@ function renderApp() {
   if (aboutDataEl && aboutContent) {
     try {
       const data = JSON.parse(aboutDataEl.textContent);
-      const activeLang = getState().settings?.lang || 'en';
       aboutContent.textContent = data[activeLang] || data.en || '';
     } catch (e) {
       console.error('[Detail Page] Error parsing About translation data:', e.message);
@@ -123,7 +166,6 @@ function renderApp() {
   if (historyDataEl && historyTableBody) {
     try {
       const historyData = JSON.parse(historyDataEl.textContent);
-      const activeLang = getState().settings?.lang || 'en';
       const locale = activeLang === 'ru' ? 'ru-RU' : 'en-US';
       
       const slugify = (str) => String(str || '').toLowerCase().trim().replace(/[^a-z0-9\s-]/g, '').replace(/[\s_]+/g, '-').replace(/^-+|-+$/g, '');
@@ -134,6 +176,7 @@ function renderApp() {
         const seasonUrl = `./${seasonSlug}/`;
         const start = item.startDate;
         const end = item.endDate;
+        const sourceType = escapeAttr(item.sourceType || 'official_history');
         
         let durationStr = '—';
         if (start) {
@@ -149,9 +192,9 @@ function renderApp() {
         
         const formattedStart = start ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : '—';
         const formattedEnd = end ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : '—';
-        const itemSourceType = (item.sourceUrl || '').includes('steam') ? 'steam_news' : 'official_announcement';
+        const svgExternalIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85; margin-left: 2px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
         const linkHtml = item.sourceUrl 
-          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="history-table__link" data-analytics-source="official_source" data-source-type="${itemSourceType}" data-date-status="official" data-game-id="${escapeAttr(activeGame.id)}">${t('card.readUrl')}</a>`
+          ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="history-table__link" data-analytics-source="official_source" data-source-type="${sourceType}" data-date-status="official" data-game-id="${escapeAttr(activeGame.id)}"><span class="lbl-official-source-text">${t('card.readUrl')}</span>${svgExternalIcon}</a>`
           : '—';
           
         rows.push(`
@@ -171,6 +214,7 @@ function renderApp() {
       console.error('[Detail Page] Error parsing Timeline translation data:', e.message);
     }
   }
+
   // Translate Useful Links Section headings and content
   const lblLinksTitle = document.getElementById('lbl-links-title');
   if (lblLinksTitle) lblLinksTitle.textContent = t('card.linksTitle');
@@ -180,7 +224,6 @@ function renderApp() {
   if (linksDataEl && linksGrid) {
     try {
       const linksData = JSON.parse(linksDataEl.textContent);
-      const activeLang = getState().settings?.lang || 'en';
       
       const boxes = [];
       for (const item of linksData) {
@@ -201,29 +244,26 @@ function renderApp() {
       console.error('[Detail Page] Error parsing Links translation data:', e.message);
     }
   }
-  // 3. Calculate countdown & progress bar
+
+  // 4. Calculate countdown & progress bar
   const countdown = calculateCountdown(activeGame.nextSeason?.startDate);
   const progress = getProgressPercent(activeGame);
   const progressBarHtml = renderProgressBar(progress);
 
-  // 4. Render Game Card into game page container (only if on main game detail page, not season page)
-  const gameRoot = document.getElementById('game-page-root');
+  // 5. Render Game Card into game page container (only if on main game detail page, not season page)
   if (gameRoot && gameRoot.classList.contains('game-page-content')) {
     gameRoot.innerHTML = renderGameCard(activeGame, { 
       countdown, 
       progressBar: progressBarHtml,
       isDetailPage: true
     });
+  } else if (gameRoot && gameRoot.classList.contains('season-page-root')) {
+    updateSeasonPageTranslations(activeLang);
   }
 
-  // 5. Update header timestamps
-  const state = getState();
+  // 6. Update header timestamps
   const lastChecked = state.rawData?.lastCheckedAt || state.lastCheckedAt;
   const checkedEl = document.getElementById('last-checked-time');
-  const checkedLbl = document.getElementById('lbl-status-check');
-  if (checkedLbl) {
-    checkedLbl.innerHTML = `<span class="status-dot"></span> ${t('header.statusCheck')}`;
-  }
   if (checkedEl && lastChecked) {
     checkedEl.textContent = formatLastUpdated(lastChecked, state.settings?.lang);
   }
@@ -231,35 +271,9 @@ function renderApp() {
   const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
-  const updatedLbl = document.getElementById('lbl-last-updated');
-  if (updatedLbl) {
-    updatedLbl.textContent = t('header.lastUpdated');
-  }
   if (timeEl && latestTime) {
     timeEl.textContent = formatLastUpdated(latestTime, state.settings?.lang);
   }
-
-  const feedbackBtn = document.getElementById('lbl-feedback-btn');
-  if (feedbackBtn) {
-    feedbackBtn.textContent = t('feedback.btnLabel');
-  }
-
-  const streamerBtn = document.getElementById('lbl-streamer-btn');
-  if (streamerBtn) {
-    streamerBtn.textContent = t('streamer.btnLabel');
-  }
-
-  const mobMoreBtn = document.getElementById('mob-btn-more');
-  if (mobMoreBtn && !mobMoreBtn.dataset.bound) {
-    mobMoreBtn.dataset.bound = 'true';
-    mobMoreBtn.addEventListener('click', () => {
-      const trigger = document.getElementById('feedback-trigger-btn');
-      if (trigger) trigger.click();
-    });
-  }
-
-  initFeedback(() => activeGame?.id || 'None');
-  initStreamer(state.games);
 }
 
 let isExpiredRendered = false;
@@ -295,30 +309,31 @@ async function init() {
   try {
     const rootEl = document.getElementById('game-page-root');
     if (!rootEl) return;
+
+    // Immediately render UI (header tools, lang switcher, static page translations, modal event listeners)
+    renderApp();
+
     const gameId = rootEl.getAttribute('data-game-id');
     
     // Fetch all games
-    const rawData = await seasonService.loadSeasons();
+    const rawData = await seasonService.loadSeasons().catch(() => null);
     const games = Array.isArray(rawData?.games) ? rawData.games : [];
     setRawData(rawData);
     setGames(games);
 
     // Locate the active game
     activeGame = games.find(g => g.id === gameId);
-    if (!activeGame) {
-      console.error(`[Detail Page] Game with ID ${gameId} not found in seasons database`);
-      return;
+    if (activeGame) {
+      // Track game page opened event
+      trackEvent('game_page_opened', {
+        game_id: activeGame.id,
+        game_name: getVal(activeGame.name) || 'Untitled Game'
+      });
     }
 
-    // Track game page opened event
-    trackEvent('game_page_opened', {
-      game_id: activeGame.id,
-      game_name: getVal(activeGame.name) || 'Untitled Game'
-    });
-
     // Check & track forecast_viewed event if dates are estimated
-    const isForecast = activeGame.nextSeason?.verification === 'estimated' || activeGame.nextSeason?.verification === 'ai';
-    if (isForecast && activeGame.nextSeason?.startDate) {
+    const isForecast = activeGame?.nextSeason?.verification === 'estimated' || activeGame?.nextSeason?.verification === 'ai';
+    if (isForecast && activeGame?.nextSeason?.startDate) {
       trackEvent('forecast_viewed', {
         game_id: activeGame.id,
         season_name: getVal(activeGame.nextSeason.name) || 'Estimated Season'
@@ -362,6 +377,140 @@ async function init() {
 
   } catch (error) {
     console.error('[Detail Page] Initialization failed:', error.message);
+  }
+}
+
+function updateSeasonPageTranslations(activeLang) {
+  const seasonJsonEl = document.getElementById('season-data-json');
+  if (!seasonJsonEl) return;
+
+  try {
+    const item = JSON.parse(seasonJsonEl.textContent);
+    const isRu = activeLang === 'ru';
+    const locale = isRu ? 'ru-RU' : 'en-US';
+
+    // 1. Season Title
+    const titleEl = document.getElementById('season-title');
+    if (titleEl && item.season) {
+      titleEl.textContent = item.season[activeLang] || item.season.en || '';
+    }
+
+    // 2. Season Description (summary)
+    const descEl = document.getElementById('season-desc');
+    if (descEl && item.summary) {
+      descEl.textContent = item.summary[activeLang] || item.summary.en || '';
+    }
+
+    // 3. Stat labels and formatted values
+    const lblStart = document.getElementById('lbl-stat-start');
+    if (lblStart) lblStart.textContent = isRu ? 'Дата начала' : 'Start Date';
+
+    const lblEnd = document.getElementById('lbl-stat-end');
+    if (lblEnd) lblEnd.textContent = isRu ? 'Дата окончания' : 'End Date';
+
+    const lblDuration = document.getElementById('lbl-stat-duration');
+    if (lblDuration) lblDuration.textContent = isRu ? 'Длительность' : 'Duration';
+
+    const lblLink = document.getElementById('lbl-stat-link');
+    if (lblLink) lblLink.textContent = isRu ? 'Анонс' : 'Announcement';
+
+    document.querySelectorAll('.lbl-official-source-text').forEach(el => {
+      el.textContent = t('card.readUrl');
+    });
+
+    const startValEl = document.getElementById('stat-val-start');
+    if (startValEl) {
+      startValEl.textContent = item.startDate 
+        ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(item.startDate))
+        : (isRu ? 'Уточняется' : 'TBA');
+    }
+
+    const endValEl = document.getElementById('stat-val-end');
+    if (endValEl) {
+      endValEl.textContent = item.endDate 
+        ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(item.endDate))
+        : (item.startDate ? (isRu ? 'В процессе' : 'Ongoing') : (isRu ? 'Уточняется' : 'TBA'));
+    }
+
+    const durationValEl = document.getElementById('stat-val-duration');
+    if (durationValEl) {
+      if (item.startDate) {
+        if (item.endDate) {
+          const diffDays = Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24));
+          durationValEl.textContent = isRu ? `${diffDays} дн.` : `${diffDays} days`;
+        } else {
+          durationValEl.textContent = isRu ? 'В процессе' : 'Ongoing';
+        }
+      } else {
+        durationValEl.textContent = '—';
+      }
+    }
+
+    const badgeContainer = document.getElementById('season-status-badge-container');
+    if (badgeContainer) {
+      const now = new Date();
+      if (item.startDate && new Date(item.startDate) > now) {
+        badgeContainer.innerHTML = `<span style="background: rgba(99,102,241,0.15); color: #818cf8; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">${isRu ? 'Скоро' : 'Upcoming'}</span>`;
+      } else if (!item.endDate && item.startDate) {
+        badgeContainer.innerHTML = `<span style="background: rgba(34,197,94,0.15); color: #4ade80; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">${isRu ? 'Активный сезон' : 'Active Season'}</span>`;
+      } else {
+        badgeContainer.innerHTML = `<span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">${isRu ? 'Завершен' : 'Ended'}</span>`;
+      }
+    }
+
+    // 4. Mechanics Title & List
+    const mechTitle = document.getElementById('lbl-mechanics-title');
+    if (mechTitle) mechTitle.textContent = isRu ? 'Ключевые механики и особенности' : 'Key Mechanics & Features';
+
+    const mechanicsListEl = document.getElementById('mechanics-list');
+    if (mechanicsListEl && item.mechanics) {
+      const list = item.mechanics[activeLang] || item.mechanics.en || [];
+      mechanicsListEl.innerHTML = list.map(m => `<li style="margin-bottom: 0.5rem; color: #d1d5db; line-height: 1.5;">${escapeHtml(m)}</li>`).join('');
+    }
+
+    // 5. Rewards Title & List
+    const rewTitle = document.getElementById('lbl-rewards-title');
+    if (rewTitle) rewTitle.textContent = isRu ? 'Награды за испытания' : 'Challenge Rewards';
+
+    const rewardsListEl = document.getElementById('rewards-list');
+    if (rewardsListEl && item.rewards) {
+      const list = item.rewards[activeLang] || item.rewards.en || [];
+      rewardsListEl.innerHTML = list.map(r => `<li style="margin-bottom: 0.5rem; color: #d1d5db; line-height: 1.5;">${escapeHtml(r)}</li>`).join('');
+    }
+
+    // 6. FAQ Section
+    const faqTitle = document.getElementById('lbl-faq-title');
+    if (faqTitle) faqTitle.textContent = isRu ? 'Часто задаваемые вопросы' : 'Frequently Asked Questions';
+
+    const sName = item.season ? (item.season[activeLang] || item.season.en) : '';
+    const gName = activeGame ? (activeGame.name[activeLang] || activeGame.name.en) : '';
+    const startFormatted = item.startDate ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(item.startDate)) : (isRu ? 'Уточняется' : 'TBA');
+    
+    let durationStr = '—';
+    if (item.startDate) {
+      if (item.endDate) {
+        const diffDays = Math.round((new Date(item.endDate) - new Date(item.startDate)) / (1000 * 60 * 60 * 24));
+        durationStr = isRu ? `${diffDays} дней` : `${diffDays} days`;
+      } else {
+        durationStr = isRu ? 'В процессе' : 'Ongoing';
+      }
+    }
+    const endFormatted = item.endDate ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(item.endDate)) : (item.startDate ? (isRu ? 'В процессе' : 'Ongoing') : 'TBA');
+
+    const faqQ1 = document.getElementById('faq-q1');
+    if (faqQ1) faqQ1.textContent = isRu ? `Когда началась ${sName}?` : `When did ${sName} start?`;
+
+    const faqA1 = document.getElementById('faq-a1');
+    if (faqA1) faqA1.innerHTML = isRu ? `${sName} для ${gName} началась <strong>${startFormatted}</strong>.` : `${sName} for ${gName} started on <strong>${startFormatted}</strong>.`;
+
+    const faqQ2 = document.getElementById('faq-q2');
+    if (faqQ2) faqQ2.textContent = isRu ? `Сколько длится ${sName}?` : `How long does ${sName} last?`;
+
+    const faqA2 = document.getElementById('faq-a2');
+    if (faqA2) faqA2.innerHTML = isRu ? `Длительность ${sName} составляет <strong>${durationStr}</strong> (Дата окончания: ${endFormatted}).` : `The duration for ${sName} is <strong>${durationStr}</strong> (End date: ${endFormatted}).`;
+
+  } catch (e) {
+    console.error('[Detail Page] Error updating season page translations:', e.message);
   }
 }
 

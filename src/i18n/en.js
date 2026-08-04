@@ -19,7 +19,8 @@ export const en = {
     desc: "Home screen widgets & season reminders. Currently in Beta — feedback is very welcome!",
     btnDownload: "Download on GitHub",
     btnGuide: "How to Install",
-    headerBtn: "App (Beta)",
+    headerBtn: "App",
+    btnLabel: "App",
     modalTitle: "SeasonForge for Android",
     modalSubtitle: "Track ARPG seasons right from your smartphone home screen",
     widgetsTitle: "Home Screen Widgets",
@@ -89,7 +90,7 @@ export const en = {
     thDuration: "Duration",
     thLink: "Announcement",
     ongoing: "Ongoing",
-    readUrl: "Read ↗",
+    readUrl: "Official Source",
     linksTitle: "Useful Links",
     gamePageLinkTitle: "Full Seasons Archive",
     gamePageLinkSubtitle: "Leagues History • Timeline • Stats"

@@ -71,7 +71,7 @@
       "name": "Torchlight: Infinite - SS6: The Frozen Canvas",
       "startDate": "2024-10-24",
       "endDate": "2025-01-09",
-      "dateModified": "2026-08-03",
+      "dateModified": "2026-08-04",
       "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
       "eventStatus": "https://schema.org/EventScheduled",
       "location": {
@@ -131,7 +131,12 @@
           </div>
         </a>
         <div class="app-header__tools">
-          <div id="lang-switcher" class="lang-switcher"></div>
+          <div id="lang-switcher" class="lang-switcher">
+            <button class="header-neon-btn lang-switcher__btn lang-switcher__btn--toggle" data-lang-val="ru" title="Переключить на русский">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>EN</span>
+            </button>
+          </div>
           <button id="mobile-app-trigger-btn" class="header-neon-btn streamer-trigger-btn mobile-app-trigger-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
             <span id="lbl-mobile-app-btn">App</span>
@@ -164,61 +169,66 @@
               <span class="season-game-tag" style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(99, 102, 241, 0.15); color: #818cf8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
                 Torchlight: Infinite
               </span>
-              <h1 style="font-size: 2rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">SS6: The Frozen Canvas</h1>
+              <h1 id="season-title" style="font-size: 2rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">SS6: The Frozen Canvas</h1>
             </div>
             <div>
-              <span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span>
+              <div id="season-status-badge-container"><span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span></div>
             </div>
           </div>
           
-          <p style="color: #d1d5db; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6;">
+          <p id="season-desc" style="color: #d1d5db; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6;">
             Torchlight: Infinite SS6: The Frozen Canvas: start date, end date, duration and full season timeline.
           </p>
 
           <div class="season-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.25rem;">
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Start Date</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">Oct 24, 2024</strong>
+              <span id="lbl-stat-start" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Start Date</span>
+              <strong id="stat-val-start" style="font-size: 1.05rem; color: #f3f4f6;">Oct 24, 2024</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">End Date</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">Jan 9, 2025</strong>
+              <span id="lbl-stat-end" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">End Date</span>
+              <strong id="stat-val-end" style="font-size: 1.05rem; color: #f3f4f6;">Jan 9, 2025</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Duration</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">77 days</strong>
+              <span id="lbl-stat-duration" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Duration</span>
+              <strong id="stat-val-duration" style="font-size: 1.05rem; color: #f3f4f6;">77 days</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Announcement</span>
-              <a href="https://torchlight.xd.com/" target="_blank" class="history-table__link">Read ↗</a>
+              <span id="lbl-stat-link" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Announcement</span>
+              <a href="https://torchlight.xd.com/" target="_blank" rel="noopener noreferrer" class="history-table__link"><span class="lbl-official-source-text">Official Source</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85; margin-left: 2px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
             </div>
           </div>
         </div>
 
+        
+
         <!-- Prev / Next Season Navigation -->
         <nav class="season-nav" style="display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
-          <div style="flex: 1;"><a href="../ss5-clockwork-ballet/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">← SS5: Clockwork Ballet</a></div>
-          <div style="flex: 1; text-align: right;"><a href="../ss7-arcana/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">SS7: Arcana →</a></div>
+          <div style="flex: 1;"><a href="../ss5-clockwork-ballet/" class="season-nav-btn">← SS5: Clockwork Ballet</a></div>
+          <div style="flex: 1; text-align: right;"><a href="../ss7-arcana/" class="season-nav-btn">SS7: Arcana →</a></div>
         </nav>
 
         <!-- FAQ / Details Section -->
         <section class="season-faq" style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem;">Frequently Asked Questions</h2>
-          
+          <h2 id="lbl-faq-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem;">Frequently Asked Questions</h2>
+          <div id="faq-container">
               <div style="display: flex; flex-direction: column; gap: 1rem; color: #d1d5db; font-size: 0.95rem;">
                 <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
-                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">When did SS6: The Frozen Canvas start?</strong>
-                  <p style="margin: 0; color: #9ca3af;">SS6: The Frozen Canvas for Torchlight: Infinite started on <strong>Oct 24, 2024</strong>.</p>
+                  <strong id="faq-q1" style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">When did SS6: The Frozen Canvas start?</strong>
+                  <p id="faq-a1" style="margin: 0; color: #9ca3af;">SS6: The Frozen Canvas for Torchlight: Infinite started on <strong>Oct 24, 2024</strong>.</p>
                 </div>
                 <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
-                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">How long does SS6: The Frozen Canvas last?</strong>
-                  <p style="margin: 0; color: #9ca3af;">The duration for SS6: The Frozen Canvas is <strong>77 days</strong> (End date: Jan 9, 2025).</p>
+                  <strong id="faq-q2" style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">How long does SS6: The Frozen Canvas last?</strong>
+                  <p id="faq-a2" style="margin: 0; color: #9ca3af;">The duration for SS6: The Frozen Canvas is <strong>77 days</strong> (End date: Jan 9, 2025).</p>
                 </div>
               </div>
-            
+            </div>
         </section>
       </main>
     </div>
+
+    <!-- Embedded season translations data -->
+    <script type="application/json" id="season-data-json">{"season":{"en":"SS6: The Frozen Canvas","ru":"SS6: The Frozen Canvas"},"startDate":"2024-10-24","endDate":"2025-01-09","sourceUrl":"https://torchlight.xd.com/"}</script>
 
     <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 2rem;">
       <span>© 2026 SeasonForge. ARPG Season Tracker.</span>

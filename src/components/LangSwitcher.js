@@ -24,7 +24,8 @@ export function renderLangSwitcher(rootElementOrId, currentLang, onLangChange) {
 
   const btn = root.querySelector('[data-lang-val]');
   if (btn) {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
       if (typeof onLangChange === 'function') {
         onLangChange(nextLang);
       }

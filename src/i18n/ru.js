@@ -19,7 +19,8 @@ export const ru = {
     desc: "Виджеты на рабочий стол и напоминания о сезонах. Приложение в бэте — будем рады вашим отзывам!",
     btnDownload: "Скачать на GitHub",
     btnGuide: "Установка",
-    headerBtn: "App (Beta)",
+    headerBtn: "Приложение",
+    btnLabel: "Приложение",
     modalTitle: "SeasonForge для Android",
     modalSubtitle: "Отслеживайте ARPG сезоны прямо с экрана вашего смартфона",
     widgetsTitle: "Виджеты на рабочий стол",
@@ -89,7 +90,7 @@ export const ru = {
     thDuration: "Длительность",
     thLink: "Анонс",
     ongoing: "В процессе",
-    readUrl: "Читать ↗",
+    readUrl: "Официальный анонс",
     linksTitle: "Полезные ссылки",
     gamePageLinkTitle: "Полный архив сезонов",
     gamePageLinkSubtitle: "История лиг • Хронология • Статистика"

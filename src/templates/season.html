@@ -65,7 +65,12 @@
           </div>
         </a>
         <div class="app-header__tools">
-          <div id="lang-switcher" class="lang-switcher"></div>
+          <div id="lang-switcher" class="lang-switcher">
+            <button class="header-neon-btn lang-switcher__btn lang-switcher__btn--toggle" data-lang-val="ru" title="Переключить на русский">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span>EN</span>
+            </button>
+          </div>
           <button id="mobile-app-trigger-btn" class="header-neon-btn streamer-trigger-btn mobile-app-trigger-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
             <span id="lbl-mobile-app-btn">App</span>
@@ -98,36 +103,38 @@
               <span class="season-game-tag" style="display: inline-block; padding: 0.25rem 0.75rem; border-radius: 9999px; background: rgba(99, 102, 241, 0.15); color: #818cf8; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem;">
                 {{GAME_NAME}}
               </span>
-              <h1 style="font-size: 2rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">{{SEASON_NAME}}</h1>
+              <h1 id="season-title" style="font-size: 2rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">{{SEASON_NAME}}</h1>
             </div>
             <div>
-              {{STATUS_BADGE}}
+              <div id="season-status-badge-container">{{STATUS_BADGE}}</div>
             </div>
           </div>
           
-          <p style="color: #d1d5db; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6;">
+          <p id="season-desc" style="color: #d1d5db; font-size: 1rem; margin-bottom: 1.5rem; line-height: 1.6;">
             {{SEASON_DESCRIPTION}}
           </p>
 
           <div class="season-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; border-top: 1px solid rgba(255,255,255,0.08); padding-top: 1.25rem;">
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Start Date</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">{{START_DATE}}</strong>
+              <span id="lbl-stat-start" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Start Date</span>
+              <strong id="stat-val-start" style="font-size: 1.05rem; color: #f3f4f6;">{{START_DATE}}</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">End Date</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">{{END_DATE}}</strong>
+              <span id="lbl-stat-end" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">End Date</span>
+              <strong id="stat-val-end" style="font-size: 1.05rem; color: #f3f4f6;">{{END_DATE}}</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Duration</span>
-              <strong style="font-size: 1.05rem; color: #f3f4f6;">{{DURATION}}</strong>
+              <span id="lbl-stat-duration" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Duration</span>
+              <strong id="stat-val-duration" style="font-size: 1.05rem; color: #f3f4f6;">{{DURATION}}</strong>
             </div>
             <div class="stat-box" style="background: rgba(0,0,0,0.2); padding: 0.875rem 1rem; border-radius: 0.5rem;">
-              <span style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Announcement</span>
+              <span id="lbl-stat-link" style="display: block; font-size: 0.75rem; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Announcement</span>
               {{SOURCE_LINK_HTML}}
             </div>
           </div>
         </div>
+
+        {{SEASON_EXTRA_DETAILS_HTML}}
 
         <!-- Prev / Next Season Navigation -->
         <nav class="season-nav" style="display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem;">
@@ -137,11 +144,14 @@
 
         <!-- FAQ / Details Section -->
         <section class="season-faq" style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
-          <h2 style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem;">Frequently Asked Questions</h2>
-          {{FAQ_HTML}}
+          <h2 id="lbl-faq-title" style="font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem;">Frequently Asked Questions</h2>
+          <div id="faq-container">{{FAQ_HTML}}</div>
         </section>
       </main>
     </div>
+
+    <!-- Embedded season translations data -->
+    <script type="application/json" id="season-data-json">{{SEASON_DATA_JSON}}</script>
 
     <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 2rem;">
       <span>© 2026 SeasonForge. ARPG Season Tracker.</span>

@@ -117,7 +117,19 @@ async function build() {
       try {
         const historyData = JSON.parse(fs.readFileSync(historyPath, 'utf-8'));
         timelineJson = JSON.stringify(historyData);
-        
+
+        // Clean up stale season subdirectories for this game to prevent orphaned old pages
+        const targetDir = path.join(__dirname, `../games/${gameId}`);
+        if (fs.existsSync(targetDir)) {
+          const existingEntries = fs.readdirSync(targetDir);
+          for (const entry of existingEntries) {
+            const fullPath = path.join(targetDir, entry);
+            if (entry !== 'index.html' && fs.statSync(fullPath).isDirectory()) {
+              fs.rmSync(fullPath, { recursive: true, force: true });
+            }
+          }
+        }
+
         const seasonTemplate = fs.existsSync(seasonTemplatePath) ? fs.readFileSync(seasonTemplatePath, 'utf-8') : '';
         const rows = [];
 
@@ -145,8 +157,9 @@ async function build() {
           
           const formattedStart = start ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(start)) : 'TBA';
           const formattedEnd = end ? new Intl.DateTimeFormat('en-US', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(end)) : (start ? 'Ongoing' : 'TBA');
+          const svgExternalIcon = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85; margin-left: 2px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>`;
           const linkHtml = item.sourceUrl 
-            ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" class="history-table__link">Read ↗</a>` 
+            ? `<a href="${escapeAttr(item.sourceUrl)}" target="_blank" rel="noopener noreferrer" class="history-table__link"><span class="lbl-official-source-text">Official Source</span>${svgExternalIcon}</a>` 
             : '—';
             
           rows.push(`
@@ -175,11 +188,11 @@ async function build() {
             const nextSlug = nextItem ? (nextItem.slug || slugify(nextItem.season?.en || '')) : null;
 
             const prevHtml = prevItem && prevSlug 
-              ? `<a href="../${prevSlug}/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">← ${escapeHtml(prevItem.season?.en || 'Previous Season')}</a>` 
+              ? `<a href="../${prevSlug}/" class="season-nav-btn">← ${escapeHtml(prevItem.season?.en || 'Previous Season')}</a>` 
               : '';
 
             const nextHtml = nextItem && nextSlug 
-              ? `<a href="../${nextSlug}/" style="display: inline-block; padding: 0.6rem 1rem; background: rgba(31, 41, 55, 0.8); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; color: #818cf8; text-decoration: none; font-size: 0.875rem; font-weight: 600;">${escapeHtml(nextItem.season?.en || 'Next Season')} →</a>` 
+              ? `<a href="../${nextSlug}/" class="season-nav-btn">${escapeHtml(nextItem.season?.en || 'Next Season')} →</a>` 
               : '';
 
             let statusBadge = '<span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span>';
@@ -250,18 +263,48 @@ async function build() {
               ]
             };
 
-            const faqHtml = `
+            let faqHtml = `
               <div style="display: flex; flex-direction: column; gap: 1rem; color: #d1d5db; font-size: 0.95rem;">
                 <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
-                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">When did ${escapeHtml(seasonName)} start?</strong>
-                  <p style="margin: 0; color: #9ca3af;">${escapeHtml(seasonName)} for ${escapeHtml(gameName)} started on <strong>${formattedStart}</strong>.</p>
+                  <strong id="faq-q1" style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">When did ${escapeHtml(seasonName)} start?</strong>
+                  <p id="faq-a1" style="margin: 0; color: #9ca3af;">${escapeHtml(seasonName)} for ${escapeHtml(gameName)} started on <strong>${formattedStart}</strong>.</p>
                 </div>
                 <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 0.5rem;">
-                  <strong style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">How long does ${escapeHtml(seasonName)} last?</strong>
-                  <p style="margin: 0; color: #9ca3af;">The duration for ${escapeHtml(seasonName)} is <strong>${durationStr}</strong> (End date: ${formattedEnd}).</p>
+                  <strong id="faq-q2" style="display: block; color: #f3f4f6; font-size: 1rem; margin-bottom: 0.35rem;">How long does ${escapeHtml(seasonName)} last?</strong>
+                  <p id="faq-a2" style="margin: 0; color: #9ca3af;">The duration for ${escapeHtml(seasonName)} is <strong>${durationStr}</strong> (End date: ${formattedEnd}).</p>
                 </div>
               </div>
             `;
+
+            let extraDetailsHtml = '';
+            const mechanicsListEn = item.mechanics?.en || [];
+            const rewardsListEn = item.rewards?.en || [];
+
+            if (mechanicsListEn.length > 0 || rewardsListEn.length > 0) {
+              const mechanicsLis = mechanicsListEn.map(m => `<li style="margin-bottom: 0.5rem; color: #d1d5db; line-height: 1.5;">${escapeHtml(m)}</li>`).join('');
+              const rewardsLis = rewardsListEn.map(r => `<li style="margin-bottom: 0.5rem; color: #d1d5db; line-height: 1.5;">${escapeHtml(r)}</li>`).join('');
+
+              extraDetailsHtml = `
+                <div class="season-extra-details" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+                  ${mechanicsListEn.length > 0 ? `
+                    <div style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
+                      <h2 id="lbl-mechanics-heading" style="font-size: 1.15rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>⚔️</span> <span id="lbl-mechanics-title">Key Mechanics &amp; Features</span>
+                      </h2>
+                      <ul id="mechanics-list" style="padding-left: 1.25rem; margin: 0;">${mechanicsLis}</ul>
+                    </div>
+                  ` : ''}
+                  ${rewardsListEn.length > 0 ? `
+                    <div style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
+                      <h2 id="lbl-rewards-heading" style="font-size: 1.15rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <span>🏆</span> <span id="lbl-rewards-title">Challenge Rewards</span>
+                      </h2>
+                      <ul id="rewards-list" style="padding-left: 1.25rem; margin: 0;">${rewardsLis}</ul>
+                    </div>
+                  ` : ''}
+                </div>
+              `;
+            }
 
             let sPageHtml = seasonTemplate;
             sPageHtml = sPageHtml.replace(/{{GAME_ID}}/g, gameId);
@@ -279,6 +322,8 @@ async function build() {
             sPageHtml = sPageHtml.replace(/{{PREV_SEASON_HTML}}/g, prevHtml);
             sPageHtml = sPageHtml.replace(/{{NEXT_SEASON_HTML}}/g, nextHtml);
             sPageHtml = sPageHtml.replace(/{{FAQ_HTML}}/g, faqHtml);
+            sPageHtml = sPageHtml.replace(/{{SEASON_EXTRA_DETAILS_HTML}}/g, extraDetailsHtml);
+            sPageHtml = sPageHtml.replace(/{{SEASON_DATA_JSON}}/g, escapeJsonForScript(JSON.stringify(item)));
             sPageHtml = sPageHtml.replace(/{{SCHEMA_JSONLD}}/g, escapeJsonForScript(JSON.stringify(seasonSchema, null, 2)));
 
             fs.writeFileSync(path.join(seasonTargetDir, 'index.html'), sPageHtml, 'utf-8');

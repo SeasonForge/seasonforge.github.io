@@ -1,3 +1,6 @@
+import { SeoGenerator } from '../utils/SeoGenerator.js';
+import { Header } from './Header.js';
+
 /**
  * Renders language switcher into root container and attaches click listeners.
  * @param {HTMLElement|string} rootElementOrId
@@ -26,6 +29,11 @@ export function renderLangSwitcher(rootElementOrId, currentLang, onLangChange) {
   if (btn) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
+      
+      // Apply SEO DOM updates for new language
+      Header.update({ lang: nextLang });
+      SeoGenerator.applyToDOM({ lang: nextLang });
+
       if (typeof onLangChange === 'function') {
         onLangChange(nextLang);
       }

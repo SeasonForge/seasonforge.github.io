@@ -26,6 +26,10 @@ import { initStreamer } from './utils/initStreamer.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
+import { Header } from './components/Header.js';
+import { ModalManager } from './components/ModalManager.js';
+import { MobileNav } from './components/MobileNav.js';
+import { MoreMenuModal } from './components/MoreMenuModal.js';
 import { trackEvent } from './utils/analytics.js';
 
 function escapeHtml(value) {
@@ -271,78 +275,7 @@ function renderApp() {
         </div>
       `;
     } else if (state.activeView === 'more') {
-      contentRoot.innerHTML = `
-        <div class="more-panel">
-          <h2 class="more-panel__title">${t('navbar.btnMore') || 'More'}</h2>
-          
-          <div class="more-panel__section">
-            <span class="more-panel__label">Language / Язык</span>
-            <div class="more-panel__lang-row">
-              <button class="more-panel__lang-btn ${state.settings.lang === 'en' ? 'more-panel__lang-btn--active' : ''}" data-lang-val="en">
-                English
-              </button>
-              <button class="more-panel__lang-btn ${state.settings.lang === 'ru' ? 'more-panel__lang-btn--active' : ''}" data-lang-val="ru">
-                Русский
-              </button>
-            </div>
-          </div>
-
-          <div class="more-panel__section">
-            <span class="more-panel__label">Tools / Утилиты</span>
-            <div class="more-panel__tools-list">
-              <button id="mob-feedback-trigger" class="more-panel__tool-btn">
-                <span class="more-panel__tool-icon">💬</span>
-                <span>${t('feedback.btnLabel') || 'Feedback'}</span>
-              </button>
-              <button id="mob-streamer-trigger" class="more-panel__tool-btn">
-                <span class="more-panel__tool-icon">🎥</span>
-                <span>${t('streamer.btnLabel') || 'OBS Widgets'}</span>
-              </button>
-              <button id="mob-app-trigger" class="more-panel__tool-btn mobile-app-trigger-btn">
-                <span class="more-panel__tool-icon">📱</span>
-                <span>${t('mobileApp.btnLabel') || 'Mobile App'}</span>
-              </button>
-            </div>
-          </div>
-
-          <div class="more-panel__section">
-            <span class="more-panel__label">About / О проекте</span>
-            <div class="more-panel__about-box">
-              <p><strong>SeasonForge</strong> — ${t('header.subtitle') || 'Monitoring current and upcoming seasons of major action RPGs.'}</p>
-              <p>${t('header.dataSource') || 'Data source'}: <strong>Official Game Feeds</strong></p>
-            </div>
-          </div>
-        </div>
-      `;
-
-      // Attach language switcher events in More tab
-      contentRoot.querySelectorAll('[data-lang-val]').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const selected = btn.getAttribute('data-lang-val');
-          if (selected !== state.settings.lang) {
-            setLanguage(selected);
-            updateSeo();
-            renderApp();
-          }
-        });
-      });
-
-      // Attach tool trigger buttons in More tab
-      const mobFeedbackTrigger = document.getElementById('mob-feedback-trigger');
-      if (mobFeedbackTrigger) {
-        mobFeedbackTrigger.addEventListener('click', () => {
-          const btn = document.getElementById('feedback-trigger-btn');
-          if (btn) btn.click();
-        });
-      }
-
-      const mobStreamerTrigger = document.getElementById('mob-streamer-trigger');
-      if (mobStreamerTrigger) {
-        mobStreamerTrigger.addEventListener('click', () => {
-          const btn = document.getElementById('streamer-trigger-btn');
-          if (btn) btn.click();
-        });
-      }
+      MoreMenuModal.open('./');
     } else {
       let activeGame = state.activeGame;
       if (!activeGame && state.games.length > 0) {
@@ -921,6 +854,10 @@ async function initializeApp() {
         // localStorage may be disabled (private mode) or quota exceeded — non-fatal.
       }
     }
+
+    ModalManager.initAll();
+    MobileNav.init({ basePath: './' });
+    Header.update({ lang: getState().settings?.lang });
 
     renderApp();
     startCountdownLoop();

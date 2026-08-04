@@ -11,6 +11,9 @@ import { initStreamer } from './utils/initStreamer.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
+import { Header } from './components/Header.js';
+import { ModalManager } from './components/ModalManager.js';
+import { MobileNav } from './components/MobileNav.js';
 import { trackEvent } from './utils/analytics.js';
 
 // Dynamic relative path for SeasonService based on URL depth
@@ -106,19 +109,11 @@ function renderApp() {
   const mobLblMore = document.getElementById('mob-lbl-more');
   if (mobLblMore) mobLblMore.textContent = t('navbar.btnMore');
 
-  // Initialize modal handlers so header buttons (App, Feedback, OBS Widgets) work immediately
-  const state = getState();
-  initFeedback(() => activeGame?.id || 'None');
-  initStreamer(state.games || []);
-  initMobileAppModal();
-
-  const mobMoreBtn = document.getElementById('mob-btn-more');
-  if (mobMoreBtn) {
-    mobMoreBtn.onclick = (e) => {
-      if (e) e.preventDefault();
-      openMoreModal();
-    };
-  }
+  // Initialize modular UI components
+  const basePath = isSeasonPage ? '../../../' : '../../';
+  ModalManager.initAll();
+  MobileNav.init({ basePath });
+  Header.update({ lang: activeLang });
 
   const gameRoot = document.getElementById('game-page-root');
   if (gameRoot && gameRoot.classList.contains('season-page-root')) {
@@ -526,106 +521,6 @@ function updateSeasonPageTranslations(activeLang) {
   } catch (e) {
     console.error('[Detail Page] Error updating season page translations:', e.message);
   }
-}
-
-function openMoreModal() {
-  const modalRoot = document.getElementById('modal-root');
-  if (!modalRoot) return;
-
-  const existingOverlay = document.getElementById('more-modal-overlay');
-  if (existingOverlay) existingOverlay.remove();
-
-  const state = getState();
-  const currentLang = state.settings?.lang || 'en';
-
-  const html = `
-    <div class="feedback-modal-overlay feedback-modal-overlay--visible" id="more-modal-overlay">
-      <div class="feedback-modal-container more-panel" style="max-width: 420px; width: 100%; position: relative; padding: 1.75rem;">
-        <button type="button" class="modal__close" id="more-modal-close" aria-label="Close">✕</button>
-        <h3 class="more-panel__title">${t('navbar.btnMore')}</h3>
-        
-        <div class="more-panel__section">
-          <span class="more-panel__label">Language / Язык</span>
-          <div class="more-panel__lang-row">
-            <button type="button" class="more-panel__lang-btn ${currentLang === 'en' ? 'more-panel__lang-btn--active' : ''}" id="more-lang-en">
-              English
-            </button>
-            <button type="button" class="more-panel__lang-btn ${currentLang === 'ru' ? 'more-panel__lang-btn--active' : ''}" id="more-lang-ru">
-              Русский
-            </button>
-          </div>
-        </div>
-
-        <div class="more-panel__section">
-          <span class="more-panel__label">Tools / Утилиты</span>
-          <div class="more-panel__tools-list">
-            <button type="button" class="more-panel__tool-btn" id="more-action-feedback">
-              <span class="more-panel__tool-icon">💬</span>
-              <span>${t('feedback.btnLabel') || 'Feedback'}</span>
-            </button>
-            <button type="button" class="more-panel__tool-btn" id="more-action-streamer">
-              <span class="more-panel__tool-icon">🎥</span>
-              <span>${t('streamer.btnLabel') || 'OBS Widgets'}</span>
-            </button>
-            <button type="button" class="more-panel__tool-btn" id="more-action-app">
-              <span class="more-panel__tool-icon">📱</span>
-              <span>${t('mobileApp.btnLabel') || 'Mobile App'}</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="more-panel__section" style="margin-bottom: 0; padding-bottom: 0; border-bottom: none;">
-          <span class="more-panel__label">About / О проекте</span>
-          <div class="more-panel__about-box">
-            <p><strong>SeasonForge</strong> — ${t('header.subtitle') || 'Monitoring current and upcoming seasons of major action RPGs.'}</p>
-            <p>${t('header.dataSource') || 'Data source'}: <strong>Official Game Feeds</strong></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-  modalRoot.insertAdjacentHTML('beforeend', html);
-
-  const overlay = document.getElementById('more-modal-overlay');
-  const closeBtn = document.getElementById('more-modal-close');
-
-  const closeModal = () => {
-    if (overlay) overlay.remove();
-  };
-
-  closeBtn?.addEventListener('click', closeModal);
-  overlay?.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
-
-  document.getElementById('more-lang-en')?.addEventListener('click', () => {
-    setLanguage('en');
-    renderApp();
-    openMoreModal();
-  });
-
-  document.getElementById('more-lang-ru')?.addEventListener('click', () => {
-    setLanguage('ru');
-    renderApp();
-    openMoreModal();
-  });
-
-  document.getElementById('more-action-feedback')?.addEventListener('click', () => {
-    closeModal();
-    document.getElementById('feedback-trigger-btn')?.click();
-  });
-
-  document.getElementById('more-action-streamer')?.addEventListener('click', () => {
-    closeModal();
-    document.getElementById('streamer-trigger-btn')?.click();
-  });
-
-  document.getElementById('more-action-app')?.addEventListener('click', () => {
-    closeModal();
-    const appBtn = document.getElementById('mobile-app-trigger-btn') || document.querySelector('.mobile-app-trigger-btn');
-    if (appBtn) appBtn.click();
-  });
 }
 
 // Boot page controller

@@ -1,6 +1,6 @@
-import { initFeedback } from '../utils/initFeedback.js';
-import { initMobileAppModal } from '../utils/initMobileAppModal.js';
-import { initStreamer } from '../utils/initStreamer.js';
+import { initFeedback } from './FeedbackModal.js';
+import { initMobileAppModal } from './MobileAppModal.js';
+import { initStreamer } from './StreamerModal.js';
 
 /**
  * ModalManager encapsulates initialization and lifecycle for all application modals.

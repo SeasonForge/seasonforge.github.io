@@ -3,44 +3,7 @@ import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
 import { escapeHtml, escapeAttr } from '../utils/helpers.js';
 import { getIconSvg } from '../utils/icons.js';
-
-
-function formatLocalDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  
-  const state = getState();
-  const lang = state.settings?.lang || 'en';
-  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
-  
-  const hasTime = dateStr.includes('T') || dateStr.includes(':');
-  
-  const options = {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    ...(hasTime ? { hour: '2-digit', minute: '2-digit' } : {})
-  };
-  
-  return new Intl.DateTimeFormat(locale, options).format(date);
-}
-
-function formatShortDate(dateStr) {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  if (Number.isNaN(date.getTime())) return dateStr;
-  
-  const state = getState();
-  const lang = state.settings?.lang || 'en';
-  const locale = lang === 'ru' ? 'ru-RU' : 'en-US';
-  
-  return new Intl.DateTimeFormat(locale, {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  }).format(date);
-}
+import { formatLocalDate, formatShortDate } from '../utils/date.js';
 
 export function render(game = {}, options = {}) {
   const name = escapeHtml(getVal(game.name) || 'Untitled Game');

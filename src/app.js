@@ -448,12 +448,30 @@ function getTimelineTooltipContent(gameId, seasonType) {
     `;
   }
 
+  let verificationNoteHtml = '';
+  if (isNext && game.nextSeason?.verificationNote) {
+    const rawNote = getVal(game.nextSeason.verificationNote);
+    if (rawNote) {
+      const escaped = escapeHtml(rawNote).replace(/\n/g, '<br>');
+      const headerText = lang === 'ru' ? 'ОБОСНОВАНИЕ ПРОГНОЗА:' : 'FORECAST RATIONALE:';
+      verificationNoteHtml = `
+        <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.74rem; color: #cbd5e1; line-height: 1.35;">
+          <div style="font-size: 0.68rem; font-weight: 700; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display); margin-bottom: 0.25rem;">
+            💡 ${headerText}
+          </div>
+          ${escaped}
+        </div>
+      `;
+    }
+  }
+
   return `
     <div class="timeline-tooltip__title">${gameName}</div>
     <div class="timeline-tooltip__season">${seasonName}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.started') || 'Started'}:</strong> ${startStr}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.ends') || 'Ends'}:</strong> ${endStr}</div>
     <div class="timeline-tooltip__detail"><strong>${t('timeline.duration') || 'Duration'}:</strong> ${durationStr}</div>
+    ${verificationNoteHtml}
     ${eventsHtml}
   `;
 }

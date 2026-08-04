@@ -134,7 +134,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
         developer: 'Grinding Gear Games',
         logo: 'path-of-exile.png',
         color: '#f5c342',
-        icon: '💀',
+        icon: 'skull',
         website: 'https://www.pathofexile.com/',
         latestNews: {
           id: latestNewsId,

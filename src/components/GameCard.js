@@ -2,6 +2,7 @@ import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
 import { escapeHtml, escapeAttr } from '../utils/helpers.js';
+import { getIconSvg } from '../utils/icons.js';
 
 
 function formatLocalDate(dateStr) {
@@ -280,7 +281,7 @@ export function render(game = {}, options = {}) {
     } else {
       countdownHtml = `
         <div class="game-card__countdown game-card__countdown--tba">
-          <div class="game-card__tba-icon">📅</div>
+          <div class="game-card__tba-icon">${getIconSvg('calendar', { size: 18 })}</div>
           <span class="game-card__tba-label">${t('card.noLaunchDate')}</span>
         </div>
       `;
@@ -288,7 +289,7 @@ export function render(game = {}, options = {}) {
   } else if (nextSeasonPassed) {
     countdownHtml = `
       <div class="game-card__countdown game-card__countdown--launched">
-        <div class="game-card__tba-icon">⚡</div>
+        <div class="game-card__tba-icon">${getIconSvg('zap', { size: 18 })}</div>
         <span class="game-card__tba-label">${t('card.justLaunched')}</span>
       </div>
     `;
@@ -298,7 +299,6 @@ export function render(game = {}, options = {}) {
         <div class="game-card__countdown-item"><strong data-countdown="days">${countdown.days ?? 0}</strong><span>${t('card.days')}</span></div>
         <div class="game-card__countdown-item"><strong data-countdown="hours">${countdown.hours ?? 0}</strong><span>${t('card.hours')}</span></div>
         <div class="game-card__countdown-item"><strong data-countdown="minutes">${countdown.minutes ?? 0}</strong><span>${t('card.minutes')}</span></div>
-        <div class="game-card__countdown-item"><strong data-countdown="seconds">${countdown.seconds ?? 0}</strong><span>${t('card.seconds')}</span></div>
       </div>
     `;
   }
@@ -380,7 +380,7 @@ export function render(game = {}, options = {}) {
               <div class="game-card__cta-icon-box">
                 ${game.logo 
                   ? `<img src="./assets/logos/${escapeAttr(game.logo)}" alt="${name}" class="game-card__cta-game-logo" />`
-                  : `<span class="game-card__cta-game-emoji">${escapeHtml(game.icon || '🎮')}</span>`
+                  : getIconSvg(game.icon, { size: 20, class: 'game-card__cta-game-svg' })
                 }
               </div>
               <div class="game-card__cta-content">

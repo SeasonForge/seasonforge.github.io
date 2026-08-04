@@ -1,4 +1,5 @@
 import { t } from '../i18n/index.js';
+import { getIconSvg } from '../utils/icons.js';
 
 export function render() {
   const latestReleaseUrl = "https://github.com/SeasonForge/SeasonForgeMobile/releases/latest";
@@ -56,7 +57,7 @@ export function render() {
 
           <details class="mobile-app-modal__protect-details">
             <summary class="mobile-app-modal__protect-summary">
-              <span class="mobile-app-modal__protect-icon">🛡️</span>
+              <span class="mobile-app-modal__protect-icon">${getIconSvg('shield-check', { size: 18 })}</span>
               <span>${t('mobileApp.protectTitle')}</span>
               <svg class="mobile-app-modal__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polyline points="6 9 12 15 18 9"></polyline>

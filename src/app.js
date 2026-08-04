@@ -21,6 +21,7 @@ import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
 import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
+import { getIconSvg } from './utils/icons.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
@@ -269,7 +270,7 @@ function renderApp() {
         
         const iconHtml = logo 
           ? `<img src="./assets/logos/${logo}" alt="${name}" class="catalog-card__logo" />`
-          : `<span class="catalog-card__emoji">${icon}</span>`;
+          : getIconSvg(game.icon, { size: 22, class: 'catalog-card__svg' });
           
         return `
           <a class="catalog-card" href="./games/${id}/" style="--game-color: ${color};">
@@ -771,6 +772,7 @@ function tickCountdown() {
 
 function startCountdownLoop() {
   if (countdownTimer) return;
+  tickCountdown();
   countdownTimer = window.setInterval(tickCountdown, 1000);
 }
 

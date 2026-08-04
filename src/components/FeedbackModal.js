@@ -1,4 +1,5 @@
 import { t } from '../i18n/index.js';
+import { getIconSvg } from '../utils/icons.js';
 
 export function render() {
   return `
@@ -80,7 +81,7 @@ export function render() {
 
         <!-- Success Message Screen (Hidden by default) -->
         <div id="feedback-success-screen" class="feedback-success-screen" style="display: none;">
-          <div class="feedback-success-screen__icon">✅</div>
+          <div class="feedback-success-screen__icon">${getIconSvg('check-circle', { size: 36, class: 'feedback-success-svg' })}</div>
           <h3 class="feedback-success-screen__title">${t('feedback.successTitle')}</h3>
           <p class="feedback-success-screen__text">${t('feedback.successText')}</p>
         </div>

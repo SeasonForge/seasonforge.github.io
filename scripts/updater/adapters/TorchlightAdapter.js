@@ -102,7 +102,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
         developer: 'XD',
         logo: 'torchlight-infinite.png',
         color: '#c27a2b',
-        icon: '⚡',
+        icon: 'zap',
         website: 'https://torchlightinfinite.com/',
         latestNews: {
           id: latestNewsId,

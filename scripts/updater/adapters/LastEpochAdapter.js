@@ -101,7 +101,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
         developer: 'Eleventh Hour Games',
         logo: 'last-epoch.png',
         color: '#6b3fa0',
-        icon: '⏳',
+        icon: 'hourglass',
         website: 'https://www.lastepoch.com/',
         latestNews: {
           id: latestNewsId,

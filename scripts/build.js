@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { getIconSvg } from '../src/utils/icons.js';
 
 // 1. Mock browser globals for Node.js SSG execution
 globalThis.localStorage = {
@@ -517,11 +518,11 @@ async function build() {
     const changelogList = database.changelog || [];
 
     const gameMetaMap = {
-      'path-of-exile': { id: 'path-of-exile', name: 'Path of Exile 1', icon: '🔥', color: '#d97706' },
-      'path-of-exile-2': { id: 'path-of-exile-2', name: 'Path of Exile 2', icon: '✨', color: '#4b6e9c' },
-      'diablo-iv': { id: 'diablo-iv', name: 'Diablo IV', icon: '🔥', color: '#b91c1c' },
-      'last-epoch': { id: 'last-epoch', name: 'Last Epoch', icon: '⏳', color: '#8b5cf6' },
-      'torchlight-infinite': { id: 'torchlight-infinite', name: 'Torchlight: Infinite', icon: '⚡', color: '#c27a2b' }
+      'path-of-exile': { id: 'path-of-exile', name: 'Path of Exile 1', icon: 'skull', color: '#d97706' },
+      'path-of-exile-2': { id: 'path-of-exile-2', name: 'Path of Exile 2', icon: 'sparkles', color: '#4b6e9c' },
+      'diablo-iv': { id: 'diablo-iv', name: 'Diablo IV', icon: 'flame', color: '#b91c1c' },
+      'last-epoch': { id: 'last-epoch', name: 'Last Epoch', icon: 'hourglass', color: '#8b5cf6' },
+      'torchlight-infinite': { id: 'torchlight-infinite', name: 'Torchlight: Infinite', icon: 'zap', color: '#c27a2b' }
     };
 
     const changelogItemsHtml = changelogList.map((item, index) => {
@@ -570,7 +571,7 @@ async function build() {
         <article id="${itemKey}" class="event-feed-card" data-game-id="${gameId}" data-event-type="${type}" data-timestamp="${item.timestamp || ''}" style="--game-accent-color: ${meta.color};">
           <div class="event-feed-card__header">
             <div class="event-feed-card__game-tag">
-              <span class="event-feed-card__game-icon">${meta.icon}</span>
+              <span class="event-feed-card__game-icon">${getIconSvg(meta.icon, { size: 14 })}</span>
               <span class="event-feed-card__game-name">${escapeHtml(meta.name)}</span>
             </div>
             <div class="event-feed-card__meta">

@@ -112,7 +112,7 @@ Formatting rule: Format all dates strictly as YYYY-MM-DD or full ISO-8601 string
         developer: 'Blizzard Entertainment',
         logo: 'diablo-iv.png',
         color: '#8b1f1f',
-        icon: '🔥',
+        icon: 'flame',
         website: 'https://diablo4.blizzard.com/',
         latestNews: {
           id: latestNewsId,

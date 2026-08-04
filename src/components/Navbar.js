@@ -2,6 +2,7 @@ import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
 import { calculateDynamicStatus } from '../utils/status.js';
 import { escapeHtml } from '../utils/helpers.js';
+import { getIconSvg } from '../utils/icons.js';
 
 
 export function render(games = [], activeGame = null, activeView = 'card') {
@@ -62,7 +63,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
 
       const iconHtml = logo 
         ? `<img src="./assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
-        : `<span class="navbar__tab-emoji">${icon}</span>`;
+        : getIconSvg(game.icon, { size: 18, class: 'navbar__tab-svg' });
 
       return `
         <div class="navbar__tab ${activeClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">

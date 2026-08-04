@@ -1,4 +1,5 @@
 import { t } from '../i18n/index.js';
+import { getIconSvg } from '../utils/icons.js';
 
 /**
  * Renders and manages the unified "More" ("Ещё") mobile menu modal.
@@ -35,22 +36,22 @@ export class MoreMenuModal {
         </div>
         <div class="more-menu-grid" style="display: flex; flex-direction: column; gap: 0.75rem;">
           <a href="${cleanBase}" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">🏠</span> <span>${t('breadcrumbs.home')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('home', { size: 20 })}</span> <span>${t('breadcrumbs.home')}</span>
           </a>
           <a href="${cleanBase}#games" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">🎮</span> <span>${t('navbar.btnGames')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('gamepad', { size: 20 })}</span> <span>${t('navbar.btnGames')}</span>
           </a>
           <a href="${cleanBase}#timeline" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">⏳</span> <span>${t('navbar.btnTimeline')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('hourglass', { size: 20 })}</span> <span>${t('navbar.btnTimeline')}</span>
           </a>
           <a href="${cleanBase}changelog/" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">📋</span> <span>${t('footer.changelog')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('clipboard-list', { size: 20 })}</span> <span>${t('footer.changelog')}</span>
           </a>
           <button id="more-menu-feedback-btn" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">💬</span> <span>${t('feedback.btnLabel')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('message-square', { size: 20 })}</span> <span>${t('feedback.btnLabel')}</span>
           </button>
           <button id="more-menu-app-btn" class="more-menu-item" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.85rem 1rem; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 0.75rem; color: #f3f4f6; text-decoration: none; font-weight: 500; cursor: pointer; text-align: left; width: 100%; transition: background 0.2s;">
-            <span style="font-size: 1.2rem;">📱</span> <span>${t('mobileApp.headerBtn')}</span>
+            <span style="display: inline-flex; align-items: center; justify-content: center; opacity: 0.9;">${getIconSvg('smartphone', { size: 20 })}</span> <span>${t('mobileApp.headerBtn')}</span>
           </button>
         </div>
       </div>

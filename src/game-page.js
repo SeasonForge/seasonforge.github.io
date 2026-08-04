@@ -16,6 +16,8 @@ import { ModalManager } from './components/ModalManager.js';
 import { MobileNav } from './components/MobileNav.js';
 import { trackEvent } from './utils/analytics.js';
 
+import { FALLBACK_SEASONS_DATA } from './data/fallback-seasons.js';
+
 // Dynamic relative path for SeasonService based on URL depth
 const isSeasonPage = typeof document !== 'undefined' && document.getElementById('game-page-root')?.classList.contains('season-page-root');
 const seasonsDataPath = isSeasonPage ? '../../../data/seasons.json' : '../../data/seasons.json';
@@ -240,12 +242,12 @@ function renderApp() {
   }
 
   // 4. Calculate countdown & progress bar
-  const countdown = calculateCountdown(activeGame.nextSeason?.startDate);
+  const countdown = calculateCountdown(activeGame?.nextSeason?.startDate);
   const progress = getProgressPercent(activeGame);
   const progressBarHtml = renderProgressBar(progress);
 
   // 5. Render Game Card into game page container (only if on main game detail page, not season page)
-  if (gameRoot && gameRoot.classList.contains('game-page-content')) {
+  if (activeGame && gameRoot && gameRoot.classList.contains('game-page-content')) {
     gameRoot.innerHTML = renderGameCard(activeGame, { 
       countdown, 
       progressBar: progressBarHtml,
@@ -293,10 +295,16 @@ function tickCountdown() {
   }
 
   const countdownValues = calculateCountdown(targetDateStr);
-  const cardEl = document.querySelector('.game-card');
-  if (cardEl) {
-    updateCountdownDOM(cardEl, countdownValues);
+  const container = document.querySelector('.game-card') || document.body;
+  if (container) {
+    updateCountdownDOM(container, countdownValues);
   }
+}
+
+function startCountdownLoop() {
+  if (countdownTimer) clearInterval(countdownTimer);
+  tickCountdown();
+  countdownTimer = setInterval(tickCountdown, 1000);
 }
 
 async function init() {
@@ -304,36 +312,16 @@ async function init() {
     const rootEl = document.getElementById('game-page-root');
     if (!rootEl) return;
 
-    // Immediately render UI (header tools, lang switcher, static page translations, modal event listeners)
-    renderApp();
-
     const gameId = rootEl.getAttribute('data-game-id');
     
-    // Fetch all games
-    const rawData = await seasonService.loadSeasons().catch(() => null);
-    const games = Array.isArray(rawData?.games) ? rawData.games : [];
-    setRawData(rawData);
-    setGames(games);
-
-    // Locate the active game
-    activeGame = games.find(g => g.id === gameId);
+    // 1. Immediately set activeGame synchronously from fallback data so countdown ticks instantly on load
+    const initialGames = FALLBACK_SEASONS_DATA?.games || [];
+    activeGame = initialGames.find(g => g.id === gameId) || null;
+    
+    // 2. Immediately render UI and start countdown loop without waiting for async fetch
     renderApp();
-
     if (activeGame) {
-      // Track game page opened event
-      trackEvent('game_page_opened', {
-        game_id: activeGame.id,
-        game_name: getVal(activeGame.name) || 'Untitled Game'
-      });
-    }
-
-    // Check & track forecast_viewed event if dates are estimated
-    const isForecast = activeGame?.nextSeason?.verification === 'estimated' || activeGame?.nextSeason?.verification === 'ai';
-    if (isForecast && activeGame?.nextSeason?.startDate) {
-      trackEvent('forecast_viewed', {
-        game_id: activeGame.id,
-        season_name: getVal(activeGame.nextSeason.name) || 'Estimated Season'
-      });
+      startCountdownLoop();
     }
 
     // Attach click listener for official date/news sources (once per module)
@@ -365,11 +353,34 @@ async function init() {
       document.body.classList.add(`overlay-type-${type}`);
     }
 
-    renderApp();
+    // 3. Fetch latest seasons asynchronously
+    const rawData = await seasonService.loadSeasons().catch(() => null);
+    if (rawData?.games) {
+      const games = rawData.games;
+      setRawData(rawData);
+      setGames(games);
+      const fetchedActiveGame = games.find(g => g.id === gameId);
+      if (fetchedActiveGame) {
+        activeGame = fetchedActiveGame;
+        renderApp();
+        startCountdownLoop();
+      }
+    }
 
-    // Start targeted countdown ticker — updates only the 4 number nodes per second
-    if (countdownTimer) clearInterval(countdownTimer);
-    countdownTimer = setInterval(tickCountdown, 1000);
+    if (activeGame) {
+      trackEvent('game_page_opened', {
+        game_id: activeGame.id,
+        game_name: getVal(activeGame.name) || 'Untitled Game'
+      });
+
+      const isForecast = activeGame?.nextSeason?.verification === 'estimated' || activeGame?.nextSeason?.verification === 'ai';
+      if (isForecast && activeGame?.nextSeason?.startDate) {
+        trackEvent('forecast_viewed', {
+          game_id: activeGame.id,
+          season_name: getVal(activeGame.nextSeason.name) || 'Estimated Season'
+        });
+      }
+    }
 
   } catch (error) {
     console.error('[Detail Page] Initialization failed:', error.message);
@@ -524,4 +535,8 @@ function updateSeasonPageTranslations(activeLang) {
 }
 
 // Boot page controller
-init();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

@@ -125,7 +125,7 @@ Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
         developer: 'Grinding Gear Games',
         logo: 'path-of-exile-2.png',
         color: '#4b6e9c',
-        icon: '✨',
+        icon: 'sparkles',
         website: 'https://pathofexile2.com',
         latestNews: {
           id: latestNewsId,

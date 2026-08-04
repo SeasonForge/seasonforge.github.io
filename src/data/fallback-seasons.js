@@ -104,7 +104,7 @@ export const FALLBACK_SEASONS_DATA = {
       "developer": "Grinding Gear Games",
       "logo": "path-of-exile.png",
       "color": "#f5c342",
-      "icon": "💀",
+      "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
         "id": "https://www.pathofexile.com/forum/view-thread/3993346",
@@ -272,7 +272,7 @@ export const FALLBACK_SEASONS_DATA = {
           "Dark Fantasy"
         ]
       },
-      "icon": "✨",
+      "icon": "sparkles",
       "events": []
     },
     {
@@ -284,7 +284,7 @@ export const FALLBACK_SEASONS_DATA = {
       "developer": "Blizzard Entertainment",
       "logo": "diablo-iv.png",
       "color": "#8b1f1f",
-      "icon": "🔥",
+      "icon": "flame",
       "website": "https://diablo4.blizzard.com/",
       "latestNews": {
         "id": "24292852",
@@ -525,7 +525,7 @@ export const FALLBACK_SEASONS_DATA = {
       "developer": "Eleventh Hour Games",
       "logo": "last-epoch.png",
       "color": "#6b3fa0",
-      "icon": "⏳",
+      "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
         "id": "1836506165565853",
@@ -618,7 +618,7 @@ export const FALLBACK_SEASONS_DATA = {
       "developer": "XD",
       "logo": "torchlight-infinite.png",
       "color": "#c27a2b",
-      "icon": "⚡",
+      "icon": "zap",
       "website": "https://torchlightinfinite.com/",
       "latestNews": {
         "id": "1838407329258272",

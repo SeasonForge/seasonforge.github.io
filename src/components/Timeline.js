@@ -3,6 +3,7 @@ import { getState } from '../store/state.js';
 import { escapeHtml } from '../utils/helpers.js';
 import { calculateDynamicStatus } from '../utils/status.js';
 import { getProgressPercent } from '../utils/countdown.js';
+import { getIconSvg } from '../utils/icons.js';
 
 
 
@@ -256,7 +257,7 @@ export function render(games = [], viewMode = 'all') {
 
     const logoHtml = logo 
       ? `<img src="./assets/logos/${logo}" alt="${name}" class="timeline-map__row-logo" />`
-      : `<span class="timeline-map__row-emoji">${escapeHtml(game.icon || '🎮')}</span>`;
+      : getIconSvg(game.icon, { size: 18, class: 'timeline-map__row-svg' });
 
 
 
@@ -411,7 +412,7 @@ export function render(games = [], viewMode = 'all') {
 
       const iconHtml = logo 
         ? `<img src="./assets/logos/${logo}" alt="${gameName}" class="unified-card__logo" />`
-        : `<span class="unified-card__emoji">${icon}</span>`;
+        : getIconSvg(game.icon, { size: 20, class: 'unified-card__svg' });
 
       const subtextHtml = seasonSubtext ? `
         <div class="upcoming-card__season-subtext">

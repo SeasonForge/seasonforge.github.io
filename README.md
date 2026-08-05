@@ -22,7 +22,7 @@
 - **Data Pipeline**: Node.js, RSS/API-скрейпинг, Google Gemini AI (Structured Output JSON schema).
 - **History & Archives**: Файлы архивов `data/history/*.json` с индивидуальной SSG-генерацией страниц прошлых сезонов.
 - **SSG & SEO**: Автоматическая пре-генерация 80+ HTML-страниц, `sitemap.xml`, `robots.txt`, Schema.org (JSON-LD).
-- **Automation**: GitHub Actions (раз в 12 часов), Netlify.
+- **Automation**: GitHub Actions (раз в 12 часов).
 
 Подробное описание архитектуры см. в [Документации проекта](docs/PROJECT_OVERVIEW.md).
 

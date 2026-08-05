@@ -173,6 +173,12 @@ export const en = {
     instructionsStep2: "Paste the URL above.",
     instructionsStep3: "Set the recommended resolution.",
     instructionsStep4: "Click OK and adjust the size as needed.",
+    stepGuideTitle: "Setup Guide",
+    step1: "1. Add a Browser Source in your OBS scene.",
+    step2: "2. Paste the widget URL copied above.",
+    step3: "3. Set recommended resolution and click OK.",
+    previewTitle: "Live Preview",
+    btnClose: "Close Window",
     tip: "Tip: Recommended size for Status: 400×120px, Countdown: 400×250px, Timeline: 800×500px.",
     btnCancel: "Close"
   },

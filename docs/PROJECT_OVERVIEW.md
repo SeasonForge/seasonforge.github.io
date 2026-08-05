@@ -59,7 +59,7 @@
                      │                   └──────────────────────────────┘
                      ▼
      ┌───────────────────────────────┐
-     │   Хостинг статики (Netlify)   │
+     │  Хостинг статики (GitHub Pages)│
      └───────────────────────────────┘
 ```
 
@@ -175,5 +175,5 @@ SeasonForge/
 │   ├── templates/           # Шаблоны страниц для SSG (game.html, season.html)
 │   └── utils/               # Утилиты (helpers, date, countdown, status, seo, analytics)
 ├── package.json             # Скрипты билда и обновления
-└── netlify.toml             # Конфигурация деплоя на Netlify
+└── CNAME                    # Конфигурация кастомного домена
 ```

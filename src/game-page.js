@@ -544,6 +544,13 @@ function updateSeasonPageTranslations(activeLang) {
   }
 }
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .catch((err) => console.error('Service Worker registration failed:', err));
+  });
+}
+
 // Boot page controller
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);

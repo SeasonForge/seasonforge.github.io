@@ -874,6 +874,13 @@ async function initializeApp() {
       games: getState().games.length,
       activeGame: getState().activeGame
     });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .catch((err) => console.error('Service Worker registration failed:', err));
+      });
+    }
   } catch (error) {
     setError(error.message || t('toasts.initFailed'));
     if (!getState().games || getState().games.length === 0) {

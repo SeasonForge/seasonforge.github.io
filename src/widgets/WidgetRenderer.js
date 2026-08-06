@@ -7,6 +7,7 @@ import { renderVe4HbluWidget } from './custom/Ve4HbluWidget.js';
 let countdownTimerInterval = null;
 
 export function initOBSOverlay(games = [], state = {}) {
+  document.body.classList.add('app-layout--overlay');
   // Ensure obs-widgets.css is loaded in head
   ensureWidgetStylesheet();
 
@@ -19,6 +20,12 @@ export function initOBSOverlay(games = [], state = {}) {
   if (!container) return;
 
   const matchedGame = games.find(g => g.id === gameId) || games.find(g => g.id === 'last-epoch') || games[0];
+
+  const bgOpacityParam = params.get('bgOpacity') || params.get('opacity');
+  const bgOpacityVal = bgOpacityParam !== null ? parseInt(bgOpacityParam, 10) : null;
+  if (bgOpacityVal !== null && !isNaN(bgOpacityVal)) {
+    state = { ...state, bgOpacity: bgOpacityVal };
+  }
 
   let widgetHtml = '';
   if (streamer === 've4hblu') {
@@ -36,8 +43,31 @@ export function initOBSOverlay(games = [], state = {}) {
 
   container.innerHTML = widgetHtml;
 
+  if (bgOpacityVal !== null && !isNaN(bgOpacityVal)) {
+    applyWidgetOpacity(container, bgOpacityVal);
+  }
+
   // Start live ticking countdown if grid exists
   startLiveCountdown();
+}
+
+export function applyWidgetOpacity(container, opacityVal) {
+  if (!container || opacityVal === undefined || opacityVal === null) return;
+  const widget = container.classList?.contains('obs-standalone-widget') ? container : container.querySelector('.obs-standalone-widget');
+  if (!widget) return;
+
+  const ratio = Math.max(0, Math.min(100, parseInt(opacityVal, 10))) / 100;
+
+  const bgEl = widget.querySelector('.obs-standalone-widget__bg');
+  const overlayEl = widget.querySelector('.obs-standalone-widget__overlay');
+
+  if (bgEl) {
+    bgEl.style.setProperty('opacity', String(ratio * 0.85), 'important');
+  }
+  if (overlayEl) {
+    overlayEl.style.setProperty('opacity', String(ratio), 'important');
+  }
+  widget.style.setProperty('background', `rgba(8, 12, 20, ${ratio * 0.92})`, 'important');
 }
 
 function ensureWidgetStylesheet() {

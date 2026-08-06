@@ -6,6 +6,7 @@ import { renderFullCardWidget } from '../widgets/FullCardWidget.js';
 import { renderStatusWidget } from '../widgets/StatusWidget.js';
 import { renderCountdownWidget } from '../widgets/CountdownWidget.js';
 import { renderTimelineWidget } from '../widgets/TimelineWidget.js';
+import { applyWidgetOpacity } from '../widgets/WidgetRenderer.js';
 
 export function render(games = []) {
   const gameOptions = games
@@ -79,6 +80,14 @@ export function render(games = []) {
                   ${gameOptions}
                 </select>
               </div>
+            </div>
+
+            <div id="streamer-opacity-field" class="obs-form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <label class="obs-form-label" style="margin: 0;">${t('streamer.bgOpacityLabel')}</label>
+                <span id="streamer-opacity-val" style="font-size: 0.8rem; font-weight: 700; color: #a78bfa;">80%</span>
+              </div>
+              <input type="range" id="streamer-bg-opacity" min="0" max="100" value="80" class="obs-range-input" />
             </div>
           </div>
 
@@ -239,26 +248,35 @@ export function initStreamer(games = []) {
     const rootUrl = getRootUrl();
     const type = typeSelect ? typeSelect.value : 'status';
     const gameId = gameSelect ? gameSelect.value : '';
+    const opacityInput = document.getElementById('streamer-bg-opacity');
+    const opacityVal = opacityInput ? parseInt(opacityInput.value, 10) : 80;
+
+    const opacityValEl = document.getElementById('streamer-opacity-val');
+    if (opacityValEl) opacityValEl.textContent = `${opacityVal}%`;
 
     let targetUrl = `${rootUrl}?overlay=true&type=${type}`;
     if (type !== 'timeline' && gameId) {
       targetUrl += `&game=${gameId}`;
     }
+    if (opacityVal !== 100) {
+      targetUrl += `&bgOpacity=${opacityVal}`;
+    }
 
     if (urlInput) urlInput.value = targetUrl;
 
+    const sizeStr = type === 'timeline' ? '800×500' : (type === 'status' ? '400×120' : (type === 'card' ? '420×360' : '400×250'));
+    if (recommendedSize) recommendedSize.textContent = sizeStr;
+    const step3SizeEl = document.getElementById('obs-step3-size');
+    if (step3SizeEl) step3SizeEl.textContent = `${sizeStr} px`;
+
     if (type === 'timeline') {
       if (gameField) gameField.style.display = 'none';
-      if (recommendedSize) recommendedSize.textContent = '800×500';
     } else {
       if (gameField) gameField.style.display = 'block';
-      if (recommendedSize) {
-        recommendedSize.textContent = type === 'status' ? '400×120' : (type === 'card' ? '420×360' : '400×250');
-      }
     }
 
     const activeLang = (typeof getState === 'function' ? getState()?.settings?.lang : 'ru') || 'ru';
-    const stateObj = { settings: { lang: activeLang } };
+    const stateObj = { settings: { lang: activeLang }, bgOpacity: opacityVal };
     const previewContainer = document.getElementById('obs-preview-container');
 
     if (previewContainer) {
@@ -282,6 +300,8 @@ export function initStreamer(games = []) {
         previewContainer.className = 'obs-iframe-frame obs-iframe-frame--status';
         previewContainer.innerHTML = renderStatusWidget(currentGame, stateObj);
       }
+
+      applyWidgetOpacity(previewContainer, opacityVal);
     }
   }
 
@@ -400,9 +420,14 @@ export function initStreamer(games = []) {
   };
 
   const headerCloseBtn = document.getElementById('streamer-header-close-btn');
+  const bgOpacityInput = document.getElementById('streamer-bg-opacity');
 
   if (typeSelect) ensureBound(typeSelect, 'change', updateUrl);
   if (gameSelect) ensureBound(gameSelect, 'change', updateUrl);
+  if (bgOpacityInput) {
+    ensureBound(bgOpacityInput, 'input', updateUrl);
+    ensureBound(bgOpacityInput, 'change', updateUrl);
+  }
   if (copyBtn) ensureBound(copyBtn, 'click', handleCopy);
   if (closeBtn) ensureBound(closeBtn, 'click', closeModal);
   if (headerCloseBtn) ensureBound(headerCloseBtn, 'click', closeModal);

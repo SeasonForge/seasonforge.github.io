@@ -51,7 +51,8 @@ export function renderFullCardWidget(game, state = {}) {
     progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / estDuration) * 100)));
   }
 
-  const bgStyle = `style="background-image: url('${bgImage}');"`;
+  const customOpacity = state.bgOpacity !== undefined && state.bgOpacity !== null ? ` opacity: ${state.bgOpacity / 100};` : '';
+  const bgStyle = `style="background-image: url('${bgImage}');${customOpacity}"`;
 
   const calendarSvg = getIconSvg('calendar', { size: 14, class: 'obs-widget-svg-icon' });
   const hourglassSvg = getIconSvg('hourglass', { size: 13, class: 'obs-widget-svg-icon' });

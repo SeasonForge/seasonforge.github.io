@@ -6,11 +6,18 @@
 /* Transparency & Base Container Reset */
 body.app-layout--overlay {
   background: transparent !important;
+  background-image: none !important;
   overflow: hidden !important;
   margin: 0 !important;
   padding: 0 !important;
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   color: #f1f5f9;
+}
+
+body.app-layout--overlay::before,
+body.app-layout--overlay::after {
+  display: none !important;
+  background: none !important;
 }
 
 body.app-layout--overlay .app-header,

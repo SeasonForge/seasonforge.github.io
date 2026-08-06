@@ -48,9 +48,11 @@ export function renderVe4HbluWidget(game, state = {}) {
   const calendarSvg = getIconSvg('calendar', { size: 14, class: 'obs-widget-svg-icon' });
   const hourglassSvg = getIconSvg('hourglass', { size: 13, class: 'obs-widget-svg-icon' });
 
+  const customOpacity = state.bgOpacity !== undefined && state.bgOpacity !== null ? ` opacity: ${state.bgOpacity / 100};` : '';
+
   return `
     <div class="obs-standalone-widget obs-standalone-widget--ve4hblu">
-      <div class="obs-standalone-widget__bg" style="background-image: url('${bgPath}');"></div>
+      <div class="obs-standalone-widget__bg" style="background-image: url('${bgPath}');${customOpacity}"></div>
       <div class="obs-standalone-widget__overlay"></div>
       
       <div class="obs-standalone-widget__content">

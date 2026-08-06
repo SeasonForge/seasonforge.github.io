@@ -34,5 +34,17 @@
       "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
       "url": "https://store.steampowered.com/app/899770/Last_Epoch/"
     }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "When is the next Last Epoch Cycle start date?",
+        "ru": "Когда дата старта следующего Цикла (Cycle) в Last Epoch?"
+      },
+      "answer": {
+        "en": "Find current launch estimates, verification status, and live countdown timers for the next Last Epoch Cycle on SeasonForge.",
+        "ru": "Проверяйте даты запусков, статусы прогнозов и живые таймеры обратного отсчета для следующих Циклов Last Epoch на SeasonForge."
+      }
+    }
   ]
 }

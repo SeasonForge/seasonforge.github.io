@@ -39,5 +39,27 @@
       "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
       "url": "https://store.steampowered.com/app/2344520/Diablo_IV/"
     }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "When is the next Diablo IV season release date?",
+        "ru": "Когда дата старта следующего сезона Diablo IV?"
+      },
+      "answer": {
+        "en": "Track official start dates, estimated forecast windows, and live countdown timers for upcoming Diablo IV seasons on SeasonForge.",
+        "ru": "Отслеживайте официальные даты запуска, прогнозы и живые таймеры обратного отсчета для сезонов Diablo IV на SeasonForge."
+      }
+    },
+    {
+      "question": {
+        "en": "How long do Diablo IV seasons last?",
+        "ru": "Сколько длится сезон в Diablo IV?"
+      },
+      "answer": {
+        "en": "Diablo IV seasons follow a quarterly schedule, lasting approximately 3 months per season.",
+        "ru": "Сезоны в Diablo IV выходят по квартальному графику и длятся примерно 3 месяца."
+      }
+    }
   ]
 }

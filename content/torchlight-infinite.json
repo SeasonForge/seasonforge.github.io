@@ -24,5 +24,17 @@
       "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
       "url": "https://store.steampowered.com/app/1974050/Torchlight_Infinite/"
     }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "When is the next Torchlight Infinite season release date?",
+        "ru": "Когда дата старта следующего сезона Torchlight Infinite?"
+      },
+      "answer": {
+        "en": "Check live countdown timers and release schedules for Torchlight: Infinite seasons on SeasonForge.",
+        "ru": "Отслеживайте даты запусков и живые таймеры обратного отсчета для сезонов Torchlight: Infinite на SeasonForge."
+      }
+    }
   ]
 }

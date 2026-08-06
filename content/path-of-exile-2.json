@@ -24,5 +24,37 @@
       "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
       "url": "https://store.steampowered.com/app/2694490/Path_of_Exile_2/"
     }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "When is the next Path of Exile 2 league start date?",
+        "ru": "Когда дата начала следующей лиги Path of Exile 2?"
+      },
+      "answer": {
+        "en": "You can check the exact launch date, status, and live countdown timer for the upcoming Path of Exile 2 season right on this page.",
+        "ru": "Точную дату запуска, статус и живой таймер обратного отсчета до следующего сезона Path of Exile 2 можно отслеживать прямо на этой странице."
+      }
+    },
+    {
+      "question": {
+        "en": "Where can I view the Path of Exile 2 release date countdown?",
+        "ru": "Где посмотреть отсчет времени до релиза новой лиги Path of Exile 2?"
+      },
+      "answer": {
+        "en": "SeasonForge provides a live countdown timer showing remaining days, hours, and minutes until the Path of Exile 2 season launch.",
+        "ru": "SeasonForge предоставляет интерактивный таймер с отсчетом дней, часов и минут до старта сезона Path of Exile 2."
+      }
+    },
+    {
+      "question": {
+        "en": "How long do Path of Exile 2 seasons typically last?",
+        "ru": "Сколько обычно длится сезон в Path of Exile 2?"
+      },
+      "answer": {
+        "en": "Path of Exile 2 seasons generally run for approximately 3 to 4 months alongside official content updates.",
+        "ru": "Сезоны в Path of Exile 2 обычно длятся около 3–4 месяцев параллельно с выходом крупных контентных обновлений."
+      }
+    }
   ]
 }

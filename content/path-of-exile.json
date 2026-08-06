@@ -39,5 +39,27 @@
       "label": { "en": "Steam Store Page", "ru": "Страница в Steam" },
       "url": "https://store.steampowered.com/app/238960/Path_of_Exile/"
     }
+  ],
+  "faq": [
+    {
+      "question": {
+        "en": "When does the next Path of Exile league start?",
+        "ru": "Когда старт новой лиги в Path of Exile?"
+      },
+      "answer": {
+        "en": "Check the exact start date, verification status, and live countdown timer for the upcoming Path of Exile league on SeasonForge.",
+        "ru": "Точную дату старта, статус подтверждения и отсчет времени до новой лиги Path of Exile вы найдете на SeasonForge."
+      }
+    },
+    {
+      "question": {
+        "en": "Is there a live Path of Exile release countdown timer?",
+        "ru": "Есть ли таймер обратного отсчета до релиза лиги PoE?"
+      },
+      "answer": {
+        "en": "Yes, SeasonForge features an automated live countdown timer that updates dynamically down to the second.",
+        "ru": "Да, на SeasonForge доступен авто-обновляемый живой таймер обратного отсчета вплоть до секунд."
+      }
+    }
   ]
 }

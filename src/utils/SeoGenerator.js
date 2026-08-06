@@ -25,37 +25,51 @@ export class SeoGenerator {
       gameName = 'ARPG',
       seasonName = '',
       description = '',
-      canonicalUrl = 'https://seasonforge.online',
+      canonicalUrl: inputCanonicalUrl = 'https://seasonforge.online',
       baseUrl = 'https://seasonforge.online',
       startDate = '',
       endDate = '',
       developer = '',
+      faq = [],
       lang = 'en'
     } = params;
 
+    // Ensure strict trailing-slash canonical URL
+    let canonicalUrl = inputCanonicalUrl || baseUrl;
+    if (!canonicalUrl.endsWith('/')) {
+      canonicalUrl += '/';
+    }
+
+    const ogLocale = lang === 'ru' ? 'ru_RU' : 'en_US';
     let title = '';
     let metaDescription = description || '';
 
     if (type === 'season') {
-      title = `${seasonName} — ${gameName} | SeasonForge`;
+      title = lang === 'ru'
+        ? `${seasonName} — ${gameName} | Дата начала, отсчет и подробности | SeasonForge`
+        : `${seasonName} — ${gameName} | Next League Start & Release Date Countdown | SeasonForge`;
       if (!metaDescription) {
         metaDescription = lang === 'ru'
-          ? `Информация о сезоне ${seasonName} в ${gameName}: дата начала, дата окончания, продолжительность и хронология.`
-          : `Full details on ${seasonName} for ${gameName}: start date, end date, duration, and complete season timeline.`;
+          ? `Полная информация о сезоне ${seasonName} в ${gameName}: обратный отсчет, дата начала, механики и хронология.`
+          : `Full details on ${seasonName} for ${gameName}: live countdown timer, start date, mechanics, and complete season timeline.`;
       }
     } else if (type === 'game') {
-      title = `${gameName} — ${lang === 'ru' ? 'Мониторинг Сезонов' : 'ARPG Season Tracker'} | SeasonForge`;
+      title = lang === 'ru'
+        ? `${gameName} — Дата начала новой лиги и таймер обратного отсчета | SeasonForge`
+        : `${gameName} — Next League Start & Release Date Countdown | SeasonForge`;
       if (!metaDescription) {
         metaDescription = lang === 'ru'
-          ? `Следите за текущими и будущими сезонами ${gameName}. Живой отсчет времени, хронология и архивы.`
-          : `Track current and upcoming seasons for ${gameName}. Live countdown timers, history timeline, and links.`;
+          ? `Следите за датами старта новых лиг и сезонов ${gameName}. Живой отсчет времени (countdown timer), хронология сезонов и полезные ссылки.`
+          : `Track current and upcoming ${gameName} season release dates. Live countdown timer, next league start date, history timeline, and guides.`;
       }
     } else {
-      title = `SeasonForge — ${lang === 'ru' ? 'Мониторинг Сезонов ARPG Игр' : 'ARPG Season & League Tracker'}`;
+      title = lang === 'ru'
+        ? `SeasonForge — Мониторинг Сезонов и Дат Старта Лиг ARPG Игр`
+        : `SeasonForge — ARPG Season & League Tracker | Live Release Countdowns`;
       if (!metaDescription) {
         metaDescription = lang === 'ru'
-          ? `Единый трекер сезонов и лиг ARPG игр: Path of Exile, Diablo IV, Last Epoch и Torchlight Infinite.`
-          : `Comprehensive season tracker for ARPGs: Path of Exile, Diablo IV, Last Epoch, and Torchlight Infinite.`;
+          ? `Единый трекер сезонов и лиг ARPG игр: Path of Exile 2, Path of Exile, Diablo IV, Last Epoch и Torchlight Infinite. Даты запуска и таймеры.`
+          : `Comprehensive season tracker & live release date countdowns for ARPGs: Path of Exile 2, Path of Exile, Diablo IV, Last Epoch, Torchlight Infinite.`;
       }
     }
 
@@ -65,7 +79,7 @@ export class SeoGenerator {
     const breadcrumbList = {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/` }
       ]
     };
 
@@ -110,6 +124,23 @@ export class SeoGenerator {
       });
     }
 
+    // Add FAQPage Schema if FAQ items exist
+    if (Array.isArray(faq) && faq.length > 0) {
+      const faqEntities = faq.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }));
+
+      graph.push({
+        "@type": "FAQPage",
+        "mainEntity": faqEntities
+      });
+    }
+
     const schemaJsonLd = JSON.stringify({
       "@context": "https://schema.org",
       "@graph": graph
@@ -119,6 +150,7 @@ export class SeoGenerator {
       title,
       description: metaDescription,
       canonicalUrl,
+      ogLocale,
       ogTitle: title,
       ogDesc: metaDescription,
       twitterTitle: title,
@@ -135,6 +167,10 @@ export class SeoGenerator {
 
     if (title) document.title = title;
     if (lang) document.documentElement.lang = lang;
+
+    const ogLocaleStr = lang === 'ru' ? 'ru_RU' : 'en_US';
+    const ogLocaleMeta = document.querySelector('meta[property="og:locale"]');
+    if (ogLocaleMeta) ogLocaleMeta.setAttribute('content', ogLocaleStr);
 
     if (description) {
       const descMeta = document.querySelector('meta[name="description"]');

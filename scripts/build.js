@@ -322,12 +322,27 @@ async function build() {
               `;
             }
 
+            const seasonSeo = SeoGenerator.generateSeoData({
+              type: 'season',
+              gameName,
+              seasonName,
+              description: seasonDesc,
+              canonicalUrl: seasonCanonicalUrl,
+              baseUrl: BASE_URL,
+              startDate: start,
+              endDate: end,
+              developer: game.developer,
+              lang: 'en'
+            });
+
             let sPageHtml = seasonTemplate;
             sPageHtml = sPageHtml.replace(/{{GAME_ID}}/g, gameId);
             sPageHtml = sPageHtml.replace(/{{GAME_NAME}}/g, escapeHtml(gameName));
             sPageHtml = sPageHtml.replace(/{{SEASON_NAME}}/g, escapeHtml(seasonName));
+            sPageHtml = sPageHtml.replace(/{{SEASON_TITLE}}/g, escapeHtml(seasonSeo.title));
+            sPageHtml = sPageHtml.replace(/{{OG_LOCALE}}/g, seasonSeo.ogLocale);
             sPageHtml = sPageHtml.replace(/{{SEASON_SLUG}}/g, seasonSlug);
-            sPageHtml = sPageHtml.replace(/{{SEASON_DESCRIPTION}}/g, escapeAttr(seasonDesc));
+            sPageHtml = sPageHtml.replace(/{{SEASON_DESCRIPTION}}/g, escapeAttr(seasonSeo.description));
             sPageHtml = sPageHtml.replace(/{{BASE_URL}}/g, BASE_URL);
             sPageHtml = sPageHtml.replace(/{{CANONICAL_URL}}/g, escapeAttr(seasonCanonicalUrl));
             sPageHtml = sPageHtml.replace(/{{START_DATE}}/g, formattedStart);
@@ -351,9 +366,12 @@ async function build() {
       }
     }
 
-    // 2c. Load "Useful Links" array from content file if it exists
+    // 2c. Load "Useful Links" array & "FAQ" array from content file if it exists
     let linksHtml = '';
     let linksJson = '[]';
+    let faqList = [];
+    let faqSectionHtml = '';
+    let faqJson = '[]';
     if (fs.existsSync(contentPath)) {
       try {
         const contentData = JSON.parse(fs.readFileSync(contentPath, 'utf-8'));
@@ -376,12 +394,30 @@ async function build() {
           }
           linksHtml = boxes.join('\n');
         }
+
+        if (contentData.faq && Array.isArray(contentData.faq)) {
+          faqList = contentData.faq;
+          faqJson = JSON.stringify(contentData.faq);
+
+          const faqBoxes = [];
+          for (const item of contentData.faq) {
+            const q = escapeHtml(item.question?.en || '');
+            const a = escapeHtml(item.answer?.en || '');
+            faqBoxes.push(`
+              <div class="faq-item" style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 0.75rem; padding: 1rem 1.25rem;">
+                <h3 class="faq-item__question" style="font-size: 0.95rem; font-weight: 700; color: #f3f4f6; margin-top: 0; margin-bottom: 0.5rem;">${q}</h3>
+                <p class="faq-item__answer" style="font-size: 0.875rem; color: #9ca3af; line-height: 1.6; margin: 0;">${a}</p>
+              </div>
+            `);
+          }
+          faqSectionHtml = faqBoxes.join('\n');
+        }
       } catch (err) {
-        console.error(`[SSG] Error parsing useful links for ${gameId}:`, err.message);
+        console.error(`[SSG] Error parsing content JSON for ${gameId}:`, err.message);
       }
     }
 
-    // 3. Construct SEO values
+    // 3. Construct SEO values using SeoGenerator
     const canonicalUrl = `${BASE_URL}/games/${gameId}/`;
     
     // Construct dynamic description
@@ -389,13 +425,29 @@ async function build() {
     const nextSeasonName = game.nextSeason?.name?.en || 'TBA';
     const nextSeasonStart = game.nextSeason?.startDate || '';
     
-    let dynamicDesc = `Track ${gameName} seasons. Current: ${currentSeasonName}. `;
+    let dynamicDesc = `Track ${gameName} season release dates. Current: ${currentSeasonName}. `;
     if (nextSeasonStart) {
       dynamicDesc += `Next season: ${nextSeasonName} starts on ${nextSeasonStart}. `;
     } else {
       dynamicDesc += `Next season: ${nextSeasonName} date TBA. `;
     }
-    dynamicDesc += `Get live countdowns, timeline history, and useful links.`;
+    dynamicDesc += `Live countdown timer, next league start date, history timeline, and guides.`;
+
+    const faqForSeo = faqList.map(item => ({
+      question: item.question?.en || '',
+      answer: item.answer?.en || ''
+    }));
+
+    const seoData = SeoGenerator.generateSeoData({
+      type: 'game',
+      gameName,
+      description: dynamicDesc,
+      canonicalUrl,
+      baseUrl: BASE_URL,
+      developer: game.developer,
+      faq: faqForSeo,
+      lang: 'en'
+    });
 
     const schemaGraph = [];
     const gameNode = {
@@ -463,6 +515,21 @@ async function build() {
       });
     }
 
+    // FAQPage Schema
+    if (faqForSeo.length > 0) {
+      schemaGraph.push({
+        "@type": "FAQPage",
+        "mainEntity": faqForSeo.map(item => ({
+          "@type": "Question",
+          "name": item.question,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": item.answer
+          }
+        }))
+      });
+    }
+
     const schemaObj = {
       "@context": "https://schema.org",
       "@graph": schemaGraph
@@ -473,7 +540,9 @@ async function build() {
     let html = template;
     html = html.replace(/{{GAME_ID}}/g, gameId);
     html = html.replace(/{{GAME_NAME}}/g, escapeHtml(gameName));
-    html = html.replace(/{{GAME_DESCRIPTION}}/g, escapeAttr(dynamicDesc));
+    html = html.replace(/{{GAME_TITLE}}/g, escapeHtml(seoData.title));
+    html = html.replace(/{{GAME_DESCRIPTION}}/g, escapeAttr(seoData.description));
+    html = html.replace(/{{OG_LOCALE}}/g, seoData.ogLocale);
     html = html.replace(/{{BASE_URL}}/g, BASE_URL);
     html = html.replace(/{{GAME_COLOR}}/g, escapeAttr(gameColor));
     html = html.replace(/{{GAME_CARD_HTML}}/g, cardHtml);
@@ -485,6 +554,8 @@ async function build() {
     html = html.replace(/{{TIMELINE_JSON}}/g, escapeJsonForScript(timelineJson));
     html = html.replace(/{{LINKS_HTML}}/g, linksHtml);
     html = html.replace(/{{LINKS_JSON}}/g, escapeJsonForScript(linksJson));
+    html = html.replace(/{{FAQ_SECTION_HTML}}/g, faqSectionHtml);
+    html = html.replace(/{{FAQ_JSON}}/g, escapeJsonForScript(faqJson));
 
     // 5. Write target index.html
     const targetDir = path.join(__dirname, `../games/${gameId}`);

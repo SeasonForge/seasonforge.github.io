@@ -13,14 +13,18 @@ export function renderStatusWidget(game, state = {}) {
   const seasonTitle = currentSeason ? escapeHtml(getVal(currentSeason.title) || getVal(currentSeason.name) || getVal(currentSeason.league) || 'Current Season') : 'Active Season';
   const numPrefix = currentSeason?.number ? `${currentSeason.number}: ` : '';
 
+  const nextSeason = game.nextSeason;
+
   let progressPercent = 50;
-  if (currentSeason?.startDate && currentSeason?.endDate) {
-    const start = new Date(currentSeason.startDate).getTime();
-    const end = new Date(currentSeason.endDate).getTime();
-    const now = Date.now();
-    if (end > start) {
-      progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / (end - start)) * 100)));
-    }
+  const start = currentSeason?.startDate ? new Date(currentSeason.startDate).getTime() : 0;
+  const end = (currentSeason?.endDate ? new Date(currentSeason.endDate).getTime() : 0) || (nextSeason?.startDate ? new Date(nextSeason.startDate).getTime() : 0);
+  const now = Date.now();
+
+  if (start && end && end > start) {
+    progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / (end - start)) * 100)));
+  } else if (start) {
+    const estDuration = 90 * 24 * 60 * 60 * 1000; // ~90 days default
+    progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / estDuration) * 100)));
   }
 
   return `

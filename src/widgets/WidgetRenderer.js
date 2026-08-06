@@ -2,6 +2,7 @@ import { renderFullCardWidget } from './FullCardWidget.js';
 import { renderStatusWidget } from './StatusWidget.js';
 import { renderCountdownWidget } from './CountdownWidget.js';
 import { renderTimelineWidget } from './TimelineWidget.js';
+import { renderVe4HbluWidget } from './custom/Ve4HbluWidget.js';
 
 let countdownTimerInterval = null;
 
@@ -12,14 +13,17 @@ export function initOBSOverlay(games = [], state = {}) {
   const params = new URLSearchParams(window.location.search);
   const widgetType = params.get('widget') || params.get('type') || 'fullcard';
   const gameId = params.get('game') || '';
+  const streamer = (params.get('streamer') || '').toLowerCase();
   
   const container = document.getElementById('content') || document.body;
   if (!container) return;
 
-  const matchedGame = games.find(g => g.id === gameId) || games[0];
+  const matchedGame = games.find(g => g.id === gameId) || games.find(g => g.id === 'last-epoch') || games[0];
 
   let widgetHtml = '';
-  if (widgetType === 'timeline') {
+  if (streamer === 've4hblu') {
+    widgetHtml = renderVe4HbluWidget(matchedGame, state);
+  } else if (widgetType === 'timeline') {
     widgetHtml = renderTimelineWidget(games, state);
   } else if (widgetType === 'status') {
     widgetHtml = renderStatusWidget(matchedGame, state);

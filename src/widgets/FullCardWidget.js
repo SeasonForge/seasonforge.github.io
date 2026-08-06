@@ -8,7 +8,8 @@ export function renderFullCardWidget(game, state = {}) {
   const lang = state.settings?.lang || 'ru';
   const gameName = escapeHtml(getVal(game.name) || 'Game');
   const gameIconSvg = game.icon ? getIconSvg(game.icon, { size: 24 }) : getIconSvg('gamepad', { size: 24 });
-  const bgImage = game.heroImage || game.posterImage || game.backgroundImage || '';
+  const bgImage = game.cardImage || game.heroImage || `./assets/images/cards/${game.id}.webp`;
+  const logoFileName = game.logo || `${game.id}.png`;
 
   // Current Season Info
   const currentSeason = game.currentSeason || game.seasons?.[0];
@@ -53,18 +54,21 @@ export function renderFullCardWidget(game, state = {}) {
     progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / estDuration) * 100)));
   }
 
-  const bgStyle = bgImage ? `style="background-image: url('${bgImage}');"` : '';
+  const bgStyle = `style="background-image: url('${bgImage}');"`;
+
+  const calendarSvg = getIconSvg('calendar', { size: 14, class: 'obs-widget-svg-icon' });
+  const hourglassSvg = getIconSvg('hourglass', { size: 13, class: 'obs-widget-svg-icon' });
 
   return `
     <div class="obs-standalone-widget obs-standalone-widget--fullcard">
-      ${bgImage ? `<div class="obs-standalone-widget__bg" ${bgStyle}></div>` : ''}
+      <div class="obs-standalone-widget__bg" ${bgStyle}></div>
       <div class="obs-standalone-widget__overlay"></div>
       
       <div class="obs-standalone-widget__content">
         <!-- Top Header -->
         <div class="obs-standalone-widget__header">
           <div class="obs-standalone-widget__game-group">
-            <span class="obs-standalone-widget__game-icon">${gameIconSvg}</span>
+            <img src="./assets/logos/${logoFileName}" alt="${gameName}" class="obs-standalone-widget__game-logo-img" onerror="this.style.display='none'" />
             <h2 class="obs-standalone-widget__game-title">${gameName}</h2>
           </div>
           <span class="obs-widget-pill ${badgeClass}">${badgeLabel}</span>
@@ -88,7 +92,10 @@ export function renderFullCardWidget(game, state = {}) {
         <!-- Next Season & Countdown Section -->
         <div class="obs-widget-next-group">
           <div class="obs-widget-section-label">
-            <span>⏳ ${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</span>
+            <span style="display: flex; align-items: center; gap: 0.35rem;">
+              <span class="obs-widget-icon-wrap">${hourglassSvg}</span>
+              <span>${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</span>
+            </span>
           </div>
           <div class="obs-widget-next-title">${nextTitle}</div>
 
@@ -116,7 +123,7 @@ export function renderFullCardWidget(game, state = {}) {
         <!-- Footer -->
         <div class="obs-widget-footer">
           <div class="obs-widget-launch-date">
-            <span>📅</span>
+            <span class="obs-widget-icon-wrap">${calendarSvg}</span>
             <span>${lang === 'ru' ? 'Запуск' : 'Launch'}: ${launchDateFormatted || 'TBA'}</span>
           </div>
           <div class="obs-widget-brand-pill">

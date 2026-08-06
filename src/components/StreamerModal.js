@@ -2,6 +2,10 @@ import { t, getVal } from '../i18n/index.js';
 import { getIconSvg } from '../utils/icons.js';
 import { getState } from '../store/state.js';
 import { trackEvent } from '../utils/analytics.js';
+import { renderFullCardWidget } from '../widgets/FullCardWidget.js';
+import { renderStatusWidget } from '../widgets/StatusWidget.js';
+import { renderCountdownWidget } from '../widgets/CountdownWidget.js';
+import { renderTimelineWidget } from '../widgets/TimelineWidget.js';
 
 export function render(games = []) {
   const gameOptions = games
@@ -46,16 +50,11 @@ export function render(games = []) {
                     <span class="custom-dropdown__item-icon">${getIconSvg('layout', { size: 16 })}</span>
                     <span>${t('streamer.typeCard')}</span>
                   </div>
-                  <div class="custom-dropdown__item" data-value="timeline" data-icon="layers">
-                    <span class="custom-dropdown__item-icon">${getIconSvg('layers', { size: 16 })}</span>
-                    <span>${t('streamer.typeTimeline')}</span>
-                  </div>
                 </div>
                 <select id="streamer-widget-type" style="display: none;">
                   <option value="status">${t('streamer.typeStatus')}</option>
                   <option value="countdown">${t('streamer.typeCountdown')}</option>
                   <option value="card">${t('streamer.typeCard')}</option>
-                  <option value="timeline">${t('streamer.typeTimeline')}</option>
                 </select>
               </div>
             </div>
@@ -170,28 +169,55 @@ export function initStreamer(games = []) {
 
   let timerInterval = null;
 
+  function ensureWidgetStylesheet() {
+    if (document.getElementById('obs-widgets-stylesheet')) return;
+    const link = document.createElement('link');
+    link.id = 'obs-widgets-stylesheet';
+    link.rel = 'stylesheet';
+    link.href = '/src/styles/obs-widgets.css';
+    document.head.appendChild(link);
+  }
+
   function startPreviewTimer(targetDateStr) {
     if (timerInterval) clearInterval(timerInterval);
-    const timerEl = document.getElementById('obs-preview-timer');
-    if (!timerEl) return;
 
     const updateTimer = () => {
+      const daysEl = document.getElementById('obs-cnt-days');
+      const hoursEl = document.getElementById('obs-cnt-hours');
+      const minEl = document.getElementById('obs-cnt-min');
+      const secEl = document.getElementById('obs-cnt-sec');
+      const timerEl = document.getElementById('obs-preview-timer');
+
       if (!targetDateStr) {
-        timerEl.textContent = '41d 23h 15m 08s';
+        if (daysEl) daysEl.textContent = '41';
+        if (hoursEl) hoursEl.textContent = '23';
+        if (minEl) minEl.textContent = '15';
+        if (secEl) secEl.textContent = '08';
+        if (timerEl) timerEl.textContent = '41d 23h 15m 08s';
         return;
       }
       const diff = new Date(targetDateStr).getTime() - Date.now();
+      const pad = (n) => String(Math.max(0, n)).padStart(2, '0');
+
       if (diff <= 0) {
-        timerEl.textContent = '00d 00h 00m 00s';
+        if (daysEl) daysEl.textContent = '00';
+        if (hoursEl) hoursEl.textContent = '00';
+        if (minEl) minEl.textContent = '00';
+        if (secEl) secEl.textContent = '00';
+        if (timerEl) timerEl.textContent = '00d 00h 00m 00s';
         return;
       }
+
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
       const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
       const mins = Math.floor((diff / (1000 * 60)) % 60);
       const secs = Math.floor((diff / 1000) % 60);
 
-      const pad = (n) => String(n).padStart(2, '0');
-      timerEl.textContent = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
+      if (daysEl) daysEl.textContent = pad(days);
+      if (hoursEl) hoursEl.textContent = pad(hours);
+      if (minEl) minEl.textContent = pad(mins);
+      if (secEl) secEl.textContent = pad(secs);
+      if (timerEl) timerEl.textContent = `${pad(days)}d ${pad(hours)}h ${pad(mins)}m ${pad(secs)}s`;
     };
 
     updateTimer();
@@ -232,116 +258,29 @@ export function initStreamer(games = []) {
     }
 
     const activeLang = (typeof getState === 'function' ? getState()?.settings?.lang : 'ru') || 'ru';
+    const stateObj = { settings: { lang: activeLang } };
     const previewContainer = document.getElementById('obs-preview-container');
 
     if (previewContainer) {
+      ensureWidgetStylesheet();
+      const currentGame = activeGames.find(g => g.id === gameId) || activeGames[0];
+
       if (type === 'timeline') {
         if (timerInterval) clearInterval(timerInterval);
-        previewContainer.className = 'obs-iframe-frame';
-        previewContainer.innerHTML = `
-          <div class="obs-widget-box">
-            <div class="obs-widget-box__header">
-              <span class="obs-widget-box__game-title">${t('streamer.typeTimeline')}</span>
-              <span class="obs-widget-badge obs-widget-badge--timeline">TIMELINE</span>
-            </div>
-            <div class="obs-widget-timeline-rows">
-              <div class="obs-timeline-mini-row"><span class="obs-mini-tag">PoE 1</span><div class="obs-mini-bar poe-bar"></div></div>
-              <div class="obs-timeline-mini-row"><span class="obs-mini-tag">PoE 2</span><div class="obs-mini-bar poe2-bar"></div></div>
-              <div class="obs-timeline-mini-row"><span class="obs-mini-tag">D4</span><div class="obs-mini-bar d4-bar"></div></div>
-              <div class="obs-timeline-mini-row"><span class="obs-mini-tag">LE</span><div class="obs-mini-bar le-bar"></div></div>
-              <div class="obs-timeline-mini-row"><span class="obs-mini-tag">TL</span><div class="obs-mini-bar tl-bar"></div></div>
-            </div>
-            <div class="obs-widget-watermark">seasonforge.online</div>
-          </div>
-        `;
+        previewContainer.className = 'obs-iframe-frame obs-iframe-frame--timeline';
+        previewContainer.innerHTML = renderTimelineWidget(activeGames, stateObj);
+      } else if (type === 'card') {
+        previewContainer.className = 'obs-iframe-frame obs-iframe-frame--card';
+        previewContainer.innerHTML = renderFullCardWidget(currentGame, stateObj);
+        startPreviewTimer(currentGame?.nextSeason?.startDate);
+      } else if (type === 'countdown') {
+        previewContainer.className = 'obs-iframe-frame obs-iframe-frame--countdown';
+        previewContainer.innerHTML = renderCountdownWidget(currentGame, stateObj);
+        startPreviewTimer(currentGame?.nextSeason?.startDate);
       } else {
-        const currentGame = activeGames.find(g => g.id === gameId) || activeGames[0];
-        const gameName = getVal(currentGame?.name) || 'Game';
-
-        if (type === 'card') {
-          const currentSeason = currentGame?.currentSeason || currentGame?.seasons?.[0];
-          const seasonTitle = currentSeason ? (getVal(currentSeason.title) || getVal(currentSeason.name) || getVal(currentSeason.league) || 'Current Season') : 'Active Season';
-          const numPrefix = currentSeason?.number ? `${currentSeason.number} ` : '';
-
-          const nextSeason = currentGame?.nextSeason;
-          const nextTitle = nextSeason ? (getVal(nextSeason.title) || getVal(nextSeason.name) || 'Next Season') : 'Upcoming Season';
-          const startDateFormatted = nextSeason?.startDate
-            ? new Date(nextSeason.startDate).toLocaleDateString(activeLang === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            : '';
-
-          previewContainer.className = 'obs-iframe-frame';
-          previewContainer.innerHTML = `
-            <div class="obs-widget-box obs-widget-box--card">
-              <div class="obs-widget-box__header">
-                <span class="obs-widget-box__game-title">${gameName}</span>
-                <span class="obs-widget-badge obs-widget-badge--live">● IN PROGRESS</span>
-              </div>
-              <div class="obs-widget-card__section">
-                <div class="obs-widget-box__dates">${activeLang === 'ru' ? 'Текущий сезон' : 'Current Season'}: ${numPrefix}${seasonTitle}</div>
-                <div class="obs-widget-progress">
-                  <div class="obs-widget-progress__fill" style="width: 65%;"></div>
-                </div>
-              </div>
-              <div class="obs-widget-card__section" style="margin-top: 8px;">
-                <div class="obs-widget-box__season-title" style="font-size: 0.82rem; color: #a78bfa;">⏳ ${activeLang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}: ${nextTitle}</div>
-                <div class="obs-widget-timer-display" id="obs-preview-timer">--d --h --m --s</div>
-                <div class="obs-widget-box__date-sub">${startDateFormatted ? `${activeLang === 'ru' ? 'Старт' : 'Launch'}: ${startDateFormatted}` : ''}</div>
-              </div>
-              <div class="obs-widget-watermark">seasonforge.online</div>
-            </div>
-          `;
-          startPreviewTimer(nextSeason?.startDate);
-        } else if (type === 'countdown') {
-          const nextSeason = currentGame?.nextSeason;
-          const nextTitle = nextSeason ? (getVal(nextSeason.title) || getVal(nextSeason.name) || 'Next Season') : 'Upcoming Season';
-          const startDateFormatted = nextSeason?.startDate
-            ? new Date(nextSeason.startDate).toLocaleDateString(activeLang === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            : '';
-
-          previewContainer.className = 'obs-iframe-frame';
-          previewContainer.innerHTML = `
-            <div class="obs-widget-box">
-              <div class="obs-widget-box__header">
-                <span class="obs-widget-box__game-title">${gameName}</span>
-                <span class="obs-widget-badge obs-widget-badge--countdown">COUNTDOWN</span>
-              </div>
-              <div>
-                <div class="obs-widget-box__season-title">${nextTitle}</div>
-                <div class="obs-widget-timer-display" id="obs-preview-timer">--d --h --m --s</div>
-                <div class="obs-widget-box__date-sub">${startDateFormatted ? `${activeLang === 'ru' ? 'Старт' : 'Starts'}: ${startDateFormatted}` : ''}</div>
-              </div>
-              <div class="obs-widget-watermark">seasonforge.online</div>
-            </div>
-          `;
-          startPreviewTimer(nextSeason?.startDate);
-        } else {
-          // Status (400x120)
-          if (timerInterval) clearInterval(timerInterval);
-          const currentSeason = currentGame?.currentSeason || currentGame?.seasons?.[0];
-          const seasonTitle = currentSeason ? (getVal(currentSeason.title) || getVal(currentSeason.name) || getVal(currentSeason.league) || 'Current Season') : 'Active Season';
-          const numPrefix = currentSeason?.number ? `${currentSeason.number} ` : '';
-          const startDateFormatted = currentSeason?.startDate
-            ? new Date(currentSeason.startDate).toLocaleDateString(activeLang === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-            : '';
-
-          previewContainer.className = 'obs-iframe-frame';
-          previewContainer.innerHTML = `
-            <div class="obs-widget-box">
-              <div class="obs-widget-box__header">
-                <span class="obs-widget-box__game-title">${gameName}</span>
-                <span class="obs-widget-badge obs-widget-badge--live">● LIVE</span>
-              </div>
-              <div>
-                <div class="obs-widget-box__season-title">${numPrefix}${seasonTitle}</div>
-                <div class="obs-widget-box__dates">${startDateFormatted ? `${startDateFormatted} • ${activeLang === 'ru' ? 'Идёт сейчас' : 'In Progress'}` : 'Active'}</div>
-                <div class="obs-widget-progress">
-                  <div class="obs-widget-progress__fill" style="width: 65%;"></div>
-                </div>
-              </div>
-              <div class="obs-widget-watermark">seasonforge.online</div>
-            </div>
-          `;
-        }
+        if (timerInterval) clearInterval(timerInterval);
+        previewContainer.className = 'obs-iframe-frame obs-iframe-frame--status';
+        previewContainer.innerHTML = renderStatusWidget(currentGame, stateObj);
       }
     }
   }

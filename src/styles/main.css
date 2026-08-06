@@ -4319,6 +4319,25 @@ body.overlay-type-countdown .game-card__panel--side {
   margin-top: 0.25rem;
 }
 
+/* Full Card overlay mode rules */
+body.overlay-type-card .game-card__panel--features {
+  display: none !important;
+}
+
+body.overlay-type-card .game-card__pill,
+body.overlay-type-card .game-card__subtitle,
+body.overlay-type-card .game-card__next-season {
+  display: flex !important;
+}
+
+body.overlay-type-card .game-card__panel--side {
+  border-left: none !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-left: 0 !important;
+  padding-top: 1rem !important;
+  margin-top: 1rem !important;
+}
+
 /* Mobile responsive fixes for Configurator Modal */
 @media (max-width: 480px) {
   .streamer-modal-overlay {

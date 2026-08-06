@@ -42,6 +42,10 @@ export function render(games = []) {
                     <span class="custom-dropdown__item-icon">${getIconSvg('clock', { size: 16 })}</span>
                     <span>${t('streamer.typeCountdown')}</span>
                   </div>
+                  <div class="custom-dropdown__item" data-value="card" data-icon="layout">
+                    <span class="custom-dropdown__item-icon">${getIconSvg('layout', { size: 16 })}</span>
+                    <span>${t('streamer.typeCard')}</span>
+                  </div>
                   <div class="custom-dropdown__item" data-value="timeline" data-icon="layers">
                     <span class="custom-dropdown__item-icon">${getIconSvg('layers', { size: 16 })}</span>
                     <span>${t('streamer.typeTimeline')}</span>
@@ -50,6 +54,7 @@ export function render(games = []) {
                 <select id="streamer-widget-type" style="display: none;">
                   <option value="status">${t('streamer.typeStatus')}</option>
                   <option value="countdown">${t('streamer.typeCountdown')}</option>
+                  <option value="card">${t('streamer.typeCard')}</option>
                   <option value="timeline">${t('streamer.typeTimeline')}</option>
                 </select>
               </div>
@@ -222,7 +227,7 @@ export function initStreamer(games = []) {
     } else {
       if (gameField) gameField.style.display = 'block';
       if (recommendedSize) {
-        recommendedSize.textContent = type === 'status' ? '400×120' : '400×250';
+        recommendedSize.textContent = type === 'status' ? '400×120' : (type === 'card' ? '420×360' : '400×250');
       }
     }
 
@@ -253,7 +258,40 @@ export function initStreamer(games = []) {
         const currentGame = activeGames.find(g => g.id === gameId) || activeGames[0];
         const gameName = getVal(currentGame?.name) || 'Game';
 
-        if (type === 'countdown') {
+        if (type === 'card') {
+          const currentSeason = currentGame?.currentSeason || currentGame?.seasons?.[0];
+          const seasonTitle = currentSeason ? (getVal(currentSeason.title) || getVal(currentSeason.name) || getVal(currentSeason.league) || 'Current Season') : 'Active Season';
+          const numPrefix = currentSeason?.number ? `${currentSeason.number} ` : '';
+
+          const nextSeason = currentGame?.nextSeason;
+          const nextTitle = nextSeason ? (getVal(nextSeason.title) || getVal(nextSeason.name) || 'Next Season') : 'Upcoming Season';
+          const startDateFormatted = nextSeason?.startDate
+            ? new Date(nextSeason.startDate).toLocaleDateString(activeLang === 'ru' ? 'ru-RU' : 'en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+            : '';
+
+          previewContainer.className = 'obs-iframe-frame';
+          previewContainer.innerHTML = `
+            <div class="obs-widget-box obs-widget-box--card">
+              <div class="obs-widget-box__header">
+                <span class="obs-widget-box__game-title">${gameName}</span>
+                <span class="obs-widget-badge obs-widget-badge--live">● IN PROGRESS</span>
+              </div>
+              <div class="obs-widget-card__section">
+                <div class="obs-widget-box__dates">${activeLang === 'ru' ? 'Текущий сезон' : 'Current Season'}: ${numPrefix}${seasonTitle}</div>
+                <div class="obs-widget-progress">
+                  <div class="obs-widget-progress__fill" style="width: 65%;"></div>
+                </div>
+              </div>
+              <div class="obs-widget-card__section" style="margin-top: 8px;">
+                <div class="obs-widget-box__season-title" style="font-size: 0.82rem; color: #a78bfa;">⏳ ${activeLang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}: ${nextTitle}</div>
+                <div class="obs-widget-timer-display" id="obs-preview-timer">--d --h --m --s</div>
+                <div class="obs-widget-box__date-sub">${startDateFormatted ? `${activeLang === 'ru' ? 'Старт' : 'Launch'}: ${startDateFormatted}` : ''}</div>
+              </div>
+              <div class="obs-widget-watermark">seasonforge.online</div>
+            </div>
+          `;
+          startPreviewTimer(nextSeason?.startDate);
+        } else if (type === 'countdown') {
           const nextSeason = currentGame?.nextSeason;
           const nextTitle = nextSeason ? (getVal(nextSeason.title) || getVal(nextSeason.name) || 'Next Season') : 'Upcoming Season';
           const startDateFormatted = nextSeason?.startDate

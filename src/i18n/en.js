@@ -162,6 +162,7 @@ export const en = {
     typeStatus: "Current Season Status",
     typeCountdown: "Hype Countdown Timer",
     typeTimeline: "Global Season Timeline",
+    typeCard: "Full Card (Status + Countdown)",
     gameLabel: "SELECT GAME",
     urlLabel: "WIDGET SOURCE URL",
     urlSubtext: "Use this URL as a Browser Source in OBS.",

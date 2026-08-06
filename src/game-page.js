@@ -15,6 +15,7 @@ import { Header } from './components/Header.js';
 import { ModalManager } from './components/ModalManager.js';
 import { MobileNav } from './components/MobileNav.js';
 import { trackEvent } from './utils/analytics.js';
+import { initOBSOverlay } from './widgets/WidgetRenderer.js';
 
 import { FALLBACK_SEASONS_DATA } from './data/fallback-seasons.js';
 
@@ -358,8 +359,8 @@ async function init() {
     const isOverlay = params.get('overlay') === 'true';
     if (isOverlay) {
       document.body.classList.add('app-layout--overlay');
-      const type = params.get('type') || 'status';
-      document.body.classList.add(`overlay-type-${type}`);
+      initOBSOverlay(initialGames, getState());
+      return;
     }
 
     // 3. Fetch latest seasons asynchronously

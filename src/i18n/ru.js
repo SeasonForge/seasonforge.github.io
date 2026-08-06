@@ -162,6 +162,7 @@ export const ru = {
     typeStatus: "Статус текущего сезона",
     typeCountdown: "Таймер обратного отсчета (Хайп)",
     typeTimeline: "Общий таймлайн сезонов",
+    typeCard: "Полная карточка (Статус + Таймер)",
     gameLabel: "ВЫБЕРИТЕ ИГРУ",
     urlLabel: "ССЫЛКА ДЛЯ ИСТОЧНИКА В OBS",
     urlSubtext: "Используйте эту ссылку как источник «Браузер» (Browser Source) в OBS.",

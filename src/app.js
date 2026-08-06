@@ -33,6 +33,7 @@ import { MobileNav } from './components/MobileNav.js';
 import { MoreMenuModal } from './components/MoreMenuModal.js';
 import { trackEvent } from './utils/analytics.js';
 import { escapeHtml, escapeAttr } from './utils/helpers.js';
+import { initOBSOverlay } from './widgets/WidgetRenderer.js';
 
 
 
@@ -792,22 +793,8 @@ async function initializeApp() {
     const isOverlay = params.get('overlay') === 'true';
     if (isOverlay) {
       document.body.classList.add('app-layout--overlay');
-      const type = params.get('type') || 'status';
-      const gameId = params.get('game') || '';
-      
-      document.body.classList.add(`overlay-type-${type}`);
-      
-      if (type === 'timeline') {
-        setActiveView('timeline');
-      } else {
-        setActiveView('card');
-        const matchedGame = games.find(g => g.id === gameId);
-        if (matchedGame) {
-          setActiveGame(matchedGame);
-        } else {
-          setActiveGame(games[0] ?? null);
-        }
-      }
+      initOBSOverlay(games, getState());
+      return;
     } else {
       // Restore user state from localStorage
       const lastGame = localStorage.getItem('lastGame');

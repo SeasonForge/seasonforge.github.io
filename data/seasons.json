@@ -578,18 +578,18 @@
       },
       "nextSeason": {
         "name": {
-          "en": "Cycle 5 (Estimated)",
-          "ru": "Cycle 5 (Estimated)"
+          "en": "Season 5: Rage of the Frostborn",
+          "ru": "Сезон 5: Rage of the Frostborn"
         },
-        "startDate": "2026-10-07T16:00:00Z",
+        "startDate": "2026-10-01T16:00:00Z",
         "endDate": "",
         "isActive": false,
-        "verification": "estimated",
+        "verification": "official",
         "verificationNote": {
-          "ru": "Окно прогноза: 7–14 октября 2026 (среда — традиционный день EHG).\n• Маркетинг: задержка дайджеста смещает тизеры на август (нужно 3–4 нед.).\n• Сетка ARPG: разводка с D4 S15 (15 сент.) для перехвата игроков через 3 недели.",
-          "en": "Forecast window: Oct 7–14, 2026 (Wednesday — EHG release pattern).\n• Marketing: delayed digest pushes teasers to mid-Aug (3–4 wks needed).\n• ARPG schedule: avoids D4 S15 clash (Sept 15) to capture players 3 wks in."
+          "ru": "Официальный анонс из разработческого блога Eterra Monthly: July Edition 2026. Дата старта: 1 октября 2026.",
+          "en": "Official announcement from Eterra Monthly: July Edition 2026 developer blog. Launch date: October 1, 2026."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
+        "sourceUrl": "https://www.lastepoch.com/"
       },
       "features": {
         "en": [

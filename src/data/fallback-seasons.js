@@ -4,6 +4,16 @@ export const FALLBACK_SEASONS_DATA = {
   "lastCheckedAt": "2026-08-06T10:17:25.334Z",
   "changelog": [
     {
+      "timestamp": "2026-08-06T20:06:00.000Z",
+      "gameId": "last-epoch",
+      "url": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694",
+      "type": "announcement",
+      "text": {
+        "en": "Last Epoch: Official announcement — Season 5 \"Rage of the Frostborn\" launches October 1st, 2026",
+        "ru": "Last Epoch: Официальный анонс — Старт Сезона 5 «Rage of the Frostborn» состоится 1 октября 2026"
+      }
+    },
+    {
       "timestamp": "2026-08-06T10:17:25.334Z",
       "gameId": "path-of-exile",
       "url": "https://www.pathofexile.com/forum/view-thread/3994393",

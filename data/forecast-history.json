@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-08-06T21:56:30.000Z",
+  "history": [
+    {
+      "id": "last-epoch-season-5",
+      "gameId": "last-epoch",
+      "gameName": "Last Epoch",
+      "seasonName": {
+        "en": "Season 5: Rage of the Frostborn",
+        "ru": "Сезон 5: Rage of the Frostborn"
+      },
+      "predictedStartDate": "2026-10-07T16:00:00Z",
+      "forecastWindow": {
+        "ru": "7–14 октября 2026",
+        "en": "Oct 7–14, 2026"
+      },
+      "actualStartDate": "2026-10-01T16:00:00Z",
+      "announcedAt": "2026-08-06T20:51:00Z",
+      "varianceDays": -6,
+      "accuracyStatus": "close_match",
+      "source": "Eterra Monthly: July Edition 2026",
+      "notes": {
+        "ru": "Прогноз основывался на 3-4 неделях маркетинга после задержки июльского дайджеста. Официальный тизер сместил дату на 1 октября (ошибка на 6 дней).",
+        "en": "Forecast was based on 3-4 week teaser window after delayed July digest. Official teaser placed release on Oct 1 (6-day variance)."
+      }
+    }
+  ]
+}

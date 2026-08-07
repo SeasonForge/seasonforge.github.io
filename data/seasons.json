@@ -1,6 +1,16 @@
 {
-  "lastCheckedAt": "2026-08-07T05:55:43.997Z",
+  "lastCheckedAt": "2026-08-07T15:15:31.829Z",
   "changelog": [
+    {
+      "timestamp": "2026-08-07T15:15:31.829Z",
+      "gameId": "last-epoch",
+      "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343",
+      "type": "article",
+      "text": {
+        "en": "Last Epoch: New article published — \"Eterra Monthly: July Edition 2026\"",
+        "ru": "Last Epoch: Опубликована новость — «Eterra Monthly: July Edition 2026»"
+      }
+    },
     {
       "timestamp": "2026-08-06T20:06:00.000Z",
       "gameId": "last-epoch",
@@ -561,10 +571,10 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1836506165565853",
-        "title": "Eterra Monthly: June Edition 2026",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853",
-        "publishDate": "2026-07-01T16:02:52.000Z",
+        "id": "1840310314342343",
+        "title": "Eterra Monthly: July Edition 2026",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343",
+        "publishDate": "2026-08-06T16:01:02.000Z",
         "source": "Last Epoch Steam News"
       },
       "status": {
@@ -573,7 +583,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-07-30T10:44:13.151Z"
+        "updatedAt": "2026-08-07T15:15:31.828Z"
       },
       "history": [
         {
@@ -587,21 +597,21 @@
       ],
       "currentSeason": {
         "name": {
-          "en": "Cycle 4: Shattered Omens",
-          "ru": "Cycle 4: Shattered Omens"
+          "en": "Season 4",
+          "ru": "Сезон 4"
         },
-        "startDate": "2026-03-27T16:00:00Z",
+        "startDate": "2026-04-01T00:00:00.000Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1836506165565853"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343"
       },
       "nextSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Rage of the Frostborn"
+          "ru": "Сезон 5: Гнев Хладорожденных"
         },
-        "startDate": "2026-10-01T16:00:00Z",
+        "startDate": "2026-09-01T00:00:00.000Z",
         "endDate": "",
         "isActive": false,
         "verification": "official",
@@ -609,20 +619,18 @@
           "ru": "Официальный анонс из разработческого блога Eterra Monthly: July Edition 2026. Дата старта: 1 октября 2026.",
           "en": "Official announcement from Eterra Monthly: July Edition 2026 developer blog. Launch date: October 1, 2026."
         },
-        "sourceUrl": "https://www.lastepoch.com/"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343"
       },
       "features": {
         "en": [
-          "Random encounters with Omens",
-          "Rework of crafting and trade factions systems",
-          "Second major expansion with new subclasses",
-          "Expanded Monolith of Fate endgame content"
+          "Idol Altars",
+          "Omens and Item Corruption",
+          "Feedback Forge & Suggestions Tracker"
         ],
         "ru": [
-          "Случайные энкаунтеры с Предзнаменованиями (Omens)",
-          "Реворк системы крафта и фракций торговли",
-          "Второе крупное дополнение с новыми подклассами",
-          "Расширенный эндгейм-контент монолитов судьбы"
+          "Алтари идолов",
+          "Знамения и порча предметов",
+          "Трекер отзывов и предложений Feedback Forge"
         ]
       },
       "links": {
@@ -640,7 +648,20 @@
           "Crafting"
         ]
       },
-      "events": []
+      "events": [
+        {
+          "id": "s5-teaser-stream",
+          "type": "livestream",
+          "title": {
+            "en": "Dev Q&A Stream & Season 5 Teaser",
+            "ru": "Вопросы и ответы с разработчиками и тизер 5 сезона"
+          },
+          "startDate": "2026-07-01T00:00:00.000Z",
+          "endDate": "",
+          "verification": "confirmed"
+        }
+      ],
+      "ptr": null
     },
     {
       "id": "torchlight-infinite",

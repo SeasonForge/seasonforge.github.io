@@ -2,14 +2,16 @@ name: Update Seasons
 
 on:
   schedule:
-    - cron: '23 */12 * * *' # Run every 12 hours at minute 23 to bypass queue delays
+    - cron: '23 */12 * * *' # Run every 12 hours
+  repository_dispatch:
+    types: [deploy-approved] # Triggered when approved via Telegram button
   workflow_dispatch: # Enable manual triggers
 
 permissions:
-  contents: write # Needed to commit and push changes back to the repo
+  contents: write
 
 jobs:
-  update-seasons:
+  check-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,9 +23,22 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Run Update Script
+      - name: Process Approved Telegram Deployment
+        if: github.event_name == 'repository_dispatch' && github.event.action == 'deploy-approved'
+        run: |
+          echo "Processing Telegram approved deployment..."
+          APPROVED_JSON='${{ github.event.client_payload.approvedJson }}'
+          if [ -n "$APPROVED_JSON" ]; then
+            echo "$APPROVED_JSON" > data/seasons.json
+            echo "Updated data/seasons.json with approved draft payload."
+          fi
+          node scripts/build.js
+
+      - name: Run Auto-Update Parser (Check for new data)
+        if: github.event_name != 'repository_dispatch'
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          WORKER_ENDPOINT: ${{ secrets.WORKER_ENDPOINT }}
         run: node scripts/update-seasons.js
 
       - name: Commit and Push changes
@@ -31,7 +46,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           
-          # Stage all changes (data updates and re-generated static pages)
           git add .
           
           if git diff --cached --quiet; then
@@ -43,3 +57,4 @@ jobs:
             git rebase origin/main
             git push origin HEAD:main
           fi
+

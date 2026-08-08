@@ -695,7 +695,35 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
 
   let isApproved = true;
 
-  if (hasActualChanges && detectedDiffs.length > 0 && !isAutoApprove) {
+  if (hasActualChanges && detectedDiffs.length > 0 && process.env.WORKER_ENDPOINT && !isAutoApprove) {
+    console.log(`[Orchestrator] Sending draft changes to Cloudflare Worker moderation endpoint (${process.env.WORKER_ENDPOINT})...`);
+    try {
+      const payload = {
+        diffs: detectedDiffs,
+        updatedSeasonsJson: JSON.stringify({
+          lastCheckedAt: nowIso,
+          changelog: [...detectedDiffs.map(d => ({ timestamp: nowIso, gameId: d.gameId, url: d.url, type: d.type, text: { en: d.en, ru: d.ru } })), ...existingChangelog].slice(0, 15),
+          games: finalGames
+        }, null, 2)
+      };
+      const res = await fetch(process.env.WORKER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        console.log('[Orchestrator] Successfully submitted draft to Cloudflare Worker for Telegram approval.');
+        console.log('[Orchestrator] Aborting direct build/commit on GitHub Actions. Awaiting approval via Telegram button.');
+        return;
+      } else {
+        console.warn(`[Orchestrator] Worker endpoint returned ${res.status}: ${await res.text()}`);
+      }
+    } catch (workerErr) {
+      console.warn('[Orchestrator] Failed to notify Cloudflare Worker:', workerErr.message);
+    }
+  }
+
+  if (hasActualChanges && detectedDiffs.length > 0 && !isAutoApprove && !process.env.WORKER_ENDPOINT) {
     const draftId = `draft-${Date.now().toString(36)}`;
     const tgMsg = `<b>🔍 SeasonForge: Обнаружены новые данные!</b>\n\n` + 
       detectedDiffs.map(d => `• ${d.ru}`).join('\n') + 

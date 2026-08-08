@@ -599,21 +599,21 @@ export const FALLBACK_SEASONS_DATA = {
       ],
       "currentSeason": {
         "name": {
-          "en": "Season 4",
-          "ru": "Сезон 4"
+          "en": "Cycle 4: Shattered Omens",
+          "ru": "Cycle 4: Shattered Omens"
         },
-        "startDate": "2026-04-01T00:00:00.000Z",
+        "startDate": "2026-03-27T16:00:00Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343"
+        "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694"
       },
       "nextSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Гнев Хладорожденных"
+          "ru": "Сезон 5: Rage of the Frostborn"
         },
-        "startDate": "2026-09-01T00:00:00.000Z",
+        "startDate": "2026-10-01T16:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "official",
@@ -621,18 +621,20 @@ export const FALLBACK_SEASONS_DATA = {
           "ru": "Официальный анонс из разработческого блога Eterra Monthly: July Edition 2026. Дата старта: 1 октября 2026.",
           "en": "Official announcement from Eterra Monthly: July Edition 2026 developer blog. Launch date: October 1, 2026."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343"
+        "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694"
       },
       "features": {
         "en": [
-          "Idol Altars",
-          "Omens and Item Corruption",
-          "Feedback Forge & Suggestions Tracker"
+          "Random encounters with Omens",
+          "Rework of crafting and trade factions systems",
+          "Second major expansion with new subclasses",
+          "Expanded Monolith of Fate endgame content"
         ],
         "ru": [
-          "Алтари идолов",
-          "Знамения и порча предметов",
-          "Трекер отзывов и предложений Feedback Forge"
+          "Случайные энкаунтеры с Предзнаменованиями (Omens)",
+          "Реворк системы крафта и фракций торговли",
+          "Второе крупное дополнение с новыми подклассами",
+          "Расширенный эндгейм-контент монолитов судьбы"
         ]
       },
       "links": {
@@ -650,19 +652,7 @@ export const FALLBACK_SEASONS_DATA = {
           "Crafting"
         ]
       },
-      "events": [
-        {
-          "id": "s5-teaser-stream",
-          "type": "livestream",
-          "title": {
-            "en": "Dev Q&A Stream & Season 5 Teaser",
-            "ru": "Вопросы и ответы с разработчиками и тизер 5 сезона"
-          },
-          "startDate": "2026-07-01T00:00:00.000Z",
-          "endDate": "",
-          "verification": "confirmed"
-        }
-      ],
+      "events": [],
       "ptr": null
     },
     {

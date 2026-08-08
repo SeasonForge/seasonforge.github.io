@@ -82,10 +82,22 @@ function mergeGameData(existingGame, newGame) {
 
   // Merge nextSeason
   if (existingGame.nextSeason && newGame.nextSeason) {
+    const isExistingOfficial = existingGame.nextSeason.verification === 'official';
+    const isNewOfficial = newGame.nextSeason.verification === 'official';
+
     merged.nextSeason = {
       ...existingGame.nextSeason,
       ...newGame.nextSeason
     };
+
+    if (isExistingOfficial && !isNewOfficial) {
+      merged.nextSeason.startDate = existingGame.nextSeason.startDate;
+      merged.nextSeason.verification = existingGame.nextSeason.verification;
+      if (existingGame.nextSeason.verificationNote) {
+        merged.nextSeason.verificationNote = existingGame.nextSeason.verificationNote;
+      }
+    }
+
     if (isNameEmptyOrTba(newGame.nextSeason.name)) {
       merged.nextSeason.name = existingGame.nextSeason.name;
     } else if (existingGame.nextSeason.name && typeof existingGame.nextSeason.name === 'object' && typeof newGame.nextSeason.name === 'object') {

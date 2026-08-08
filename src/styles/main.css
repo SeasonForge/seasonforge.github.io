@@ -56,16 +56,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: 
-    radial-gradient(circle at 50% 50%, rgba(12, 9, 21, 0.35) 0%, rgba(8, 6, 15, 0.70) 100%),
-    url('/assets/bg-smoke.webp'),
-    url('/assets/bg-smoke.jpg'),
-    url('/assets/bg-smoke.jpeg'),
-    url('/assets/bg-smoke.png');
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  opacity: 0.65;
+  opacity: 0; /* Superseded by interactive hero parallax background */
   pointer-events: none;
   z-index: 0;
   transition: opacity 0.3s ease;
@@ -82,6 +73,55 @@ body::after {
     radial-gradient(circle at 50% 80%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
   pointer-events: none;
   z-index: 0;
+}
+
+/* Interactive Hero Parallax Background */
+.hero-parallax-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.85;
+  transition: opacity 0.5s ease;
+}
+
+.hero-parallax__layer {
+  position: absolute;
+  top: -3vh;
+  left: 3vw;
+  width: 106vw;
+  height: 106vh;
+  object-fit: cover;
+  object-position: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-parallax__body {
+  z-index: 1;
+}
+
+.hero-parallax__head {
+  z-index: 2;
+  transform-origin: 50% 35%;
+}
+
+.hero-parallax__eyes {
+  z-index: 3;
+  transform-origin: 50% 30%;
+}
+
+.hero-parallax__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: 
+    radial-gradient(circle at 53% 32%, rgba(12, 9, 21, 0.05) 0%, rgba(8, 6, 15, 0.65) 85%),
+    linear-gradient(180deg, rgba(11, 15, 25, 0.45) 0%, rgba(11, 15, 25, 0.15) 35%, rgba(11, 15, 25, 0.75) 100%);
+  pointer-events: none;
 }
 
 /* ===== LAYOUT ===== */

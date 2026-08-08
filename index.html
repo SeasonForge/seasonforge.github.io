@@ -48,7 +48,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
-    <link rel="stylesheet" href="./src/styles/main.css?v=1.2.1" />
+    <link rel="stylesheet" href="./src/styles/main.css?v=1.3.1" />
     <link rel="icon" href="./assets/favicon.png" type="image/png" />
     <link rel="manifest" href="./manifest.json" />
     <meta name="theme-color" content="#0b0f19" />
@@ -58,6 +58,12 @@
     <link rel="alternate" hreflang="ru" href="https://seasonforge.online/?lang=ru" />
   </head>
   <body>
+    <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="./assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
+      <img src="./assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
+      <img src="./assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
+      <div class="hero-parallax__overlay"></div>
+    </div>
     <header class="app-header">
       <h1 class="sr-only">ARPG Season Tracker &amp; Live Timelines</h1>
       <div class="app-header__logo-block">

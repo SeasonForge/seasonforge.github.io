@@ -31,6 +31,7 @@ import { Header } from './components/Header.js';
 import { ModalManager } from './components/ModalManager.js';
 import { MobileNav } from './components/MobileNav.js';
 import { MoreMenuModal } from './components/MoreMenuModal.js';
+import { initHeroParallax } from './components/HeroParallax.js';
 import { trackEvent } from './utils/analytics.js';
 import { escapeHtml, escapeAttr } from './utils/helpers.js';
 import { initOBSOverlay } from './widgets/WidgetRenderer.js';
@@ -866,6 +867,7 @@ async function initializeApp() {
     MobileNav.init({ basePath: './' });
     Header.update({ lang: getState().settings?.lang });
 
+    initHeroParallax();
     renderApp();
     startCountdownLoop();
 

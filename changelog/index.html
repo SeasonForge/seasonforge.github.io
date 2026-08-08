@@ -57,6 +57,12 @@
     </style>
   </head>
   <body>
+    <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="../assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
+      <img src="../assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
+      <img src="../assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
+      <div class="hero-parallax__overlay"></div>
+    </div>
     <header class="app-header">
       <div class="app-header__logo-block">
         <a href="../" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem; color: inherit;">
@@ -534,6 +540,7 @@
     <script type="module">
       import { renderLangSwitcher } from '../src/components/LangSwitcher.js';
       import { detectDefaultLocale } from '../src/i18n/index.js';
+      import { initHeroParallax } from '../src/components/HeroParallax.js';
 
       let currentLang = detectDefaultLocale();
       let activeGameFilter = 'all';
@@ -840,6 +847,7 @@
       }
 
       window.addEventListener('DOMContentLoaded', () => {
+        initHeroParallax();
         updateLanguage(currentLang);
         readUrlParams();
         setupFilterListeners();

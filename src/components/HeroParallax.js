@@ -13,6 +13,11 @@ export function initHeroParallax() {
 
   if (!head || !eyes) return;
 
+  // Reveal background smoothly once layers and scripts are ready
+  requestAnimationFrame(() => {
+    container.classList.add('hero-parallax-bg--ready');
+  });
+
   // Target normalized coordinates (-1 to 1)
   let targetX = 0;
   let targetY = 0;

@@ -76,17 +76,31 @@ async function build() {
   console.log('[SSG] fallback-seasons.js generated from current seasons.json.');
 
 
-  // Format header timestamps for static pre-rendering
-  const lastCheckedAt = database.lastCheckedAt || new Date().toISOString();
+  // Always refresh lastCheckedAt on build to prevent stale timestamps
+  const nowIso = new Date().toISOString();
+  database.lastCheckedAt = nowIso;
+  fs.writeFileSync(seasonsPath, JSON.stringify(database, null, 2), 'utf-8');
+
+  const lastCheckedAt = database.lastCheckedAt;
   const updateTimes = games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
   const latestUpdateTime = updateTimes.length > 0 ? Math.max(...updateTimes) : Date.now();
   
   const lastCheckedFormatted = formatLastUpdated(lastCheckedAt);
   const lastUpdatedFormatted = formatLastUpdated(latestUpdateTime);
 
+  // 0. Update root index.html timestamps
+  const rootIndexHtmlPath = path.join(__dirname, '../index.html');
+  if (fs.existsSync(rootIndexHtmlPath)) {
+    let indexContent = fs.readFileSync(rootIndexHtmlPath, 'utf-8');
+    indexContent = indexContent
+      .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+      .replace(/<strong id="last-updated-time">[\s\S]*?<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
+    fs.writeFileSync(rootIndexHtmlPath, indexContent, 'utf-8');
+  }
+
   template = template
-    .replace(/<strong id="last-checked-time">-<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
-    .replace(/<strong id="last-updated-time">-<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
+    .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+    .replace(/<strong id="last-updated-time">[\s\S]*?<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
 
   for (const game of games) {
     const gameId = game.id;
@@ -144,8 +158,8 @@ async function build() {
 
         let seasonTemplate = fs.existsSync(seasonTemplatePath) ? fs.readFileSync(seasonTemplatePath, 'utf-8') : '';
         seasonTemplate = seasonTemplate
-          .replace(/<strong id="last-checked-time">-<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
-          .replace(/<strong id="last-updated-time">-<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
+          .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+          .replace(/<strong id="last-updated-time">[\s\S]*?<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
 
         const rows = [];
 
@@ -686,6 +700,9 @@ async function build() {
     let changelogHtml = changelogTemplate.replace(/{{CHANGELOG_ITEMS}}/g, changelogItemsHtml);
     changelogHtml = changelogHtml.replace(/{{SIDEBAR_UPCOMING_WIDGET}}/g, sidebarUpcomingWidget);
     changelogHtml = changelogHtml.replace(/{{SIDEBAR_MOBILE_PROMO}}/g, sidebarMobilePromo);
+    changelogHtml = changelogHtml
+      .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
+      .replace(/<strong id="last-updated-time">[\s\S]*?<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);
 
     const changelogDir = path.join(__dirname, '../changelog');
     if (!fs.existsSync(changelogDir)) {

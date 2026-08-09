@@ -45,7 +45,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
-    <link rel="stylesheet" href="../src/styles/main.css?v=1.3.0" />
+    <link rel="stylesheet" href="../src/styles/main.css?v=1.4.0" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="manifest" href="../manifest.json" />
     <meta name="theme-color" content="#0b0f19" />
@@ -58,6 +58,7 @@
   </head>
   <body>
     <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="../assets/images/hero-parallax/bg.webp" class="hero-parallax__layer hero-parallax__bg" alt="" />
       <img src="../assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
       <img src="../assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
       <img src="../assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
@@ -76,10 +77,34 @@
         </a>
       </div>
       <div class="app-header__right-block">
-        <div id="changelog-lang-switcher" class="lang-switcher"></div>
-        <a href="../" class="header-neon-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600;">
-          <span id="changelog-back-btn">← Back to Tracker</span>
+        <a href="../" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
+            <strong id="last-checked-time">Aug 9, 10:29 UTC</strong>
+          </div>
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
+            <strong id="last-updated-time">Aug 7, 15:15 UTC</strong>
+          </div>
         </a>
+        <div class="app-header__tools">
+          <div id="changelog-lang-switcher" class="lang-switcher"></div>
+          <button id="mobile-app-trigger-btn" class="header-neon-btn mobile-app-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
+            <span id="lbl-mobile-app-btn">App</span>
+          </button>
+          <button id="feedback-trigger-btn" class="header-neon-btn feedback-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span id="lbl-feedback-btn">Feedback</span>
+          </button>
+          <button id="streamer-trigger-btn" class="header-neon-btn streamer-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span id="lbl-streamer-btn">OBS Widgets</span>
+          </button>
+          <a href="../" class="header-neon-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600;">
+            <span id="changelog-back-btn">← Back to Tracker</span>
+          </a>
+        </div>
       </div>
     </header>
 
@@ -537,10 +562,14 @@
       </div>
     </footer>
 
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+
     <script type="module">
       import { renderLangSwitcher } from '../src/components/LangSwitcher.js';
       import { detectDefaultLocale } from '../src/i18n/index.js';
       import { initHeroParallax } from '../src/components/HeroParallax.js';
+      import { ModalManager } from '../src/components/ModalManager.js';
 
       let currentLang = detectDefaultLocale();
       let activeGameFilter = 'all';
@@ -552,6 +581,11 @@
       const dictionary = {
         ru: {
           headerSubtitle: 'Мониторинг сезонов главных ролевых экшенов',
+          lblStatusCheck: 'Проверено',
+          lblLastUpdated: 'Изменено',
+          btnMobileApp: 'Приложение',
+          btnFeedback: 'Обратная связь',
+          btnStreamer: 'OBS Виджеты',
           backBtn: '← На главную',
           crumbHome: 'Главная',
           crumbTitle: 'Лента событий',
@@ -574,6 +608,11 @@
         },
         en: {
           headerSubtitle: 'ARPG Season Tracker & Updates',
+          lblStatusCheck: 'Checked',
+          lblLastUpdated: 'Updated',
+          btnMobileApp: 'App',
+          btnFeedback: 'Feedback',
+          btnStreamer: 'OBS Widgets',
           backBtn: '← Back to Tracker',
           crumbHome: 'Home',
           crumbTitle: 'Event Feed',
@@ -605,6 +644,21 @@
 
         const subtitle = document.getElementById('changelog-header-subtitle');
         if (subtitle) subtitle.textContent = dict.headerSubtitle;
+
+        const lblChecked = document.getElementById('lbl-status-check');
+        if (lblChecked) lblChecked.innerHTML = `<span class="status-dot"></span> ${dict.lblStatusCheck}`;
+
+        const lblUpdated = document.getElementById('lbl-last-updated');
+        if (lblUpdated) lblUpdated.textContent = dict.lblLastUpdated;
+
+        const lblMobileApp = document.getElementById('lbl-mobile-app-btn');
+        if (lblMobileApp) lblMobileApp.textContent = dict.btnMobileApp;
+
+        const lblFeedback = document.getElementById('lbl-feedback-btn');
+        if (lblFeedback) lblFeedback.textContent = dict.btnFeedback;
+
+        const lblStreamer = document.getElementById('lbl-streamer-btn');
+        if (lblStreamer) lblStreamer.textContent = dict.btnStreamer;
 
         const backBtn = document.getElementById('changelog-back-btn');
         if (backBtn) backBtn.textContent = dict.backBtn;
@@ -848,6 +902,7 @@
 
       window.addEventListener('DOMContentLoaded', () => {
         initHeroParallax();
+        ModalManager.initAll();
         updateLanguage(currentLang);
         readUrlParams();
         setupFilterListeners();

@@ -7,6 +7,7 @@ import { renderStatusWidget } from '../widgets/StatusWidget.js';
 import { renderCountdownWidget } from '../widgets/CountdownWidget.js';
 import { renderTimelineWidget } from '../widgets/TimelineWidget.js';
 import { applyWidgetOpacity } from '../widgets/WidgetRenderer.js';
+import { FALLBACK_SEASONS_DATA } from '../data/fallback-seasons.js';
 
 export function render(games = []) {
   const gameOptions = games
@@ -157,9 +158,11 @@ export function initStreamer(games = []) {
   const modalRoot = document.getElementById('modal-root');
   if (!modalRoot) return;
 
+  const stateGames = (typeof getState === 'function' ? getState()?.games : null) || [];
+  const fallbackGames = FALLBACK_SEASONS_DATA?.games || [];
   const activeGames = (Array.isArray(games) && games.length > 0) 
     ? games 
-    : (typeof getState === 'function' ? (getState()?.games || []) : []);
+    : (stateGames.length > 0 ? stateGames : fallbackGames);
 
   const existingOverlay = document.getElementById('streamer-modal-overlay');
   if (existingOverlay) {

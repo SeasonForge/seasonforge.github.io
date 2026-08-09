@@ -16,6 +16,7 @@ import { ModalManager } from './components/ModalManager.js';
 import { MobileNav } from './components/MobileNav.js';
 import { trackEvent } from './utils/analytics.js';
 import { initOBSOverlay } from './widgets/WidgetRenderer.js';
+import { initHeroParallax } from './components/HeroParallax.js';
 
 import { FALLBACK_SEASONS_DATA } from './data/fallback-seasons.js';
 
@@ -319,6 +320,7 @@ function startCountdownLoop() {
 
 async function init() {
   try {
+    initHeroParallax();
     const rootEl = document.getElementById('game-page-root');
     if (!rootEl) return;
 

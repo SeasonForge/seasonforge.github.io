@@ -21,7 +21,7 @@ export class MoreMenuModal {
 
     modal = document.createElement('div');
     modal.id = 'more-menu-modal';
-    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible more-menu-overlay';
+    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible more-menu-overlay more-menu-overlay--visible';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
 
@@ -87,6 +87,7 @@ export class MoreMenuModal {
 
     modal.style.display = 'flex';
     modal.removeAttribute('hidden');
+    modalRoot.appendChild(modal);
 
     // Attach listeners inside modal
     const closeBtn = document.getElementById('close-more-menu-btn');

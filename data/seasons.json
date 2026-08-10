@@ -1,6 +1,16 @@
 {
-  "lastCheckedAt": "2026-08-09T14:19:55.714Z",
+  "lastCheckedAt": "2026-08-10T06:35:54.726Z",
   "changelog": [
+    {
+      "timestamp": "2026-08-10T06:35:53.403Z",
+      "gameId": "path-of-exile",
+      "url": "https://www.pathofexile.com/forum/view-thread/3995722",
+      "type": "article",
+      "text": {
+        "en": "Path of Exile 1: New article published — \"Fan Art Competition\"",
+        "ru": "Path of Exile 1: Опубликована новость — «Fan Art Competition»"
+      }
+    },
     {
       "timestamp": "2026-08-07T15:15:31.829Z",
       "gameId": "last-epoch",
@@ -145,10 +155,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3994393",
-        "title": "Path of Exile: Curse of the Allflame Interview with Zizaran",
-        "url": "https://www.pathofexile.com/forum/view-thread/3994393",
-        "publishDate": "Wed, 05 Aug 2026 20:38:39 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3995722",
+        "title": "Fan Art Competition",
+        "url": "https://www.pathofexile.com/forum/view-thread/3995722",
+        "publishDate": "Sun, 09 Aug 2026 23:47:56 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -157,7 +167,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-08-06T10:17:25.162Z"
+        "updatedAt": "2026-08-10T06:35:53.252Z"
       },
       "history": [
         {
@@ -175,10 +185,10 @@
           "ru": "Проклятие Всепламени"
         },
         "startDate": "2026-07-24T00:00:00.000Z",
-        "endDate": "2026-11-15T00:00:00.000Z",
+        "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3994393"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722"
       },
       "nextSeason": {
         "name": {
@@ -186,10 +196,10 @@
           "ru": "Дополнение 3.30"
         },
         "startDate": "2026-11-20T00:00:00.000Z",
-        "endDate": "2027-03-01T00:00:00.000Z",
+        "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3994393",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -197,14 +207,14 @@
       },
       "features": {
         "en": [
-          "Allflame league mechanics",
-          "Mercenary improvements",
-          "General bug fixes and balance changes"
+          "Improvements to the Allflame league",
+          "Mercenaries updates and fixes",
+          "General game improvements and fixes"
         ],
         "ru": [
-          "Механики лиги Всепламя",
-          "Улучшения наемников",
-          "Общие исправления и изменения баланса"
+          "Улучшения для лиги Всепламя",
+          "Обновления и исправления наемников",
+          "Общие улучшения и исправления игры"
         ]
       },
       "links": {

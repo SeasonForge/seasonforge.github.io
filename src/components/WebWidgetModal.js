@@ -3,6 +3,7 @@ import { getIconSvg } from '../utils/icons.js';
 import { getState } from '../store/state.js';
 import { trackEvent } from '../utils/analytics.js';
 import { generateEmbedUrl, generateIframeCode } from '../utils/widgetEmbed.js';
+import { FALLBACK_SEASONS_DATA } from '../data/fallback-seasons.js';
 
 export function renderWebWidgetModal(games = []) {
   const activeGames = games.length ? games : [];
@@ -155,7 +156,9 @@ export function initWebWidget(games = []) {
   if (typeof document === 'undefined') return;
 
   const state = getState();
-  const activeGames = games.length ? games : (state.games || []);
+  const activeGames = (games && games.length)
+    ? games
+    : ((state.games && state.games.length) ? state.games : FALLBACK_SEASONS_DATA);
 
   let overlay = document.getElementById('web-widget-modal-overlay');
   if (overlay) {
@@ -313,12 +316,9 @@ export function initWebWidget(games = []) {
 
 export function openWebWidgetModal() {
   if (typeof document === 'undefined') return;
-  let overlay = document.getElementById('web-widget-modal-overlay');
-  if (!overlay) {
-    const state = getState();
-    initWebWidget(state.games || []);
-    overlay = document.getElementById('web-widget-modal-overlay');
-  }
+  const state = getState();
+  initWebWidget(state.games || []);
+  const overlay = document.getElementById('web-widget-modal-overlay');
   if (overlay) {
     overlay.style.display = 'flex';
     overlay.removeAttribute('aria-hidden');

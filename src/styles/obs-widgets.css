@@ -292,12 +292,14 @@ body.app-layout--overlay #content {
 }
 
 .obs-widget-launch-date {
-  font-size: 0.75rem;
+  font-size: 0.725rem;
   color: #94a3b8;
   display: flex;
   align-items: center;
   gap: 0.35rem;
   font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .obs-widget-brand-pill {
@@ -314,6 +316,8 @@ body.app-layout--overlay #content {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   box-shadow: 0 0 10px rgba(245, 158, 11, 0.15);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .obs-widget-brand-dot {
@@ -403,4 +407,116 @@ body.app-layout--overlay #content {
 .obs-ve4hblu-dot {
   background: #ef4444;
   box-shadow: 0 0 6px #ef4444;
+}
+
+/* --- THEME OVERRIDES FOR WEBSITE EMBEDS --- */
+body.theme-transparent {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+body.theme-transparent .obs-standalone-widget {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 0 !important;
+}
+
+body.theme-transparent .obs-standalone-widget__bg,
+body.theme-transparent .obs-standalone-widget__overlay {
+  display: none !important;
+}
+
+body.theme-transparent .obs-standalone-widget__game-title,
+body.theme-transparent .obs-widget-season-name,
+body.theme-transparent .obs-widget-next-title,
+body.theme-transparent .obs-widget-launch-date,
+body.theme-transparent .obs-widget-progress-val {
+  color: #ffffff !important;
+  text-shadow: none !important;
+}
+
+body.theme-transparent .obs-widget-section-label {
+  color: #94a3b8 !important;
+  text-shadow: none !important;
+}
+
+body.theme-transparent .obs-widget-countdown-box {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.theme-transparent .obs-widget-countdown-box strong {
+  color: #ffffff !important;
+}
+
+body.theme-transparent .obs-widget-countdown-box span {
+  color: #94a3b8 !important;
+}
+
+body.theme-transparent .obs-widget-brand-pill {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+}
+
+body.theme-light {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+body.theme-light .obs-standalone-widget {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  color: #0f172a !important;
+}
+
+body.theme-light .obs-standalone-widget__bg {
+  opacity: 0.12 !important;
+  filter: contrast(1) !important;
+}
+
+body.theme-light .obs-standalone-widget__overlay {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.98) 100%) !important;
+}
+
+body.theme-light .obs-standalone-widget__game-title,
+body.theme-light .obs-widget-season-name,
+body.theme-light .obs-widget-next-title,
+body.theme-light .obs-widget-launch-date,
+body.theme-light .obs-widget-progress-val {
+  color: #0f172a !important;
+  text-shadow: none !important;
+}
+
+body.theme-light .obs-widget-section-label {
+  color: #334155 !important;
+  text-shadow: none !important;
+}
+
+body.theme-light .obs-widget-progress-track {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light .obs-widget-countdown-box {
+  background: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.theme-light .obs-widget-countdown-box strong {
+  color: #0f172a !important;
+}
+
+body.theme-light .obs-widget-countdown-box span {
+  color: #475569 !important;
+}
+
+body.theme-light .obs-widget-brand-pill {
+  background: #f1f5f9 !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  color: #4338ca !important;
 }

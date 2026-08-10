@@ -1,4 +1,3 @@
-import { getIconSvg } from '../utils/icons.js';
 import { getVal } from '../i18n/index.js';
 import { escapeHtml } from '../utils/helpers.js';
 
@@ -7,7 +6,7 @@ export function renderCountdownWidget(game, state = {}) {
 
   const lang = state.settings?.lang || 'ru';
   const gameName = escapeHtml(getVal(game.name) || 'Game');
-  const gameIconSvg = game.icon ? getIconSvg(game.icon, { size: 22 }) : getIconSvg('gamepad', { size: 22 });
+  const logoFileName = game.logo || `${game.id}.png`;
 
   const nextSeason = game.nextSeason;
   const nextTitle = nextSeason ? escapeHtml(getVal(nextSeason.title) || getVal(nextSeason.name) || 'Next Season') : (lang === 'ru' ? 'Ожидаемый сезон' : 'Upcoming Season');
@@ -16,11 +15,10 @@ export function renderCountdownWidget(game, state = {}) {
   if (nextSeason?.startDate) {
     try {
       const d = new Date(nextSeason.startDate);
-      launchDateFormatted = d.toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      }).toUpperCase();
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      launchDateFormatted = `${day}.${month}.${year}`;
     } catch (e) {
       launchDateFormatted = nextSeason.startDate;
     }
@@ -31,14 +29,14 @@ export function renderCountdownWidget(game, state = {}) {
       <div class="obs-standalone-widget__content">
         <div class="obs-standalone-widget__header">
           <div class="obs-standalone-widget__game-group">
-            <span class="obs-standalone-widget__game-icon">${gameIconSvg}</span>
+            <img src="./assets/logos/${logoFileName}" alt="${gameName}" class="obs-standalone-widget__game-logo-img" onerror="this.style.display='none'" />
             <h2 class="obs-standalone-widget__game-title">${gameName}</h2>
           </div>
           <span class="obs-widget-pill obs-widget-pill--forecast">COUNTDOWN</span>
         </div>
 
         <div>
-          <div class="obs-widget-section-label">⏳ ${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</div>
+          <div class="obs-widget-section-label">${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</div>
           <div class="obs-widget-next-title">${nextTitle}</div>
 
           <div class="obs-widget-countdown-grid" id="obs-countdown-grid" data-target="${nextSeason?.startDate || ''}">
@@ -63,13 +61,12 @@ export function renderCountdownWidget(game, state = {}) {
 
         <div class="obs-widget-footer">
           <div class="obs-widget-launch-date">
-            <span>📅</span>
             <span>${lang === 'ru' ? 'Старт' : 'Starts'}: ${launchDateFormatted || 'TBA'}</span>
           </div>
-          <div class="obs-widget-brand-pill">
+          <a href="https://seasonforge.online" target="_blank" rel="noopener noreferrer" class="obs-widget-brand-pill" style="text-decoration: none; color: inherit;">
             <span class="obs-widget-brand-dot"></span>
             <span>SEASONFORGE.ONLINE</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>

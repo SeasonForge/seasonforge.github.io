@@ -24,6 +24,7 @@ import { formatLastUpdated } from './utils/date.js';
 import { getIconSvg } from './utils/icons.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
+import { initWebWidget } from './utils/initWebWidget.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
@@ -309,6 +310,7 @@ function renderApp() {
   attachFooterEvents();
   initFeedback(() => state.activeGame?.id || 'None');
   initStreamer(state.games);
+  initWebWidget(state.games);
   initMobileAppModal();
   
   if (state.activeView === 'timeline' || state.activeView === 'card') {

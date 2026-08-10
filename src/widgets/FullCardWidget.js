@@ -28,11 +28,10 @@ export function renderFullCardWidget(game, state = {}) {
   if (nextSeason?.startDate) {
     try {
       const d = new Date(nextSeason.startDate);
-      launchDateFormatted = d.toLocaleDateString(lang === 'ru' ? 'ru-RU' : 'en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      }).toUpperCase();
+      const day = String(d.getDate()).padStart(2, '0');
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const year = d.getFullYear();
+      launchDateFormatted = `${day}.${month}.${year}`;
     } catch (e) {
       launchDateFormatted = nextSeason.startDate;
     }
@@ -54,9 +53,6 @@ export function renderFullCardWidget(game, state = {}) {
   const customOpacity = state.bgOpacity !== undefined && state.bgOpacity !== null ? ` opacity: ${state.bgOpacity / 100};` : '';
   const bgStyle = `style="background-image: url('${bgImage}');${customOpacity}"`;
 
-  const calendarSvg = getIconSvg('calendar', { size: 14, class: 'obs-widget-svg-icon' });
-  const hourglassSvg = getIconSvg('hourglass', { size: 13, class: 'obs-widget-svg-icon' });
-
   return `
     <div class="obs-standalone-widget obs-standalone-widget--fullcard">
       <div class="obs-standalone-widget__bg" ${bgStyle}></div>
@@ -74,10 +70,8 @@ export function renderFullCardWidget(game, state = {}) {
 
         <!-- Current Season Section -->
         <div class="obs-widget-current-group">
-          <div class="obs-widget-section-label">
-            <span>${lang === 'ru' ? 'ТЕКУЩИЙ СЕЗОН / ЛИГА' : 'CURRENT SEASON / LEAGUE'}:</span>
-            <strong class="obs-widget-season-name">${numPrefix}${currentTitle}</strong>
-          </div>
+          <div class="obs-widget-section-label">${lang === 'ru' ? 'ТЕКУЩИЙ СЕЗОН / ЛИГА' : 'CURRENT SEASON / LEAGUE'}</div>
+          <div class="obs-widget-season-name">${numPrefix}${currentTitle}</div>
           
           <div class="obs-widget-progress-row">
             <div class="obs-widget-progress-track">
@@ -89,12 +83,7 @@ export function renderFullCardWidget(game, state = {}) {
 
         <!-- Next Season & Countdown Section -->
         <div class="obs-widget-next-group">
-          <div class="obs-widget-section-label">
-            <span style="display: flex; align-items: center; gap: 0.35rem;">
-              <span class="obs-widget-icon-wrap">${hourglassSvg}</span>
-              <span>${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</span>
-            </span>
-          </div>
+          <div class="obs-widget-section-label">${lang === 'ru' ? 'СЛЕДУЮЩИЙ СЕЗОН' : 'NEXT SEASON'}</div>
           <div class="obs-widget-next-title">${nextTitle}</div>
 
           <!-- 4 Countdown Blocks -->
@@ -121,13 +110,12 @@ export function renderFullCardWidget(game, state = {}) {
         <!-- Footer -->
         <div class="obs-widget-footer">
           <div class="obs-widget-launch-date">
-            <span class="obs-widget-icon-wrap">${calendarSvg}</span>
-            <span>${lang === 'ru' ? 'Запуск' : 'Launch'}: ${launchDateFormatted || 'TBA'}</span>
+            <span>${lang === 'ru' ? 'Старт' : 'Starts'}: ${launchDateFormatted || 'TBA'}</span>
           </div>
-          <div class="obs-widget-brand-pill">
+          <a href="https://seasonforge.online" target="_blank" rel="noopener noreferrer" class="obs-widget-brand-pill" style="text-decoration: none; color: inherit;">
             <span class="obs-widget-brand-dot"></span>
             <span>SEASONFORGE.ONLINE</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>

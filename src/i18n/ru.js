@@ -58,6 +58,8 @@ export const ru = {
     progressLabel: "Прогресс сезона:",
     detailsBtn: "Подробнее →",
     featuresLabel: "КЛЮЧЕВЫЕ ФИЧИ И НОВОВВЕДЕНИЯ:",
+    showFeatures: "Показать фичи и патчноут ▾",
+    hideFeatures: "Скрыть фичи ▴",
     eventsTitle: "ХРОНОЛОГИЯ И БЛИЖАЙШИЕ СОБЫТИЯ:",
     upcomingEventsHeader: "БЛИЖАЙШИЕ ЭТАПЫ И ТЕСТЫ:",
     ptrUpcomingChip: "🧪 PTR 3.2.0: Старт 4 августа",
@@ -138,13 +140,13 @@ export const ru = {
     Community: "Сообщество"
   },
   feedback: {
-    btnLabel: "Обратная связь",
+    btnLabel: "Отзывы",
     title: "Обратная связь",
     subtitle: "Есть идея или заметил проблему? Напиши — все сообщения читаются.",
     typeLabel: "Тип сообщения",
-    typeIdea: "💡 Идея",
-    typeBug: "🐞 Ошибка",
-    typeOther: "💬 Другое",
+    typeIdea: "Идея",
+    typeBug: "Ошибка",
+    typeOther: "Другое",
     messagePlaceholder: "Опишите идею, проблему или предложение...",
     emailPlaceholder: "Email (необязательно)",
     btnCancel: "Отмена",
@@ -156,7 +158,7 @@ export const ru = {
     errorNetwork: "Не удалось отправить сообщение. Попробуйте ещё раз."
   },
   streamer: {
-    btnLabel: "OBS Виджеты",
+    btnLabel: "Виджет OBS",
     title: "Настройка виджета OBS",
     typeLabel: "ТИП ВИДЖЕТА",
     typeStatus: "Статус текущего сезона",
@@ -203,5 +205,26 @@ export const ru = {
     hoursAgo: "ч. назад",
     daysAgo: "дн. назад",
     weeksAgo: "нед. назад"
+  },
+  webWidget: {
+    btnLabel: "Виджет для сайта",
+    title: "Встроить виджет на сайт",
+    subtitle: "Генератор HTML-кода для размещения счетчиков и статусов сезонов на вашем ресурсе",
+    gameLabel: "ИГРА",
+    allGames: "Все игры",
+    typeLabel: "ТИП ВИДЖЕТА",
+    typeStatus: "Статус сезона",
+    typeCountdown: "Таймер отсчета",
+    typeCard: "Полная карточка",
+    themeLabel: "ТЕМА ОФОРМЛЕНИЯ",
+    themeDark: "Тёмная",
+    themeLight: "Светлая",
+    themeTransparent: "Прозрачная",
+    dimensionsLabel: "РАЗМЕРЫ (ШИРИНА × ВЫСОТА)",
+    codeLabel: "HTML-КОД ДЛЯ ВСТАВКИ (IFRAME)",
+    btnCopyCode: "Скопировать HTML-код",
+    copied: "Скопировано!",
+    previewTitle: "Интерактивный предпросмотр",
+    brandingNotice: "Виджет содержит логотип и прямую ссылку на SeasonForge."
   }
 };

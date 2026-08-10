@@ -1,4 +1,3 @@
-import { getIconSvg } from '../utils/icons.js';
 import { getVal } from '../i18n/index.js';
 import { escapeHtml } from '../utils/helpers.js';
 
@@ -7,7 +6,7 @@ export function renderStatusWidget(game, state = {}) {
 
   const lang = state.settings?.lang || 'ru';
   const gameName = escapeHtml(getVal(game.name) || 'Game');
-  const gameIconSvg = game.icon ? getIconSvg(game.icon, { size: 22 }) : getIconSvg('gamepad', { size: 22 });
+  const logoFileName = game.logo || `${game.id}.png`;
 
   const currentSeason = game.currentSeason || game.seasons?.[0];
   const seasonTitle = currentSeason ? escapeHtml(getVal(currentSeason.title) || getVal(currentSeason.name) || getVal(currentSeason.league) || 'Current Season') : 'Active Season';
@@ -23,7 +22,7 @@ export function renderStatusWidget(game, state = {}) {
   if (start && end && end > start) {
     progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / (end - start)) * 100)));
   } else if (start) {
-    const estDuration = 90 * 24 * 60 * 60 * 1000; // ~90 days default
+    const estDuration = 90 * 24 * 60 * 60 * 1000;
     progressPercent = Math.min(100, Math.max(0, Math.round(((now - start) / estDuration) * 100)));
   }
 
@@ -32,7 +31,7 @@ export function renderStatusWidget(game, state = {}) {
       <div class="obs-standalone-widget__content">
         <div class="obs-standalone-widget__header">
           <div class="obs-standalone-widget__game-group">
-            <span class="obs-standalone-widget__game-icon">${gameIconSvg}</span>
+            <img src="./assets/logos/${logoFileName}" alt="${gameName}" class="obs-standalone-widget__game-logo-img" onerror="this.style.display='none'" />
             <h2 class="obs-standalone-widget__game-title">${gameName}</h2>
           </div>
           <span class="obs-widget-pill obs-widget-pill--active">● ${lang === 'ru' ? 'В ИГРЕ' : 'LIVE'}</span>
@@ -50,10 +49,10 @@ export function renderStatusWidget(game, state = {}) {
 
         <div class="obs-widget-footer" style="margin-top: 0.2rem;">
           <div></div>
-          <div class="obs-widget-brand-pill">
+          <a href="https://seasonforge.online" target="_blank" rel="noopener noreferrer" class="obs-widget-brand-pill" style="text-decoration: none; color: inherit;">
             <span class="obs-widget-brand-dot"></span>
             <span>SEASONFORGE.ONLINE</span>
-          </div>
+          </a>
         </div>
       </div>
     </div>

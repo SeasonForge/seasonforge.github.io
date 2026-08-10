@@ -107,15 +107,15 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       <div class="navbar-app-card">
         <div class="navbar-app-card__header">
           <span class="navbar-app-card__badge">${t('mobileApp.badge')}</span>
-          <h3 class="navbar-app-card__title">📱 ${t('mobileApp.title')}</h3>
+          <h3 class="navbar-app-card__title">${getIconSvg('smartphone', { size: 16 })} ${t('mobileApp.title')}</h3>
         </div>
         <p class="navbar-app-card__desc">${t('mobileApp.desc')}</p>
         <div class="navbar-app-card__actions">
           <a href="https://github.com/SeasonForge/SeasonForgeMobile/releases/latest" target="_blank" rel="noopener noreferrer" class="navbar-app-card__btn-download">
-            <span>📥</span> ${t('mobileApp.btnDownload')}
+            ${getIconSvg('copy', { size: 14 })} ${t('mobileApp.btnDownload')}
           </a>
           <button class="navbar-app-card__btn-guide mobile-app-trigger-btn">
-            <span>ℹ️</span> ${t('mobileApp.btnGuide')}
+            ${getIconSvg('lightbulb', { size: 14 })} ${t('mobileApp.btnGuide')}
           </button>
         </div>
       </div>

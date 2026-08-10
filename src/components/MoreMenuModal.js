@@ -15,18 +15,15 @@ export class MoreMenuModal {
     const modalRoot = document.getElementById('modal-root') || document.body;
 
     let modal = document.getElementById('more-menu-modal');
-    if (!modal) {
-      modal = document.createElement('div');
-      modal.id = 'more-menu-modal';
-      modalRoot.appendChild(modal);
-    }
-
-    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible more-menu-overlay';
-    modal.style.cssText = '';
-    modal.setAttribute('role', 'dialog');
-    modal.setAttribute('aria-modal', 'true');
+    if (modal) modal.remove();
 
     const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
+
+    modal = document.createElement('div');
+    modal.id = 'more-menu-modal';
+    modal.className = 'feedback-modal-overlay feedback-modal-overlay--visible more-menu-overlay';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
 
     modal.innerHTML = `
       <div class="feedback-modal-container more-menu-panel">
@@ -70,6 +67,13 @@ export class MoreMenuModal {
             </div>
             <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </button>
+          <button id="more-menu-web-widget-btn" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('code', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('webWidget.btnLabel')}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
+          </button>
           <button id="more-menu-app-btn" class="more-menu-item">
             <div class="more-menu-item__left">
               <span class="more-menu-item__icon">${getIconSvg('smartphone', { size: 18 })}</span>
@@ -100,6 +104,15 @@ export class MoreMenuModal {
         MoreMenuModal.close();
         const mainFeedbackBtn = document.getElementById('feedback-trigger-btn');
         if (mainFeedbackBtn) mainFeedbackBtn.click();
+      };
+    }
+
+    const webWidgetBtn = document.getElementById('more-menu-web-widget-btn');
+    if (webWidgetBtn) {
+      webWidgetBtn.onclick = () => {
+        MoreMenuModal.close();
+        const mainWebWidgetBtn = document.getElementById('web-widget-trigger-btn');
+        if (mainWebWidgetBtn) mainWebWidgetBtn.click();
       };
     }
 

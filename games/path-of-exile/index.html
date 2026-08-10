@@ -144,7 +144,7 @@
         <a href="../../changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
-            <strong id="last-checked-time">Aug 10, 06:55 UTC</strong>
+            <strong id="last-checked-time">Aug 10, 08:21 UTC</strong>
           </div>
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
@@ -164,11 +164,15 @@
           </button>
           <button id="feedback-trigger-btn" class="header-neon-btn feedback-trigger-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            <span id="lbl-feedback-btn">Feedback</span>
+            <span id="lbl-feedback-btn">Отзывы</span>
           </button>
           <button id="streamer-trigger-btn" class="header-neon-btn streamer-trigger-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-            <span id="lbl-streamer-btn">OBS Widgets</span>
+            <span id="lbl-streamer-btn">Виджет OBS</span>
+          </button>
+          <button id="web-widget-trigger-btn" class="header-neon-btn web-widget-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span id="lbl-web-widget-btn">Виджет для сайта</span>
           </button>
         </div>
       </div>
@@ -198,7 +202,7 @@
           
       <p class="game-card__source-info">
         Source: <span class="game-card__source-badge">📰 Path of Exile RSS</span> • 
-        <span class="game-card__source-title" title="Fan Art Competition">Fan Art Competition</span> published on August 9, 2026 at 11:47 PM • 
+        <span class="game-card__source-title" title="Fan Art Competition">Fan Art Competition</span> published on August 10, 2026 at 02:47 AM • 
         <a href="https://www.pathofexile.com/forum/view-thread/3995722" target="_blank" rel="noopener noreferrer" class="game-card__source-link" data-analytics-source="official_source" data-source-type="official_news" data-date-status="forecast" data-game-id="path-of-exile">Read original ↗</a>
       </p>
     
@@ -213,7 +217,7 @@
           </h3>
           <div class="game-card__meta-row">
             <span>Launch:</span>
-            <span>July 24, 2026 at 12:00 AM</span>
+            <span>July 24, 2026 at 03:00 AM</span>
           </div>
 
           <div class="game-card__progress-block">
@@ -256,7 +260,7 @@
             </div>
             <h3 class="game-card__side-season-name" title="3.30 Expansion">3.30 Expansion</h3>
             
-              <div class="game-card__side-date-row" title="November 20, 2026 at 12:00 AM">
+              <div class="game-card__side-date-row" title="November 20, 2026 at 02:00 AM">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="game-card__side-date-icon">
                   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                   <line x1="16" y1="2" x2="16" y2="6"></line>
@@ -270,9 +274,9 @@
           
       <div class="game-card__countdown">
         <div class="game-card__countdown-item"><strong data-countdown="days">101</strong><span>days</span></div>
-        <div class="game-card__countdown-item"><strong data-countdown="hours">17</strong><span>hours</span></div>
-        <div class="game-card__countdown-item"><strong data-countdown="minutes">4</strong><span>min</span></div>
-        <div class="game-card__countdown-item"><strong data-countdown="seconds">6</strong><span>sec</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="hours">15</strong><span>hours</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="minutes">38</strong><span>min</span></div>
+        <div class="game-card__countdown-item"><strong data-countdown="seconds">46</strong><span>sec</span></div>
       </div>
     
           <div class="game-card__developer">
@@ -295,8 +299,15 @@
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
           <span class="game-card__label"><span class="game-card__features-compass">🧭</span> KEY FEATURES & INNOVATIONS:</span>
+          <button type="button" class="game-card__features-toggle-btn" id="btn-toggle-features" onclick="
+            const body = this.parentElement.nextElementSibling;
+            const isExpanded = body.classList.toggle('game-card__features-body--open');
+            this.classList.toggle('game-card__features-toggle-btn--open', isExpanded);
+            this.innerHTML = isExpanded ? 'Hide details ▴' : 'Show features & patch notes ▾';
+          ">Show features & patch notes ▾</button>
         </div>
-        <ul class="game-card__feature-grid">
+        <div class="game-card__features-body" id="game-card-features-body">
+          <ul class="game-card__feature-grid">
         <li class="game-card__feature-item">
           <span class="game-card__feature-check">✓</span>
           <span class="game-card__feature-text">Improvements to the Allflame league</span>
@@ -312,6 +323,7 @@
           <span class="game-card__feature-text">General game improvements and fixes</span>
         </li>
       </ul>
+        </div>
       </section>
     
       <div class="game-card__watermark">

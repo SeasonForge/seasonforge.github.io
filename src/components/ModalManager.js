@@ -1,6 +1,7 @@
 import { initFeedback } from './FeedbackModal.js';
 import { initMobileAppModal } from './MobileAppModal.js';
 import { initStreamer } from './StreamerModal.js';
+import { initWebWidget } from './WebWidgetModal.js';
 
 /**
  * ModalManager encapsulates initialization and lifecycle for all application modals.
@@ -13,6 +14,7 @@ export class ModalManager {
     initFeedback();
     initMobileAppModal();
     initStreamer();
+    initWebWidget();
 
     // Global ESC key listener to close active modals
     document.removeEventListener('keydown', ModalManager.handleKeyDown);

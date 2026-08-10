@@ -179,10 +179,18 @@ export function render(game = {}, options = {}) {
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
           <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+          <button type="button" class="game-card__features-toggle-btn" id="btn-toggle-features" onclick="
+            const body = this.parentElement.nextElementSibling;
+            const isExpanded = body.classList.toggle('game-card__features-body--open');
+            this.classList.toggle('game-card__features-toggle-btn--open', isExpanded);
+            this.innerHTML = isExpanded ? '${t('card.hideFeatures')}' : '${t('card.showFeatures')}';
+          ">${t('card.showFeatures')}</button>
         </div>
-        ${officialHtml}
-        ${announcementsHtml}
-        ${expHtml}
+        <div class="game-card__features-body" id="game-card-features-body">
+          ${officialHtml}
+          ${announcementsHtml}
+          ${expHtml}
+        </div>
       </section>
     `;
   } else if (features.length > 0) {
@@ -199,8 +207,16 @@ export function render(game = {}, options = {}) {
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
           <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+          <button type="button" class="game-card__features-toggle-btn" id="btn-toggle-features" onclick="
+            const body = this.parentElement.nextElementSibling;
+            const isExpanded = body.classList.toggle('game-card__features-body--open');
+            this.classList.toggle('game-card__features-toggle-btn--open', isExpanded);
+            this.innerHTML = isExpanded ? '${t('card.hideFeatures')}' : '${t('card.showFeatures')}';
+          ">${t('card.showFeatures')}</button>
         </div>
-        <ul class="game-card__feature-grid">${featureItems}</ul>
+        <div class="game-card__features-body" id="game-card-features-body">
+          <ul class="game-card__feature-grid">${featureItems}</ul>
+        </div>
       </section>
     `;
   }

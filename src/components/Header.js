@@ -53,6 +53,13 @@ export class Header {
       lblStreamer.textContent = t('streamer.btnLabel');
     }
 
+    const isEn = activeLang === 'en';
+
+    const lblWebWidget = document.getElementById('lbl-web-widget-btn');
+    if (lblWebWidget) {
+      lblWebWidget.textContent = isEn ? 'Website Widget' : 'Виджет для сайта';
+    }
+
     // Timestamps (fallback to state.rawData / state.games if not explicitly passed)
     const checkedTs = lastChecked || state.rawData?.lastCheckedAt || state.lastCheckedAt;
     const checkedTimeEl = document.getElementById('last-checked-time');

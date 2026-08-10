@@ -690,7 +690,6 @@ async function build() {
 
     const sidebarMobilePromo = `
       <section style="background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.1)); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 1.25rem; text-align: center;">
-        <div style="font-size: 1.5rem; margin-bottom: 0.35rem;">📱</div>
         <h4 style="font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; color: #f1f5f9; margin-bottom: 0.35rem;">SeasonForge Mobile</h4>
         <p style="font-size: 0.78rem; color: #94a3b8; line-height: 1.4; margin-bottom: 0.85rem;">Widgets &amp; season alerts for Android.</p>
         <a href="https://github.com/SeasonForge/seasonforge.github.io/releases" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #6366f1; color: #ffffff; text-decoration: none; font-size: 0.78rem; font-weight: 600; padding: 0.45rem 0.85rem; border-radius: 6px; transition: background 0.2s;">Download App</a>

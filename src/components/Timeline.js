@@ -483,22 +483,28 @@ export function render(games = [], viewMode = 'all') {
         `;
       }
 
-      // Default Compact Card for Desktop Timeline View
+      // Default Compact Card for Desktop Timeline View with 3D Art Composition
       return `
-        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
-          <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
-          <div class="upcoming-card__date-wrapper">
-            <span class="upcoming-card__date">${formattedDate}</span>
-            ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+        <div class="upcoming-card upcoming-card--${game.id} ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
+          <div class="upcoming-card__bg"></div>
+          <div class="upcoming-card__frame"></div>
+          <div class="upcoming-card__content">
+            <div class="upcoming-card__date-wrapper">
+              <span class="upcoming-card__date">${formattedDate}</span>
+              ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+            </div>
+            <h4 class="upcoming-card__game-name">${gameName}</h4>
+            <div class="upcoming-card__season-name">${eventTitle}</div>
+            ${subtextHtml}
+            <div class="upcoming-card__countdown">
+              <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
+              <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>
+              <div class="upcoming-card__countdown-item"><strong data-countdown="minutes">${minutes}</strong><span>${t('card.minutes') || 'min'}</span></div>
+              <div class="upcoming-card__countdown-item"><strong data-countdown="seconds">${seconds}</strong><span>${t('card.seconds') || 'sec'}</span></div>
+            </div>
           </div>
-          <h4 class="upcoming-card__game-name">${gameName}</h4>
-          <div class="upcoming-card__season-name">${eventTitle}</div>
-          ${subtextHtml}
-          <div class="upcoming-card__countdown">
-            <div class="upcoming-card__countdown-item"><strong data-countdown="days">${days}</strong><span>${t('card.days') || 'days'}</span></div>
-            <div class="upcoming-card__countdown-item"><strong data-countdown="hours">${hours}</strong><span>${t('card.hours') || 'hours'}</span></div>
-            <div class="upcoming-card__countdown-item"><strong data-countdown="minutes">${minutes}</strong><span>${t('card.minutes') || 'min'}</span></div>
-            <div class="upcoming-card__countdown-item"><strong data-countdown="seconds">${seconds}</strong><span>${t('card.seconds') || 'sec'}</span></div>
+          <div class="upcoming-card__art">
+            <img src="./assets/images/launches/${game.id}.webp" alt="${gameName}" class="upcoming-card__art-img" loading="lazy" />
           </div>
         </div>
       `;
@@ -526,8 +532,7 @@ export function render(games = [], viewMode = 'all') {
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
   const timelineChartHtml = `
-    <div class="timeline-view-wrapper">
-      <section class="timeline-card">
+    <section class="timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
@@ -564,15 +569,14 @@ export function render(games = [], viewMode = 'all') {
           <span class="timeline-card__watermark-dot">•</span>
           <span class="timeline-card__watermark-text">seasonforge.online</span>
         </div>
-      </section>
+    </section>
 
-      <!-- Dynamic tooltip element -->
-      <div id="timeline-tooltip" class="timeline-tooltip" style="display: none;"></div>
-    </div>
+    <!-- Dynamic tooltip element -->
+    <div id="timeline-tooltip" class="timeline-tooltip" style="display: none;"></div>
   `;
 
   if (viewMode === 'timeline') {
-    return timelineChartHtml;
+    return `<div class="timeline-view-wrapper">${timelineChartHtml}</div>`;
   }
 
   return `
@@ -585,4 +589,81 @@ export function render(games = [], viewMode = 'all') {
 
 export function Timeline(games) {
   return render(games);
+}
+
+export function initUpcomingCardsParallax() {
+  if (typeof window === 'undefined' || window.innerWidth <= 900) return;
+
+  const cards = document.querySelectorAll('.upcoming-card');
+  cards.forEach((card) => {
+    if (card.dataset.parallaxInited === 'true') return;
+    card.dataset.parallaxInited = 'true';
+
+    const art = card.querySelector('.upcoming-card__art');
+    const content = card.querySelector('.upcoming-card__content');
+    const frame = card.querySelector('.upcoming-card__frame');
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let isHovered = false;
+    let animationFrameId = null;
+
+    const render = () => {
+      if (!isHovered && Math.abs(currentX) < 0.001 && Math.abs(currentY) < 0.001) {
+        currentX = 0;
+        currentY = 0;
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+        if (art) art.style.transform = 'translateZ(18px) translate(0px, 0px)';
+        if (content) content.style.transform = 'translateZ(24px) translate(0px, 0px)';
+        if (frame) frame.style.transform = 'translateZ(10px)';
+        animationFrameId = null;
+        return;
+      }
+
+      currentX += (targetX - currentX) * 0.08;
+      currentY += (targetY - currentY) * 0.08;
+
+      const rotX = (-currentY * 2.5).toFixed(2);
+      const rotY = (currentX * 2.5).toFixed(2);
+
+      card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+      if (art) {
+        const artShiftX = (currentX * 2.5).toFixed(2);
+        const artShiftY = (currentY * 1.8).toFixed(2);
+        art.style.transform = `translateZ(18px) translate(${artShiftX}px, ${artShiftY}px)`;
+      }
+      if (content) {
+        const contentShiftX = (currentX * 1.2).toFixed(2);
+        const contentShiftY = (currentY * 0.9).toFixed(2);
+        content.style.transform = `translateZ(24px) translate(${contentShiftX}px, ${contentShiftY}px)`;
+      }
+      if (frame) {
+        frame.style.transform = 'translateZ(10px)';
+      }
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    card.addEventListener('mouseenter', () => {
+      isHovered = true;
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(render);
+      }
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      isHovered = false;
+      targetX = 0;
+      targetY = 0;
+    });
+  });
 }

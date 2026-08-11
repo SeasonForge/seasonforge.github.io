@@ -14,7 +14,7 @@ import {
 import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
-import { render as renderTimeline } from './components/Timeline.js';
+import { render as renderTimeline, initUpcomingCardsParallax } from './components/Timeline.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
@@ -315,6 +315,7 @@ function renderApp() {
   
   if (state.activeView === 'timeline' || state.activeView === 'card') {
     attachTimelineTooltipEvents();
+    initUpcomingCardsParallax();
   }
   checkForecastViewed();
   initAnalyticsSourceDelegate();

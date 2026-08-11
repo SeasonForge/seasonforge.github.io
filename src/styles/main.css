@@ -1153,7 +1153,7 @@ body::after {
 .timeline-view-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0;
 }
 
 .timeline-card {
@@ -1161,6 +1161,7 @@ body::after {
   border-radius: var(--radius-md);
   padding: 1.5rem;
   margin-top: 0;
+  margin-bottom: 0;
   background: rgba(18, 14, 28, 0.65);
   border: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px);
@@ -1585,25 +1586,48 @@ body::after {
 
 /* --- UPCOMING LAUNCHES CARD GRID --- */
 .upcoming-launches {
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
-.upcoming-launches__header {
-  margin-bottom: 1rem;
+@media (min-width: 901px) {
+  .timeline-view-wrapper {
+    display: contents;
+  }
+
+  .upcoming-launches {
+    display: block;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .upcoming-launches__header {
+    margin-bottom: 1rem;
+    text-align: left;
+    position: relative;
+    z-index: 10;
+  }
+
+  .upcoming-launches__grid {
+    margin-top: 0;
+  }
 }
 
 .upcoming-launches__title {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: #e6eefb;
-  letter-spacing: 0.02em;
+  color: #ffffff;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 0 15px rgba(255, 255, 255, 0.15);
 }
 
 .upcoming-launches__caption {
-  margin: 0.2rem 0 0;
-  color: var(--muted);
-  font-size: 0.75rem;
+  margin: 0.25rem 0 0;
+  color: rgba(226, 232, 240, 0.85);
+  font-size: 0.85rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
 .upcoming-launches__grid {
@@ -1613,57 +1637,167 @@ body::after {
 }
 
 .upcoming-card {
-  background: rgba(18, 14, 28, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: visible;
+  background: linear-gradient(145deg, rgba(16, 12, 24, 0.95) 0%, rgba(9, 7, 14, 0.98) 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-sm);
+  border: none;
   padding: 0.75rem;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
               border-color 0.3s ease, 
-              box-shadow 0.3s ease, 
-              background-color 0.3s ease;
-  position: relative;
-  overflow: hidden;
+              box-shadow 0.3s ease;
+  min-height: 180px;
+  z-index: 1;
 }
 
 .upcoming-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--game-color);
-  opacity: 0.8;
-  z-index: 2;
+  display: none !important;
 }
 
+/* Layer 1: Background & Smoke */
 .upcoming-card__bg {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center;
-  opacity: 0.22;
-  filter: brightness(0.8) contrast(1.15);
-  z-index: 0;
+  opacity: 1;
+  z-index: 1;
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.4s ease, filter 0.3s ease;
+  border-radius: var(--radius-sm);
+  transition: opacity 0.3s ease, filter 0.3s ease, background 0.3s ease;
 }
 
-.upcoming-card:hover {
-  transform: none;
-  background: rgba(26, 20, 42, 0.75);
-  border-color: color-mix(in srgb, var(--game-color) 60%, #f59e0b);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--game-color) 25%, transparent);
+/* Per-Game Radial Smoke Glows */
+.upcoming-card--diablo .upcoming-card__bg {
+  background: radial-gradient(ellipse at 85% 40%, rgba(180, 22, 32, 0.35) 0%, rgba(90, 10, 18, 0.12) 55%, transparent 85%);
+}
+.upcoming-card--last-epoch .upcoming-card__bg {
+  background: radial-gradient(ellipse at 85% 40%, rgba(147, 51, 234, 0.35) 0%, rgba(88, 28, 135, 0.12) 55%, transparent 85%);
+}
+.upcoming-card--torchlight-infinite .upcoming-card__bg {
+  background: radial-gradient(ellipse at 85% 40%, rgba(6, 182, 212, 0.35) 0%, rgba(14, 116, 144, 0.12) 55%, transparent 85%);
+}
+.upcoming-card--path-of-exile-2 .upcoming-card__bg {
+  background: radial-gradient(ellipse at 85% 40%, rgba(56, 189, 248, 0.35) 0%, rgba(14, 116, 144, 0.12) 55%, transparent 85%);
+}
+.upcoming-card--path-of-exile .upcoming-card__bg {
+  background: radial-gradient(ellipse at 85% 40%, rgba(234, 179, 8, 0.35) 0%, rgba(161, 98, 7, 0.12) 55%, transparent 85%);
+}
+
+/* Layer 2: Continuous Neon Frame */
+.upcoming-card__frame {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  z-index: 2;
+  pointer-events: none;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Per-Game Breathing Neon Frames */
+.upcoming-card--diablo .upcoming-card__frame {
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  box-shadow: 0 0 12px rgba(220, 38, 38, 0.22), inset 0 0 20px rgba(185, 28, 28, 0.12);
+  animation: diabloPulse 4.5s ease-in-out infinite alternate;
+}
+.upcoming-card--last-epoch .upcoming-card__frame {
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.22), inset 0 0 20px rgba(126, 34, 206, 0.12);
+  animation: epochPulse 4.5s ease-in-out infinite alternate;
+}
+.upcoming-card--torchlight-infinite .upcoming-card__frame {
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.22), inset 0 0 20px rgba(8, 145, 178, 0.12);
+  animation: torchPulse 4.5s ease-in-out infinite alternate;
+}
+.upcoming-card--path-of-exile-2 .upcoming-card__frame {
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 12px rgba(56, 189, 248, 0.22), inset 0 0 20px rgba(14, 116, 144, 0.12);
+  animation: poe2Pulse 4.5s ease-in-out infinite alternate;
+}
+.upcoming-card--path-of-exile .upcoming-card__frame {
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  box-shadow: 0 0 12px rgba(234, 179, 8, 0.22), inset 0 0 20px rgba(180, 120, 20, 0.12);
+  animation: poe1Pulse 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes diabloPulse { 0% { border-color: rgba(220, 38, 38, 0.3); } 100% { border-color: rgba(225, 29, 72, 0.55); box-shadow: 0 0 18px rgba(225, 29, 72, 0.38); } }
+@keyframes epochPulse { 0% { border-color: rgba(168, 85, 247, 0.3); } 100% { border-color: rgba(192, 132, 252, 0.55); box-shadow: 0 0 18px rgba(192, 132, 252, 0.38); } }
+@keyframes torchPulse { 0% { border-color: rgba(6, 182, 212, 0.3); } 100% { border-color: rgba(34, 211, 238, 0.55); box-shadow: 0 0 18px rgba(34, 211, 238, 0.38); } }
+@keyframes poe2Pulse { 0% { border-color: rgba(56, 189, 248, 0.3); } 100% { border-color: rgba(125, 211, 252, 0.55); box-shadow: 0 0 18px rgba(125, 211, 252, 0.38); } }
+@keyframes poe1Pulse { 0% { border-color: rgba(234, 179, 8, 0.3); } 100% { border-color: rgba(250, 204, 21, 0.55); box-shadow: 0 0 18px rgba(250, 204, 21, 0.38); } }
+
+/* Layer 3: Character Art with Gradient Dissolve Mask & Game-Specific Protrusions */
+.upcoming-card__art {
+  position: absolute;
+  right: -12px;
+  bottom: 0;
+  top: -38px;
+  width: 68%;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  overflow: visible;
+}
+
+.upcoming-card--diablo .upcoming-card__art { right: -40px; top: -68px; bottom: -10px; width: 82%; max-width: 330px; }
+.upcoming-card--last-epoch .upcoming-card__art { right: -34px; top: -65px; bottom: -10px; width: 79%; max-width: 320px; }
+.upcoming-card--torchlight-infinite .upcoming-card__art { right: -8px; top: -30px; bottom: -5px; width: 58%; max-width: 220px; }
+.upcoming-card--path-of-exile-2 .upcoming-card__art { right: -34px; top: -65px; bottom: -10px; width: 79%; max-width: 320px; }
+.upcoming-card--path-of-exile .upcoming-card__art { right: -34px; top: -65px; bottom: -10px; width: 79%; max-width: 320px; }
+
+.upcoming-card__art-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom right;
+  opacity: 0.94;
+  filter: brightness(0.92) contrast(1.05);
+  transition: filter 0.3s ease, opacity 0.3s ease;
+
+  /* Dual gradient mask: smoothly dissolves bottom & left edges into card background */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 88%, transparent 98%),
+                      linear-gradient(to top, transparent 0%, black 18%, black 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 88%, transparent 98%),
+              linear-gradient(to top, transparent 0%, black 18%, black 100%);
+  mask-composite: intersect;
+}
+
+.upcoming-card--path-of-exile-2 .upcoming-card__art-img {
+  filter: brightness(1.18) contrast(1.1);
+}
+
+/* Layer 4: Content (Text, Timers, Badges) */
+.upcoming-card__content {
+  position: relative;
+  z-index: 4;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  pointer-events: auto;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+.upcoming-card:hover .upcoming-card__frame {
+  border-color: color-mix(in srgb, var(--game-color) 75%, #ffffff);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 18px color-mix(in srgb, var(--game-color) 35%, transparent);
+}
+
+.upcoming-card:hover .upcoming-card__art-img {
+  filter: brightness(0.98) contrast(1.08);
+  opacity: 1;
 }
 
 .upcoming-card:hover .upcoming-card__bg {
-  opacity: 0.38;
-  filter: brightness(0.95) contrast(1.15);
-  transform: scale(1.06);
+  opacity: 0.95;
 }
 
 .upcoming-card__date-wrapper,
@@ -2051,8 +2185,12 @@ body::after {
     order: 1;
   }
 
-  .timeline-card {
-    order: 2;
+  .upcoming-card {
+    overflow: hidden;
+  }
+
+  .upcoming-card__art {
+    display: none;
   }
 }
 
@@ -5119,8 +5257,38 @@ body.overlay-type-card .game-card__panel--side {
   }
 }
 
-/* Desktop: show active game card in the feed, fallback to first card if none active */
+/* Desktop: layout positioning, upcoming launches full width & game feed display */
 @media (min-width: 901px) {
+  .app-layout {
+    row-gap: 0;
+  }
+
+  #navbar {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  #content,
+  .timeline-view-wrapper {
+    display: contents;
+  }
+
+  .timeline-card,
+  .game-feed {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .upcoming-launches {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .upcoming-launches__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
   .game-feed .game-card {
     display: none;
   }
@@ -5430,6 +5598,7 @@ body.overlay-type-card .game-card__panel--side {
 
 /* ===== NAVBAR MOBILE APP PROMO CARD ===== */
 .navbar-app-card {
+  display: none;
   margin-top: 1.25rem;
   padding: 1rem;
   border-radius: var(--radius-md);

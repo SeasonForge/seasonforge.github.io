@@ -12,18 +12,18 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Privacy Policy / Политика конфиденциальности - SeasonForge</title>
+    <title>Privacy Policy / Политика конфиденциальности — SeasonForge</title>
     <meta name="description" content="Privacy Policy for SeasonForge website and companion application." />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Privacy Policy - SeasonForge" />
+    <meta property="og:title" content="Privacy Policy — SeasonForge" />
     <meta property="og:description" content="Privacy Policy for SeasonForge website and application." />
     <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Privacy Policy - SeasonForge" />
+    <meta name="twitter:title" content="Privacy Policy — SeasonForge" />
     <meta name="twitter:description" content="Privacy Policy for SeasonForge website and application." />
     <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
 
@@ -31,7 +31,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" />
 
-    <link rel="stylesheet" href="../src/styles/main.css?v=1.0.1" />
+    <link rel="stylesheet" href="../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="manifest" href="../manifest.json" />
     <meta name="theme-color" content="#0b0f19" />
@@ -41,6 +41,14 @@
     <link rel="alternate" hreflang="ru" href="https://seasonforge.online/privacy/?lang=ru" />
   </head>
   <body>
+    <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="../assets/images/hero-parallax/bg.webp" class="hero-parallax__layer hero-parallax__bg" alt="" />
+      <img src="../assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
+      <img src="../assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
+      <img src="../assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
+      <div class="hero-parallax__overlay"></div>
+    </div>
+
     <header class="app-header">
       <a href="../" class="app-header__logo-block" style="text-decoration: none; color: inherit;">
         <div class="app-header__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
@@ -54,135 +62,140 @@
       <div class="app-header__right-block">
         <div class="app-header__tools">
           <div id="lang-switcher" class="lang-switcher">
-            <button class="lang-switcher__btn" id="btn-lang-en">EN</button>
-            <button class="lang-switcher__btn lang-switcher__btn--active" id="btn-lang-ru">RU</button>
+            <button class="header-neon-btn lang-switcher__btn lang-switcher__btn--toggle" id="btn-lang-toggle" title="Switch language">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <span id="lbl-lang-text">RU</span>
+            </button>
           </div>
+          <a href="../" class="header-neon-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem;">
+            ← <span id="lbl-back-to-tracker">Back to Tracker</span>
+          </a>
         </div>
       </div>
     </header>
 
-    <div class="app-layout" style="display: flex; flex-direction: column; gap: 1rem; max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem;">
-      <nav class="breadcrumbs" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: #9ca3af; margin-bottom: 0.5rem;">
-        <a href="../" class="breadcrumbs__link" style="color: var(--color-primary, #6366f1); text-decoration: none;">Home</a>
-        <span class="breadcrumbs__separator" style="opacity: 0.5;">/</span>
-        <span class="breadcrumbs__current" style="color: #f3f4f6; font-weight: 500;">Privacy Policy</span>
+    <div style="max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; position: relative; z-index: var(--z-base);">
+      <nav class="breadcrumbs" style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem;">
+        <a href="../" class="breadcrumbs__link" style="color: var(--text-accent); text-decoration: none;">Home</a>
+        <span class="breadcrumbs__separator" style="opacity: 0.4;">/</span>
+        <span class="breadcrumbs__current" style="color: var(--text); font-weight: 600;">Privacy Policy</span>
       </nav>
 
       <main class="privacy-content" style="width: 100%;">
-        <article class="game-card__panel" style="padding: 2rem; background: rgba(17, 24, 39, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; backdrop-filter: blur(12px);">
+        <article style="padding: 2.25rem; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: var(--shadow-card);">
           
           <!-- RUSSIAN VERSION -->
           <div id="privacy-ru" class="privacy-lang-section">
-            <h1 style="font-size: 1.75rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">Политика конфиденциальности</h1>
-            <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1.5rem;">Последнее обновление: 24 июля 2026 г.</p>
+            <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text); margin-top: 0; margin-bottom: 0.5rem; letter-spacing: 0.01em;">Политика конфиденциальности</h1>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem;">Последнее обновление: 24 июля 2026 г.</p>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">1. Общие положения</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о пользователях веб-сайта <strong>SeasonForge</strong> (<a href="https://seasonforge.online" style="color: #818cf8;">seasonforge.online</a>) и мобильного/сопутствующего приложения SeasonForge (далее — «Сервис»).
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">1. Общие положения</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
+                Настоящая Политика конфиденциальности определяет порядок обработки и защиты информации о пользователях веб-сайта <strong>SeasonForge</strong> (<a href="https://seasonforge.online" style="color: var(--text-accent); text-decoration: underline;">seasonforge.online</a>) и мобильного приложения SeasonForge (далее — «Сервис»).
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">2. Какую информацию мы собираем</h2>
-              <p style="color: #d1d5db; line-height: 1.6; margin-bottom: 0.75rem;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">2. Какую информацию мы собираем</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin-bottom: 0.75rem;">
                 Мы стремимся минимизировать сбор персональных данных и не требуем обязательной регистрации аккаунта:
               </p>
-              <ul style="color: #d1d5db; line-height: 1.6; padding-left: 1.25rem;">
-                <li style="margin-bottom: 0.5rem;"><strong>Локальные настройки:</strong> Ваше предпочтение языка (RU/EN) и выбор активных игр сохраняются исключительно локально на вашем устройстве (в <code>localStorage</code> веб-браузера или памяти приложения).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Данные обратной связи:</strong> Если вы отправляете нам сообщение через форму обратной связи, мы получаем текст вашего сообщения, тип обращения, технические параметры браузера/устройства и указанный вами e-mail (если вы решили его предоставить для ответа).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Анонимная аналитика:</strong> Мы используем Google Analytics для агрегированного подсчета посещений, анализа популярности страниц и стабильности работы приложения. Эти данные не содержат идентифицирующих вас сведений.</li>
+              <ul style="color: #cbd5e1; line-height: 1.65; padding-left: 1.25rem; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Локальные настройки:</strong> Ваше предпочтение языка (RU/EN) и выбор активных игр сохраняются исключительно локально на вашем устройстве (в <code>localStorage</code> веб-браузера или памяти приложения).</li>
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Данные обратной связи:</strong> Если вы отправляете нам сообщение через форму обратной связи, мы получаем текст вашего сообщения, тип обращения, технические параметры браузера/устройства и указанный вами e-mail (если вы решили его предоставить для ответа).</li>
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Анонимная аналитика:</strong> Мы используем Google Analytics для агрегированного подсчета посещений, анализа популярности страниц и стабильности работы приложения. Эти данные не содержат идентифицирующих вас сведений.</li>
               </ul>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">3. Цели использования данных</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                Собраная информация используется исключительно для:
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">3. Цели использования данных</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin-bottom: 0.75rem;">
+                Собранная информация используется исключительно для:
               </p>
-              <ul style="color: #d1d5db; line-height: 1.6; padding-left: 1.25rem;">
-                <li>Обеспечения корректной работы сервиса и сохранения ваших пользовательских настроек;</li>
-                <li>Обработки обращений и ответов на ваши вопросы по улучшению сервиса;</li>
+              <ul style="color: #cbd5e1; line-height: 1.65; padding-left: 1.25rem; margin: 0;">
+                <li style="margin-bottom: 0.35rem;">Обеспечения корректной работы сервиса и сохранения ваших пользовательских настроек;</li>
+                <li style="margin-bottom: 0.35rem;">Обработки обращений и ответов на ваши вопросы по улучшению сервиса;</li>
                 <li>Анализа производительности, исправления ошибок и оптимизации отображения таймеров сезонов.</li>
               </ul>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">4. Передача данных третьим лицам</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">4. Передача данных третьим лицам</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
                 Мы не продаём, не передаём и не разглашаем ваши данные третьим лицам. Исключение составляют стандартные анонимизированные данные, собираемые аналитическим сервисом Google Analytics в соответствии с его политикой конфиденциальности.
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">5. Безопасность и хранение</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">5. Безопасность и хранение</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
                 Все соединения с Сервисом защищены шифрованием HTTPS (SSL/TLS). Данные обратной связи хранятся в защищённом хранилище и удаляются по мере обработки.
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">6. Ваши права и контакты</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                Вы имеете право запросить удаление любых отправленных вами сообщений или данных обратной связи. По всем вопросам конфиденциальности вы можете связаться с нами через форму обратной связи на сайте (кнопка <strong>«Feedback»</strong> в шапке на главной странице).
+            <section style="margin-bottom: 1rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">6. Контакты</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
+                По всем вопросам, связанным с Политикой конфиденциальности или работой Сервиса, вы можете обратиться через форму обратной связи на сайте или по электронной почте: <a href="mailto:support@seasonforge.online" style="color: var(--text-accent); text-decoration: underline;">support@seasonforge.online</a>.
               </p>
             </section>
           </div>
 
           <!-- ENGLISH VERSION -->
           <div id="privacy-en" class="privacy-lang-section" style="display: none;">
-            <h1 style="font-size: 1.75rem; font-weight: 700; color: #ffffff; margin-bottom: 0.5rem;">Privacy Policy</h1>
-            <p style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 1.5rem;">Last Updated: July 24, 2026</p>
+            <h1 style="font-size: 1.85rem; font-weight: 800; color: var(--text); margin-top: 0; margin-bottom: 0.5rem; letter-spacing: 0.01em;">Privacy Policy</h1>
+            <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem;">Last Updated: July 24, 2026</p>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">1. Overview</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                This Privacy Policy outlines how <strong>SeasonForge</strong> (<a href="https://seasonforge.online" style="color: #818cf8;">seasonforge.online</a>) and the SeasonForge application (collectively, the "Service") collect, use, and safeguard user information.
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">1. Overview</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
+                This Privacy Policy outlines how <strong>SeasonForge</strong> (<a href="https://seasonforge.online" style="color: var(--text-accent); text-decoration: underline;">seasonforge.online</a>) and the SeasonForge application (collectively, the "Service") collect, use, and safeguard user information.
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">2. Information We Collect</h2>
-              <p style="color: #d1d5db; line-height: 1.6; margin-bottom: 0.75rem;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">2. Information We Collect</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin-bottom: 0.75rem;">
                 We prioritize user privacy and do not require account registration:
               </p>
-              <ul style="color: #d1d5db; line-height: 1.6; padding-left: 1.25rem;">
-                <li style="margin-bottom: 0.5rem;"><strong>Local Preferences:</strong> Your language choice (RU/EN) and selected games are stored locally on your device (via browser <code>localStorage</code> or local app storage).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Feedback Data:</strong> When submitting feedback, we collect your message content, request category, device/browser parameters, and optional email address (if provided for response).</li>
-                <li style="margin-bottom: 0.5rem;"><strong>Anonymous Analytics:</strong> We use Google Analytics to monitor aggregated traffic, page popularity, and application stability. This data contains no personally identifiable information.</li>
+              <ul style="color: #cbd5e1; line-height: 1.65; padding-left: 1.25rem; margin: 0;">
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Local Preferences:</strong> Your language choice (RU/EN) and selected games are stored locally on your device (via browser <code>localStorage</code> or local app storage).</li>
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Feedback Data:</strong> When submitting feedback, we collect your message content, request category, device/browser parameters, and optional email address (if provided for response).</li>
+                <li style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">Anonymous Analytics:</strong> We use Google Analytics to monitor aggregated traffic, page popularity, and application stability. This data contains no personally identifiable information.</li>
               </ul>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">3. How Information Is Used</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">3. How Information Is Used</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin-bottom: 0.75rem;">
                 Collected information is exclusively used to:
               </p>
-              <ul style="color: #d1d5db; line-height: 1.6; padding-left: 1.25rem;">
-                <li>Ensure smooth operation of the service and save your preferences;</li>
-                <li>Process inquiries and respond to feature requests or bug reports;</li>
+              <ul style="color: #cbd5e1; line-height: 1.65; padding-left: 1.25rem; margin: 0;">
+                <li style="margin-bottom: 0.35rem;">Ensure smooth operation of the service and save your preferences;</li>
+                <li style="margin-bottom: 0.35rem;">Process inquiries and respond to feature requests or bug reports;</li>
                 <li>Analyze system performance and optimize season timer updates.</li>
               </ul>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">4. Third-Party Sharing</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">4. Third-Party Sharing</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
                 We do not sell, trade, or share user data with third parties. Standard anonymized analytics data is processed by Google Analytics under their privacy policy.
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">5. Security & Protection</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                All connections to the Service are encrypted via HTTPS (SSL/TLS). Feedback submissions are stored securely and purged after processing.
+            <section style="margin-bottom: 1.75rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">5. Security &amp; Protection</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
+                All connections to the Service are secured via HTTPS (SSL/TLS) encryption. Feedback submissions are stored securely and purged periodically.
               </p>
             </section>
 
-            <section style="margin-bottom: 1.5rem;">
-              <h2 style="font-size: 1.2rem; font-weight: 600; color: #6366f1; margin-bottom: 0.5rem;">6. Your Rights & Contact Information</h2>
-              <p style="color: #d1d5db; line-height: 1.6;">
-                You have the right to request deletion of your submitted feedback data at any time. For privacy queries, please reach out via the <strong>Feedback form</strong> on the site (using the "Feedback" button in the main header).
+            <section style="margin-bottom: 1rem;">
+              <h2 style="font-size: 1.25rem; font-weight: 700; color: var(--text-accent); margin-bottom: 0.6rem;">6. Contact Us</h2>
+              <p style="color: #cbd5e1; line-height: 1.65; margin: 0;">
+                For any questions regarding this Privacy Policy, please submit feedback on the site or email us at: <a href="mailto:support@seasonforge.online" style="color: var(--text-accent); text-decoration: underline;">support@seasonforge.online</a>.
               </p>
             </section>
           </div>
@@ -191,73 +204,47 @@
       </main>
     </div>
 
-    <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 1.5rem 1rem;">
-      <span>© 2026 SeasonForge. Автоматический мониторинг ARPG сезонов.</span>
-      <div style="display: flex; gap: 1rem; font-size: 0.85rem;">
-        <a href="../" style="color: #818cf8; text-decoration: none;">Главная / Home</a>
-        <span style="color: #4b5563;">•</span>
-        <a href="../privacy/" style="color: #818cf8; text-decoration: none;">Privacy Policy</a>
+    <footer class="app-footer">
+      <span class="app-footer__copy">© 2026 SeasonForge. ARPG Season Tracker.</span>
+      <div class="app-footer__links">
+        <a href="../" class="app-footer__link">Home</a>
+        <a href="../changelog/" class="app-footer__link">Changelog</a>
       </div>
     </footer>
 
-    <nav class="mobile-nav" id="mobile-nav">
-      <a href="../" class="mobile-nav__btn" id="mob-btn-tracker" style="text-decoration: none;">
-        <span class="mobile-nav__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/><path d="M7.5 8h9"/><path d="M15.5 20.5v-3a1 1 0 0 1 1-1h4"/></svg>
-        </span>
-        <span class="mobile-nav__label" id="mob-lbl-tracker">Карточка игры</span>
-        <span class="mobile-nav__indicator"></span>
-      </a>
-      <a href="../#timeline" class="mobile-nav__btn" id="mob-btn-timeline" style="text-decoration: none;">
-        <span class="mobile-nav__icon">
-          <svg width="22" height="22" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="50" r="8"/><circle cx="50" cy="50" r="14"/><circle cx="86" cy="50" r="8"/><path d="M22 50H36"/><path d="M64 50H78"/></svg>
-        </span>
-        <span class="mobile-nav__label" id="mob-lbl-timeline">Хронология 2026</span>
-        <span class="mobile-nav__indicator"></span>
-      </a>
-      <a href="../#games" class="mobile-nav__btn" id="mob-btn-games" style="text-decoration: none;">
-        <span class="mobile-nav__icon">
-          <svg width="22" height="22" viewBox="0 0 100 100" fill="currentColor"><path d="M 33.5 28.5 C 41 31, 59 31, 66.5 28.5 C 76.5 24.5, 87.5 33, 87.5 47 C 87.5 63, 79.5 71, 71.5 71 C 65 71, 60.5 61.5, 50 61.5 C 39.5 61.5, 35 71, 28.5 71 C 20.5 71, 12.5 63, 12.5 47 C 12.5 33, 23.5 24.5, 12.5 47 C 12.5 33, 23.5 24.5, 33.5 28.5 Z M 33.5 30 C 24.5 26.5, 14 34.5, 14 47 C 14 62, 21.5 69.5, 28.5 69.5 C 34.5 69.5, 38.5 60, 50 60 C 61.5 60, 65.5 69.5, 71.5 69.5 C 78.5 69.5, 86 62, 86 47 C 86 34.5, 75.5 26.5, 66.5 30 C 59 32.5, 41 32.5, 33.5 30 Z"/><path d="M 30.75 41.5 C 31.4 41.5 32 42.1 32 42.75 L 32 45.25 L 34.5 45.25 C 35.15 45.25 35.75 45.85 35.75 46.5 L 35.75 49.5 C 35.75 50.15 35.15 50.75 34.5 50.75 L 32 50.75 L 32 53.25 C 32 53.9 31.4 54.5 30.75 54.5 L 29.25 54.5 C 28.6 54.5 28 53.9 28 53.25 L 28 50.75 L 25.5 50.75 C 24.85 50.75 24.25 50.15 24.25 49.5 L 24.25 46.5 C 24.25 45.85 24.85 45.25 25.5 45.25 L 28 45.25 L 28 42.75 C 28 42.1 28.6 41.5 29.25 41.5 Z"/><circle cx="68" cy="41.5" r="2.8"/><circle cx="68" cy="55.5" r="2.8"/><circle cx="61" cy="48.5" r="2.8"/><circle cx="75" cy="48.5" r="2.8"/></svg>
-        </span>
-        <span class="mobile-nav__label" id="mob-lbl-games">Игры</span>
-        <span class="mobile-nav__indicator"></span>
-      </a>
-      <a href="../#more" class="mobile-nav__btn" id="mob-btn-more" style="text-decoration: none;">
-        <span class="mobile-nav__icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7.5" height="7.5" rx="2.5"/><rect x="13" y="3.5" width="7.5" height="7.5" rx="2.5"/><rect x="13" y="13" width="7.5" height="7.5" rx="2.5"/><rect x="3.5" y="13" width="7.5" height="7.5" rx="2.5"/></svg>
-        </span>
-        <span class="mobile-nav__label" id="mob-lbl-more">Ещё</span>
-        <span class="mobile-nav__indicator"></span>
-      </a>
-    </nav>
-
     <script>
       (function() {
-        const btnEn = document.getElementById('btn-lang-en');
-        const btnRu = document.getElementById('btn-lang-ru');
+        const langToggleBtn = document.getElementById('btn-lang-toggle');
+        const langText = document.getElementById('lbl-lang-text');
         const ruSection = document.getElementById('privacy-ru');
         const enSection = document.getElementById('privacy-en');
+        const backLabel = document.getElementById('lbl-back-to-tracker');
+        let currentLang = 'ru';
 
         function setLang(lang) {
+          currentLang = lang;
           if (lang === 'en') {
             ruSection.style.display = 'none';
             enSection.style.display = 'block';
-            btnEn.classList.add('lang-switcher__btn--active');
-            btnRu.classList.remove('lang-switcher__btn--active');
+            if (langText) langText.textContent = 'EN';
+            if (backLabel) backLabel.textContent = 'Back to Tracker';
             document.documentElement.lang = 'en';
             try { localStorage.setItem('seasonforge_lang', 'en'); } catch(e){}
           } else {
             ruSection.style.display = 'block';
             enSection.style.display = 'none';
-            btnRu.classList.add('lang-switcher__btn--active');
-            btnEn.classList.remove('lang-switcher__btn--active');
+            if (langText) langText.textContent = 'RU';
+            if (backLabel) backLabel.textContent = 'На главную';
             document.documentElement.lang = 'ru';
             try { localStorage.setItem('seasonforge_lang', 'ru'); } catch(e){}
           }
         }
 
-        btnEn.addEventListener('click', () => setLang('en'));
-        btnRu.addEventListener('click', () => setLang('ru'));
+        if (langToggleBtn) {
+          langToggleBtn.addEventListener('click', () => {
+            setLang(currentLang === 'ru' ? 'en' : 'ru');
+          });
+        }
 
         // Detect initial language
         let defaultLang = 'ru';

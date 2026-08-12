@@ -33,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
-    <link rel="stylesheet" href="../../../src/styles/main.css?v=1.4.0" />
+    <link rel="stylesheet" href="../../../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
     <link rel="icon" href="../../../assets/favicon.png" type="image/png" />
     <link rel="manifest" href="../../../manifest.json" />
     <meta name="theme-color" content="#0b0f19" />
@@ -133,7 +133,7 @@
         <a href="../../../changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
-            <strong id="last-checked-time">Aug 12, 15:37 UTC</strong>
+            <strong id="last-checked-time">Aug 12, 16:04 UTC</strong>
           </div>
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
@@ -186,7 +186,7 @@
               <h1 id="season-title" style="font-size: 2rem; font-weight: 800; color: #ffffff; margin: 0; line-height: 1.2;">League 3.0: Harbinger</h1>
             </div>
             <div>
-              <div id="season-status-badge-container"><span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span></div>
+              <div id="season-status-badge-container"><span class="status-badge status-badge--ended">Ended</span></div>
             </div>
           </div>
           
@@ -263,11 +263,11 @@
     <!-- Embedded season translations data -->
     <script type="application/json" id="season-data-json">{"season":{"en":"League 3.0: Harbinger","ru":"Лига 3.0: Предвестник"},"startDate":"2017-08-04","endDate":"2017-12-04","sourceUrl":"https://www.poewiki.net/wiki/Harbinger_league","summary":{"en":"Launched with The Fall of Oriath (Acts 5-10). Mysterious, immortal Harbingers arrived in the world, summoning hordes of minions.","ru":"Вышла вместе с дополнением The Fall of Oriath (Акты 5-10). В мир прибыли таинственные бессмертные Предвестники, призывающие орды слуг."},"mechanics":{"en":["Harbingers and their summoned enemy packs.","New currency shards (Ancient Orb, Annulment Orb, Horizon Orb).","Unique 'The Beachhead' Harbinger map."],"ru":["Предвестники (Harbingers) и призываемые ими пачки врагов.","Новые осколки валюты (Ancient Orb, Annulment Orb, Horizon Orb).","Уникальная карта «Владения Предвестника» (The Beachhead)."]},"rewards":{"en":["Blue Harbinger coronal armor set.","Harbinger pet and blue portal."],"ru":["Синий корональный комплект брони Предвестника.","Питомец-Предвестник и синий портал."]}}</script>
 
-    <footer class="app-footer" style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin-top: 2rem;">
-      <span>© 2026 SeasonForge. ARPG Season Tracker.</span>
-      <div style="display: flex; gap: 1rem; font-size: 0.85rem;">
-        <a href="../../../changelog/" style="color: #818cf8; text-decoration: none;">Changelog</a>
-        <a href="../../../privacy/" style="color: #818cf8; text-decoration: none;">Privacy Policy</a>
+    <footer class="app-footer">
+      <span class="app-footer__copy" id="lbl-footer-copy">© 2026 SeasonForge. ARPG Season Tracker.</span>
+      <div class="app-footer__links">
+        <a href="../../../changelog/" class="app-footer__link" id="lbl-footer-changelog">Changelog</a>
+        <a href="../../../privacy/" class="app-footer__link" id="lbl-footer-privacy">Privacy Policy</a>
       </div>
     </footer>
 

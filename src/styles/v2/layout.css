@@ -1,0 +1,112 @@
+/* SeasonForge CSS v2 — Layout Module */
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 1.25rem;
+  padding: 1.5rem 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Layout container hooks (Preserved as migration technical debt for DOM compatibility) */
+#navbar,
+#content {
+  position: relative;
+  z-index: var(--z-base);
+}
+
+#navbar {
+  padding: 0;
+}
+
+#content {
+  padding: 0;
+  min-width: 0;
+}
+
+@media (max-width: 1100px) {
+  .app-layout {
+    grid-template-columns: 340px minmax(0, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* OBS Overlay Mode (Pure Cascade - No !important) */
+body.app-layout--overlay {
+  background: transparent;
+  background-image: none;
+  overflow: hidden;
+}
+
+body.app-layout--overlay .hero-parallax-bg,
+body.app-layout--overlay .hero-parallax-container,
+body.app-layout--overlay .app-header,
+body.app-layout--overlay .app-footer,
+body.app-layout--overlay #navbar,
+body.app-layout--overlay .mobile-nav,
+body.app-layout--overlay #mobile-nav,
+body.app-layout--overlay #feedback-trigger-btn,
+body.app-layout--overlay #streamer-trigger-btn,
+body.app-layout--overlay .lang-switcher,
+body.app-layout--overlay .more-menu-overlay,
+body.app-layout--overlay .feedback-modal-overlay {
+  display: none;
+}
+
+body.app-layout--overlay .app-layout {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  max-width: none;
+  width: 100%;
+  height: 100%;
+}
+
+body.app-layout--overlay #content {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+/* App Footer */
+.app-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.5rem 1rem 2.5rem;
+  margin-top: 1.5rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+  position: relative;
+  z-index: var(--z-base);
+}
+
+.app-footer__copy {
+  color: var(--muted-strong);
+  font-size: 0.78rem;
+}
+
+.app-footer__links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-footer__link {
+  color: var(--text-accent);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.78rem;
+  transition: color var(--transition-fast);
+}
+
+.app-footer__link:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}

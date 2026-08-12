@@ -22,9 +22,12 @@ export class SeasonService {
         console.warn('SeasonService: Failed to resolve rootUrl', e);
       }
 
-      // 2. Relative URL from current page — fallback for non-standard hosting
+      // 2. Relative URL from current page depth — fallback for non-standard hosting
       try {
-        pathsToTry.push(new URL('data/seasons.json', window.location.href).href + cacheBuster);
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const depth = pathSegments.length > 0 && !pathSegments[pathSegments.length - 1].includes('.') ? pathSegments.length : Math.max(0, pathSegments.length - 1);
+        const relPrefix = depth > 0 ? '../'.repeat(depth) : './';
+        pathsToTry.push(new URL(`${relPrefix}data/seasons.json`, window.location.href).href + cacheBuster);
       } catch (e) {
         console.warn('SeasonService: Failed to resolve relativeUrl', e);
       }

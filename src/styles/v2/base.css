@@ -1,0 +1,81 @@
+/* SeasonForge CSS v2 — Global Base Styles */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background-color: var(--bg-deep);
+  color: var(--text);
+  min-height: 100vh;
+  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Screen reader accessibility utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Background image layer with darkening overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity var(--transition-normal);
+}
+
+/* Subtle ambient color accents */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(12, 9, 21, 0.1) 0%, rgba(8, 6, 15, 0.5) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Common Typography & Focus Reset */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+}

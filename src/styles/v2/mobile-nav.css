@@ -1,0 +1,123 @@
+/* SeasonForge CSS v2 — Mobile Navigation Module */
+
+/* Hidden on Desktop */
+.mobile-nav {
+  display: none;
+}
+
+/* Floating Glassmorphism Mobile Bottom Navigation Dock */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: max(90px, calc(75px + env(safe-area-inset-bottom)));
+  }
+
+  #navbar {
+    display: none;
+  }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: 12px;
+    right: 12px;
+    max-width: 480px;
+    margin: 0 auto;
+    height: 56px;
+    background: rgba(18, 20, 32, 0.94);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    z-index: var(--z-modal);
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 0.25rem;
+    overflow: hidden;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-nav__btn {
+    background: transparent;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    color: var(--muted);
+    font-family: var(--font);
+    cursor: pointer;
+    flex: 1;
+    height: 100%;
+    padding: 4px 0 2px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast) cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    text-decoration: none;
+  }
+
+  .mobile-nav__btn:active {
+    transform: scale(0.94);
+  }
+
+  .mobile-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    color: var(--muted);
+    transition: color var(--transition-fast), transform var(--transition-fast), filter var(--transition-fast);
+  }
+
+  .mobile-nav__icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    stroke: currentColor;
+  }
+
+  .mobile-nav__label {
+    font-size: 0.67rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--muted);
+    white-space: nowrap;
+    transition: color var(--transition-fast), font-weight var(--transition-fast);
+  }
+
+  .mobile-nav__indicator {
+    width: 22px;
+    height: 3px;
+    border-radius: 2px;
+    background: transparent;
+    margin-top: 1px;
+    transition: background var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .mobile-nav__btn--active {
+    background: transparent;
+    border: none;
+  }
+
+  .mobile-nav__btn--active .mobile-nav__icon {
+    color: var(--purple);
+    transform: translateY(-0.5px);
+    filter: drop-shadow(0 0 8px var(--purple-glow));
+  }
+
+  .mobile-nav__btn--active .mobile-nav__label {
+    color: var(--text);
+    font-weight: 700;
+  }
+
+  .mobile-nav__btn--active .mobile-nav__indicator {
+    background: var(--purple-gradient);
+    box-shadow: 0 0 8px var(--purple-gradient-glow);
+  }
+}

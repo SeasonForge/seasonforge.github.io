@@ -13,11 +13,16 @@ function safeSetItem(key, value) {
   }
 }
 
+export function detectDefaultView() {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'timeline';
+  return window.matchMedia('(min-width: 1025px)').matches ? 'timeline' : 'card';
+}
+
 // Global application state.
 export const state = {
   games: [],
   activeGame: null,
-  activeView: 'card', // 'card' or 'timeline'
+  activeView: detectDefaultView(),
   loading: false,
   error: null,
   lastUpdate: null,

@@ -1,0 +1,61 @@
+/* SeasonForge CSS v2 — Design Tokens */
+:root {
+  color-scheme: dark;
+
+  /* Color Palette */
+  --bg: #0c0915;
+  --bg-deep: #08060f;
+  --panel: rgba(18, 14, 28, 0.78);
+  --panel-strong: rgba(12, 9, 21, 0.88);
+  --panel-subtle: rgba(18, 14, 28, 0.65);
+  --text: #f8fafc;
+  --text-accent: #a5b4fc;
+  --muted: #94a3b8;
+  --muted-strong: #64748b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.04);
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --accent: #6366f1;
+  --accent-soft: rgba(99, 102, 241, 0.08);
+  --accent-glow: rgba(99, 102, 241, 0.3);
+  --gold: #f59e0b;
+  --gold-soft: rgba(245, 158, 11, 0.12);
+  --gold-glow: rgba(245, 158, 11, 0.25);
+  --green-soft: rgba(16, 185, 129, 0.1);
+  --green-text: #a7f3d0;
+  --amber-soft: rgba(245, 158, 11, 0.1);
+  --amber-text: #fef08a;
+  --purple: #9d70ff;
+  --purple-glow: rgba(157, 112, 255, 0.6);
+  --purple-gradient: linear-gradient(90deg, #8b5cf6, #a855f7);
+  --purple-gradient-glow: rgba(168, 85, 247, 0.8);
+
+  /* Border Radii */
+  --radius-xs: 8px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+
+  /* Typography — Strict Single Font Family */
+  --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Shadows & Glows */
+  --shadow-card: 0 30px 70px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.04);
+
+  /* Transitions */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s ease;
+  --transition-slow: 0.4s ease;
+  --transition-bounce: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Z-Index Hierarchy */
+  --z-base: 1;
+  --z-header: 100;
+  --z-modal-backdrop: 900;
+  --z-modal: 1000;
+  --z-tooltip: 1100;
+}

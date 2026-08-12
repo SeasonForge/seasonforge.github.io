@@ -1,6 +1,7 @@
 // Application entry point.
 import { CONFIG } from './config.js';
 import { SeasonService } from './services/SeasonService.js';
+import { FALLBACK_SEASONS_DATA } from './data/fallback-seasons.js';
 import {
   getState,
   setActiveGame,
@@ -782,20 +783,24 @@ function startCountdownLoop() {
 }
 
 async function initializeApp() {
-  setLoading(true);
   setError(null);
 
+  // 1. Immediately hydrate synchronously from fallback data for 0ms instantaneous render
+  const initialGames = FALLBACK_SEASONS_DATA?.games || [];
+  if (initialGames.length > 0) {
+    setGames(initialGames);
+    setRawData(FALLBACK_SEASONS_DATA);
+  }
+
   try {
-    const rawData = await seasonService.loadSeasons();
-    const games = Array.isArray(rawData?.games) ? rawData.games : [];
-    setRawData(rawData);
-    setGames(games);
+    const games = getState().games || [];
 
     // Check overlay parameters
     const params = new URLSearchParams(window.location.search);
     const isOverlay = params.get('overlay') === 'true';
     if (isOverlay) {
       document.body.classList.add('app-layout--overlay');
+      setLoading(false);
       initOBSOverlay(games, getState());
       return;
     } else {
@@ -806,50 +811,35 @@ async function initializeApp() {
       
       const now = Date.now();
       const isLongTimeNoSee = lastVisit && (now - parseInt(lastVisit, 10) > 30 * 24 * 60 * 60 * 1000);
-      const isFirstVisit = !lastVisit;
+      const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 1025px)').matches;
+      const defaultView = isDesktop ? 'timeline' : 'card';
 
       if (isFirstVisit) {
-        // First-time visit: open Timeline (Overview), do not select game automatically
-        setActiveView('timeline', false);
-        setActiveGame(null, false);
+        setActiveView(defaultView, false);
+        setActiveGame(games[0] ?? null, false);
       } else if (isLongTimeNoSee) {
-        // Inactive for 30+ days: open saved game, show Game Card instead of Timeline
         let matchedGame = null;
         if (lastGame) {
           matchedGame = games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
         }
-        
-        if (matchedGame) {
-          setActiveGame(matchedGame, false);
-          setActiveView('card', false);
-        } else {
-          setActiveGame(null, false);
-          setActiveView('timeline', false);
-        }
+        setActiveGame(matchedGame || games[0] || null, false);
+        setActiveView(defaultView, false);
       } else {
-        // Returning visit (under 30 days): restore saved game and view
         let matchedGame = null;
         if (lastGame) {
           matchedGame = games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
         }
-        
-        if (matchedGame) {
-          setActiveGame(matchedGame, false);
-        } else {
-          setActiveGame(games[0] ?? null, false);
-        }
+        setActiveGame(matchedGame || games[0] || null, false);
 
         if (lastView === 'Timeline') {
           setActiveView('timeline', false);
         } else if (lastView === 'Game Card') {
           setActiveView('card', false);
         } else {
-          // Default fallback: show Card if game is selected, else Timeline
-          setActiveView(matchedGame ? 'card' : 'timeline', false);
+          setActiveView(defaultView, false);
         }
       }
 
-      // URL hash or view parameter override
       const hashView = window.location.hash.replace('#', '').toLowerCase();
       const queryView = params.get('view')?.toLowerCase();
       const overrideView = ['timeline', 'games', 'more', 'card'].includes(hashView) ? hashView : (['timeline', 'games', 'more', 'card'].includes(queryView) ? queryView : null);
@@ -857,11 +847,10 @@ async function initializeApp() {
         setActiveView(overrideView, false);
       }
 
-      // Update lastVisit timestamp
       try {
         localStorage.setItem('lastVisit', String(now));
       } catch (e) {
-        // localStorage may be disabled (private mode) or quota exceeded — non-fatal.
+        // localStorage non-fatal
       }
     }
 
@@ -870,27 +859,23 @@ async function initializeApp() {
     Header.update({ lang: getState().settings?.lang });
 
     initHeroParallax();
+    setLoading(false);
     renderApp();
     startCountdownLoop();
 
-    console.info('SeasonForge initialized', {
-      project: CONFIG.projectName,
-      games: getState().games.length,
-      activeGame: getState().activeGame
+    // 2. Fetch fresh network data asynchronously in background (0ms latency!)
+    seasonService.loadSeasons().then(rawData => {
+      if (rawData?.games) {
+        setRawData(rawData);
+        setGames(rawData.games);
+        renderApp();
+      }
+    }).catch(err => {
+      console.warn('Background loadSeasons failed, using fallback:', err);
     });
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .catch((err) => console.error('Service Worker registration failed:', err));
-      });
-    }
   } catch (error) {
     setError(error.message || t('toasts.initFailed'));
-    if (!getState().games || getState().games.length === 0) {
-      renderToast(t('toasts.loadFailed'), 'error');
-    }
-    console.error('SeasonForge initialization failed', error);
     renderApp();
   } finally {
     setLoading(false);

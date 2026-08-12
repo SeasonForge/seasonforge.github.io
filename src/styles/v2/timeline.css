@@ -1,0 +1,397 @@
+/* SeasonForge CSS v2 — Timeline Module */
+
+.timeline-view-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.timeline-card {
+  position: relative;
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-top: 0;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card);
+}
+
+.timeline-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.timeline-card__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #e6eefb;
+  letter-spacing: 0.02em;
+}
+
+.timeline-card__caption {
+  margin: 0.25rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.timeline-card__year-badge {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Horizontal Map Grid */
+.timeline-map__scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-sm);
+}
+
+.timeline-map__grid {
+  --timeline-offset: 180px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  padding: 2.25rem 1.25rem 1.25rem 1.25rem;
+  overflow: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 30px rgba(139, 92, 246, 0.06);
+  min-width: 760px;
+}
+
+.timeline-map__months {
+  display: flex;
+  margin-left: var(--timeline-offset, 180px);
+  padding-left: 12px;
+  padding-right: 20px;
+  border-bottom: 1px solid var(--border-soft);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-map__month {
+  flex: 1;
+  text-align: center;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--muted-strong);
+  letter-spacing: 0.05em;
+  opacity: 0.5;
+  transition: all var(--transition-normal);
+}
+
+.timeline-map__month--adjacent {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.timeline-map__month--current {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #a78bfa;
+  opacity: 1;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.35);
+}
+
+.timeline-map__grid-lines {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--timeline-offset, 180px) + 12px);
+  right: 20px;
+  display: flex;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.timeline-map__grid-line {
+  flex: 1;
+  border-right: 1px dashed rgba(255, 255, 255, 0.03);
+}
+
+.timeline-map__rows {
+  position: relative;
+  z-index: 2;
+}
+
+.timeline-map__row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.75rem;
+  position: relative;
+  padding: 0.4rem 0.5rem;
+  margin-left: -0.5rem;
+  margin-right: -0.5rem;
+  border-radius: var(--radius-xs);
+  transition: background-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.timeline-map__row:last-child {
+  margin-bottom: 0.5rem;
+}
+
+.timeline-map__row:hover {
+  background: color-mix(in srgb, var(--game-color) 7%, rgba(255, 255, 255, 0.02));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--game-color) 20%, transparent);
+}
+
+.timeline-map__row-label {
+  width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.timeline-map__row-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  transition: transform var(--transition-fast);
+}
+
+.timeline-map__row-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.timeline-map__row-track {
+  flex: 1;
+  position: relative;
+  height: 24px;
+  margin-left: 12px;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* Season Lines & Color Bars */
+.timeline-bar {
+  position: absolute;
+  border-radius: 999px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.timeline-bar--past {
+  height: 4px;
+  background: var(--game-color);
+  opacity: 0.35;
+}
+
+.timeline-bar--current-elapsed {
+  height: 4px;
+  background: var(--game-color);
+  opacity: 0.55;
+}
+
+.timeline-bar--current-remaining {
+  height: 4px;
+  background: var(--game-color);
+  opacity: 1;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--game-color) 65%, transparent);
+}
+
+.timeline-bar--future {
+  height: 2px;
+  border-radius: 0;
+  border: none;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--game-color) 60%, transparent) 55%, transparent 55%);
+  background-size: 8px 2px;
+  background-repeat: repeat-x;
+  opacity: 0.85;
+}
+
+.timeline-bar__title {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  font-size: 0.65rem;
+  font-weight: 700;
+  white-space: nowrap;
+  color: color-mix(in srgb, var(--game-color) 90%, #ffffff);
+  background: rgba(11, 15, 25, 0.82);
+  border: 1px solid color-mix(in srgb, var(--game-color) 30%, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+/* Season Circle Nodes */
+.timeline-circle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #090d16;
+  border: 3px solid var(--game-color);
+  transform: translate(-50%, -50%);
+  top: 50%;
+  z-index: 5;
+  box-shadow: 0 0 8px var(--game-color);
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.timeline-circle:hover {
+  transform: translate(-50%, -50%) scale(1.35);
+  background-color: var(--game-color);
+}
+
+.timeline-circle__label {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--game-color) 90%, #ffffff);
+  background: rgba(11, 15, 25, 0.85);
+  border: 1px solid color-mix(in srgb, var(--game-color) 35%, rgba(255, 255, 255, 0.1));
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.12rem 0.45rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  line-height: 1;
+}
+
+.timeline-circle__date {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: rgba(11, 15, 25, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 0.08rem 0.35rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* NOW indicator line */
+.timeline-map__now-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(167, 139, 250, 0.7), rgba(139, 92, 246, 0.15) 80%, transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.timeline-map__now-badge {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #e0e7ff;
+  font-size: 0.58rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+/* Floating Timeline Tooltip Popup */
+.timeline-tooltip,
+#timeline-tooltip {
+  position: fixed !important;
+  z-index: 9999 !important;
+  background: rgba(10, 15, 30, 0.95);
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.75), 0 0 20px rgba(139, 92, 246, 0.15);
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+  font-family: var(--font);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  max-width: 290px;
+  width: auto;
+  box-sizing: border-box;
+}
+
+.timeline-tooltip__title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.25rem;
+  letter-spacing: 0.02em;
+}
+
+.timeline-tooltip__season {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.35rem;
+}
+
+.timeline-tooltip__detail {
+  font-size: 0.68rem;
+  color: #cbd5e1;
+  margin-bottom: 0.2rem;
+  line-height: 1.4;
+}
+
+.timeline-tooltip__detail strong {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Mobile responsive fixes for Timeline */
+@media (max-width: 768px) {
+  .timeline-map__grid {
+    --timeline-offset: 48px;
+    min-width: 680px;
+  }
+  .timeline-map__row-label {
+    width: 48px;
+  }
+  .timeline-map__row-name {
+    display: none;
+  }
+  .timeline-map__months {
+    margin-left: 48px;
+  }
+}

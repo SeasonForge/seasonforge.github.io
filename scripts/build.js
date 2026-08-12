@@ -5,6 +5,7 @@ import { getIconSvg } from '../src/utils/icons.js';
 
 import { initDomMock } from './builder/domMock.js';
 import { validatePages } from './builder/pageValidator.js';
+import { buildV2 } from './build-v2.js';
 
 // 1. Mock browser globals for Node.js SSG execution
 initDomMock();
@@ -45,6 +46,9 @@ const seasonTemplatePath = path.join(__dirname, '../src/templates/season.html');
 
 async function build() {
   console.log('=== Starting Static Site Generation (SSG) ===');
+
+  // Build CSS v2 bundle first to ensure latest styles
+  buildV2();
 
   const BASE_URL = process.env.BASE_URL || 'https://seasonforge.online';
   const generatedSeasonUrls = [];
@@ -197,9 +201,9 @@ async function build() {
               <td style="padding: 0.75rem 0.5rem; font-weight: 600;">
                 <a href="${escapeAttr(seasonUrl)}" class="history-table__season-link" style="color: #818cf8; text-decoration: none; transition: color 0.2s;">${escapeHtml(seasonName)} →</a>
               </td>
-              <td style="padding: 0.75rem 0.5rem;">${formattedStart}</td>
-              <td style="padding: 0.75rem 0.5rem;">${formattedEnd}</td>
-              <td style="padding: 0.75rem 0.5rem;">${durationStr}</td>
+              <td style="padding: 0.75rem 0.5rem;" data-label="Start">${formattedStart}</td>
+              <td style="padding: 0.75rem 0.5rem;" data-label="End">${formattedEnd}</td>
+              <td style="padding: 0.75rem 0.5rem;" data-label="Duration">${durationStr}</td>
               <td style="padding: 0.75rem 0.5rem;">${linkHtml}</td>
             </tr>
           `);
@@ -225,14 +229,14 @@ async function build() {
               ? `<a href="../${nextSlug}/" class="season-nav-btn">${escapeHtml(nextItem.season?.en || 'Next Season')} →</a>` 
               : '';
 
-            let statusBadge = '<span style="background: rgba(156,163,175,0.15); color: #9ca3af; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Ended</span>';
+            let statusBadge = '<span class="status-badge status-badge--ended">Ended</span>';
             const now = new Date();
             if (start && new Date(start) > now) {
-              statusBadge = '<span style="background: rgba(99,102,241,0.15); color: #818cf8; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Upcoming</span>';
+              statusBadge = '<span class="status-badge status-badge--upcoming">Upcoming</span>';
             } else if (!end && start) {
-              statusBadge = '<span style="background: rgba(34,197,94,0.15); color: #4ade80; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Active Season</span>';
+              statusBadge = '<span class="status-badge status-badge--active">Active Season</span>';
             } else if (!start) {
-              statusBadge = '<span style="background: rgba(99,102,241,0.15); color: #818cf8; padding: 0.35rem 0.85rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 600;">Upcoming</span>';
+              statusBadge = '<span class="status-badge status-badge--upcoming">Upcoming</span>';
             }
 
             const seasonDesc = item.summary?.en || `${gameName} ${seasonName}: start date, end date, duration and full season timeline.`;

@@ -255,7 +255,13 @@ export function initStreamer(games = []) {
     const opacityVal = opacityInput ? parseInt(opacityInput.value, 10) : 80;
 
     const opacityValEl = document.getElementById('streamer-opacity-val');
-    if (opacityValEl) opacityValEl.textContent = `${opacityVal}%`;
+    if (opacityValEl) {
+      let hint = '';
+      if (opacityVal === 0) hint = ' (Прозрачный)';
+      else if (opacityVal <= 30) hint = ' (Полупрозрачный)';
+      else if (opacityVal === 100) hint = ' (Плотный)';
+      opacityValEl.textContent = `${opacityVal}%${hint}`;
+    }
 
     let targetUrl = `${rootUrl}?overlay=true&type=${type}`;
     if (type !== 'timeline' && gameId) {

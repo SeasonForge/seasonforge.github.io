@@ -1,0 +1,59 @@
+/* SeasonForge CSS v2 — Hero Parallax Component */
+
+.hero-parallax-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.95;
+  transition: opacity 0.6s ease;
+}
+
+.hero-parallax__layer {
+  position: absolute;
+  top: -3vh;
+  left: 3vw;
+  width: 106vw;
+  height: 106vh;
+  object-fit: cover;
+  object-position: center center;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-parallax__bg {
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.85;
+  filter: brightness(1.15) contrast(1.1);
+}
+
+.hero-parallax__body {
+  z-index: 1;
+  mix-blend-mode: screen;
+  opacity: 0.95;
+}
+
+.hero-parallax__head {
+  z-index: 2;
+  transform-origin: 50% 35%;
+}
+
+.hero-parallax__eyes {
+  z-index: 3;
+  transform-origin: 50% 30%;
+}
+
+.hero-parallax__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(180deg, rgba(8, 6, 15, 0.15) 0%, rgba(8, 6, 15, 0.45) 100%);
+  pointer-events: none;
+}

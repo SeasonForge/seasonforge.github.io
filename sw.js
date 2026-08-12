@@ -1,10 +1,10 @@
-const CACHE_NAME = 'seasonforge-v1.2.1';
+const CACHE_NAME = 'seasonforge-v2.0.2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/offline.html',
   '/manifest.json',
-  '/src/styles/main.css?v=1.2.1',
+  '/src/styles/v2/dist/v2-bundle.css?v=2.0.0',
   '/src/app.js',
   '/src/game-page.js',
   '/src/config.js',
@@ -16,7 +16,15 @@ const STATIC_ASSETS = [
 // Install: Cache critical shell assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then(async (cache) => {
+      for (const asset of STATIC_ASSETS) {
+        try {
+          await cache.add(asset);
+        } catch (err) {
+          console.warn(`[SW] Failed to pre-cache asset: ${asset}`, err);
+        }
+      }
+    })
   );
   self.skipWaiting();
 });
@@ -50,40 +58,57 @@ self.addEventListener('fetch', (event) => {
   // Strategy A: HTML Page Navigations & Seasons Data JSON -> Network First
   if (request.mode === 'navigate' || url.pathname.endsWith('.json')) {
     event.respondWith(
-      fetch(request)
-        .then((networkResponse) => {
+      (async () => {
+        try {
+          // Explicitly construct request with redirect: 'follow' to prevent browser SW navigation redirect errors
+          const fetchOptions = request.mode === 'navigate' ? { redirect: 'follow' } : {};
+          const networkResponse = await fetch(request.url, fetchOptions);
+          
           if (networkResponse && networkResponse.status === 200) {
             const copy = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, copy);
           }
           return networkResponse;
-        })
-        .catch(async () => {
+        } catch (error) {
           const cachedResponse = await caches.match(request);
           if (cachedResponse) return cachedResponse;
-          // Uncached page navigation offline fallback
+
           if (request.mode === 'navigate') {
-            return caches.match('/offline.html');
+            const offlineResponse = await caches.match('/offline.html');
+            if (offlineResponse) return offlineResponse;
+            return new Response(
+              '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Offline</title></head><body style="background:#0c0915;color:#fff;font-family:sans-serif;text-align:center;padding:3rem;"><h1>SeasonForge Offline</h1><p>Please check your connection.</p></body></html>',
+              { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
+            );
           }
-        })
+
+          return new Response('Resource unavailable offline', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+        }
+      })()
     );
     return;
   }
 
   // Strategy B: Static Assets (CSS, JS, Fonts, Images) -> Stale-While-Revalidate
   event.respondWith(
-    caches.match(request).then((cachedResponse) => {
+    (async () => {
+      const cachedResponse = await caches.match(request);
       const fetchPromise = fetch(request)
-        .then((networkResponse) => {
+        .then(async (networkResponse) => {
           if (networkResponse && networkResponse.status === 200) {
             const copy = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+            const cache = await caches.open(CACHE_NAME);
+            await cache.put(request, copy);
           }
           return networkResponse;
         })
-        .catch(() => cachedResponse);
+        .catch(() => null);
 
-      return cachedResponse || fetchPromise;
-    })
+      if (cachedResponse) return cachedResponse;
+      const netResp = await fetchPromise;
+      if (netResp) return netResp;
+      return new Response('Asset not found', { status: 404, headers: { 'Content-Type': 'text/plain' } });
+    })()
   );
 });

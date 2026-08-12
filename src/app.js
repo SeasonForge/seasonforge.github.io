@@ -810,6 +810,7 @@ async function initializeApp() {
       const lastVisit = localStorage.getItem('lastVisit');
       
       const now = Date.now();
+      const isFirstVisit = !lastVisit;
       const isLongTimeNoSee = lastVisit && (now - parseInt(lastVisit, 10) > 30 * 24 * 60 * 60 * 1000);
       const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 1025px)').matches;
       const defaultView = isDesktop ? 'timeline' : 'card';

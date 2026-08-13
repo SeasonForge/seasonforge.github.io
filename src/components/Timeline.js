@@ -400,9 +400,15 @@ export function render(games = [], viewMode = 'all') {
       const minutes = Math.max(0, Math.floor((diff / (1000 * 60)) % 60));
       const seconds = Math.max(0, Math.floor((diff / 1000) % 60));
       
-      const isHype = days <= 14;
-      const isPtr = earliest.type === 'ptr';
-      const badgeText = isPtr ? 'PTR TEST' : (earliest.type === 'convention' ? 'BLIZZCON' : (isHype ? t('timeline.hype') : ''));
+      let conventionBadge = 'EVENT';
+      if (earliest.type === 'convention') {
+        const titleLower = (getVal(earliest.title) || '').toLowerCase();
+        if (titleLower.includes('gamescom')) conventionBadge = 'GAMESCOM';
+        else if (titleLower.includes('exilecon')) conventionBadge = 'EXILECON';
+        else if (titleLower.includes('blizzcon')) conventionBadge = 'BLIZZCON';
+        else conventionBadge = 'SHOWCASE';
+      }
+      const badgeText = isPtr ? 'PTR TEST' : (earliest.type === 'convention' ? conventionBadge : (isHype ? t('timeline.hype') : ''));
 
       const currentSeasonName = escapeHtml(getVal(game.currentSeason?.name) || 'TBA');
       const progressPercent = Math.round(getProgressPercent(game));

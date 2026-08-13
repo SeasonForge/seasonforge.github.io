@@ -172,7 +172,15 @@ function mergeGameData(existingGame, newGame) {
       }
     }
 
-    merged.events = mergedEvents;
+    // Event Lifetime Expiration: mark past events or archive items older than 48 hours after completion
+    const nowMs = Date.now();
+    merged.events = mergedEvents.map(ev => {
+      const eventEnd = ev.endDate ? new Date(ev.endDate).getTime() : (ev.startDate ? new Date(ev.startDate).getTime() + (24 * 60 * 60 * 1000) : null);
+      if (eventEnd && (nowMs - eventEnd > 48 * 60 * 60 * 1000)) {
+        return { ...ev, isPast: true, status: 'archived' };
+      }
+      return ev;
+    });
   }
   
   return merged;

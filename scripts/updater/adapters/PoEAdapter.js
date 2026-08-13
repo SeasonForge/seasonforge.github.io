@@ -16,7 +16,8 @@ export class PoEAdapter extends BaseAdapter {
       const items = [];
       const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
       let match;
-      while ((match = itemRegex.exec(rssText)) !== null && items.length < 5) {
+      // Scan up to 40 items in RSS feed
+      while ((match = itemRegex.exec(rssText)) !== null && items.length < 40) {
         const itemContent = match[1];
         
         const cleanCdata = (str) => str.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/i, '$1').trim();
@@ -45,8 +46,10 @@ export class PoEAdapter extends BaseAdapter {
         throw new Error('No items found in Path of Exile RSS feed');
       }
 
-      // Check if the latest news GUID/link is the same as the cached/existing one
-      const firstItem = items[0];
+      const filteredItems = this.filterRelevantNews(items, ['league', 'expansion', 'livestream', 'teaser', 'manifesto']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : items.slice(0, 5);
+
+      const firstItem = targetItems[0] || items[0];
       const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
       
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
@@ -55,9 +58,6 @@ export class PoEAdapter extends BaseAdapter {
       }
 
       console.log(`[Orchestrator] [PoE] New article detected (id=${latestNewsId}). Calling Gemini...`);
-
-      const filteredItems = this.filterRelevantNews(items, ['league', 'expansion', 'livestream', 'teaser']);
-      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : items.slice(0, 5);
 
       const feedContent = targetItems
         .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)

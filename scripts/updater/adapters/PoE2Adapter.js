@@ -15,7 +15,8 @@ export class PoE2Adapter extends BaseAdapter {
       const items = [];
       const itemRegex = /<item>([\s\S]*?)<\/item>/gi;
       let match;
-      while ((match = itemRegex.exec(rssText)) !== null && items.length < 15) {
+      // Scan up to 40 items in RSS feed
+      while ((match = itemRegex.exec(rssText)) !== null && items.length < 40) {
         const itemContent = match[1];
         
         const cleanCdata = (str) => str.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/i, '$1').trim();
@@ -32,18 +33,26 @@ export class PoE2Adapter extends BaseAdapter {
         const description = descMatch ? cleanCdata(descMatch[1]) : '';
         const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
 
-        // Include articles for PoE 2 or general ExileCon / Return of the Ancients announcements
-        const titleLower = title.toLowerCase();
-        if (titleLower.includes('poe 2') || titleLower.includes('path of exile 2') || titleLower.includes('exilecon') || titleLower.includes('ancients')) {
+        // Include articles for PoE 2, ExileCon, Gamescom, Early Access or major reveals
+        const fullText = `${title} ${description}`.toLowerCase();
+        if (
+          fullText.includes('poe 2') || fullText.includes('path of exile 2') || 
+          fullText.includes('exilecon') || fullText.includes('gamescom') || 
+          fullText.includes('summer game fest') || fullText.includes('early access') ||
+          fullText.includes('opening night live') || fullText.includes('showcase')
+        ) {
           items.push({ title, link, guid, description, pubDate });
         }
       }
 
       if (items.length === 0) {
-        throw new Error('No items found in Path of Exile RSS feed');
+        throw new Error('No PoE 2 items found in Path of Exile RSS feed');
       }
 
-      const firstItem = items[0];
+      const filteredItems = this.filterRelevantNews(items, ['poe 2', 'league', 'early access', 'exilecon', 'gamescom', 'release']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : items.slice(0, 5);
+
+      const firstItem = targetItems[0] || items[0];
       const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
 
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
@@ -51,10 +60,7 @@ export class PoE2Adapter extends BaseAdapter {
         return existingGame;
       }
 
-      console.log(`[Orchestrator] [Path of Exile 2] New RSS article detected (id=${latestNewsId}). Calling Gemini...`);
-
-      const filteredItems = this.filterRelevantNews(items, ['poe 2', 'league', 'early access', 'exilecon', 'release']);
-      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : items.slice(0, 5);
+      console.log(`[Orchestrator] [Path of Exile 2] New article detected (id=${latestNewsId}). Calling Gemini...`);
 
       const feedContent = targetItems
         .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)

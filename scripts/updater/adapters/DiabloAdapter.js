@@ -19,7 +19,11 @@ export class DiabloAdapter extends BaseAdapter {
         throw new Error('No news items found in Blizzard News API');
       }
 
-      const firstItem = items[0];
+      // Pre-filter up to 30 news items by timeline keywords to capture PTR, BlizzCon, Livestreams & Season launches
+      const filteredItems = this.filterRelevantNews(items.slice(0, 30), ['season', 'expansion', 'campfire', 'ptr', 'blizzcon']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : items.slice(0, 5);
+
+      const firstItem = targetItems[0] || items[0];
       const latestNewsId = firstItem.properties?.newsId || this.hashString(firstItem.properties?.title + firstItem.properties?.lastUpdated);
 
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
@@ -28,10 +32,6 @@ export class DiabloAdapter extends BaseAdapter {
       }
 
       console.log(`[Orchestrator] [Diablo IV] New article detected (id=${latestNewsId}). Calling Gemini...`);
-
-      // Pre-filter up to 20 news items by timeline keywords to capture PTR, BlizzCon, Livestreams & Season launches
-      const filteredItems = this.filterRelevantNews(items.slice(0, 20));
-      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : items.slice(0, 5);
 
       const newsText = targetItems.map(item => 
         `Title: ${item.properties.title}\nDate: ${item.properties.lastUpdated}\nSummary: ${item.properties.summary}`

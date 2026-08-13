@@ -8,7 +8,7 @@ export class LastEpochAdapter extends BaseAdapter {
   async fetchAndNormalize(gameConfig, existingGame) {
     const cache = await this.getCache();
     const appId = gameConfig.appId || 899770;
-    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=3&maxlength=4000&format=json`;
+    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=30&maxlength=4000&format=json`;
 
     try {
       const rawData = await this.fetchUrl(url);
@@ -19,8 +19,11 @@ export class LastEpochAdapter extends BaseAdapter {
         throw new Error('No news items found in Steam API');
       }
 
-      // Track the latest news item ID for caching to avoid calling Gemini when there is no new news
-      const latestNewsId = newsitems[0].gid;
+      const filteredItems = this.filterRelevantNews(newsitems, ['cycle', 'patch', 'ptr', 'beta', 'launch', 'livestream', 'roadmap']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : newsitems.slice(0, 5);
+
+      const firstItem = targetItems[0] || newsitems[0];
+      const latestNewsId = firstItem.gid;
 
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
         console.log(`[Orchestrator] [Last Epoch] Latest news unchanged (gid=${latestNewsId}). Skipping Gemini call.`);
@@ -28,9 +31,6 @@ export class LastEpochAdapter extends BaseAdapter {
       }
 
       console.log(`[Orchestrator] [Last Epoch] New article detected (id=${latestNewsId}). Calling Gemini...`);
-
-      const filteredItems = this.filterRelevantNews(newsitems, ['cycle', 'patch', 'ptr', 'beta', 'launch']);
-      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 8) : newsitems.slice(0, 5);
 
       const newsText = targetItems.map(item => 
         `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nSummary: ${this.cleanHtml(item.contents)}`

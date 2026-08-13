@@ -61,17 +61,54 @@ export class BaseAdapter {
       .trim();
   }
 
-  // Pre-filter raw news items by timeline keywords to save Gemini tokens and reduce noise
+  // Classify news item importance into 5 categories: critical, major, important, minor, noise
+  classifyImportance(item, extraKeywords = []) {
+    const title = (item.title || item.properties?.title || '').toLowerCase();
+    const desc = (item.description || item.properties?.summary || '').toLowerCase();
+    const text = `${title} ${desc}`;
+
+    // Noise: typos, duplicate posts, shop/mystery box microtransactions
+    if (/mystery box|supporter pack|microtransaction|store|shop sale|typo|translation fix/i.test(text)) {
+      return 'noise';
+    }
+
+    // Minor: minor bug fixes, small hotfixes, ui fixes, visual tweaks
+    if (/hotfix|bug fix|technical issue|improvements|maintenance|server restart/i.test(text) && 
+        !/expansion|league|season|cycle|gamescom|exilecon|blizzcon|campfire/i.test(text)) {
+      return 'minor';
+    }
+
+    // Critical: major conventions, releases, EA, stream reveals, roadmap, acts
+    const criticalKeywords = ['gamescom', 'exilecon', 'blizzcon', 'summer game fest', 'opening night live', 'early access', 'release date', 'launch date', 'roadmap', 'act reveal', 'ggg live', 'campfire chat', 'showcase'];
+    if (criticalKeywords.some(kw => text.includes(kw))) {
+      return 'critical';
+    }
+
+    // Major: new league/season/cycle announcements, major expansions, new classes/ascendancies
+    const majorKeywords = ['announcing', 'expansion', 'new league', 'new season', 'new cycle', 'manifesto', 'ascendancy', 'class reveal', 'major update', 'endgame overhaul'];
+    if (majorKeywords.some(kw => text.includes(kw))) {
+      return 'major';
+    }
+
+    // Important: patch notes, PTR, balance changes, economy overhauls
+    const importantKeywords = ['patch notes', 'ptr', 'public test', 'beta', 'balance changes', 'developer interview', 'qol', 'twitch drops', ...extraKeywords.map(k => k.toLowerCase())];
+    if (importantKeywords.some(kw => text.includes(kw))) {
+      return 'important';
+    }
+
+    return 'important'; // default fallback for unclassified items
+  }
+
+  // Pre-filter raw news items by timeline keywords & importance categories to save Gemini tokens
   filterRelevantNews(items, extraKeywords = []) {
     if (!Array.isArray(items)) return [];
-    const defaultKeywords = ['season', 'league', 'ptr', 'public test', 'beta', 'reveal', 'livestream', 'schedule', 'announce', 'blizzcon', 'exilecon', 'launch', 'patch', 'expansion', 'update'];
-    const keywords = [...defaultKeywords, ...extraKeywords].map(k => k.toLowerCase());
 
-    return items.filter(item => {
-      const title = (item.title || item.properties?.title || '').toLowerCase();
-      const desc = (item.description || item.properties?.summary || '').toLowerCase();
-      return keywords.some(kw => title.includes(kw) || desc.includes(kw));
-    });
+    return items
+      .map(item => {
+        const category = this.classifyImportance(item, extraKeywords);
+        return { ...item, _category: category };
+      })
+      .filter(item => item._category !== 'noise' && item._category !== 'minor');
   }
 
   // Validate and normalize dates returned by Gemini strictly to ISO 8601 strings (YYYY-MM-DD or full ISO)

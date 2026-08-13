@@ -431,6 +431,7 @@ export function render(games = [], viewMode = 'all') {
       ` : '';
 
       if (viewMode === 'home') {
+        const eyebrowLabel = lang === 'ru' ? 'До старта сезона' : 'Until season start';
         return `
           <div class="upcoming-card unified-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color};" data-game-countdown="${game.id}">
             <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
@@ -464,11 +465,7 @@ export function render(games = [], viewMode = 'all') {
             <!-- Bottom Section: Next Season & Countdown -->
             <div class="unified-card__bottom">
               <div class="unified-card__next-header">
-                <div class="unified-card__next-label-group">
-                  <span class="unified-card__next-eyebrow">⏳ ${lang === 'ru' ? 'ДО СТАРТА:' : 'NEXT SEASON:'}</span>
-                  <strong class="unified-card__next-title">${eventTitle}</strong>
-                </div>
-                ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+                <span class="unified-card__next-eyebrow">${eyebrowLabel}</span>
               </div>
 
               <div class="upcoming-card__countdown unified-card__countdown">
@@ -478,15 +475,17 @@ export function render(games = [], viewMode = 'all') {
                 <div class="upcoming-card__countdown-item"><strong data-countdown="seconds">${seconds}</strong><span>${t('card.seconds') || 'sec'}</span></div>
               </div>
 
-              ${formattedDate ? `
-                <div class="unified-card__footer-date">
-                  <span>📅 ${lang === 'ru' ? 'Старт:' : 'Launch:'} ${formattedDate}</span>
-                  <a href="./games/${game.id}/" class="unified-card__arrow-btn">
-                    <span>${lang === 'ru' ? 'Перейти к игре' : 'View Game'}</span>
-                    <span class="unified-card__arrow-icon">→</span>
-                  </a>
-                </div>
-              ` : ''}
+              <div class="unified-card__event-row">
+                <strong class="unified-card__next-title">${eventTitle}</strong>
+                ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+              </div>
+
+              <div class="unified-card__footer-row">
+                <a href="./games/${game.id}/" class="unified-card__arrow-btn">
+                  <span>${lang === 'ru' ? 'Перейти к игре' : 'View Game'}</span>
+                  <span class="unified-card__arrow-icon">→</span>
+                </a>
+              </div>
             </div>
           </div>
         `;

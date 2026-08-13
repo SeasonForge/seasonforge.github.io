@@ -1137,23 +1137,39 @@
 
 .upcoming-card__game-name {
   margin: 0;
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.82rem;
+  font-weight: 700;
   color: #ffffff;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   position: relative;
   z-index: 1;
 }
 
 .upcoming-card__season-name {
-  font-size: 0.65rem;
-  color: var(--muted);
-  margin-top: 0.15rem;
-  margin-bottom: 0.6rem;
-  font-weight: 600;
+  font-size: 0.68rem;
+  color: rgba(226, 232, 240, 0.75);
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  font-weight: 500;
+  line-height: 1.3;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: relative;
+  z-index: 1;
+}
+
+.upcoming-card__season-subtext {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   position: relative;
   z-index: 1;
 }

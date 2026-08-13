@@ -67,8 +67,8 @@ export class BaseAdapter {
     const desc = (item.description || item.properties?.summary || '').toLowerCase();
     const text = `${title} ${desc}`;
 
-    // Noise: typos, duplicate posts, shop/mystery box microtransactions
-    if (/mystery box|supporter pack|microtransaction|store|shop sale|typo|translation fix/i.test(text)) {
+    // Noise: typos, duplicate posts, shop/mystery box microtransactions, fan art/cosplay competitions
+    if (/mystery box|supporter pack|microtransaction|store|shop sale|typo|translation fix|fan art|fanart|competition|cosplay/i.test(text)) {
       return 'noise';
     }
 

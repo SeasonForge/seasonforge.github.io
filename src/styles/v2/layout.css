@@ -49,6 +49,14 @@
   }
 }
 
+@media (max-width: 900px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    padding: 1rem 0.75rem 2rem;
+    gap: 1rem;
+  }
+}
+
 /* OBS Overlay Mode (Pure Cascade - No !important) */
 body.app-layout--overlay {
   background: transparent;

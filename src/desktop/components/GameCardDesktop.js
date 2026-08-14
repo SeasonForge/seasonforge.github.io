@@ -94,27 +94,30 @@ export function render(game = {}, options = {}) {
         if (start && end) {
           dateStr = `${start} — ${end}`;
         } else if (start) {
-          dateStr = `${lang === 'ru' ? 'с' : 'from'} ${start}`;
+          dateStr = `${start}`;
         }
 
-        let typeClass = 'game-card__event-pill--special';
-        let iconSymbol = '⚡';
-        if (evt.type === 'bonus_exp') {
-          typeClass = 'game-card__event-pill--exp';
-          iconSymbol = '🔥';
+        let tag = 'EVENT';
+        let tagClass = 'game-card__event-tag--event';
+        if (evt.type === 'ptr') {
+          tag = 'PTR';
+          tagClass = 'game-card__event-tag--ptr';
+        } else if (evt.type === 'season_start' || evt.type === 'launch') {
+          tag = 'LAUNCH';
+          tagClass = 'game-card__event-tag--launch';
+        } else if (evt.type === 'bonus_exp') {
+          tag = 'EXP';
+          tagClass = 'game-card__event-tag--exp';
         } else if (evt.type === 'tournament' || evt.type === 'race') {
-          typeClass = 'game-card__event-pill--tournament';
-          iconSymbol = '🏆';
-        } else if (evt.type === 'ptr') {
-          typeClass = 'game-card__event-pill--ptr';
-          iconSymbol = '🧪';
+          tag = 'RACE';
+          tagClass = 'game-card__event-tag--race';
         }
 
         return `
-          <div class="game-card__event-pill ${typeClass}" title="${title} (${dateStr})">
-            <span class="game-card__event-icon">${iconSymbol}</span>
-            <span class="game-card__event-title">${title}</span>
-            ${dateStr ? `<span class="game-card__event-date">${dateStr}</span>` : ''}
+          <div class="game-card__event-row">
+            <span class="game-card__event-tag ${tagClass}">${tag}</span>
+            <span class="game-card__event-row-title">${title}</span>
+            ${dateStr ? `<span class="game-card__event-row-date">${dateStr}</span>` : ''}
           </div>
         `;
       }).join('');
@@ -122,7 +125,7 @@ export function render(game = {}, options = {}) {
       eventsBannerHtml = `
         <div class="game-card__events-tray">
           <div class="game-card__events-header">
-            <span class="game-card__events-label">${t('card.inGameEvents') || 'In-Game Events'}</span>
+            <span class="game-card__events-label">${t('card.upcomingEventsHeader') || 'UPCOMING STAGES & TESTS:'}</span>
           </div>
           <div class="game-card__events-list">
             ${eventBadges}
@@ -148,7 +151,7 @@ export function render(game = {}, options = {}) {
     if (official.length > 0) {
       const officialItems = official.map(f => `
         <li class="game-card__feature-item">
-          <span class="game-card__feature-check" style="color: #4ade80;">✓</span>
+          <span class="game-card__feature-check" style="color: #4ade80;">${getIconSvg('check', { size: 13 })}</span>
           <span class="game-card__feature-text">${escapeHtml(getVal(f))}</span>
         </li>
       `).join('');
@@ -156,7 +159,7 @@ export function render(game = {}, options = {}) {
       officialHtml = `
         <div class="game-card__feature-group" style="margin-bottom: 1rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="verification-badge verification-badge--official" style="font-size: 0.75rem;">🟢 ${t('card.officialCategory')}</span>
+            <span class="verification-badge verification-badge--official" style="font-size: 0.75rem;">${getIconSvg('dot', { size: 10 })} ${t('card.officialCategory')}</span>
           </div>
           <ul class="game-card__feature-grid">${officialItems}</ul>
         </div>
@@ -194,7 +197,7 @@ export function render(game = {}, options = {}) {
       announcementsHtml = `
         <div class="game-card__feature-group" style="margin-bottom: 1rem;">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="verification-badge verification-badge--announcement" style="font-size: 0.75rem;">🔵 ${t('card.announcementCategory') || (lang === 'ru' ? 'Анонс / Презентация' : 'Announcement / Reveal')}</span>
+            <span class="verification-badge verification-badge--announcement" style="font-size: 0.75rem;">${getIconSvg('dot', { size: 10 })} ${t('card.announcementCategory') || (lang === 'ru' ? 'Анонс / Презентация' : 'Announcement / Reveal')}</span>
           </div>
           ${annBlocks}
         </div>
@@ -205,7 +208,7 @@ export function render(game = {}, options = {}) {
     if (expectations.length > 0) {
       const expItems = expectations.map(exp => `
         <li class="game-card__feature-item">
-          <span class="game-card__feature-check" style="color: #fde047;">★</span>
+          <span class="game-card__feature-check" style="color: #fde047;">${getIconSvg('star', { size: 12 })}</span>
           <span class="game-card__feature-text" style="color: #cbd5e1;">${escapeHtml(getVal(exp))}</span>
         </li>
       `).join('');
@@ -213,7 +216,7 @@ export function render(game = {}, options = {}) {
       expHtml = `
         <div class="game-card__feature-group">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-            <span class="verification-badge verification-badge--estimated" style="font-size: 0.75rem;">🟡 ${t('card.expectationsCategory')}</span>
+            <span class="verification-badge verification-badge--estimated" style="font-size: 0.75rem;">${getIconSvg('dot', { size: 10 })} ${t('card.expectationsCategory')}</span>
           </div>
           <ul class="game-card__feature-grid">${expItems}</ul>
         </div>
@@ -223,7 +226,7 @@ export function render(game = {}, options = {}) {
     featuresHtml = `
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
-          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+          <span class="game-card__label">${getIconSvg('compass', { size: 15, class: 'game-card__features-compass' })} ${t('card.featuresLabel')}</span>
           <button type="button" class="game-card__features-toggle-btn" id="btn-toggle-features" onclick="
             const body = this.parentElement.nextElementSibling;
             const isExpanded = body.classList.toggle('game-card__features-body--open');
@@ -242,7 +245,7 @@ export function render(game = {}, options = {}) {
     const featureItems = features
       .map((feature) => `
         <li class="game-card__feature-item">
-          <span class="game-card__feature-check">✓</span>
+          <span class="game-card__feature-check">${getIconSvg('check', { size: 13 })}</span>
           <span class="game-card__feature-text">${escapeHtml(getVal(feature))}</span>
         </li>
       `)
@@ -251,7 +254,7 @@ export function render(game = {}, options = {}) {
     featuresHtml = `
       <section class="game-card__panel game-card__panel--features">
         <div class="game-card__features-header">
-          <span class="game-card__label"><span class="game-card__features-compass">🧭</span> ${t('card.featuresLabel')}</span>
+          <span class="game-card__label">${getIconSvg('compass', { size: 15, class: 'game-card__features-compass' })} ${t('card.featuresLabel')}</span>
           <button type="button" class="game-card__features-toggle-btn" id="btn-toggle-features" onclick="
             const body = this.parentElement.nextElementSibling;
             const isExpanded = body.classList.toggle('game-card__features-body--open');
@@ -296,7 +299,7 @@ export function render(game = {}, options = {}) {
       countdownHtml = `
         <div class="game-card__countdown game-card__countdown--active-season" style="display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1rem; background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.08) 100%); border: 1px solid rgba(99, 102, 241, 0.25); border-radius: 12px;">
           <div style="font-weight: 600; color: #818cf8; font-size: 0.88rem; display: flex; align-items: center; gap: 0.35rem; font-family: var(--font-display);">
-            <span>⚡</span> <span>${activeLabel}</span>
+            <span>${getIconSvg('zap', { size: 14 })}</span> <span>${activeLabel}</span>
           </div>
           <span style="font-size: 0.88rem; font-weight: 600; color: #cbd5e1; font-family: var(--font-display);">${dayLabel}</span>
         </div>
@@ -353,7 +356,7 @@ export function render(game = {}, options = {}) {
 
     sourceHtml = `
       <p class="game-card__source-info">
-        ${t('card.sourceLabel')}: <span class="game-card__source-badge">📰 ${sourceLabel}</span> • 
+        ${t('card.sourceLabel')}: <span class="game-card__source-badge">${getIconSvg('newspaper', { size: 12 })} ${sourceLabel}</span> • 
         <span class="game-card__source-title" title="${newsTitle}">${newsTitle}</span>${dateText} • 
         <a href="${newsUrl}" target="_blank" rel="noopener noreferrer" class="game-card__source-link" data-analytics-source="official_source" data-source-type="${newsSourceType}" data-date-status="${dateStatusVal}" data-game-id="${gameIdVal}">${t('card.readOriginal')}</a>
       </p>
@@ -441,7 +444,7 @@ export function render(game = {}, options = {}) {
             ` : ''}
           </div>
           ${countdownHtml}
-          <div class="game-card__developer">
+          <a class="game-card__developer" href="${website}" target="_blank" rel="noopener noreferrer" title="${developer}">
             <div class="game-card__developer-icon">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
@@ -452,8 +455,7 @@ export function render(game = {}, options = {}) {
               <span class="game-card__developer-label">${t('card.developerLabel')}</span>
               <strong class="game-card__developer-name">${developer}</strong>
             </div>
-          </div>
-          ${isDetailPage ? `<a class="game-card__link" href="${moreDetailsUrl}" ${moreDetailsTarget} rel="noopener noreferrer"${detailsLinkAttr}>${t('card.detailsBtn')}</a>` : ''}
+          </a>
         </section>
       </div>
 

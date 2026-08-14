@@ -5,17 +5,392 @@
    ========================================================================== */
 
 @media (max-width: 900px) {
-  /* Mobile Feed: Show all cards in a vertical stream */
+  /* Mobile Feed: Vertical stream of mobile cards */
+  .game-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+  }
+
   .game-feed .sf-mobile-card {
-    display: block;
-    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(18, 14, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-feed .sf-mobile-card .game-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0 0.85rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 0.75rem;
+    background: transparent;
+  }
+
+  .sf-mobile-card .game-card__title-block {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .sf-mobile-card .game-card__badge-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    order: 2;
+    margin: 0;
+  }
+
+  .sf-mobile-card .game-card__title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin: 0;
+    order: 1;
+  }
+
+  .sf-mobile-card .game-card__subtitle,
+  .sf-mobile-card .game-card__source-info,
+  .sf-mobile-card .game-card__watermark {
+    display: none;
   }
 
   /* Single Column Body for Mobile */
   .sf-mobile-card .game-card__body {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.9rem;
+    grid-template-columns: 1fr;
+  }
+
+  /* Panels (Current Season & Next Season) */
+  .sf-mobile-card .game-card__panel--main,
+  .sf-mobile-card .game-card__panel--side {
+    background: rgba(12, 10, 22, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .sf-mobile-card .game-card__label,
+  .sf-mobile-card .game-card__side-label {
+    font-size: 0.64rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sf-mobile-card .game-card__season {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: #f8fafc;
+    margin: 0;
+    font-family: var(--font);
+  }
+
+  .sf-mobile-card .game-card__side-season-name {
+    font-size: 1.02rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: #e2e8f0;
+    margin: 0;
+    font-family: var(--font);
+  }
+
+  .sf-mobile-card .game-card__side-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .sf-mobile-card .game-card__meta-row,
+  .sf-mobile-card .game-card__side-date-row {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .sf-mobile-card .game-card__meta-row span:last-child,
+  .sf-mobile-card .game-card__side-date {
+    color: #cbd5e1;
+    font-weight: 500;
+  }
+
+  /* Progress Bar Layout */
+  .sf-mobile-card .game-card__progress-block {
+    margin-top: 0.4rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sf-mobile-card .game-card__progress-meta {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
+  .sf-mobile-card .game-card__progress-meta span {
+    color: #94a3b8;
+  }
+
+  .sf-mobile-card .progress-bar {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .sf-mobile-card .progress-bar__label {
+    position: absolute;
+    top: -1.35rem;
+    right: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+    text-shadow: none;
+    font-family: var(--font);
+    display: block;
+  }
+
+  .sf-mobile-card .progress-bar__label::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .sf-mobile-card .progress-bar__track {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    margin-top: 0.15rem;
+  }
+
+  /* Events Tray & Pills on Mobile */
+  .sf-mobile-card .game-card__events-tray {
+    margin-top: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .sf-mobile-card .game-card__events-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .sf-mobile-card .game-card__events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .sf-mobile-card .game-card__event-pill {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 0.55rem 0.75rem;
+  }
+
+  .sf-mobile-card .game-card__event-pill-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    width: 100%;
+  }
+
+  .sf-mobile-card .game-card__event-icon {
+    font-size: 0.85rem;
+    line-height: 1.35;
+    flex-shrink: 0;
+  }
+
+  .sf-mobile-card .game-card__event-title {
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: #e2e8f0;
+    line-height: 1.35;
+    flex: 1;
+  }
+
+  .sf-mobile-card .game-card__event-date {
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: #64748b;
+    padding-left: 1.3rem;
+    display: block;
+  }
+
+  /* 4 Countdown Boxes in 1 Row with Colons */
+  .sf-mobile-card .game-card__countdown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .sf-mobile-card .game-card__countdown-item {
+    flex: 1;
+    min-width: 0;
+    background: rgba(18, 16, 32, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 0.5rem 0.2rem;
+    text-align: center;
+    position: relative;
+  }
+
+  .sf-mobile-card .game-card__countdown-item:not(:last-child)::after {
+    content: ':';
+    position: absolute;
+    right: -6px;
+    top: 25%;
+    color: rgba(255, 255, 255, 0.2);
+    font-weight: 400;
+    font-size: 0.95rem;
+    z-index: 2;
+  }
+
+  .sf-mobile-card .game-card__countdown-item strong {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: block;
+    line-height: 1;
+    font-family: var(--font);
+  }
+
+  .sf-mobile-card .game-card__countdown-item span {
+    font-size: 0.52rem;
+    font-weight: 500;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  /* Developer Block Link */
+  .sf-mobile-card .game-card__developer {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    background: rgba(12, 10, 22, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 0.75rem 1rem;
+    margin-top: 0.4rem;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background var(--transition-normal), border-color var(--transition-normal), transform var(--transition-fast);
+  }
+
+  .sf-mobile-card .game-card__developer:hover,
+  .sf-mobile-card .game-card__developer:active {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .sf-mobile-card .game-card__developer::after {
+    content: '›';
+    position: absolute;
+    right: 1.1rem;
+    font-size: 1.3rem;
+    color: #64748b;
+    font-weight: 400;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .sf-mobile-card .game-card__developer:hover::after {
+    color: #f8fafc;
+    transform: translateX(2px);
+  }
+
+  .sf-mobile-card .game-card__developer-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    flex-shrink: 0;
+    transition: color var(--transition-fast), background var(--transition-fast);
+  }
+
+  .sf-mobile-card .game-card__developer:hover .game-card__developer-icon {
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .sf-mobile-card .game-card__developer-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .sf-mobile-card .game-card__developer-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .sf-mobile-card .game-card__developer-name {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #cbd5e1;
+    transition: color var(--transition-fast);
+  }
+
+  .sf-mobile-card .game-card__developer:hover .game-card__developer-name {
+    color: #ffffff;
+  }
+
+  .sf-mobile-card .game-card__link {
+    display: none;
   }
 
   /* Compact Upcoming Grid (2 columns on tablet, 1 on small mobile) */
@@ -26,6 +401,12 @@
   /* Mobile Benchmark Rule: Completely hide heavy 3D character art */
   .upcoming-card__art {
     display: none !important;
+  }
+
+  .upcoming-card__bg {
+    object-position: right center !important;
+    opacity: 0.36 !important;
+    filter: brightness(1.1) contrast(1.15) !important;
   }
 
   /* Responsive History Table to Mobile Cards */
@@ -62,11 +443,60 @@
   .history-table td:first-child {
     font-size: 0.95rem;
     font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .history-table td:nth-child(2),
+  .history-table td:nth-child(3),
+  .history-table td:nth-child(4) {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+  }
+
+  .history-table td[data-label]::before {
+    content: attr(data-label) ': ';
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .history-table td:not([data-label]):nth-child(2)::before {
+    content: 'Старт: ';
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .history-table td:not([data-label]):nth-child(3)::before {
+    content: 'Конец: ';
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .history-table td:not([data-label]):nth-child(4)::before {
+    content: 'Длительность: ';
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  html[data-active-lang="en"] .history-table td:not([data-label]):nth-child(2)::before { content: 'Start: '; }
+  html[data-active-lang="en"] .history-table td:not([data-label]):nth-child(3)::before { content: 'End: '; }
+  html[data-active-lang="en"] .history-table td:not([data-label]):nth-child(4)::before { content: 'Duration: '; }
+
+  .history-table td:nth-child(5) {
+    margin-top: 0.25rem;
+  }
+
+  /* Useful Links Grid */
+  .game-card__links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 600px) {
   .upcoming-launches__grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .game-card__links-grid {
+    grid-template-columns: 1fr;
   }
 }

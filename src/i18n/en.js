@@ -37,7 +37,7 @@ export const en = {
     soloNoticeDesc: "The Android app is currently in active testing. If you run into any bugs or have feedback, let me know via the <button type=\"button\" class=\"mobile-app-modal__feedback-link\">feedback form</button> — it really helps!"
   },
   statuses: {
-    newest: "🔥 Newest",
+    newest: "Newest",
     ending: "Ending",
     'early-access': "Early Access",
     'in-progress': "In Progress",
@@ -61,8 +61,9 @@ export const en = {
     showFeatures: "Show features & patch notes ▾",
     hideFeatures: "Hide details ▴",
     eventsTitle: "TIMELINE & UPCOMING EVENTS:",
+    inGameEvents: "In-Game Events",
     upcomingEventsHeader: "UPCOMING STAGES & TESTS:",
-    ptrUpcomingChip: "🧪 PTR 3.2.0: Starts Aug 4",
+    ptrUpcomingChip: "PTR 3.2.0: Starts Aug 4",
     officialCategory: "Official",
     announcementCategory: "Announcement / Reveal",
     expectationsCategory: "Forecast / Community Expectations",
@@ -110,7 +111,7 @@ export const en = {
     fallbackTitle: "Timeline",
     fallbackNoGames: "No games available",
     tba: "TBA",
-    hype: "🔥 STARTING SOON"
+    hype: "STARTING SOON"
   },
   footer: {
     copy: "© 2026 SeasonForge. ARPG Season Tracker.",

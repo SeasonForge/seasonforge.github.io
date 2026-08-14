@@ -37,7 +37,7 @@ export const ru = {
     soloNoticeDesc: "Android-версия приложения активно тестируется. Если вы столкнулись с ошибкой или у вас есть идея — дайте знать через <button type=\"button\" class=\"mobile-app-modal__feedback-link\">форму обратной связи</button>, это сильно поможет проекту!"
   },
   statuses: {
-    newest: "🔥 Самый свежий",
+    newest: "Самый свежий",
     ending: "Завершается",
     'early-access': "Ранний доступ",
     'in-progress': "В разгаре",
@@ -61,8 +61,9 @@ export const ru = {
     showFeatures: "Показать фичи и патчноут ▾",
     hideFeatures: "Скрыть фичи ▴",
     eventsTitle: "ХРОНОЛОГИЯ И БЛИЖАЙШИЕ СОБЫТИЯ:",
+    inGameEvents: "События в игре",
     upcomingEventsHeader: "БЛИЖАЙШИЕ ЭТАПЫ И ТЕСТЫ:",
-    ptrUpcomingChip: "🧪 PTR 3.2.0: Старт 4 августа",
+    ptrUpcomingChip: "PTR 3.2.0: Старт 4 августа",
     officialCategory: "Официально",
     announcementCategory: "Анонс / Презентация",
     expectationsCategory: "Прогноз / Ожидания",
@@ -110,7 +111,7 @@ export const ru = {
     fallbackTitle: "Хронология",
     fallbackNoGames: "Игры недоступны",
     tba: "TBA",
-    hype: "🔥 СКОРО СТАРТ"
+    hype: "СКОРО СТАРТ"
   },
   footer: {
     copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",

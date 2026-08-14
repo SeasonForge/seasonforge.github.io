@@ -14,7 +14,7 @@
 
 .hero-parallax__layer {
   position: absolute;
-  top: -3vh;
+  top: 3.5vh;
   left: 3vw;
   width: 106vw;
   height: 106vh;

@@ -8,6 +8,7 @@ export function initHeroParallax() {
   const container = document.getElementById('hero-parallax-bg');
   if (!container) return;
 
+  const body = container.querySelector('.hero-parallax__body');
   const head = container.querySelector('.hero-parallax__head');
   const eyes = container.querySelector('.hero-parallax__eyes');
 
@@ -26,8 +27,8 @@ export function initHeroParallax() {
   let currentX = 0;
   let currentY = 0;
 
-  // Lerp factor (slightly heavier, smoother movement)
-  const LERP_FACTOR = 0.038;
+  // Lerp factor (smooth responsive micro-parallax)
+  const LERP_FACTOR = 0.048;
 
   let isTicking = false;
 
@@ -40,9 +41,10 @@ export function initHeroParallax() {
     let breathAngle = 0;
     function animateBreathing() {
       breathAngle += 0.015;
-      const breathY = Math.sin(breathAngle) * 2.5;
-      head.style.transform = `translate3d(0, ${breathY * 0.4}px, 0)`;
-      eyes.style.transform = `translate3d(0, ${breathY}px, 0)`;
+      const breathY = Math.sin(breathAngle) * 2.2;
+      if (body) body.style.transform = `translate3d(0, ${(breathY * 0.4).toFixed(2)}px, 0)`;
+      head.style.transform = `translate3d(0, ${(breathY * 0.75).toFixed(2)}px, 0)`;
+      eyes.style.transform = `translate3d(0, ${breathY.toFixed(2)}px, 0)`;
       requestAnimationFrame(animateBreathing);
     }
     animateBreathing();
@@ -64,16 +66,21 @@ export function initHeroParallax() {
     currentX += (targetX - currentX) * LERP_FACTOR;
     currentY += (targetY - currentY) * LERP_FACTOR;
 
-    // Clearly noticeable 3D motion: Entire hooded head turns, eyes track cursor
-    const eyesX = currentX * 11.0;   // up to 11px eye tracking
-    const eyesY = currentY * 6.0;    // up to 6px eye tracking
+    // Harmonious expressive 3D motion: connected chain without neck break
+    const bodyX = currentX * 3.0;
+    const bodyY = currentY * 1.8;
 
-    const headX = currentX * 6.0;    // up to 6px head+hood turn
-    const headY = currentY * 3.5;    // up to 3.5px head+hood turn
-    const headRot = currentX * 1.5;  // up to 1.5 deg head tilt
+    const headX = currentX * 6.0;
+    const headY = currentY * 3.6;
 
+    const eyesX = currentX * 8.5;
+    const eyesY = currentY * 5.0;
+
+    if (body) {
+      body.style.transform = `translate3d(${bodyX.toFixed(2)}px, ${bodyY.toFixed(2)}px, 0)`;
+    }
+    head.style.transform = `translate3d(${headX.toFixed(2)}px, ${headY.toFixed(2)}px, 0)`;
     eyes.style.transform = `translate3d(${eyesX.toFixed(2)}px, ${eyesY.toFixed(2)}px, 0)`;
-    head.style.transform = `translate3d(${headX.toFixed(2)}px, ${headY.toFixed(2)}px, 0) rotate(${headRot.toFixed(2)}deg)`;
 
     const diff = Math.abs(targetX - currentX) + Math.abs(targetY - currentY);
     if (diff > 0.0005) {

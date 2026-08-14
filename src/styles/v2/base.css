@@ -54,7 +54,7 @@ body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(12, 9, 21, 0.1) 0%, rgba(8, 6, 15, 0.5) 100%);
+  background: radial-gradient(circle at 50% 40%, rgba(12, 9, 21, 0.0) 0%, rgba(8, 6, 15, 0.25) 100%);
   pointer-events: none;
   z-index: 0;
 }

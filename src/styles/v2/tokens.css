@@ -5,16 +5,17 @@
   /* Color Palette */
   --bg: #0c0915;
   --bg-deep: #08060f;
-  --panel: rgba(18, 14, 28, 0.78);
-  --panel-strong: rgba(12, 9, 21, 0.88);
-  --panel-subtle: rgba(18, 14, 28, 0.65);
+  --panel: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 14, 24, 0.22) 100%);
+  --panel-solid: rgba(10, 14, 24, 0.25);
+  --panel-strong: rgba(10, 14, 24, 0.40);
+  --panel-subtle: rgba(255, 255, 255, 0.03);
   --text: #f8fafc;
   --text-accent: #a5b4fc;
   --muted: #94a3b8;
   --muted-strong: #64748b;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-soft: rgba(255, 255, 255, 0.04);
-  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.10);
+  --border-soft: rgba(255, 255, 255, 0.05);
+  --border-subtle: rgba(255, 255, 255, 0.07);
   --accent: #6366f1;
   --accent-soft: rgba(99, 102, 241, 0.08);
   --accent-glow: rgba(99, 102, 241, 0.3);

@@ -1,0 +1,65 @@
+/* ==========================================================================
+   SeasonForge Desktop Styles — Cards & Presentation Layer
+   Viewport Target: Desktop (min-width: 901px)
+   Features: 3D parallax, 5-col benchmark grid, rich hover states, character art
+   ========================================================================== */
+
+@media (min-width: 901px) {
+  /* Desktop Feed: Show only active game card, fallback to first */
+  .game-feed .sf-desktop-card {
+    display: none;
+  }
+  .game-feed .sf-desktop-card.game-card--active,
+  .game-feed:not(:has(.game-card--active)) .sf-desktop-card:first-child {
+    display: block;
+  }
+
+  /* 3D Depth & Container */
+  .sf-desktop-card {
+    position: relative;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+  }
+
+  /* Two-column body layout */
+  .sf-desktop-card .game-card__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* 5-Column Benchmark Grid for Upcoming Launches */
+  .upcoming-launches__grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  /* Character Art with Dual Gradient Mask */
+  .upcoming-card__art {
+    display: block !important;
+    position: absolute;
+    right: -10px;
+    bottom: -15px;
+    height: 140px;
+    width: auto;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    mask-image: linear-gradient(to top, transparent 0%, black 35%, black 75%, transparent 100%),
+                linear-gradient(to left, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to top, transparent 0%, black 35%, black 75%, transparent 100%),
+                        linear-gradient(to left, black 60%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+    opacity: 0.45;
+    transform: translateZ(0);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .upcoming-card:hover .upcoming-card__art {
+    opacity: 0.85;
+    transform: translateY(-4px) scale(1.04);
+  }
+}

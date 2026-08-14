@@ -305,10 +305,10 @@ function tickCountdown() {
   const countdownValues = calculateCountdown(targetDateStr);
   if (typeof document !== 'undefined') {
     const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(activeGame.id) : activeGame.id;
-    const cardEl = document.querySelector(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
-    if (cardEl) {
+    const cardEls = document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
+    cardEls.forEach(cardEl => {
       updateCountdownDOM(cardEl, countdownValues);
-    }
+    });
   }
 }
 

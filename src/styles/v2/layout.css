@@ -1,5 +1,22 @@
 /* SeasonForge CSS v2 — Layout Module */
 
+/* Dual-UI View Visibility Helpers */
+.sf-desktop-only {
+  display: contents;
+}
+.sf-mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .sf-desktop-only {
+    display: none !important;
+  }
+  .sf-mobile-only {
+    display: contents !important;
+  }
+}
+
 .app-layout {
   display: grid;
   grid-template-columns: 380px minmax(0, 1fr);

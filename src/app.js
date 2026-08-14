@@ -248,10 +248,11 @@ function renderApp() {
           const card = renderGameCard(game, {
             countdown,
             progressBar,
-            statusBadge
+            statusBadge,
+            isActive
           });
 
-          return card.replace('class="game-card"', `class="game-card ${isActive ? 'game-card--active' : ''}"`);
+          return card;
         }).join('');
         contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
       }
@@ -744,10 +745,10 @@ function tickCountdown() {
       }
       
       const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
-      const cardEl = document.querySelector(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
-      if (cardEl) {
+      const cardEls = document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
+      cardEls.forEach(cardEl => {
         updateCountdownDOM(cardEl, calculateCountdown(targetDateStr));
-      }
+      });
     });
   }
 

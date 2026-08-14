@@ -1,0 +1,72 @@
+/* ==========================================================================
+   SeasonForge Mobile Styles — Cards & Presentation Layer
+   Viewport Target: Mobile & Tablets (max-width: 900px)
+   Features: Compact vertical stack, 48px touch targets, zero heavy 3D art
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  /* Mobile Feed: Show all cards in a vertical stream */
+  .game-feed .sf-mobile-card {
+    display: block;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Single Column Body for Mobile */
+  .sf-mobile-card .game-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  /* Compact Upcoming Grid (2 columns on tablet, 1 on small mobile) */
+  .upcoming-launches__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Mobile Benchmark Rule: Completely hide heavy 3D character art */
+  .upcoming-card__art {
+    display: none !important;
+  }
+
+  /* Responsive History Table to Mobile Cards */
+  .history-table {
+    display: block;
+    width: 100%;
+  }
+
+  .history-table thead {
+    display: none;
+  }
+
+  .history-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .history-table tr {
+    display: flex;
+    flex-direction: column;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 0.85rem 1rem;
+    gap: 0.35rem;
+  }
+
+  .history-table td {
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .history-table td:first-child {
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+}
+
+@media (max-width: 600px) {
+  .upcoming-launches__grid {
+    grid-template-columns: 1fr !important;
+  }
+}

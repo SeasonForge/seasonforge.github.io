@@ -12,6 +12,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const state = getState ? getState() : {};
   const lang = state.settings?.lang || (typeof document !== 'undefined' ? document.documentElement.lang : 'en') || 'en';
 
+  const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   let newestGameId = null;
   let minAgeMs = Infinity;
 
@@ -20,7 +21,7 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       const st = new Date(g.currentSeason.startDate);
       if (!Number.isNaN(st.getTime()) && st.getTime() <= now.getTime()) {
         const age = now.getTime() - st.getTime();
-        if (age < minAgeMs) {
+        if (age <= SEVEN_DAYS_MS && age < minAgeMs) {
           minAgeMs = age;
           newestGameId = g.id || g.slug;
         }

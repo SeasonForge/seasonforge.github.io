@@ -111,6 +111,30 @@
   border-color: rgba(59, 130, 246, 0.4);
 }
 
+.game-card__pill--early-access {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+.game-card__pill--upcoming {
+  background: rgba(20, 184, 166, 0.15);
+  color: #2dd4bf;
+  border-color: rgba(20, 184, 166, 0.4);
+}
+
+.game-card__pill--in-development {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border-color: rgba(168, 85, 247, 0.4);
+}
+
+.game-card__pill--maintenance {
+  background: rgba(249, 115, 22, 0.15);
+  color: #fb923c;
+  border-color: rgba(249, 115, 22, 0.4);
+}
+
 .game-card__pill--announcement {
   background: rgba(236, 72, 153, 0.15);
   color: #f472b6;

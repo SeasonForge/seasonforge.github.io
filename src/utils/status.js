@@ -61,16 +61,21 @@ export function calculateDynamicStatus(game = {}) {
     return 'ended';
   }
 
+  const ageMs = nowMs - startMs;
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000;
+
+  // Week 1 & 2 (0–14 days): Fresh season phase
+  if (ageMs <= FOURTEEN_DAYS_MS) {
+    return 'just-started';
+  }
+
   const totalDuration = endMs - startMs;
   if (totalDuration <= 0) {
     return 'in-progress';
   }
 
-  const progressPercent = ((nowMs - startMs) / totalDuration) * 100;
+  const progressPercent = (ageMs / totalDuration) * 100;
 
-  if (progressPercent < 15) {
-    return 'just-started';
-  }
   if (progressPercent < 60) {
     return 'in-progress';
   }

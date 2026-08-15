@@ -16,9 +16,22 @@ export function generateDeterministicId(gameId, type, titleEn) {
 }
 
 export function cleanSourceUrl(url, gameId) {
-  if (!url) return '';
-  if (url.includes('steamstore-a.akamaihd.net') || url.includes('/news/externalpost/')) {
-    const match = url.match(/steam_community_announcements\/(\d+)/) || url.match(/\/(\d+)$/);
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+    const defaultHubs = {
+      'path-of-exile': 'https://www.pathofexile.com/forum',
+      'path-of-exile-2': 'https://www.pathofexile.com/forum',
+      'diablo-4': 'https://news.blizzard.com/en-us/diablo4',
+      'last-epoch': 'https://forum.lastepoch.com',
+      'torchlight-infinite': 'https://torchlight.xd.com'
+    };
+    return defaultHubs[gameId] || '';
+  }
+
+  let cleaned = url.trim();
+
+  // 1. Steam akamaihd/externalpost URLs conversion
+  if (cleaned.includes('steamstore-a.akamaihd.net') || cleaned.includes('/news/externalpost/')) {
+    const match = cleaned.match(/steam_community_announcements\/(\d+)/) || cleaned.match(/\/(\d+)$/);
     if (match && match[1]) {
       const appMap = {
         'path-of-exile': 238960,
@@ -30,7 +43,28 @@ export function cleanSourceUrl(url, gameId) {
       return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
     }
   }
-  return url;
+
+  // 2. Steam community announcement URLs
+  if (cleaned.includes('steamcommunity.com/games/') && cleaned.includes('/announcements/detail/')) {
+    const match = cleaned.match(/\/announcements\/detail\/(\d+)/);
+    if (match && match[1]) {
+      const appMap = {
+        'path-of-exile': 238960,
+        'path-of-exile-2': 2694490,
+        'last-epoch': 899770,
+        'torchlight-infinite': 1974050
+      };
+      const appId = appMap[gameId] || 238960;
+      return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
+    }
+  }
+
+  // 3. Normalize HTTP to HTTPS
+  if (cleaned.startsWith('http://')) {
+    cleaned = 'https://' + cleaned.slice(7);
+  }
+
+  return cleaned;
 }
 
 export const EVENT_SCHEMA = {
@@ -130,6 +164,14 @@ CRITICAL RULES FOR DATES & DURATION:
 CRITICAL RULES FOR REWARDS:
 - Extract ONLY 2 to 4 key exclusive or cosmetic rewards (e.g., "Weapon Skin", "Exclusive Portal Effect", "Mystery Box", "Demigod's Unique", "Super Time Transition Capsule").
 - STRICTLY EXCLUDE mundane in-game currencies, crafting materials, tax vouchers, utility tickets, or standard consumables.
+
+CRITICAL RULES FOR CANONICAL SOURCE URLS:
+- Extract the direct official announcement permalink from the news item:
+  * For Path of Exile 1 & 2: Extract direct official forum thread link ('https://www.pathofexile.com/forum/view-thread/...') or Steam news permalink.
+  * For Diablo IV: Extract full Blizzard news article link ('https://news.blizzard.com/en-us/article/...').
+  * For Torchlight: Infinite & Last Epoch: Extract direct Steam news link, forum thread, or official developer post (e.g. on x.com).
+- If the news text body references or links to the official announcement thread / article, prefer that direct link over generic aggregators.
+- NEVER invent, truncate, or hallucinate URLs.
 
 CRITICAL RULES FOR CROSS-GAME CONTESTS:
 - If an announcement mentions both Path of Exile 1 and Path of Exile 2 (like the Fan Art Competition), ensure it is marked appropriately or extracted for the relevant games.

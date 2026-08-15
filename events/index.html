@@ -77,7 +77,7 @@
         <a href="../changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
-            <strong id="last-checked-time">Aug 15, 13:38 UTC</strong>
+            <strong id="last-checked-time">Aug 15, 17:11 UTC</strong>
           </div>
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
@@ -208,27 +208,29 @@
     <div class="sf-desktop-only">
       <div class="events-dashboard-container events-dashboard-desktop">
       
-      <!-- Segmented Mode Switcher (SEASONS | EVENTS) -->
-      <div class="timeline-mode-switcher-bar">
-        <div class="timeline-mode-switcher">
-          <a href="../" class="timeline-mode-tab" id="tab-mode-seasons">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>SEASONS</span>
-          </a>
-          <a href="../events/" class="timeline-mode-tab active" id="tab-mode-events">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-            <span>EVENTS</span>
-          </a>
-        </div>
-        <div class="timeline-card__year-badge">AUG–SEP 2026</div>
-      </div>
-
       <!-- Main Live Events Timeline Card -->
       <section class="timeline-card events-timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">LIVE EVENTS TIMELINE</h3>
             <p class="timeline-card__caption">All events, Twitch Drops, PTR and collabs across games on timeline</p>
+          </div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="../" class="timeline-switcher-tab" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="false">
+                <span class="switcher-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6Z"/></svg></span>
+                <span class="switcher-text">SEASONS</span>
+              </a>
+              <a href="../events/" class="timeline-switcher-tab active" id="tab-mode-events" data-mode="events" role="tab" aria-selected="true">
+                <span class="switcher-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+                <span class="switcher-text">EVENTS</span>
+              </a>
+              <div class="timeline-switcher-slider is-events"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">AUG–SEP 2026</div>
           </div>
         </div>
 
@@ -434,6 +436,7 @@
         <div class="events-timeline__track" style="height: 28px;">
           
         <div class="events-timeline__bar is-live is-full type-event" 
+             data-event-id="path-of-exile_event_curse-of-the-allflame-fan-art-competition"
              style="left: 5.054315476190476%; width: 57.64409722222222%; top: 2px; height: 24px; --event-color: #d97706;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
@@ -467,9 +470,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/238960/view/1840310314350089" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://www.pathofexile.com/forum/view-thread/3995722" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">PoE Forum</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -487,6 +490,7 @@
         <div class="events-timeline__track" style="height: 55px;">
           
         <div class="events-timeline__bar is-live is-full type-event" 
+             data-event-id="path-of-exile-2_event_return-of-the-ancients-fan-art-competition"
              style="left: 5.054315476190476%; width: 57.64409722222222%; top: 2px; height: 24px; --event-color: #8b5cf6;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
@@ -520,9 +524,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1840310314350088" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://www.pathofexile.com/forum/view-thread/3995722" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">PoE Forum</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -530,6 +534,7 @@
       
 
         <div class="events-timeline__bar is-upcoming is-full type-race" 
+             data-event-id="path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-3"
              style="left: 30.952380952380953%; width: 7.5%; top: 29px; height: 24px; --event-color: #8b5cf6;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8v2h8v-2h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></span>
@@ -563,7 +568,7 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1839676055886369" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://store.steampowered.com/news/app/2694490/view/690887249156375325" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Steam Announcement</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
                 </a>
@@ -573,6 +578,7 @@
       
 
         <div class="events-timeline__bar is-upcoming is-full type-race" 
+             data-event-id="path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4"
              style="left: 47.61904761904761%; width: 7.5%; top: 29px; height: 24px; --event-color: #8b5cf6;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8v2h8v-2h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></span>
@@ -606,7 +612,7 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1839676055886369" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://store.steampowered.com/news/app/2694490/view/690887249156375325" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Steam Announcement</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
                 </a>
@@ -626,6 +632,7 @@
         <div class="events-timeline__track" style="height: 28px;">
           
         <div class="events-timeline__bar is-live is-full type-collab" 
+             data-event-id="diablo-4_collab_diablo-iv-x-overwatch-crossover"
              style="left: 0%; width: 92.46031746031747%; top: 2px; height: 24px; --event-color: #ef4444;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
@@ -659,7 +666,7 @@
               </div>
             
             
-                <a href="https://news.blizzard.com/en-us/diablo4/24290000" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Blizzard News</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
@@ -690,6 +697,7 @@
         <div class="events-timeline__track" style="height: 28px;">
           
         <div class="events-timeline__bar is-upcoming is-full type-special_server" 
+             data-event-id="torchlight-infinite_special_server_afterlight-hardcore-server-launch"
              style="left: 31.448412698412696%; width: 59.32539682539682%; top: 2px; height: 24px; --event-color: #06b6d4;"
              tabindex="0">
           <span class="events-timeline__bar-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
@@ -723,9 +731,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/1974050/view/1838407329258272" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://x.com/torchlight_xd/status/2087444905933348907" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">Official Post (X)</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -737,7 +745,7 @@
             </div>
 
             <!-- Vertical TODAY Line -->
-            <div class="events-timeline__today-line" style="left: calc(165px + (100% - 165px) * 0.1831818681106702);">
+            <div class="events-timeline__today-line" style="left: calc(165px + (100% - 165px) * 0.18669144372795415);">
               <span class="events-timeline__today-badge">TODAY</span>
             </div>
 
@@ -766,11 +774,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">15</strong>
+            <strong data-countdown="hours">11</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -790,11 +798,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">15</strong>
+            <strong data-countdown="hours">11</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -810,15 +818,15 @@
 
         <div class="urgent-event-card__countdown" data-countdown-target="1789491600000">
           <div class="urgent-countdown-item">
-            <strong data-countdown="days">31</strong>
+            <strong data-countdown="days">30</strong>
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">3</strong>
+            <strong data-countdown="hours">23</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -838,11 +846,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">7</strong>
+            <strong data-countdown="hours">3</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -862,11 +870,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">12</strong>
+            <strong data-countdown="hours">8</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -886,11 +894,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">7</strong>
+            <strong data-countdown="hours">3</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -899,32 +907,52 @@
         </div>
       </section>
 
+      <!-- Desktop Interactive Detail Drawer (Docked inside Desktop Layout) -->
+      <aside id="events-detail-drawer" class="events-detail-drawer" aria-hidden="true" role="region" aria-label="Event Details">
+        <div class="events-detail-drawer__inner">
+          <div class="events-detail-drawer__header">
+            <span class="events-detail-drawer__title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>ABOUT EVENT</span>
+            </span>
+            <button type="button" class="events-detail-drawer__close" id="events-detail-drawer-close" aria-label="Close">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="events-detail-drawer__content" id="events-detail-drawer-content">
+            <!-- Dynamically populated on timeline bar selection -->
+          </div>
+        </div>
+      </aside>
+
     </div>
     </div>
     <div class="sf-mobile-only">
       <div class="events-dashboard-container events-dashboard-mobile">
       
-      <!-- Segmented Mode Switcher (SEASONS | EVENTS) -->
-      <div class="timeline-mode-switcher-bar">
-        <div class="timeline-mode-switcher">
-          <a href="../" class="timeline-mode-tab" id="tab-mode-seasons">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            <span>SEASONS</span>
-          </a>
-          <a href="../events/" class="timeline-mode-tab active" id="tab-mode-events">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-            <span>EVENTS</span>
-          </a>
-        </div>
-        <div class="timeline-card__year-badge">AUG–SEP 2026</div>
-      </div>
-
       <!-- Main Live Events Timeline Card -->
       <section class="timeline-card events-timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">LIVE EVENTS TIMELINE</h3>
             <p class="timeline-card__caption">Swipe horizontally to view all upcoming events</p>
+          </div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="../" class="timeline-switcher-tab" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="false">
+                <span class="switcher-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6Z"/></svg></span>
+                <span class="switcher-text">SEASONS</span>
+              </a>
+              <a href="../events/" class="timeline-switcher-tab active" id="tab-mode-events" data-mode="events" role="tab" aria-selected="true">
+                <span class="switcher-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+                <span class="switcher-text">EVENTS</span>
+              </a>
+              <div class="timeline-switcher-slider is-events"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">AUG–SEP 2026</div>
           </div>
         </div>
 
@@ -1163,9 +1191,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/238960/view/1840310314350089" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://www.pathofexile.com/forum/view-thread/3995722" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">PoE Forum</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -1216,9 +1244,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1840310314350088" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://www.pathofexile.com/forum/view-thread/3995722" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">PoE Forum</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -1259,7 +1287,7 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1839676055886369" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://store.steampowered.com/news/app/2694490/view/690887249156375325" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Steam Announcement</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
                 </a>
@@ -1302,7 +1330,7 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/2694490/view/1839676055886369" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://store.steampowered.com/news/app/2694490/view/690887249156375325" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Steam Announcement</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
                 </a>
@@ -1355,7 +1383,7 @@
               </div>
             
             
-                <a href="https://news.blizzard.com/en-us/diablo4/24290000" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                <a href="https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
                   <span class="events-tooltip__link-label">Blizzard News</span>
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
@@ -1419,9 +1447,9 @@
               </div>
             
             
-                <a href="https://store.steampowered.com/news/app/1974050/view/1838407329258272" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
-                  <span class="events-tooltip__link-label">Steam Announcement</span>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a10 10 0 0 0-10 10c0 4.8 3.4 8.8 8 9.8v-4.6l-2.4-1a2.5 2.5 0 0 1-1.6-2.4 2.5 2.5 0 0 1 2.5-2.5c.3 0 .6 0 .8.1l3.2-4.6v-.3a4 4 0 1 1 8 0 4 4 0 0 1-4 4h-.3l-4.6 3.2c.1.3.1.5.1.8a2.5 2.5 0 0 1-2.5 2.5c-1 0-1.9-.6-2.3-1.5L4.4 17A10 10 0 0 0 12 22a10 10 0 0 0 10-10A10 10 0 0 0 12 2z"/></svg>
+                <a href="https://x.com/torchlight_xd/status/2087444905933348907" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">Official Post (X)</span>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </a>
               
           </div>
@@ -1433,7 +1461,7 @@
             </div>
 
             <!-- Vertical TODAY Line -->
-            <div class="events-timeline__today-line" style="left: calc(130px + (100% - 130px) * 0.18318186921296295);">
+            <div class="events-timeline__today-line" style="left: calc(130px + (100% - 130px) * 0.1866914445546737);">
               <span class="events-timeline__today-badge">TODAY</span>
             </div>
 
@@ -1461,11 +1489,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">15</strong>
+            <strong data-countdown="hours">11</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1485,11 +1513,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">15</strong>
+            <strong data-countdown="hours">11</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1505,15 +1533,15 @@
 
         <div class="urgent-event-card__countdown" data-countdown-target="1789491600000">
           <div class="urgent-countdown-item">
-            <strong data-countdown="days">31</strong>
+            <strong data-countdown="days">30</strong>
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">3</strong>
+            <strong data-countdown="hours">23</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1533,11 +1561,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">7</strong>
+            <strong data-countdown="hours">3</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1557,11 +1585,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">12</strong>
+            <strong data-countdown="hours">8</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1581,11 +1609,11 @@
             <span>DAYS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="hours">7</strong>
+            <strong data-countdown="hours">3</strong>
             <span>HOURS</span>
           </div>
           <div class="urgent-countdown-item">
-            <strong data-countdown="minutes">21</strong>
+            <strong data-countdown="minutes">48</strong>
             <span>MINS</span>
           </div>
         </div>
@@ -1613,7 +1641,7 @@
     <div id="toast-root"></div>
     <div id="modal-root"></div>
     <script id="sf-events-json" type="application/json">
-      [{"id":"torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in","gameId":"torchlight-infinite","type":"login","title_ru":"Сезон Afterlight: Награды за вход «Ночной дозор»","title_en":"Afterlight Season: The Night Watch Begins Login Event","startDate":"2026-07-16T00:00:00Z","endDate":null,"description_ru":"Заходите в игру ежедневно для получения легендарного боевого пактспирита на выбор, призывов пактспиритов и эксклюзивных обликов оружия.","description_en":"Log in daily to claim a Legendary Battle Pactspirit Selection Pack, Battle Pactspirit draws, and Exclusive Weapon Appearances.","rewards":["Legendary Battle Pactspirit Selection Pack","Exclusive Weapon Appearances","Rare Season Drop Pactspirits"],"sourceUrl":"https://store.steampowered.com/news/app/1974050/view/1838407329258272","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"diablo-4_collab_diablo-iv-x-overwatch-crossover","gameId":"diablo-4","type":"collab","title_ru":"Коллаборация Diablo IV × Overwatch","title_en":"Diablo IV × Overwatch Crossover","startDate":"2026-06-30T17:00:00Z","endDate":"2026-09-15T17:00:00Z","description_ru":"Уничтожайте элитных монстров ради валюты «Око Overwatch» и открывайте Реликварий Overwatch с легендарной косметикой и первой краской за игровой прогресс.","description_en":"Defeat Elite and Champion monsters for Eye of the Overwatch currency to unlock the Overwatch Reliquary featuring legendary crossover cosmetics and gameplay-earned dyes.","rewards":["Overwatch Reliquary Legendary Cosmetics","Exclusive Progress Dyes","Overwatch Weapon Skins"],"sourceUrl":"https://news.blizzard.com/en-us/diablo4/24290000","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile_event_curse-of-the-allflame-fan-art-competition","gameId":"path-of-exile","type":"event","title_ru":"Конкурс фан-арта Curse of the Allflame","title_en":"Curse of the Allflame Fan Art Competition","startDate":"2026-08-09T23:56:51Z","endDate":"2026-09-03T05:00:00Z","description_ru":"Создайте фан-арт по мотивам обновлений Curse of the Allflame или Return of the Ancients для получения наборов доспехов, эффектов портала и сундуков.","description_en":"Create fan art inspired by Curse of the Allflame or Return of the Ancients expansions to win armour sets, portal effects, and mystery boxes.","rewards":["Choice of Armour Set","Choice of Portal Effect","Choice of Footprints Effect","Curse of the Allflame Mystery Box"],"sourceUrl":"https://store.steampowered.com/news/app/238960/view/1840310314350089","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile-2_event_return-of-the-ancients-fan-art-competition","gameId":"path-of-exile-2","type":"event","title_ru":"Конкурс фан-арта Return of the Ancients","title_en":"Return of the Ancients Fan Art Competition","startDate":"2026-08-09T23:56:51Z","endDate":"2026-09-03T05:00:00Z","description_ru":"Официальный конкурс фанатского творчества по мотивам дополнения Return of the Ancients с наборами брони и порталами в награду.","description_en":"Official community fan art competition inspired by Return of the Ancients expansion, awarding in-game cosmetics and merchandise.","rewards":["Choice of Armour Set","Choice of Portal Effect","Curse of the Allflame Mystery Box","Choice of Footprints Effect"],"sourceUrl":"https://store.steampowered.com/news/app/2694490/view/1840310314350088","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-3","gameId":"path-of-exile-2","type":"race","title_ru":"ExileCon 2026: Отборочная гонка PoE 2 №3","title_en":"ExileCon 2026: PoE 2 Race Qualifier #3","startDate":"2026-08-20T21:00:00Z","endDate":"2026-08-21T03:00:00Z","description_ru":"Третий отборочный раунд Solo Self-Found гонки с фиксированной генерацией карт до убийства Тавакая в 4 Акте. Победитель получает поездку на финал ExileCon и шлем Demigod's Virtue.","description_en":"The third Solo Self-Found fixed-layout race qualifier to defeat Tavakai in Act 4. Winner receives a paid trip to the ExileCon live finale and the Demigod's Virtue helmet.","rewards":["Demigod's Virtue Unique Helmet","ExileCon Race Finale Ticket \u0026 Flights"],"sourceUrl":"https://store.steampowered.com/news/app/2694490/view/1839676055886369","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"},{"id":"torchlight-infinite_special_server_afterlight-hardcore-server-launch","gameId":"torchlight-infinite","type":"special_server","title_ru":"Открытие Afterlight Hardcore Server","title_en":"Afterlight Hardcore Server Launch","startDate":"2026-08-21T02:00:00Z","endDate":"2026-09-15T00:00:00Z","description_ru":"Специальный хардкорный сервер сезона Afterlight с перманентной смертью персонажей, эксклюзивными достижениями и обликами оружия.","description_en":"Dedicated hardcore seasonal server with permadeath mechanics, exclusive HC achievements, and exclusive weapon appearances.","rewards":["Exclusive HC Weapon Skin","Hero Relics","Microtransactions"],"sourceUrl":"https://store.steampowered.com/news/app/1974050/view/1838407329258272","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"},{"id":"path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4","gameId":"path-of-exile-2","type":"race","title_ru":"ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал)","title_en":"ExileCon 2026: PoE 2 Race Qualifier #4 (Final)","startDate":"2026-08-27T21:00:00Z","endDate":"2026-08-28T03:00:00Z","description_ru":"Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.","description_en":"The fourth and final Solo Self-Found qualifier race leading into the live championship at ExileCon.","rewards":["Demigod's Virtue Unique Helmet","ExileCon Race Finale Ticket \u0026 Flights"],"sourceUrl":"https://store.steampowered.com/news/app/2694490/view/1839676055886369","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"}]
+      [{"id":"torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in","gameId":"torchlight-infinite","type":"login","title_ru":"Сезон Afterlight: Награды за вход «Ночной дозор»","title_en":"Afterlight Season: The Night Watch Begins Login Event","startDate":"2026-07-16T00:00:00Z","endDate":null,"description_ru":"Заходите в игру ежедневно для получения легендарного боевого пактспирита на выбор, призывов пактспиритов и эксклюзивных обликов оружия.","description_en":"Log in daily to claim a Legendary Battle Pactspirit Selection Pack, Battle Pactspirit draws, and Exclusive Weapon Appearances.","rewards":["Legendary Battle Pactspirit Selection Pack","Exclusive Weapon Appearances","Rare Season Drop Pactspirits"],"sourceUrl":"https://store.steampowered.com/news/app/1974050/view/693139048964820952","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"diablo-4_collab_diablo-iv-x-overwatch-crossover","gameId":"diablo-4","type":"collab","title_ru":"Коллаборация Diablo IV × Overwatch","title_en":"Diablo IV × Overwatch Crossover","startDate":"2026-06-30T17:00:00Z","endDate":"2026-09-15T17:00:00Z","description_ru":"Уничтожайте элитных монстров ради валюты «Око Overwatch» и открывайте Реликварий Overwatch с легендарной косметикой и первой краской за игровой прогресс.","description_en":"Defeat Elite and Champion monsters for Eye of the Overwatch currency to unlock the Overwatch Reliquary featuring legendary crossover cosmetics and gameplay-earned dyes.","rewards":["Overwatch Reliquary Legendary Cosmetics","Exclusive Progress Dyes","Overwatch Weapon Skins"],"sourceUrl":"https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile_event_curse-of-the-allflame-fan-art-competition","gameId":"path-of-exile","type":"event","title_ru":"Конкурс фан-арта Curse of the Allflame","title_en":"Curse of the Allflame Fan Art Competition","startDate":"2026-08-09T23:56:51Z","endDate":"2026-09-03T05:00:00Z","description_ru":"Создайте фан-арт по мотивам обновлений Curse of the Allflame или Return of the Ancients для получения наборов доспехов, эффектов портала и сундуков.","description_en":"Create fan art inspired by Curse of the Allflame or Return of the Ancients expansions to win armour sets, portal effects, and mystery boxes.","rewards":["Choice of Armour Set","Choice of Portal Effect","Choice of Footprints Effect","Curse of the Allflame Mystery Box"],"sourceUrl":"https://www.pathofexile.com/forum/view-thread/3995722","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile-2_event_return-of-the-ancients-fan-art-competition","gameId":"path-of-exile-2","type":"event","title_ru":"Конкурс фан-арта Return of the Ancients","title_en":"Return of the Ancients Fan Art Competition","startDate":"2026-08-09T23:56:51Z","endDate":"2026-09-03T05:00:00Z","description_ru":"Официальный конкурс фанатского творчества по мотивам дополнения Return of the Ancients с наборами брони и порталами в награду.","description_en":"Official community fan art competition inspired by Return of the Ancients expansion, awarding in-game cosmetics and merchandise.","rewards":["Choice of Armour Set","Choice of Portal Effect","Curse of the Allflame Mystery Box","Choice of Footprints Effect"],"sourceUrl":"https://www.pathofexile.com/forum/view-thread/3995722","updatedAt":"2026-08-15T16:12:00.000Z","status":"active"},{"id":"path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-3","gameId":"path-of-exile-2","type":"race","title_ru":"ExileCon 2026: Отборочная гонка PoE 2 №3","title_en":"ExileCon 2026: PoE 2 Race Qualifier #3","startDate":"2026-08-20T21:00:00Z","endDate":"2026-08-21T03:00:00Z","description_ru":"Третий отборочный раунд Solo Self-Found гонки с фиксированной генерацией карт до убийства Тавакая в 4 Акте. Победитель получает поездку на финал ExileCon и шлем Demigod's Virtue.","description_en":"The third Solo Self-Found fixed-layout race qualifier to defeat Tavakai in Act 4. Winner receives a paid trip to the ExileCon live finale and the Demigod's Virtue helmet.","rewards":["Demigod's Virtue Unique Helmet","ExileCon Race Finale Ticket \u0026 Flights"],"sourceUrl":"https://store.steampowered.com/news/app/2694490/view/690887249156375325","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"},{"id":"torchlight-infinite_special_server_afterlight-hardcore-server-launch","gameId":"torchlight-infinite","type":"special_server","title_ru":"Открытие Afterlight Hardcore Server","title_en":"Afterlight Hardcore Server Launch","startDate":"2026-08-21T02:00:00Z","endDate":"2026-09-15T00:00:00Z","description_ru":"Специальный хардкорный сервер сезона Afterlight с перманентной смертью персонажей, эксклюзивными достижениями и обликами оружия.","description_en":"Dedicated hardcore seasonal server with permadeath mechanics, exclusive HC achievements, and exclusive weapon appearances.","rewards":["Exclusive HC Weapon Skin","Hero Relics","Microtransactions"],"sourceUrl":"https://x.com/torchlight_xd/status/2087444905933348907","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"},{"id":"path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4","gameId":"path-of-exile-2","type":"race","title_ru":"ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал)","title_en":"ExileCon 2026: PoE 2 Race Qualifier #4 (Final)","startDate":"2026-08-27T21:00:00Z","endDate":"2026-08-28T03:00:00Z","description_ru":"Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.","description_en":"The fourth and final Solo Self-Found qualifier race leading into the live championship at ExileCon.","rewards":["Demigod's Virtue Unique Helmet","ExileCon Race Finale Ticket \u0026 Flights"],"sourceUrl":"https://store.steampowered.com/news/app/2694490/view/690887249156375325","updatedAt":"2026-08-15T16:12:00.000Z","status":"upcoming"}]
     </script>
     <script type="module" src="../src/app.js?v=1.2.1"></script>
   </body>

@@ -153,6 +153,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
       return `
         <div class="events-timeline__bar ${isUpcoming ? 'is-upcoming' : 'is-live'} ${widthClass} type-${escapeAttr(typeKey)}" 
+             data-event-id="${escapeAttr(event.id)}"
              style="left: ${leftPct}%; width: ${widthPct}%; top: ${topPx}px; height: 24px; --event-color: ${meta.color};"
              tabindex="0">
           <span class="events-timeline__bar-icon">${getIconSvg(typeIcon, { size: 14 })}</span>
@@ -297,27 +298,29 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   return `
     <div class="events-dashboard-container events-dashboard-desktop">
       
-      <!-- Segmented Mode Switcher (SEASONS | EVENTS) -->
-      <div class="timeline-mode-switcher-bar">
-        <div class="timeline-mode-switcher">
-          <a href="${seasonsHref}" class="timeline-mode-tab" id="tab-mode-seasons">
-            ${getIconSvg('calendar', { size: 15 })}
-            <span>${isEn ? 'SEASONS' : 'СЕЗОНЫ'}</span>
-          </a>
-          <a href="${eventsHref}" class="timeline-mode-tab active" id="tab-mode-events">
-            ${getIconSvg('gift', { size: 15 })}
-            <span>${isEn ? 'EVENTS' : 'ИВЕНТЫ'}</span>
-          </a>
-        </div>
-        <div class="timeline-card__year-badge">${escapeHtml(dateRangeBadge)}</div>
-      </div>
-
       <!-- Main Live Events Timeline Card -->
       <section class="timeline-card events-timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">${isEn ? 'LIVE EVENTS TIMELINE' : 'ТАЙМЛАЙН СОБЫТИЙ И ИВЕНТОВ'}</h3>
             <p class="timeline-card__caption">${isEn ? 'All events, Twitch Drops, PTR and collabs across games on timeline' : 'Все события, Twitch Drops, PTR и коллаборации на одной шкале'}</p>
+          </div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="${seasonsHref}" class="timeline-switcher-tab" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="false">
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 17 })}</span>
+                <span class="switcher-text">${isEn ? 'SEASONS' : 'СЕЗОНЫ'}</span>
+              </a>
+              <a href="${eventsHref}" class="timeline-switcher-tab active" id="tab-mode-events" data-mode="events" role="tab" aria-selected="true">
+                <span class="switcher-icon">${getIconSvg('layers', { size: 17 })}</span>
+                <span class="switcher-text">${isEn ? 'EVENTS' : 'ИВЕНТЫ'}</span>
+              </a>
+              <div class="timeline-switcher-slider is-events"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">${escapeHtml(dateRangeBadge)}</div>
           </div>
         </div>
 
@@ -364,6 +367,241 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
           ${urgentCardsHtml}
         </div>
       </section>
+
+      <!-- Desktop Interactive Detail Drawer (Docked inside Desktop Layout) -->
+      <aside id="events-detail-drawer" class="events-detail-drawer" aria-hidden="true" role="region" aria-label="${isEn ? 'Event Details' : 'Информация о событии'}">
+        <div class="events-detail-drawer__inner">
+          <div class="events-detail-drawer__header">
+            <span class="events-detail-drawer__title">
+              ${getIconSvg('layers', { size: 15 })}
+              <span>${isEn ? 'ABOUT EVENT' : 'О СОБЫТИИ'}</span>
+            </span>
+            <button type="button" class="events-detail-drawer__close" id="events-detail-drawer-close" aria-label="${isEn ? 'Close' : 'Закрыть'}">
+              ${getIconSvg('x', { size: 16 })}
+            </button>
+          </div>
+          <div class="events-detail-drawer__content" id="events-detail-drawer-content">
+            <!-- Dynamically populated on timeline bar selection -->
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  `.trim();
+}
+
+/**
+ * Renders the rich internal HTML content for a selected event inside the Desktop Drawer.
+ * Strictly conditionally renders sections only when relevant data exists (no empty placeholders).
+ */
+export function renderEventDetailContent(event, { lang = 'en', basePath = './' } = {}) {
+  if (!event) return '';
+  const isEn = lang === 'en';
+  const now = new Date();
+  const nowMs = now.getTime();
+
+  const meta = GAME_META[event.gameId] || { name: 'Unknown Game', icon: 'gamepad', color: '#6366f1' };
+  const typeKey = event.type || 'event';
+  const typeIcon = TYPE_ICONS[typeKey] || 'calendar';
+  const typeLabel = TYPE_LABELS[typeKey] ? (TYPE_LABELS[typeKey][lang] || TYPE_LABELS[typeKey].en) : (isEn ? 'Event' : 'Событие');
+
+  const title = getVal(event.title, lang) || (isEn ? event.title_en : event.title_ru) || event.title_en || event.title_ru || (typeof event.title === 'string' ? event.title : 'Event');
+  const description = getVal(event.description, lang) || (isEn ? event.description_en : event.description_ru) || '';
+
+  const eStart = event.startDate ? new Date(event.startDate) : null;
+  const eEnd = event.endDate ? new Date(event.endDate) : null;
+  const startMs = eStart ? eStart.getTime() : 0;
+  const endMs = eEnd ? eEnd.getTime() : null;
+
+  const isUpcoming = startMs > nowMs;
+  const isEnded = endMs && nowMs > endMs;
+  const isLive = !isUpcoming && !isEnded;
+
+  // Status & Countdown
+  let statusText = isEn ? 'Upcoming' : 'Предстоит';
+  let statusClass = 'status--upcoming';
+  let countdownLabel = isEn ? 'starts in' : 'начнётся через';
+  let targetTime = startMs;
+
+  if (isLive) {
+    statusText = isEn ? 'Live Now' : 'В разгаре';
+    statusClass = 'status--live';
+    if (endMs) {
+      const hoursLeft = (endMs - nowMs) / 3600000;
+      if (hoursLeft <= 48) {
+        countdownLabel = isEn ? 'ends soon' : 'скоро завершится';
+      } else {
+        countdownLabel = isEn ? 'ends in' : 'завершится через';
+      }
+      targetTime = endMs;
+    } else {
+      countdownLabel = isEn ? 'duration' : 'длительность';
+      targetTime = null;
+    }
+  } else if (isEnded) {
+    statusText = isEn ? 'Ended' : 'Завершено';
+    statusClass = 'status--ended';
+    countdownLabel = isEn ? 'status' : 'статус';
+    targetTime = null;
+  }
+
+  let countdownValueStr = '';
+  if (targetTime && targetTime > nowMs) {
+    const diffMs = targetTime - nowMs;
+    const totalSecs = Math.floor(diffMs / 1000);
+    const days = Math.floor(totalSecs / 86400);
+    const hours = Math.floor((totalSecs % 86400) / 3600);
+    const mins = Math.floor((totalSecs % 3600) / 60);
+
+    if (days > 0) {
+      countdownValueStr = isEn 
+        ? `${days}d ${hours}h` 
+        : `${days} ${days === 1 ? 'день' : (days >= 2 && days <= 4 ? 'дня' : 'дней')} ${hours} ч.`;
+    } else if (hours > 0) {
+      countdownValueStr = isEn ? `${hours}h ${mins}m` : `${hours} ч. ${mins} мин.`;
+    } else {
+      countdownValueStr = isEn ? `${mins}m` : `${mins} мин.`;
+    }
+  } else if (isLive && !endMs) {
+    countdownValueStr = isEn ? 'Ongoing' : 'Бессрочно';
+  } else if (isEnded) {
+    countdownValueStr = isEn ? 'Completed' : 'Завершено';
+  }
+
+  // Dates formatting
+  let startDateStr = '';
+  let endDateStr = '';
+  if (eStart) {
+    startDateStr = eStart.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+  if (eEnd) {
+    endDateStr = eEnd.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  // Strictly conditional data checks
+  const conditions = Array.isArray(event.conditions) && event.conditions.length > 0
+    ? event.conditions
+    : (Array.isArray(event.requirements) && event.requirements.length > 0 ? event.requirements : null);
+
+  const rewards = Array.isArray(event.rewards) && event.rewards.length > 0 ? event.rewards : null;
+
+  const sourceUrl = event.sourceUrl ? cleanSourceUrl(event.sourceUrl, event.gameId) : null;
+  const sourceInfo = sourceUrl ? getSourceInfo(sourceUrl, isEn) : null;
+
+  return `
+    <div class="events-detail-body" style="--event-accent: ${meta.color};">
+      
+      <!-- Category Badge, Title & Game Header -->
+      <div class="events-detail-hero">
+        <div class="events-detail-tags">
+          <span class="events-detail-type-badge" style="--badge-accent: ${meta.color};">
+            <span class="events-detail-type-icon">${getIconSvg(typeIcon, { size: 12 })}</span>
+            <span>${escapeHtml(typeLabel.toUpperCase())}</span>
+          </span>
+          <span class="events-detail-game-badge">
+            <span class="events-detail-game-icon" style="color: ${meta.color};">${getIconSvg(meta.icon, { size: 13 })}</span>
+            <span>${escapeHtml(meta.name)}</span>
+          </span>
+        </div>
+
+        <h3 class="events-detail-title">${escapeHtml(title)}</h3>
+
+        <!-- Unified Single Metadata Row (Status + Timer in 1 compact line) -->
+        <div class="events-detail-meta-line" ${targetTime ? `data-countdown-target="${targetTime}"` : ''}>
+          <span class="events-detail-status-pill ${statusClass}">
+            <span class="status-dot"></span>
+            <span>${escapeHtml(statusText)}</span>
+          </span>
+          ${countdownValueStr ? `
+            <span class="events-detail-meta-divider">·</span>
+            <span class="events-detail-countdown-pill">
+              <span class="events-detail-countdown-lbl">${escapeHtml(countdownLabel)}:</span>
+              <strong data-countdown-display>${escapeHtml(countdownValueStr)}</strong>
+            </span>
+          ` : ''}
+        </div>
+      </div>
+
+      <!-- Date & Time Section -->
+      <div class="events-detail-section">
+        <h4 class="events-detail-section__heading">${isEn ? 'DATE & TIME' : 'ДАТА И ВРЕМЯ'}</h4>
+        <div class="events-detail-dates-list">
+          ${eStart ? `
+            <div class="events-detail-date-item">
+              <span class="events-detail-date-icon">${getIconSvg('calendar', { size: 14 })}</span>
+              <span class="events-detail-date-text">${escapeHtml(startDateStr)}</span>
+            </div>
+          ` : ''}
+          ${eEnd ? `
+            <div class="events-detail-date-item">
+              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 14 })}</span>
+              <span class="events-detail-date-text"><span class="events-detail-date-lbl">${isEn ? 'End:' : 'Конец:'}</span> ${escapeHtml(endDateStr)}</span>
+            </div>
+          ` : (eStart && !eEnd ? `
+            <div class="events-detail-date-item">
+              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 14 })}</span>
+              <span class="events-detail-date-text">${isEn ? 'Ongoing / Until season ends' : 'Активно / До окончания сезона'}</span>
+            </div>
+          ` : '')}
+        </div>
+      </div>
+
+      <!-- Description Section (ONLY IF PRESENT) -->
+      ${description ? `
+        <div class="events-detail-section">
+          <h4 class="events-detail-section__heading">${isEn ? 'DESCRIPTION' : 'ОПИСАНИЕ'}</h4>
+          <p class="events-detail-description">${escapeHtml(description)}</p>
+        </div>
+      ` : ''}
+
+      <!-- Conditions / Rules Section (ONLY IF PRESENT) -->
+      ${conditions ? `
+        <div class="events-detail-section">
+          <h4 class="events-detail-section__heading">${isEn ? 'CONDITIONS & RULES' : 'УСЛОВИЯ УЧАСТИЯ'}</h4>
+          <ul class="events-detail-list events-detail-list--conditions">
+            ${conditions.map(c => `
+              <li>${escapeHtml(typeof c === 'object' ? (c[lang] || c.en || c.ru) : c)}</li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : ''}
+
+      <!-- Rewards Section (ONLY IF PRESENT) -->
+      ${rewards ? `
+        <div class="events-detail-section">
+          <h4 class="events-detail-section__heading">${isEn ? 'REWARDS' : 'НАГРАДЫ'}</h4>
+          <ul class="events-detail-list events-detail-list--rewards">
+            ${rewards.map(r => `
+              <li>
+                <span class="events-detail-reward-icon">${getIconSvg('gift', { size: 14 })}</span>
+                <span class="events-detail-reward-text">${escapeHtml(typeof r === 'object' ? (r[lang] || r.en || r.ru) : r)}</span>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      ` : ''}
+
+      <!-- Official Source Action Button (ONLY IF PRESENT) -->
+      ${sourceUrl ? `
+        <div class="events-detail-section events-detail-section--action">
+          <a href="${escapeAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="events-detail-btn-action" style="--btn-color: ${meta.color};">
+            <span>${escapeHtml(sourceInfo ? sourceInfo.label : (isEn ? 'Official Announcement' : 'Официальный анонс'))}</span>
+            ${getIconSvg('external-link', { size: 14 })}
+          </a>
+        </div>
+      ` : ''}
 
     </div>
   `.trim();

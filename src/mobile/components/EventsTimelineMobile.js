@@ -285,27 +285,29 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   return `
     <div class="events-dashboard-container events-dashboard-mobile">
       
-      <!-- Segmented Mode Switcher (SEASONS | EVENTS) -->
-      <div class="timeline-mode-switcher-bar">
-        <div class="timeline-mode-switcher">
-          <a href="${seasonsHref}" class="timeline-mode-tab" id="tab-mode-seasons">
-            ${getIconSvg('calendar', { size: 14 })}
-            <span>${isEn ? 'SEASONS' : 'СЕЗОНЫ'}</span>
-          </a>
-          <a href="${eventsHref}" class="timeline-mode-tab active" id="tab-mode-events">
-            ${getIconSvg('gift', { size: 14 })}
-            <span>${isEn ? 'EVENTS' : 'ИВЕНТЫ'}</span>
-          </a>
-        </div>
-        <div class="timeline-card__year-badge">${escapeHtml(dateRangeBadge)}</div>
-      </div>
-
       <!-- Main Live Events Timeline Card -->
       <section class="timeline-card events-timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">${isEn ? 'LIVE EVENTS TIMELINE' : 'ТАЙМЛАЙН СОБЫТИЙ И ИВЕНТОВ'}</h3>
             <p class="timeline-card__caption">${isEn ? 'Swipe horizontally to view all upcoming events' : 'Свайпайте вправо/влево для просмотра всех событий'}</p>
+          </div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="${seasonsHref}" class="timeline-switcher-tab" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="false">
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 15 })}</span>
+                <span class="switcher-text">${isEn ? 'SEASONS' : 'СЕЗОНЫ'}</span>
+              </a>
+              <a href="${eventsHref}" class="timeline-switcher-tab active" id="tab-mode-events" data-mode="events" role="tab" aria-selected="true">
+                <span class="switcher-icon">${getIconSvg('layers', { size: 15 })}</span>
+                <span class="switcher-text">${isEn ? 'EVENTS' : 'ИВЕНТЫ'}</span>
+              </a>
+              <div class="timeline-switcher-slider is-events"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">${escapeHtml(dateRangeBadge)}</div>
           </div>
         </div>
 

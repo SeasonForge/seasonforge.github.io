@@ -539,25 +539,28 @@ export function render(games = [], viewMode = 'all') {
 
   const timelineChartHtml = `
     <div class="timeline-view-wrapper">
-      <div class="timeline-mode-switcher-bar">
-        <div class="timeline-mode-switcher">
-          <a href="${seasonsHref}" class="timeline-mode-tab active" id="tab-mode-seasons">
-            ${getIconSvg('calendar', { size: 15 })}
-            <span>${t('timeline.modeSeasons') || 'SEASONS'}</span>
-          </a>
-          <a href="${eventsHref}" class="timeline-mode-tab" id="tab-mode-events">
-            ${getIconSvg('gift', { size: 15 })}
-            <span>${t('timeline.modeEvents') || 'EVENTS'}</span>
-          </a>
-        </div>
-        <div class="timeline-card__year-badge">${yearBadgeText}</div>
-      </div>
-
       <section class="timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
             <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
+          </div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="${seasonsHref}" class="timeline-switcher-tab active" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="true">
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 17 })}</span>
+                <span class="switcher-text">${t('timeline.modeSeasons') || 'СЕЗОНЫ'}</span>
+              </a>
+              <a href="${eventsHref}" class="timeline-switcher-tab" id="tab-mode-events" data-mode="events" role="tab" aria-selected="false">
+                <span class="switcher-icon">${getIconSvg('layers', { size: 17 })}</span>
+                <span class="switcher-text">${t('timeline.modeEvents') || 'ИВЕНТЫ'}</span>
+              </a>
+              <div class="timeline-switcher-slider"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">${yearBadgeText}</div>
           </div>
         </div>
         

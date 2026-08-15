@@ -68,3 +68,17 @@
   color: var(--text-muted, #94a3b8);
   font-weight: 600;
 }
+
+.events-dashboard-mobile .timeline-wave-tab#tab-mode-seasons {
+  left: 20px;
+  font-size: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+.events-dashboard-mobile .timeline-wave-tab#tab-mode-events {
+  left: 165px;
+  font-size: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+

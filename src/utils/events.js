@@ -1,7 +1,5 @@
-/**
- * SeasonForge Shared Events Utilities and Metadata
- * Provides game metadata, icon mappings, URL cleaning, and timeline track assignment for events.
- */
+import { getIconSvg } from './icons.js';
+import { escapeHtml } from './helpers.js';
 
 export const TYPE_ICONS = {
   twitch_drops: 'twitch',
@@ -73,9 +71,22 @@ export const TYPE_LABELS = {
 };
 
 export function cleanSourceUrl(url, gameId) {
-  if (!url) return '';
-  if (url.includes('steamstore-a.akamaihd.net') || url.includes('/news/externalpost/')) {
-    const match = url.match(/steam_community_announcements\/(\d+)/) || url.match(/\/(\d+)$/);
+  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+    const defaultHubs = {
+      'path-of-exile': 'https://www.pathofexile.com/forum',
+      'path-of-exile-2': 'https://www.pathofexile.com/forum',
+      'diablo-4': 'https://news.blizzard.com/en-us/diablo4',
+      'last-epoch': 'https://forum.lastepoch.com',
+      'torchlight-infinite': 'https://torchlight.xd.com'
+    };
+    return defaultHubs[gameId] || '';
+  }
+
+  let cleaned = url.trim();
+
+  // 1. Steam akamaihd/externalpost URLs conversion
+  if (cleaned.includes('steamstore-a.akamaihd.net') || cleaned.includes('/news/externalpost/')) {
+    const match = cleaned.match(/steam_community_announcements\/(\d+)/) || cleaned.match(/\/(\d+)$/);
     if (match && match[1]) {
       const appMap = {
         'path-of-exile': 238960,
@@ -87,7 +98,28 @@ export function cleanSourceUrl(url, gameId) {
       return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
     }
   }
-  return url;
+
+  // 2. Steam community announcement URLs
+  if (cleaned.includes('steamcommunity.com/games/') && cleaned.includes('/announcements/detail/')) {
+    const match = cleaned.match(/\/announcements\/detail\/(\d+)/);
+    if (match && match[1]) {
+      const appMap = {
+        'path-of-exile': 238960,
+        'path-of-exile-2': 2694490,
+        'last-epoch': 899770,
+        'torchlight-infinite': 1974050
+      };
+      const appId = appMap[gameId] || 238960;
+      return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
+    }
+  }
+
+  // 3. Normalize HTTP to HTTPS
+  if (cleaned.startsWith('http://')) {
+    cleaned = 'https://' + cleaned.slice(7);
+  }
+
+  return cleaned;
 }
 
 export function getSourceInfo(url, isEn) {
@@ -107,6 +139,9 @@ export function getSourceInfo(url, isEn) {
   }
   if (lower.includes('twitch.tv')) {
     return { label: isEn ? 'Twitch Drops' : 'Twitch Drops', icon: 'twitch' };
+  }
+  if (lower.includes('x.com') || lower.includes('twitter.com')) {
+    return { label: isEn ? 'Official Post (X)' : 'Официальный пост (X)', icon: 'external-link' };
   }
   return { label: isEn ? 'Official Announcement' : 'Официальный анонс', icon: 'external-link' };
 }
@@ -131,3 +166,4 @@ export function assignTracks(events) {
     return { ...event, trackIndex };
   });
 }
+

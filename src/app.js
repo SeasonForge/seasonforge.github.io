@@ -17,6 +17,7 @@ import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
 import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.2';
+import { renderEventDetailContent } from './desktop/components/EventsTimelineDesktop.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
@@ -327,6 +328,8 @@ function renderApp() {
   
   if (state.activeView === 'timeline' || state.activeView === 'card') {
     attachTimelineTooltipEvents();
+    attachEventsDetailDrawer();
+    requestAnimationFrame(() => initSwitcherSlider());
   }
   checkForecastViewed();
   initAnalyticsSourceDelegate();
@@ -617,6 +620,90 @@ function attachTimelineTooltipEvents() {
   }, { signal });
 }
 
+let selectedEventId = null;
+let eventsDrawerAbortController = null;
+
+function attachEventsDetailDrawer() {
+  const container = document.querySelector('.events-dashboard-desktop');
+  const drawer = document.getElementById('events-detail-drawer');
+  const drawerContent = document.getElementById('events-detail-drawer-content');
+
+  if (!container || !drawer || !drawerContent) return;
+
+  if (eventsDrawerAbortController) {
+    eventsDrawerAbortController.abort();
+  }
+  eventsDrawerAbortController = new AbortController();
+  const { signal } = eventsDrawerAbortController;
+
+  const closeDrawer = () => {
+    selectedEventId = null;
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    container.querySelectorAll('.events-timeline__bar.is-selected').forEach(bar => {
+      bar.classList.remove('is-selected');
+    });
+  };
+
+  const openEvent = (eventId) => {
+    const event = eventsData.find(e => e.id === eventId);
+    if (!event) return;
+
+    selectedEventId = eventId;
+    const state = getState();
+    const lang = state.settings?.lang || 'en';
+    const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+    const basePath = isEventsPage ? '../' : './';
+
+    drawerContent.innerHTML = renderEventDetailContent(event, { lang, basePath });
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+
+    container.querySelectorAll('.events-timeline__bar').forEach(bar => {
+      if (bar.dataset.eventId === eventId) {
+        bar.classList.add('is-selected');
+      } else {
+        bar.classList.remove('is-selected');
+      }
+    });
+  };
+
+  // Click on event bars in the timeline grid or close button
+  container.addEventListener('click', (e) => {
+    const bar = e.target.closest('.events-timeline__bar[data-event-id]');
+    if (bar) {
+      const eventId = bar.dataset.eventId;
+      if (selectedEventId === eventId) {
+        // Re-clicking same event toggles it closed
+        closeDrawer();
+      } else {
+        openEvent(eventId);
+      }
+      return;
+    }
+
+    // Close button click
+    if (e.target.closest('#events-detail-drawer-close')) {
+      closeDrawer();
+    }
+  }, { signal });
+
+  // Click outside drawer to close
+  document.addEventListener('click', (e) => {
+    if (!drawer.classList.contains('is-open')) return;
+    if (drawer.contains(e.target)) return;
+    if (e.target.closest('.events-timeline__bar')) return;
+    closeDrawer();
+  }, { signal });
+
+  // Escape key closes drawer
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    }
+  }, { signal });
+}
+
 function attachNavbarEvents() {
   const navbarRoot = document.getElementById('navbar');
 
@@ -807,7 +894,55 @@ function tickCountdown() {
         if (minsEl) minsEl.textContent = mins;
       });
     }
+
+    // 4. Update Event Detail Drawer Countdown (if open and has active target)
+    const drawerCountdown = document.querySelector('.events-detail-countdown[data-countdown-target]');
+    if (drawerCountdown) {
+      const target = Number(drawerCountdown.getAttribute('data-countdown-target'));
+      const displayEl = drawerCountdown.querySelector('[data-countdown-display]');
+      if (target && displayEl) {
+        const now = Date.now();
+        const diffMs = Math.max(0, target - now);
+        const totalSecs = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+
+        const isEn = (getState().settings?.lang || 'en') === 'en';
+        if (days > 0) {
+          displayEl.textContent = isEn 
+            ? `${days}d ${hours}h` 
+            : `${days} ${days === 1 ? 'день' : (days >= 2 && days <= 4 ? 'дня' : 'дней')} ${hours} ч.`;
+        } else if (hours > 0) {
+          displayEl.textContent = isEn ? `${hours}h ${mins}m` : `${hours} ч. ${mins} мин.`;
+        } else {
+          displayEl.textContent = isEn ? `${mins}m` : `${mins} мин.`;
+        }
+      }
+    }
   }
+}
+
+export function initSwitcherSlider() {
+  if (typeof document === 'undefined') return;
+  const switchers = document.querySelectorAll('.timeline-integrated-switcher');
+  switchers.forEach(switcher => {
+    const slider = switcher.querySelector('.timeline-switcher-slider');
+    const activeTab = switcher.querySelector('.timeline-switcher-tab.active');
+    if (!slider || !activeTab) return;
+
+    const left = activeTab.offsetLeft;
+    const width = activeTab.offsetWidth;
+
+    slider.style.width = `${width}px`;
+    slider.style.transform = `translate3d(${left - 3}px, 0, 0)`;
+
+    if (activeTab.dataset.mode === 'events') {
+      slider.classList.add('is-events');
+    } else {
+      slider.classList.remove('is-events');
+    }
+  });
 }
 
 // Global click handler for mode switcher (SEASONS <-> EVENTS)
@@ -844,6 +979,10 @@ if (typeof document !== 'undefined') {
       timelineMode = 'seasons';
     }
     renderApp();
+  });
+
+  window.addEventListener('resize', () => {
+    initSwitcherSlider();
   });
 }
 

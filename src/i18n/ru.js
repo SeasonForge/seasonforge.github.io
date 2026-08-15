@@ -116,6 +116,28 @@ export const ru = {
     modeSeasons: "СЕЗОНЫ",
     modeEvents: "ИВЕНТЫ"
   },
+  eventDrawer: {
+    header: "О СОБЫТИИ",
+    status: "СТАТУС",
+    startsIn: "НАЧНЁТСЯ ЧЕРЕЗ",
+    endsIn: "ЗАВЕРШИТСЯ ЧЕРЕЗ",
+    duration: "ДЛИТЕЛЬНОСТЬ",
+    statusUpcoming: "Предстоит",
+    statusActive: "Активно",
+    statusLiveNow: "В разгаре",
+    statusEnded: "Завершено",
+    dateTime: "ДАТА И ВРЕМЯ",
+    start: "Старт",
+    end: "Конец",
+    ongoing: "Активно / До окончания сезона",
+    description: "ОПИСАНИЕ",
+    conditions: "УСЛОВИЯ УЧАСТИЯ",
+    rewards: "НАГРАДЫ",
+    links: "ССЫЛКИ",
+    officialAnnouncement: "Официальный анонс",
+    openOnSite: "Открыть на сайте",
+    close: "Закрыть"
+  },
   footer: {
     copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",
     changelog: "История обновлений",

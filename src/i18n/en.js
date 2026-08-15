@@ -6,6 +6,8 @@ export const en = {
     dataSource: "Data source"
   },
   navbar: {
+    eyebrow: "SELECT GAME",
+    caption: "Compact list of current seasons",
     title: "SeasonForge",
     compactList: "Compact list of current seasons",
     btnCard: "Game Card",

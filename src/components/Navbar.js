@@ -69,12 +69,14 @@ export function render(games = [], activeGame = null, activeView = 'card', baseP
 
       return `
         <div class="navbar__tab ${activeClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
-          <div class="navbar__tab-icon">${iconHtml}</div>
-          <div class="navbar__tab-info">
-            <span class="navbar__tab-name">${name}</span>
-            <span class="navbar__tab-season">${currentSeason}</span>
+          <div class="navbar__tab-main">
+            <div class="navbar__tab-icon">${iconHtml}</div>
+            <div class="navbar__tab-copy">
+              <h3 class="navbar__name">${name}</h3>
+              <p class="navbar__season">${currentSeason}</p>
+            </div>
           </div>
-          <div class="navbar__tab-badges">
+          <div class="navbar__status-stack">
             ${ptrBadge}
             <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
           </div>

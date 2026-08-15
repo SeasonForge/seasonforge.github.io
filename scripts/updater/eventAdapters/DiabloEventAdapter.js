@@ -14,19 +14,49 @@ export class DiabloEventAdapter extends BaseEventAdapter {
       const data = JSON.parse(rawJson);
       const items = data.feed?.contentItems || [];
 
-      if (items.length === 0) {
-        console.warn(`[Diablo IV] No news items found in Blizzard feed. Keeping existing events.`);
+      const now = Date.now();
+      const fortyFiveDaysMs = 45 * 86400000;
+
+      // 1. Filter by 45-day freshness
+      const freshItems = items.filter(item => {
+        const ts = new Date(item.properties?.lastUpdated || 0).getTime();
+        return (now - ts) <= fortyFiveDaysMs;
+      });
+
+      // 2. Pre-filter noise (shop, bugfixes)
+      const targetItems = this.filterNoiseItems(freshItems);
+
+      if (targetItems.length === 0) {
+        console.log(`[Diablo IV] No active event/PTR news items in recent 45 days.`);
         return existingGameEvents;
       }
 
-      const feedContent = items.slice(0, 15)
-        .map(item => {
-          const props = item.properties || {};
-          return `Title: ${props.title || ''}\nDate: ${props.lastUpdated || ''}\nSummary: ${this.cleanHtml(props.summary || '')}\nURL: https://news.blizzard.com/en-us/diablo4/${props.newsId || ''}`;
-        })
-        .join('\n\n---\n\n');
+      // 3. Fetch full article body for relevant event news to get exact dates
+      const processedItems = await Promise.all(targetItems.slice(0, 8).map(async (item) => {
+        const props = item.properties || {};
+        const newsId = props.newsId || '';
+        const articleUrl = `https://news.blizzard.com/en-us/diablo4/${newsId}`;
+        let articleBody = props.summary || '';
 
-      console.log(`[Events Updater] [Diablo IV] Calling Gemini Flash...`);
+        // If title suggests a PTR or time-limited event, fetch full article HTML
+        if (/\b(ptr|drops|event|goblin|blessing|anniversary|collab)\b/i.test(props.title || '')) {
+          try {
+            const rawHtml = await this.fetchUrl(articleUrl, { timeout: 8000 });
+            const cleaned = this.cleanHtml(rawHtml);
+            if (cleaned.length > 100) {
+              articleBody = cleaned.slice(0, 3500); // Top 3500 chars contain dates, schedule & rewards
+            }
+          } catch (e) {
+            // fallback to summary
+          }
+        }
+
+        return `Title: ${props.title || ''}\nPublished: ${props.lastUpdated || ''}\nURL: ${articleUrl}\nContent: ${articleBody}`;
+      }));
+
+      const feedContent = processedItems.join('\n\n---\n\n');
+
+      console.log(`[Events Updater] [Diablo IV] Calling Gemini Flash (${processedItems.length} articles with full text)...`);
       const extracted = await this.callGemini(feedContent, this.getSystemInstruction(), EVENT_SCHEMA);
       const events = extracted?.events || [];
       console.log(`[Events Updater] [Diablo IV] Extracted ${events.length} event(s).`);

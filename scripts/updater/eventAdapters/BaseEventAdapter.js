@@ -15,6 +15,24 @@ export function generateDeterministicId(gameId, type, titleEn) {
   return `${gameId}_${normType}_${slug}`;
 }
 
+export function cleanSourceUrl(url, gameId) {
+  if (!url) return '';
+  if (url.includes('steamstore-a.akamaihd.net') || url.includes('/news/externalpost/')) {
+    const match = url.match(/steam_community_announcements\/(\d+)/) || url.match(/\/(\d+)$/);
+    if (match && match[1]) {
+      const appMap = {
+        'path-of-exile': 238960,
+        'path-of-exile-2': 2694490,
+        'last-epoch': 899770,
+        'torchlight-infinite': 1974050
+      };
+      const appId = appMap[gameId] || 238960;
+      return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
+    }
+  }
+  return url;
+}
+
 export const EVENT_SCHEMA = {
   type: 'OBJECT',
   properties: {
@@ -36,7 +54,11 @@ export const EVENT_SCHEMA = {
           rewards: {
             type: 'ARRAY',
             items: { type: 'STRING' },
-            description: 'List of rewards (skins, portals, pets, titles, caches)'
+            description: 'Top 2-4 key exclusive cosmetic or prestigious rewards (skins, portals, pets, titles, boxes). Do NOT include mundane currencies, vouchers, or materials.'
+          },
+          gameId: {
+            type: 'STRING',
+            description: 'Target game ID (e.g. "path-of-exile", "path-of-exile-2", "diablo-4", "last-epoch", "torchlight-infinite")'
           },
           sourceUrl: { type: 'STRING', description: 'Official link to article/announcement' }
         },
@@ -52,6 +74,31 @@ export class BaseEventAdapter extends BaseAdapter {
     super(gameId);
   }
 
+  filterNoiseItems(items = []) {
+    const noisePatterns = [
+      /\bhotfix\b/i,
+      /\bpatch notes\b/i,
+      /\bbug fixes?\b/i,
+      /\bmaintenance\b/i,
+      /\bserver downtime\b/i,
+      /\btechnical update\b/i,
+      /\bknown issues\b/i,
+      /\broutine check\b/i
+    ];
+
+    return items.filter(item => {
+      const title = item.title || item.properties?.title || '';
+      const summary = item.contents || item.properties?.summary || '';
+      const combined = `${title} ${summary}`;
+
+      // Always keep if title or summary contains event indicators
+      const hasImportantKeyword = /\b(event|drops|ptr|race|qualifier|hardcore|challenge|contest|art|anniversary|login|rewards?|gauntlet|flashback|server launch)\b/i.test(combined);
+      if (hasImportantKeyword) return true;
+
+      return !noisePatterns.some(p => p.test(title));
+    });
+  }
+
   getSystemInstruction() {
     const todayIso = new Date().toISOString().split('T')[0];
     return `
@@ -62,14 +109,34 @@ Analyze the provided official announcements / news articles and extract ONLY val
 1. Twitch Drops & Support-a-Streamer campaigns (rewards, dates, watch requirements).
 2. Public Test Realms (PTR / Beta / Playtests).
 3. Mid-season races, gauntlets, ladder resets, Flashbacks, special modifiers.
-4. Collaborations & Crossovers (especially those offering cosmetics/rewards).
-5. Celebration login events, anniversaries, free reward caches.
+4. Mid-season Hardcore / Challenge servers (e.g. "Afterlight Hardcore Server", Race servers).
+5. Collaborations & Crossovers (especially those offering cosmetics/rewards).
+6. Celebration login events, anniversaries, free reward caches, official community contests (e.g. Fan Art Competitions with in-game rewards).
 
-RULES:
+CRITICAL RULE: DECOMPOSE MULTI-STAGE EVENTS & RACE SERIES:
+- If an announcement describes a multi-stage tournament, race series, qualifier rounds, or episodic drops (e.g., "Qualifier #1 (Aug 6), Qualifier #2 (Aug 13), Qualifier #3 (Aug 20), Qualifier #4 (Aug 27)", or "Stage 1 vs Stage 2 Drops"):
+  You MUST decompose them and extract EACH individual active or upcoming stage as a SEPARATE event object with its EXACT start and end timestamp (e.g., 'ExileCon 2026: Race Qualifier #3', 'ExileCon 2026: Race Qualifier #4').
+- NEVER merge a multi-week series into a single blurry 3-week block when individual rounds have discrete dates and times.
+- Ignore stages that have already ended more than 7 days ago.
+
+CRITICAL RULES FOR DATES & DURATION:
+- Events MUST be limited-time activities (typically 1 to 21 days, absolute maximum 30 days).
+- NEVER set the endDate of an event to the end of the entire season (e.g. 2-3 months away). If a season launch announcement includes a "login event" or "launch campaign", extract the dates of the specific launch/login window (typically the first 7 to 14 days after start), NOT the whole season duration.
+- Do NOT extract full season lifecycles as events (seasons are tracked separately).
+- STRICT PROHIBITION ON DATE HALLUCINATIONS: NEVER invent, approximate, or extrapolate an endDate. If the exact end date/time is NOT explicitly stated in the source text, you MUST set endDate: null.
+- Dates MUST be normalized to strict ISO 8601 UTC strings (e.g. "2026-08-20T21:00:00Z"). If time is unknown, use "T00:00:00Z".
+- If end date is unannounced/unknown, set endDate to null.
+
+CRITICAL RULES FOR REWARDS:
+- Extract ONLY 2 to 4 key exclusive or cosmetic rewards (e.g., "Weapon Skin", "Exclusive Portal Effect", "Mystery Box", "Demigod's Unique", "Super Time Transition Capsule").
+- STRICTLY EXCLUDE mundane in-game currencies, crafting materials, tax vouchers, utility tickets, or standard consumables.
+
+CRITICAL RULES FOR CROSS-GAME CONTESTS:
+- If an announcement mentions both Path of Exile 1 and Path of Exile 2 (like the Fan Art Competition), ensure it is marked appropriately or extracted for the relevant games.
+
+OTHER RULES:
 - Do NOT extract regular shop microtransactions (MTX sales) unless they offer free rewards/drops.
 - Do NOT extract simple balance patch notes or server maintenance windows.
-- Dates MUST be normalized to strict ISO 8601 UTC strings (e.g. "2026-08-20T18:00:00Z"). If time is unknown, use "T00:00:00Z".
-- If end date is unannounced/unknown, set endDate to null.
 - Provide bilingual titles and descriptions (Russian and English).
 - Return valid JSON matching the schema.
 `.trim();
@@ -91,12 +158,31 @@ RULES:
     for (const item of extractedEvents) {
       if (!item || !item.title_en) continue;
 
-      const detId = generateDeterministicId(this.gameId, item.type, item.title_en);
-      const existing = eventMap.get(detId);
+      const cleanUrl = cleanSourceUrl(item.sourceUrl || '', this.gameId);
+
+      const targetGameId = item.gameId || this.gameId;
+      const detId = generateDeterministicId(targetGameId, item.type, item.title_en);
+      const itemTitleSlug = slugify(item.title_en);
+
+      // Find existing match by exact ID, or same sourceUrl + identical title slug
+      let matchedKey = null;
+      if (eventMap.has(detId)) {
+        matchedKey = detId;
+      } else {
+        for (const [key, val] of eventMap.entries()) {
+          if (val.gameId === targetGameId && cleanUrl && val.sourceUrl === cleanUrl && slugify(val.title_en) === itemTitleSlug) {
+            matchedKey = key;
+            break;
+          }
+        }
+      }
+
+      const finalId = matchedKey || detId;
+      const existing = eventMap.get(finalId);
 
       const merged = {
-        id: detId,
-        gameId: this.gameId,
+        id: finalId,
+        gameId: targetGameId,
         type: item.type || 'event',
         title_ru: item.title_ru || existing?.title_ru || item.title_en,
         title_en: item.title_en,
@@ -105,7 +191,7 @@ RULES:
         description_ru: item.description_ru || existing?.description_ru || '',
         description_en: item.description_en || existing?.description_en || '',
         rewards: Array.isArray(item.rewards) && item.rewards.length > 0 ? item.rewards : (existing?.rewards || []),
-        sourceUrl: item.sourceUrl || existing?.sourceUrl || '',
+        sourceUrl: cleanUrl || existing?.sourceUrl || '',
         updatedAt: nowIso
       };
 

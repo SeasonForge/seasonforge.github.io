@@ -8,7 +8,7 @@ export class TorchlightEventAdapter extends BaseEventAdapter {
   async fetchAndExtract(existingGameEvents = []) {
     console.log(`[Events Updater] [Torchlight: Infinite] Fetching Steam News...`);
     const appId = 1974050;
-    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=20&maxlength=4000&format=json`;
+    const url = `https://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid=${appId}&count=40&maxlength=0&format=json`;
 
     try {
       const rawData = await this.fetchUrl(url);
@@ -20,11 +20,12 @@ export class TorchlightEventAdapter extends BaseEventAdapter {
         return existingGameEvents;
       }
 
-      const feedContent = items.slice(0, 15)
+      const filteredItems = this.filterNoiseItems(items);
+      const feedContent = filteredItems.slice(0, 20)
         .map(item => `Title: ${item.title}\nDate: ${item.date ? new Date(item.date * 1000).toISOString() : ''}\nURL: ${item.url || ''}\nContent: ${this.cleanHtml(item.contents || '')}`)
         .join('\n\n---\n\n');
 
-      console.log(`[Events Updater] [Torchlight: Infinite] Calling Gemini Flash...`);
+      console.log(`[Events Updater] [Torchlight: Infinite] Calling Gemini Flash (${filteredItems.length} filtered items)...`);
       const extracted = await this.callGemini(feedContent, this.getSystemInstruction(), EVENT_SCHEMA);
       const events = extracted?.events || [];
       console.log(`[Events Updater] [Torchlight: Infinite] Extracted ${events.length} event(s).`);

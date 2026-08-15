@@ -6,10 +6,14 @@ import { calculateCountdown } from '../utils/countdown.js';
 
 const TYPE_ICONS = {
   twitch_drops: 'twitch',
+  drops: 'twitch',
   ptr: 'flask',
   race: 'trophy',
   collab: 'users',
   login: 'gift',
+  'login-event': 'gift',
+  convention: 'users',
+  announcement: 'calendar',
   event: 'calendar'
 };
 
@@ -20,6 +24,64 @@ const GAME_META = {
   'last-epoch': { name: 'Last Epoch', icon: 'hourglass', color: '#f59e0b', accentBg: 'rgba(245, 158, 11, 0.15)', borderColor: 'rgba(245, 158, 11, 0.4)' },
   'torchlight-infinite': { name: 'Torchlight: Infinite', icon: 'zap', color: '#06b6d4', accentBg: 'rgba(6, 182, 212, 0.15)', borderColor: 'rgba(6, 182, 212, 0.4)' }
 };
+
+export function cleanSourceUrl(url, gameId) {
+  if (!url) return '';
+  // Normalize Steam CDN URLs to human-readable Steam store links
+  if (url.includes('steamstore-a.akamaihd.net') || url.includes('/news/externalpost/')) {
+    const match = url.match(/steam_community_announcements\/(\d+)/) || url.match(/\/(\d+)$/);
+    if (match && match[1]) {
+      const appMap = {
+        'path-of-exile': 238960,
+        'path-of-exile-2': 2694490,
+        'last-epoch': 899770,
+        'torchlight-infinite': 1974050
+      };
+      const appId = appMap[gameId] || 238960;
+      return `https://store.steampowered.com/news/app/${appId}/view/${match[1]}`;
+    }
+  }
+  return url;
+}
+
+export function getSourceInfo(url, isEn) {
+  if (!url) return { label: isEn ? 'Official Link' : 'Официальная ссылка', icon: 'external-link' };
+  const lower = url.toLowerCase();
+  if (lower.includes('steampowered.com') || lower.includes('steamstore-a.akamaihd.net') || lower.includes('steamcommunity.com')) {
+    return {
+      label: isEn ? 'Steam Announcement' : 'Анонс в Steam',
+      icon: 'steam'
+    };
+  }
+  if (lower.includes('blizzard.com')) {
+    return {
+      label: isEn ? 'Blizzard News' : 'Новости Blizzard',
+      icon: 'external-link'
+    };
+  }
+  if (lower.includes('pathofexile.com')) {
+    return {
+      label: isEn ? 'PoE Forum' : 'Форум PoE',
+      icon: 'external-link'
+    };
+  }
+  if (lower.includes('lastepoch.com')) {
+    return {
+      label: isEn ? 'Last Epoch Forum' : 'Форум Last Epoch',
+      icon: 'external-link'
+    };
+  }
+  if (lower.includes('twitch.tv')) {
+    return {
+      label: isEn ? 'Twitch Drops' : 'Twitch Drops',
+      icon: 'twitch'
+    };
+  }
+  return {
+    label: isEn ? 'Official Announcement' : 'Официальный анонс',
+    icon: 'external-link'
+  };
+}
 
 export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = 'en', activeGameId = null, filterGames = null, basePath = './' } = {}) {
   const isEn = lang === 'en';
@@ -93,10 +155,43 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
     `;
   }).join('');
 
+function assignTracks(events) {
+  const sorted = [...events].sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+  const tracks = []; // stores end timestamp of last event in each track
+
+  return sorted.map(event => {
+    const start = new Date(event.startDate).getTime();
+    const end = event.endDate ? new Date(event.endDate).getTime() : start + 7 * 86400000;
+
+    let trackIndex = tracks.findIndex(lastEnd => start >= lastEnd);
+
+    if (trackIndex === -1) {
+      tracks.push(end);
+      trackIndex = tracks.length - 1;
+    } else {
+      tracks[trackIndex] = end;
+    }
+
+    return { ...event, trackIndex };
+  });
+}
+
+const TYPE_LABELS = {
+  twitch_drops: { en: 'Twitch Drops', ru: 'Twitch Drops' },
+  drops: { en: 'Twitch Drops', ru: 'Twitch Drops' },
+  ptr: { en: 'Public Test Realm', ru: 'Тестовый сервер PTR' },
+  race: { en: 'Boss Gauntlet & Race', ru: 'Gauntlet & Гонка' },
+  collab: { en: 'Collaboration', ru: 'Коллаборация' },
+  login: { en: 'Login Rewards', ru: 'Награды за вход' },
+  'login-event': { en: 'Login Rewards', ru: 'Награды за вход' },
+  convention: { en: 'Convention & Demo', ru: 'Выставка & Демо' },
+  announcement: { en: 'Announcement', ru: 'Анонс' },
+  event: { en: 'In-Game Event', ru: 'Игровое событие' }
+};
+
   // 3. Build Rows by Game
   const targetGames = Object.keys(GAME_META);
-  
-  const rowsHtml = targetGames.map(gameId => {
+  const rowsHtml = targetGames.map((gameId, gameIndex) => {
     // If game filter is active, check visibility
     if (filterGames && filterGames.size > 0 && !filterGames.has(gameId)) {
       return '';
@@ -105,54 +200,125 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
     const meta = GAME_META[gameId];
     const gameEvents = eventsList.filter(e => e.gameId === gameId);
 
-    // Render event bars for this game
-    const barsHtml = gameEvents.map(event => {
+    // 1. Filter events overlapping timeline window
+    const overlappingEvents = gameEvents.filter(event => {
       const eStart = new Date(event.startDate);
       const eEnd = event.endDate ? new Date(event.endDate) : new Date(eStart.getTime() + 7 * 86400000);
+      return !(eEnd.getTime() < windowStart.getTime() || eStart.getTime() > windowEnd.getTime());
+    });
 
-      // Check if event overlaps our window
-      if (eEnd.getTime() < windowStart.getTime() || eStart.getTime() > windowEnd.getTime()) {
-        return '';
-      }
+    // 2. Assign Sub-tracks (Track Packing)
+    const packedEvents = assignTracks(overlappingEvents);
+    const subTracksCount = packedEvents.length > 0 ? Math.max(...packedEvents.map(e => e.trackIndex)) + 1 : 1;
+    const trackHeight = subTracksCount === 1 ? 28 : (subTracksCount * 24 + (subTracksCount - 1) * 3 + 4);
+
+    // 3. Render event bars for this game
+    const isUpperRow = gameIndex <= 1; // PoE 1 and PoE 2 open tooltip downwards to prevent top clipping
+
+    const barsHtml = packedEvents.map(event => {
+      const eStart = new Date(event.startDate);
+      const eEnd = event.endDate ? new Date(event.endDate) : new Date(eStart.getTime() + 7 * 86400000);
 
       const clampedStart = Math.max(windowStart.getTime(), eStart.getTime());
       const clampedEnd = Math.min(windowEnd.getTime(), eEnd.getTime());
 
-      const leftPct = ((clampedStart - windowStart.getTime()) / totalWindowMs) * 100;
-      const widthPct = Math.max(12, ((clampedEnd - clampedStart) / totalWindowMs) * 100);
+      const leftPct = Math.max(0, ((clampedStart - windowStart.getTime()) / totalWindowMs) * 100);
+      const rawWidthPct = ((clampedEnd - clampedStart) / totalWindowMs) * 100;
+      const widthPct = Math.max(3.8, rawWidthPct);
+
+      const isIconOnly = widthPct < 6;
+      const widthClass = isIconOnly ? 'is-icon-only' : 'is-full';
+
+      const topPx = subTracksCount === 1 ? 2 : (2 + event.trackIndex * 27);
 
       const typeKey = event.type || 'event';
       const typeIcon = TYPE_ICONS[typeKey] || 'calendar';
-      const title = isEn ? (event.title_en || event.title_ru) : (event.title_ru || event.title_en);
+      const typeLabel = TYPE_LABELS[typeKey] ? (TYPE_LABELS[typeKey][lang] || TYPE_LABELS[typeKey].en) : (isEn ? 'Event' : 'Событие');
 
-      const dateStr = `${eStart.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { month: 'short', day: 'numeric' })} – ${eEnd.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { month: 'short', day: 'numeric' })}`;
+      const title = getVal(event.title, lang) || (isEn ? event.title_en : event.title_ru) || event.title_en || event.title_ru || (typeof event.title === 'string' ? event.title : 'Event');
+      const description = getVal(event.description, lang) || (isEn ? event.description_en : event.description_ru) || '';
+
+      const exactDatesStr = `${eStart.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })} — ${eEnd.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}`;
 
       const isUpcoming = eStart.getTime() > nowMs;
       const isLive = eStart.getTime() <= nowMs && eEnd.getTime() >= nowMs;
 
+      // Tooltip alignment logic
+      const vAlignClass = isUpperRow ? 'tooltip--bottom' : 'tooltip--top';
+      let hAlignClass = 'tooltip--align-center';
+      if (leftPct < 15) {
+        hAlignClass = 'tooltip--align-left';
+      } else if (leftPct > 70) {
+        hAlignClass = 'tooltip--align-right';
+      }
+
+      // Rewards badges (capped at 4 to maintain clean UI)
+      let rewardsBadges = '';
+      if (Array.isArray(event.rewards) && event.rewards.length > 0) {
+        const visibleRewards = event.rewards.slice(0, 4);
+        const extraCount = event.rewards.length - 4;
+        rewardsBadges = visibleRewards.map(r => `<span class="events-tooltip__reward-chip">${escapeHtml(typeof r === 'object' ? (r[lang] || r.en || r.ru) : r)}</span>`).join('');
+        if (extraCount > 0) {
+          rewardsBadges += `<span class="events-tooltip__reward-chip events-tooltip__reward-chip--more">+${extraCount}</span>`;
+        }
+      }
+
       return `
-        <div class="events-timeline__bar ${isUpcoming ? 'is-upcoming' : 'is-live'} type-${escapeAttr(typeKey)}" 
-             style="left: ${leftPct}%; width: ${widthPct}%; --event-color: ${meta.color};"
-             data-tooltip="${escapeAttr(title)} (${dateStr})">
-          <div class="events-timeline__bar-content">
-            <span class="events-timeline__bar-icon">${getIconSvg(typeIcon, { size: 13 })}</span>
-            <div class="events-timeline__bar-text">
-              <span class="events-timeline__bar-title">${escapeHtml(title)}</span>
-              <span class="events-timeline__bar-dates">${escapeHtml(dateStr)}</span>
-            </div>
-          </div>
+        <div class="events-timeline__bar ${isUpcoming ? 'is-upcoming' : 'is-live'} ${widthClass} type-${escapeAttr(typeKey)}" 
+             style="left: ${leftPct}%; width: ${widthPct}%; top: ${topPx}px; height: 24px; --event-color: ${meta.color};"
+             tabindex="0">
+          <span class="events-timeline__bar-icon">${getIconSvg(typeIcon, { size: 14 })}</span>
+          <span class="events-timeline__bar-title">${escapeHtml(title)}</span>
           ${isUpcoming ? '<div class="events-timeline__dotted-trail"></div>' : ''}
+
+          <!-- Rich Interactive Tooltip -->
+          <div class="events-timeline__tooltip ${vAlignClass} ${hAlignClass}" role="tooltip">
+            <div class="events-tooltip__header">
+              <span class="events-tooltip__type-badge" style="--badge-accent: ${meta.color};">
+                ${getIconSvg(typeIcon, { size: 12 })}
+                <span>${escapeHtml(typeLabel)}</span>
+              </span>
+              <span class="events-tooltip__status-badge ${isLive ? 'status--live' : 'status--upcoming'}">
+                ${isLive ? (isEn ? 'LIVE NOW' : 'АКТИВНО') : (isEn ? 'UPCOMING' : 'СКОРО')}
+              </span>
+            </div>
+            <h4 class="events-tooltip__title">${escapeHtml(title)}</h4>
+            <p class="events-tooltip__game">${escapeHtml(meta.name)}</p>
+            ${description ? `<p class="events-tooltip__desc">${escapeHtml(description)}</p>` : ''}
+            <div class="events-tooltip__meta">
+              <div class="events-tooltip__meta-row">
+                <span class="events-tooltip__meta-icon">${getIconSvg('calendar', { size: 12 })}</span>
+                <span>${escapeHtml(exactDatesStr)}</span>
+              </div>
+            </div>
+            ${rewardsBadges ? `
+              <div class="events-tooltip__rewards">
+                <span class="events-tooltip__rewards-title">${isEn ? 'Rewards:' : 'Награды:'}</span>
+                <div class="events-tooltip__rewards-list">${rewardsBadges}</div>
+              </div>
+            ` : ''}
+            ${event.sourceUrl ? (() => {
+              const cleanedUrl = cleanSourceUrl(event.sourceUrl, gameId);
+              const sourceInfo = getSourceInfo(cleanedUrl, isEn);
+              return `
+                <a href="${escapeAttr(cleanedUrl)}" target="_blank" rel="noopener noreferrer" class="events-tooltip__link">
+                  <span class="events-tooltip__link-label">${escapeHtml(sourceInfo.label)}</span>
+                  ${getIconSvg(sourceInfo.icon, { size: 12 })}
+                </a>
+              `;
+            })() : ''}
+          </div>
         </div>
       `;
     }).join('\n');
 
     return `
-      <div class="events-timeline__row" data-game-id="${escapeAttr(gameId)}">
+      <div class="events-timeline__row" data-game-id="${escapeAttr(gameId)}" style="min-height: ${trackHeight + 8}px;">
         <div class="events-timeline__game-label" style="--game-accent: ${meta.color};">
           <span class="events-timeline__game-icon">${getIconSvg(meta.icon, { size: 16 })}</span>
           <span class="events-timeline__game-name">${escapeHtml(meta.name)}</span>
         </div>
-        <div class="events-timeline__track">
+        <div class="events-timeline__track" style="height: ${trackHeight}px;">
           ${barsHtml || `<div class="events-timeline__track-empty">${isEn ? 'No scheduled events in this period' : 'Нет событий в этом периоде'}</div>`}
         </div>
       </div>
@@ -162,7 +328,9 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
   // 4. Build Bottom Section: "UPCOMING & ENDING SOON" Cards (Sorted by urgency)
   const urgentEvents = [...eventsList].filter(e => {
     if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId)) return false;
-    return true;
+    const eEnd = e.endDate ? new Date(e.endDate).getTime() : Infinity;
+    // Exclude ended events: only show currently active or upcoming events
+    return eEnd >= nowMs;
   }).sort((a, b) => {
     // Live events ending soonest come first, then upcoming starting soonest
     const aEnd = a.endDate ? new Date(a.endDate).getTime() : Infinity;
@@ -179,9 +347,9 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
     return aStart - bStart;
   }).slice(0, 6);
 
-  const urgentCardsHtml = urgentEvents.map(event => {
+  const urgentCardsHtml = urgentEvents.length > 0 ? urgentEvents.map(event => {
     const meta = GAME_META[event.gameId] || GAME_META['path-of-exile'];
-    const title = isEn ? (event.title_en || event.title_ru) : (event.title_ru || event.title_en);
+    const title = getVal(event.title, lang) || (isEn ? event.title_en : event.title_ru) || event.title_en || event.title_ru || (typeof event.title === 'string' ? event.title : 'Event');
     const gameName = meta.name;
 
     const eStart = new Date(event.startDate).getTime();
@@ -201,9 +369,6 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
         badgeClass = 'badge--active';
       }
       targetTime = eEnd;
-    } else if (eEnd && nowMs > eEnd) {
-      badgeText = isEn ? 'ENDED' : 'ЗАВЕРШЕНО';
-      badgeClass = 'badge--ended';
     }
 
     const diffMs = Math.max(0, targetTime - nowMs);
@@ -236,7 +401,11 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
         </div>
       </div>
     `;
-  }).join('\n');
+  }).join('\n') : `
+    <div class="events-timeline__track-empty" style="grid-column: 1 / -1; padding: 2rem 1rem; text-align: center; color: var(--text-muted, #94a3b8); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: var(--radius-sm, 10px);">
+      ${isEn ? 'No urgent events ending soon. Check the full timeline schedule above.' : 'Нет срочных событий, завершающихся в ближайшее время. Полное расписание смотрите на таймлайне выше.'}
+    </div>
+  `;
 
   return `
     <div class="events-dashboard-container">
@@ -290,7 +459,7 @@ export function renderEventsTimeline(eventsList = [], gamesList = [], { lang = '
             </div>
 
             <!-- Vertical TODAY Line -->
-            <div class="events-timeline__today-line" style="left: calc(180px + (100% - 180px) * ${nowPercent / 100});">
+            <div class="events-timeline__today-line" style="left: calc(165px + (100% - 165px) * ${nowPercent / 100});">
               <span class="events-timeline__today-badge">${isEn ? 'TODAY' : 'СЕГОДНЯ'}</span>
             </div>
 

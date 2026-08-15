@@ -19,6 +19,7 @@ if (fs.existsSync(envPath)) {
   }
 }
 
+import { Validator } from './updater/Validator.js';
 import { PoEEventAdapter } from './updater/eventAdapters/PoEEventAdapter.js';
 import { PoE2EventAdapter } from './updater/eventAdapters/PoE2EventAdapter.js';
 import { DiabloEventAdapter } from './updater/eventAdapters/DiabloEventAdapter.js';
@@ -86,9 +87,24 @@ async function updateEvents() {
   const unhandledEvents = existingEvents.filter(e => !handledGames.has(e.gameId));
   allMergedEvents.push(...unhandledEvents);
 
-  // Compute live statuses
+  // Compute live statuses and purge ancient events ended > 30 days ago
   const now = new Date();
-  const sortedEvents = allMergedEvents.map(evt => ({
+  const thirtyDaysMs = 30 * 86400000;
+  const nowMs = now.getTime();
+
+  const validEvents = allMergedEvents.filter(evt => {
+    try {
+      Validator.validateEvent(evt);
+    } catch (valErr) {
+      console.warn(`[Events Updater] Skipping invalid event: ${valErr.message}`);
+      return false;
+    }
+    if (!evt.endDate) return true;
+    const endMs = new Date(evt.endDate).getTime();
+    return (nowMs - endMs) <= thirtyDaysMs;
+  });
+
+  const sortedEvents = validEvents.map(evt => ({
     ...evt,
     status: getEventStatus(evt.startDate, evt.endDate, now)
   })).sort((a, b) => {

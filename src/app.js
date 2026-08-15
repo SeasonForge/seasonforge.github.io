@@ -16,7 +16,7 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
-import { renderEventsTimeline } from './components/EventsTimeline.js';
+import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.2';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
@@ -280,7 +280,7 @@ function renderApp() {
         const statusCode = game.status?.code || 'active';
         const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
         const color = escapeHtml(game.color || '#6366f1');
-        const icon = escapeHtml(game.icon || '🎮');
+        const icon = escapeHtml(game.icon || 'skull');
         const logo = game.logo ? escapeHtml(game.logo) : '';
         
         const iconHtml = logo 

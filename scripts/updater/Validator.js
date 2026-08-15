@@ -79,4 +79,44 @@ export class Validator {
 
     return true;
   }
+
+  static validateEvent(evt) {
+    if (!evt || typeof evt !== 'object') {
+      throw new Error('Event must be an object');
+    }
+    if (!evt.id || typeof evt.id !== 'string') {
+      throw new Error('Missing or invalid event ID');
+    }
+    if (!evt.gameId || typeof evt.gameId !== 'string') {
+      throw new Error(`Missing gameId in event ${evt.id}`);
+    }
+
+    const validTypes = ['twitch_drops', 'drops', 'ptr', 'race', 'collab', 'login', 'login-event', 'event', 'convention', 'announcement'];
+    if (evt.type && !validTypes.includes(evt.type)) {
+      throw new Error(`Invalid event type "${evt.type}" in ${evt.id}`);
+    }
+
+    if (!evt.startDate || Number.isNaN(new Date(evt.startDate).getTime())) {
+      throw new Error(`Invalid or missing startDate in event ${evt.id}`);
+    }
+
+    if (evt.endDate) {
+      const startMs = new Date(evt.startDate).getTime();
+      const endMs = new Date(evt.endDate).getTime();
+      if (Number.isNaN(endMs)) {
+        throw new Error(`Invalid endDate in event ${evt.id}`);
+      }
+      if (startMs >= endMs) {
+        throw new Error(`startDate must be before endDate in event ${evt.id}`);
+      }
+      // Maximum 35 days duration for event (guard against full season masquerading as an event)
+      if ((endMs - startMs) > (35 * 86400000)) {
+        console.warn(`[Validator] Warning: Event ${evt.id} duration exceeds 35 days (${Math.round((endMs - startMs)/86400000)}d). Clamping to 30 days.`);
+        evt.endDate = new Date(startMs + 30 * 86400000).toISOString();
+      }
+    }
+
+    return true;
+  }
 }
+

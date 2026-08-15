@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-08-15T12:24:37.143Z",
+  "lastCheckedAt": "2026-08-15T16:12:00.000Z",
   "events": [
     {
       "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
@@ -8,7 +8,7 @@
       "title_ru": "Сезон Afterlight: Награды за вход «Ночной дозор»",
       "title_en": "Afterlight Season: The Night Watch Begins Login Event",
       "startDate": "2026-07-16T00:00:00Z",
-      "endDate": "2026-08-16T00:00:00Z",
+      "endDate": null,
       "description_ru": "Заходите в игру ежедневно для получения легендарного боевого пактспирита на выбор, призывов пактспиритов и эксклюзивных обликов оружия.",
       "description_en": "Log in daily to claim a Legendary Battle Pactspirit Selection Pack, Battle Pactspirit draws, and Exclusive Weapon Appearances.",
       "rewards": [
@@ -17,27 +17,26 @@
         "Rare Season Drop Pactspirits"
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/1974050/view/1838407329258272",
-      "updatedAt": "2026-08-15T12:24:37.143Z",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
       "status": "active"
     },
     {
-      "id": "path-of-exile-2_event_fan-art-competition",
-      "gameId": "path-of-exile",
-      "type": "event",
-      "title_ru": "Конкурс фан-арта Path of Exile",
-      "title_en": "Path of Exile Fan Art Competition",
-      "startDate": "2026-08-09T23:56:36Z",
-      "endDate": "2026-09-03T05:00:00Z",
-      "description_ru": "Официальный конкурс фанатского творчества по мотивам последних дополнений с косметическими наградами и мерчем.",
-      "description_en": "Official community fan art competition inspired by recent expansions, awarding in-game cosmetics and merchandise.",
+      "id": "diablo-4_collab_diablo-iv-x-overwatch-crossover",
+      "gameId": "diablo-4",
+      "type": "collab",
+      "title_ru": "Коллаборация Diablo IV × Overwatch",
+      "title_en": "Diablo IV × Overwatch Crossover",
+      "startDate": "2026-06-30T17:00:00Z",
+      "endDate": "2026-09-15T17:00:00Z",
+      "description_ru": "Уничтожайте элитных монстров ради валюты «Око Overwatch» и открывайте Реликварий Overwatch с легендарной косметикой и первой краской за игровой прогресс.",
+      "description_en": "Defeat Elite and Champion monsters for Eye of the Overwatch currency to unlock the Overwatch Reliquary featuring legendary crossover cosmetics and gameplay-earned dyes.",
       "rewards": [
-        "Choice of Armour Set",
-        "Choice of Portal Effect",
-        "Curse of the Allflame Mystery Box",
-        "Choice of Footprints Effect"
+        "Overwatch Reliquary Legendary Cosmetics",
+        "Exclusive Progress Dyes",
+        "Overwatch Weapon Skins"
       ],
-      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/1840310314350088",
-      "updatedAt": "2026-08-15T12:23:49.118Z",
+      "sourceUrl": "https://news.blizzard.com/en-us/diablo4/24290000",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
       "status": "active"
     },
     {
@@ -48,8 +47,8 @@
       "title_en": "Curse of the Allflame Fan Art Competition",
       "startDate": "2026-08-09T23:56:51Z",
       "endDate": "2026-09-03T05:00:00Z",
-      "description_ru": "Создайте фан-арт по мотивам обновлений Return of the Ancients или Curse of the Allflame для получения наборов доспехов, эффектов портала и загадочных сундуков.",
-      "description_en": "Create fan art inspired by Return of the Ancients or Curse of the Allflame expansions to win armour sets, portal effects, and mystery boxes.",
+      "description_ru": "Создайте фан-арт по мотивам обновлений Curse of the Allflame или Return of the Ancients для получения наборов доспехов, эффектов портала и сундуков.",
+      "description_en": "Create fan art inspired by Curse of the Allflame or Return of the Ancients expansions to win armour sets, portal effects, and mystery boxes.",
       "rewards": [
         "Choice of Armour Set",
         "Choice of Portal Effect",
@@ -57,7 +56,27 @@
         "Curse of the Allflame Mystery Box"
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/238960/view/1840310314350089",
-      "updatedAt": "2026-08-15T12:09:36.469Z",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "path-of-exile-2_event_return-of-the-ancients-fan-art-competition",
+      "gameId": "path-of-exile-2",
+      "type": "event",
+      "title_ru": "Конкурс фан-арта Return of the Ancients",
+      "title_en": "Return of the Ancients Fan Art Competition",
+      "startDate": "2026-08-09T23:56:51Z",
+      "endDate": "2026-09-03T05:00:00Z",
+      "description_ru": "Официальный конкурс фанатского творчества по мотивам дополнения Return of the Ancients с наборами брони и порталами в награду.",
+      "description_en": "Official community fan art competition inspired by Return of the Ancients expansion, awarding in-game cosmetics and merchandise.",
+      "rewards": [
+        "Choice of Armour Set",
+        "Choice of Portal Effect",
+        "Curse of the Allflame Mystery Box",
+        "Choice of Footprints Effect"
+      ],
+      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/1840310314350088",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
       "status": "active"
     },
     {
@@ -75,15 +94,34 @@
         "ExileCon Race Finale Ticket & Flights"
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/1839676055886369",
-      "updatedAt": "2026-08-15T15:37:00.000Z",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "torchlight-infinite_special_server_afterlight-hardcore-server-launch",
+      "gameId": "torchlight-infinite",
+      "type": "special_server",
+      "title_ru": "Открытие Afterlight Hardcore Server",
+      "title_en": "Afterlight Hardcore Server Launch",
+      "startDate": "2026-08-21T02:00:00Z",
+      "endDate": "2026-09-15T00:00:00Z",
+      "description_ru": "Специальный хардкорный сервер сезона Afterlight с перманентной смертью персонажей, эксклюзивными достижениями и обликами оружия.",
+      "description_en": "Dedicated hardcore seasonal server with permadeath mechanics, exclusive HC achievements, and exclusive weapon appearances.",
+      "rewards": [
+        "Exclusive HC Weapon Skin",
+        "Hero Relics",
+        "Microtransactions"
+      ],
+      "sourceUrl": "https://store.steampowered.com/news/app/1974050/view/1838407329258272",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
       "status": "upcoming"
     },
     {
       "id": "path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4",
       "gameId": "path-of-exile-2",
       "type": "race",
-      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал отбора)",
-      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #4 (Final Qualifier)",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал)",
+      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #4 (Final)",
       "startDate": "2026-08-27T21:00:00Z",
       "endDate": "2026-08-28T03:00:00Z",
       "description_ru": "Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.",
@@ -93,40 +131,8 @@
         "ExileCon Race Finale Ticket & Flights"
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/1839676055886369",
-      "updatedAt": "2026-08-15T15:37:00.000Z",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
       "status": "upcoming"
-    },
-    {
-      "id": "diablo-4_ptr_diablo-iv-320-public-test-realm-ptr",
-      "gameId": "diablo-4",
-      "type": "ptr",
-      "title_ru": "Diablo IV: Публичный тестовый сервер обновления 3.2.0",
-      "title_en": "Diablo IV: 3.2.0 PTR",
-      "startDate": "2026-08-04T17:00:00Z",
-      "endDate": "2026-08-11T17:00:00Z",
-      "description_ru": "Тестирование контента и механик предстоящего 15-го сезона: осколков душ (Soul Splinters), системы перерождения персонажей и подземелий испытаний.",
-      "description_en": "Test upcoming features for Season 15 ahead of release, including Soul Splinters, character Rebirth, and Challenge Dungeons.",
-      "rewards": [],
-      "sourceUrl": "https://news.blizzard.com/en-us/diablo4/24292852",
-      "updatedAt": "2026-08-15T12:23:55.786Z",
-      "status": "ended"
-    },
-    {
-      "id": "path-of-exile-2_twitch_drops_exilecon-2026-poe-2-twitch-drops-qualifier-2",
-      "gameId": "path-of-exile-2",
-      "type": "twitch_drops",
-      "title_ru": "ExileCon 2026: Twitch Drops для PoE 2 (Квалификация №2)",
-      "title_en": "ExileCon 2026: PoE 2 Twitch Drops (Qualifier #2)",
-      "startDate": "2026-08-13T21:00:00Z",
-      "endDate": "2026-08-14T21:00:00Z",
-      "description_ru": "Смотрите трансляции Path of Exile 2 на Twitch в течение 30 минут, чтобы получить эксклюзивный капюшон Lightbringer Hood.",
-      "description_en": "Watch any Path of Exile 2 Twitch stream for 30 minutes to earn the exclusive Lightbringer Hood cosmetic.",
-      "rewards": [
-        "Lightbringer Hood"
-      ],
-      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/1840944183777884",
-      "updatedAt": "2026-08-15T12:23:49.118Z",
-      "status": "ended"
     }
   ]
 }

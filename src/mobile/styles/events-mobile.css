@@ -1,0 +1,70 @@
+/* SeasonForge CSS v2 — Mobile Events Timeline Module (<= 900px) */
+
+.events-dashboard-mobile {
+  width: 100%;
+}
+
+.events-dashboard-mobile .events-timeline-scroll-mobile {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 1px;
+  scrollbar-width: thin;
+}
+
+.events-dashboard-mobile .events-timeline-grid-mobile {
+  min-width: 720px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm, 10px);
+  padding: 0.65rem 0 0.85rem 0;
+  position: relative;
+}
+
+.events-dashboard-mobile .events-timeline__offset-blank {
+  width: 130px;
+  flex-shrink: 0;
+}
+
+.events-dashboard-mobile .events-timeline__game-label {
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.55rem;
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  box-sizing: border-box;
+}
+
+.events-dashboard-mobile .events-timeline__game-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.events-dashboard-mobile .events-timeline__row {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.events-dashboard-mobile .urgent-events-grid-mobile {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.events-dashboard-mobile .urgent-event-card-mobile {
+  padding: 0.85rem 1rem;
+}
+
+.events-dashboard-mobile .urgent-event-card__game-tag {
+  font-size: 0.7rem;
+  color: var(--text-muted, #94a3b8);
+  font-weight: 600;
+}

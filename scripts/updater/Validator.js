@@ -91,9 +91,17 @@ export class Validator {
       throw new Error(`Missing gameId in event ${evt.id}`);
     }
 
-    const validTypes = ['twitch_drops', 'drops', 'ptr', 'race', 'collab', 'login', 'login-event', 'event', 'convention', 'announcement'];
+    const validTypes = ['twitch_drops', 'drops', 'ptr', 'race', 'collab', 'login', 'login-event', 'event', 'special_server'];
     if (evt.type && !validTypes.includes(evt.type)) {
-      throw new Error(`Invalid event type "${evt.type}" in ${evt.id}`);
+      throw new Error(`Invalid event type "${evt.type}" in ${evt.id}. Must be one of: ${validTypes.join(', ')}`);
+    }
+
+    // STRICT REJECTION: Seasons, Cycles, and Expansions belong in seasons.json, NEVER in events.json
+    const titleEn = (evt.title_en || '').toLowerCase();
+    const isSeasonLaunch = /^(season\s+\d+|cycle\s+\d+|league\s+\d+|expansion)/i.test(titleEn) ||
+      (/\b(new season|upcoming cycle|next season|next cycle)\b/i.test(titleEn) && !/\b(ptr|test|drops|login|race|collab|crossover|hardcore\s+server)\b/i.test(titleEn));
+    if (isSeasonLaunch && !['ptr', 'login', 'race', 'special_server', 'collab'].includes(evt.type)) {
+      throw new Error(`Rejected event ${evt.id}: Main season/cycle announcements belong in seasons.json, not events.json`);
     }
 
     if (!evt.startDate || Number.isNaN(new Date(evt.startDate).getTime())) {
@@ -109,10 +117,11 @@ export class Validator {
       if (startMs >= endMs) {
         throw new Error(`startDate must be before endDate in event ${evt.id}`);
       }
-      // Maximum 35 days duration for event (guard against full season masquerading as an event)
-      if ((endMs - startMs) > (35 * 86400000)) {
-        console.warn(`[Validator] Warning: Event ${evt.id} duration exceeds 35 days (${Math.round((endMs - startMs)/86400000)}d). Clamping to 30 days.`);
-        evt.endDate = new Date(startMs + 30 * 86400000).toISOString();
+      // Maximum 90 days duration for seasonal collabs/special servers, 35 days for micro-events
+      const maxDays = (evt.type === 'collab' || evt.type === 'special_server') ? 90 : 35;
+      if ((endMs - startMs) > (maxDays * 86400000)) {
+        console.warn(`[Validator] Warning: Event ${evt.id} duration exceeds ${maxDays} days (${Math.round((endMs - startMs)/86400000)}d). Clamping to ${maxDays} days.`);
+        evt.endDate = new Date(startMs + maxDays * 86400000).toISOString();
       }
     }
 

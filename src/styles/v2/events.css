@@ -51,7 +51,7 @@
   box-shadow: 0 0 16px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-/* Events Timeline Grid */
+/* Events Timeline Grid Base */
 .events-timeline-card {
   margin-bottom: 2rem;
   position: relative;
@@ -59,14 +59,12 @@
 }
 
 .events-timeline-card .timeline-map__scroll-container {
-  overflow-x: auto;
-  overflow-y: visible;
+  overflow: visible;
   padding: 4px 2px;
 }
 
 .events-timeline__grid {
   position: relative;
-  min-width: 760px;
   width: 100%;
   box-sizing: border-box;
   background: rgba(255, 255, 255, 0.02);
@@ -594,23 +592,10 @@
   box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
 }
 
-/* Bottom "UPCOMING & ENDING SOON" Cards */
+/* Bottom "UPCOMING & ENDING SOON" Cards Base */
 .urgent-events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   gap: 1rem;
-}
-
-@media (max-width: 900px) {
-  .urgent-events-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  .urgent-events-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .urgent-event-card {

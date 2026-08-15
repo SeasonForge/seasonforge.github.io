@@ -5,12 +5,13 @@ import { escapeHtml } from '../utils/helpers.js';
 import { getIconSvg } from '../utils/icons.js';
 
 
-export function render(games = [], activeGame = null, activeView = 'card') {
+export function render(games = [], activeGame = null, activeView = 'card', basePath = './') {
   const items = Array.isArray(games) ? games : [];
   const activeId = activeGame?.id || activeGame?.slug || '';
   const now = new Date();
   const state = getState ? getState() : {};
   const lang = state.settings?.lang || (typeof document !== 'undefined' ? document.documentElement.lang : 'en') || 'en';
+  const cleanBase = basePath.endsWith('/') ? basePath : `${basePath}/`;
 
   const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
   let newestGameId = null;
@@ -63,19 +64,17 @@ export function render(games = [], activeGame = null, activeView = 'card') {
       const activeClass = isActive ? 'navbar__link--active' : '';
 
       const iconHtml = logo 
-        ? `<img src="./assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
+        ? `<img src="${cleanBase}assets/logos/${logo}" alt="${name}" class="navbar__tab-logo" />`
         : getIconSvg(game.icon, { size: 18, class: 'navbar__tab-svg' });
 
       return `
         <div class="navbar__tab ${activeClass}" data-game-id="${escapeHtml(id)}" style="--tab-color: ${color};">
-          <div class="navbar__tab-main">
-            <div class="navbar__tab-icon">${iconHtml}</div>
-            <div class="navbar__tab-copy">
-              <h3 class="navbar__name">${name}</h3>
-              <p class="navbar__season">${currentSeason}</p>
-            </div>
+          <div class="navbar__tab-icon">${iconHtml}</div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">${name}</span>
+            <span class="navbar__tab-season">${currentSeason}</span>
           </div>
-          <div class="navbar__status-stack">
+          <div class="navbar__tab-badges">
             ${ptrBadge}
             <span class="navbar__status navbar__status--${statusCode}">${statusLabel}</span>
           </div>
@@ -87,22 +86,25 @@ export function render(games = [], activeGame = null, activeView = 'card') {
   const cardBtnClass = activeView === 'card' ? 'navbar-panel__action--active' : '';
   const timelineBtnClass = activeView === 'timeline' ? 'navbar-panel__action--active' : 'navbar-panel__action--secondary';
 
+  const eyebrow = t('navbar.eyebrow') || 'SELECT GAME';
+  const caption = t('navbar.caption') || (t('navbar.compactList') || 'Compact list of current seasons');
+
   return `
     <section class="navbar-panel">
       <div class="navbar-panel__header">
         <div>
-          <p class="navbar-panel__eyebrow">${t('navbar.eyebrow')}</p>
+          <p class="navbar-panel__eyebrow">${eyebrow}</p>
           <h2 class="navbar-panel__title">SeasonForge</h2>
         </div>
         <div class="navbar-panel__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
-          <img src="./assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
+          <img src="${cleanBase}assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
         </div>
       </div>
-      <p class="navbar-panel__caption">${t('navbar.caption')}</p>
+      <p class="navbar-panel__caption">${caption}</p>
       <div class="navbar__list">${links}</div>
       <div class="navbar-panel__footer">
-        <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">${t('navbar.btnCard')}</button>
-        <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">${t('navbar.btnTimeline')}</button>
+        <button id="view-card-btn" class="navbar-panel__action ${cardBtnClass}">${t('navbar.btnCard') || 'Game Card'}</button>
+        <button id="view-timeline-btn" class="navbar-panel__action ${timelineBtnClass}">${t('navbar.btnTimeline') || 'Timeline 2026'}</button>
       </div>
     </section>
   `;

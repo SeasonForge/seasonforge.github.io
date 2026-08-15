@@ -533,15 +533,32 @@ export function render(games = [], viewMode = 'all') {
   const endYear = endTimelineDate.getFullYear();
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
+  const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
+  const seasonsHref = cleanBase;
+  const eventsHref = `${cleanBase}events/`;
+
   const timelineChartHtml = `
     <div class="timeline-view-wrapper">
+      <div class="timeline-mode-switcher-bar">
+        <div class="timeline-mode-switcher">
+          <a href="${seasonsHref}" class="timeline-mode-tab active" id="tab-mode-seasons">
+            ${getIconSvg('calendar', { size: 15 })}
+            <span>${t('timeline.modeSeasons') || 'SEASONS'}</span>
+          </a>
+          <a href="${eventsHref}" class="timeline-mode-tab" id="tab-mode-events">
+            ${getIconSvg('gift', { size: 15 })}
+            <span>${t('timeline.modeEvents') || 'EVENTS'}</span>
+          </a>
+        </div>
+        <div class="timeline-card__year-badge">${yearBadgeText}</div>
+      </div>
+
       <section class="timeline-card">
         <div class="timeline-card__header">
           <div>
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
             <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
           </div>
-          <div class="timeline-card__year-badge">${yearBadgeText}</div>
         </div>
         
         <div class="timeline-map__scroll-container">

@@ -60,6 +60,11 @@ export class Header {
       lblWebWidget.textContent = isEn ? 'Website Widget' : 'Виджет для сайта';
     }
 
+    const lblEvents = document.getElementById('lbl-events-btn');
+    if (lblEvents) {
+      lblEvents.textContent = isEn ? 'Events & Drops' : 'События и Drops';
+    }
+
     // Timestamps (fallback to state.rawData / state.games if not explicitly passed)
     const checkedTs = lastChecked || state.rawData?.lastCheckedAt || state.lastCheckedAt;
     const checkedTimeEl = document.getElementById('last-checked-time');

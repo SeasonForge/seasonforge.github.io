@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "update": "node scripts/update-seasons.js"
+    "update": "node scripts/update-seasons.js",
+    "update:events": "node scripts/update-events.js"
   }
 }

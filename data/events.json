@@ -1,0 +1,91 @@
+{
+  "lastCheckedAt": "2026-08-15T09:00:00.000Z",
+  "events": [
+    {
+      "id": "poe2_twitch_drops_lightbringer-armor",
+      "gameId": "path-of-exile-2",
+      "type": "twitch_drops",
+      "title_ru": "Twitch Drops: Набор брони Светоносца",
+      "title_en": "Twitch Drops: Lightbringer Armor Set",
+      "startDate": "2026-08-18T18:00:00Z",
+      "endDate": "2026-08-25T23:59:59Z",
+      "description_ru": "Смотрите любые трансляции по Path of Exile 2 от 3 часов и получите эксклюзивный декоративный сет доспехов.",
+      "description_en": "Watch any Path of Exile 2 stream for 3+ hours to earn the exclusive Lightbringer cosmetic armor set.",
+      "rewards": [
+        "Шлем Светоносца",
+        "Нагрудник Светоносца",
+        "Портал Хаоса"
+      ],
+      "sourceUrl": "https://pathofexile2.com",
+      "updatedAt": "2026-08-15T09:00:00.000Z"
+    },
+    {
+      "id": "diablo-4_ptr_season-10-public-test",
+      "gameId": "diablo-4",
+      "type": "ptr",
+      "title_ru": "Тестовый сервер PTR: Сезон 10",
+      "title_en": "Public Test Realm (PTR): Season 10",
+      "startDate": "2026-08-20T17:00:00Z",
+      "endDate": "2026-08-27T17:00:00Z",
+      "description_ru": "Опробуйте масштабную переработку механики самоцветов, новые классовые аспекты и эндгейм-боссов до официального релиза.",
+      "description_en": "Test the major gem system rework, new class aspects, and endgame bosses ahead of the official season release.",
+      "rewards": [
+        "Доступ к раннему тестированию",
+        "Особое знамя участника PTR"
+      ],
+      "sourceUrl": "https://news.blizzard.com/en-us/diablo4",
+      "updatedAt": "2026-08-15T09:00:00.000Z"
+    },
+    {
+      "id": "path-of-exile_race_boss-kill-gauntlet",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "Zizaran Boss Kill Gauntlet 2026",
+      "title_en": "Zizaran's Class Boss Gauntlet Event",
+      "startDate": "2026-08-14T20:00:00Z",
+      "endDate": "2026-08-24T20:00:00Z",
+      "description_ru": "Хардкорный соло-марафон с усиленными модификаторами монстров и призовым фондом за убийство убей-боссов.",
+      "description_en": "Hardcore SSF marathon with amplified monster modifiers and a cash prize pool for pinnacle boss kills.",
+      "rewards": [
+        "Денежный призовой фонд",
+        "Эксклюзивная микротранзакция финалиста"
+      ],
+      "sourceUrl": "https://pathofexile.com/forum",
+      "updatedAt": "2026-08-15T09:00:00.000Z"
+    },
+    {
+      "id": "last-epoch_login_anniversary-relic-cache",
+      "gameId": "last-epoch",
+      "type": "login",
+      "title_ru": "Праздничный логин-ивент: Реликвии Этерры",
+      "title_en": "Celebration Login Event: Relics of Eterra",
+      "startDate": "2026-08-10T12:00:00Z",
+      "endDate": "2026-08-30T23:59:59Z",
+      "description_ru": "Заходите в игру в течение двух недель, чтобы забрать бесплатный косметический сундук и светящегося питомца.",
+      "description_en": "Log into Last Epoch over the next two weeks to claim a free cosmetic cache and an ethereal companion pet.",
+      "rewards": [
+        "Питомец 'Призрачный олень'",
+        "Сундук с декоративным шлемом"
+      ],
+      "sourceUrl": "https://forum.lastepoch.com",
+      "updatedAt": "2026-08-15T09:00:00.000Z"
+    },
+    {
+      "id": "torchlight-infinite_collab_cyber-crossover-event",
+      "gameId": "torchlight-infinite",
+      "type": "collab",
+      "title_ru": "Коллаборация: Неоновый Шторм",
+      "title_en": "Collaboration Event: Neon Surge",
+      "startDate": "2026-08-12T04:00:00Z",
+      "endDate": "2026-09-02T04:00:00Z",
+      "description_ru": "Особое кроссовер-событие: выполняйте сезонные квесты и получайте футуристические облики оружия и крылья.",
+      "description_en": "Special crossover event: complete seasonal challenges to unlock futuristic weapon skins and glowing wings.",
+      "rewards": [
+        "Крылья Неонового Шторма",
+        "Аватарка профиля"
+      ],
+      "sourceUrl": "https://store.steampowered.com/app/1974050",
+      "updatedAt": "2026-08-15T09:00:00.000Z"
+    }
+  ]
+}

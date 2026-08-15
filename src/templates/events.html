@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z5BCJ4RB98"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Z5BCJ4RB98');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge</title>
+    <meta name="description" content="Track active and upcoming Twitch Drops, PTR test servers, races, collabs, and login rewards for Path of Exile 1 &amp; 2, Diablo IV, Last Epoch, and Torchlight: Infinite." />
+    <meta name="keywords" content="ARPG twitch drops, PoE 2 twitch drops, Diablo 4 PTR dates, Last Epoch events, Torchlight Infinite collabs, ARPG event tracker" />
+    <meta name="google-site-verification" content="1ZmquktDWf9wST9j1OsRN_dFaSGy_9-yIFz_5vbRN0c" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seasonforge.online/events/" />
+    <meta property="og:title" content="Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge" />
+    <meta property="og:description" content="Live countdowns for Twitch Drops, PTR tests, races, and login rewards across major ARPGs." />
+    <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge" />
+    <meta name="twitter:description" content="Live countdowns for Twitch Drops, PTR tests, races, and login rewards across major ARPGs." />
+    <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Live Events Timeline & Twitch Drops Tracker",
+      "url": "https://seasonforge.online/events/",
+      "description": "Live countdowns and timeline for Twitch Drops, PTR tests, races, and login rewards across major ARPGs."
+    }
+    </script>
+
+    <!-- Google Fonts Preconnect & Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
+
+    <link rel="stylesheet" href="../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    <link rel="manifest" href="../manifest.json" />
+    <meta name="theme-color" content="#0b0f19" />
+    <link rel="canonical" href="https://seasonforge.online/events/" />
+  </head>
+  <body>
+    <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="../assets/images/hero-parallax/bg.webp" class="hero-parallax__layer hero-parallax__bg" alt="" />
+      <img src="../assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
+      <img src="../assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
+      <img src="../assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
+      <div class="hero-parallax__overlay"></div>
+    </div>
+
+    <header class="app-header">
+      <h1 class="sr-only">ARPG Events, Drops &amp; PTR Tracker</h1>
+      <div class="app-header__logo-block">
+        <a href="../" class="app-header__icon" style="padding: 0; overflow: hidden; background: transparent; border: none; display: block; text-decoration: none;">
+          <img src="../assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
+        </a>
+        <div>
+          <div class="app-header__title"><a href="../" style="color: inherit; text-decoration: none;">SeasonForge</a></div>
+          <p class="app-header__subtitle" id="app-header-subtitle">Monitoring current and upcoming seasons of major action RPGs</p>
+        </div>
+      </div>
+
+      <div class="app-header__right-block">
+        <a href="../changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
+            <strong id="last-checked-time">{{LAST_CHECKED_TIME}}</strong>
+          </div>
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
+            <strong id="last-updated-time">{{LAST_UPDATED_TIME}}</strong>
+          </div>
+        </a>
+
+        <div class="app-header__tools">
+          <div id="lang-switcher" class="lang-switcher"></div>
+          
+          <button id="mobile-app-trigger-btn" class="header-neon-btn mobile-app-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
+            <span id="lbl-mobile-app-btn">App</span>
+          </button>
+          
+          <button id="feedback-trigger-btn" class="header-neon-btn feedback-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span id="lbl-feedback-btn">Отзывы</span>
+          </button>
+
+          <button id="streamer-trigger-btn" class="header-neon-btn streamer-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span id="lbl-streamer-btn">Виджет OBS</span>
+          </button>
+
+          <button id="web-widget-trigger-btn" class="header-neon-btn web-widget-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span id="lbl-web-widget-btn">Виджет для сайта</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-layout">
+      <aside id="navbar">
+        {{NAVBAR}}
+      </aside>
+      <main id="content">
+        {{EVENTS_CONTENT}}
+      </main>
+    </div>
+
+    <footer class="app-footer">
+      <span class="app-footer__copy" id="lbl-footer-copy">© 2026 SeasonForge. ARPG Season Tracker.</span>
+      <div class="app-footer__links">
+        <a href="../" class="app-footer__link">Seasons</a>
+        <a href="../events/" class="app-footer__link">Events &amp; Drops</a>
+        <a href="../changelog/" class="app-footer__link" id="lbl-footer-changelog">Changelog</a>
+        <a href="../privacy/" class="app-footer__link" id="lbl-footer-privacy">Privacy</a>
+      </div>
+    </footer>
+
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <script id="sf-events-json" type="application/json">
+      {{RAW_EVENTS_JSON}}
+    </script>
+    <script type="module" src="../src/app.js?v=1.2.1"></script>
+  </body>
+</html>

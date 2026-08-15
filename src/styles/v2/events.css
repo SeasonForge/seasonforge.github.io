@@ -1,0 +1,440 @@
+/* SeasonForge CSS v2 — ARPG Events & Timeline Module */
+
+/* Segmented Mode Switcher (SEASONS | EVENTS) */
+.timeline-mode-switcher-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.timeline-mode-switcher {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm, 10px);
+  padding: 4px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.timeline-mode-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 8px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-muted, #94a3b8);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  cursor: pointer;
+}
+
+.timeline-mode-tab:hover {
+  color: #f1f5f9;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.timeline-mode-tab.active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(168, 85, 247, 0.18));
+  color: #ffffff;
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Events Timeline Grid */
+.events-timeline-card {
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.events-timeline__grid {
+  position: relative;
+  min-width: 900px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm, 10px);
+  padding: 0.75rem 0 1rem 0;
+}
+
+/* Offset for Game Labels column */
+.events-timeline__offset-blank {
+  width: 180px;
+  flex-shrink: 0;
+}
+
+/* Months Bar */
+.events-timeline__months-bar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.events-timeline__months-track {
+  display: flex;
+  flex: 1;
+  font-size: 0.725rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, #94a3b8);
+}
+
+.events-timeline__month-label {
+  padding-left: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Days Bar */
+.events-timeline__days-bar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.events-timeline__days-track {
+  display: flex;
+  flex: 1;
+}
+
+.events-timeline__day-cell {
+  flex: 1;
+  text-align: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.35);
+  position: relative;
+}
+
+.events-timeline__day-cell.is-major {
+  color: var(--text-secondary, #cbd5e1);
+}
+
+.events-timeline__day-cell.is-today {
+  color: #818cf8;
+  font-weight: 800;
+}
+
+.events-timeline__today-chip {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6366f1;
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Rows & Tracks */
+.events-timeline__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.events-timeline__row {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.events-timeline__game-label {
+  width: 180px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+.events-timeline__game-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--game-accent, #6366f1);
+}
+
+.events-timeline__game-name {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--text-primary, #f1f5f9);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.events-timeline__track {
+  position: relative;
+  flex: 1;
+  height: 38px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.events-timeline__track-empty {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.2);
+  font-style: italic;
+  padding-left: 1rem;
+}
+
+/* Event Bars */
+.events-timeline__bar {
+  position: absolute;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.6rem;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--event-color, #6366f1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.events-timeline__bar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  z-index: 5;
+}
+
+.events-timeline__bar.is-live {
+  background: linear-gradient(90deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.08));
+  border-color: #10b981;
+}
+
+.events-timeline__bar.type-twitch_drops {
+  background: linear-gradient(90deg, rgba(147, 51, 234, 0.25), rgba(147, 51, 234, 0.1));
+  border-color: #a855f7;
+}
+
+.events-timeline__bar.type-ptr {
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.25), rgba(59, 130, 246, 0.1));
+  border-color: #3b82f6;
+}
+
+.events-timeline__bar.type-race {
+  background: linear-gradient(90deg, rgba(245, 158, 11, 0.25), rgba(245, 158, 11, 0.1));
+  border-color: #f59e0b;
+}
+
+.events-timeline__bar.type-collab {
+  background: linear-gradient(90deg, rgba(239, 68, 68, 0.25), rgba(239, 68, 68, 0.1));
+  border-color: #ef4444;
+}
+
+.events-timeline__bar-content {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.events-timeline__bar-icon {
+  color: #fff;
+  display: inline-flex;
+}
+
+.events-timeline__bar-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.events-timeline__bar-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #f8fafc;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.events-timeline__bar-dates {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.events-timeline__dotted-trail {
+  position: absolute;
+  right: -60px;
+  top: 50%;
+  width: 60px;
+  height: 1px;
+  border-top: 2px dotted rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+/* Vertical Today Line Marker */
+.events-timeline__today-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #6366f1;
+  box-shadow: 0 0 10px #6366f1;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.events-timeline__today-badge {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #6366f1;
+  color: #ffffff;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.6);
+}
+
+/* Bottom "UPCOMING & ENDING SOON" Cards */
+.urgent-events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .urgent-events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .urgent-events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.urgent-event-card {
+  background: var(--panel, rgba(17, 24, 39, 0.7));
+  border: 1px solid var(--border-soft, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-sm, 12px);
+  padding: 1.15rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-card, 0 4px 20px rgba(0, 0, 0, 0.3));
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.urgent-event-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.urgent-event-card.badge--ending {
+  border-top: 3px solid #a855f7;
+  background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, rgba(15, 23, 42, 0.75) 100%);
+}
+
+.urgent-event-card.badge--active {
+  border-top: 3px solid #10b981;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.75) 100%);
+}
+
+.urgent-event-card.badge--starting {
+  border-top: 3px solid #3b82f6;
+  background: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, rgba(15, 23, 42, 0.75) 100%);
+}
+
+.urgent-event-card__badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.urgent-event-card__badge.badge--ending {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+}
+
+.urgent-event-card__badge.badge--active {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.urgent-event-card__badge.badge--starting {
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+}
+
+.urgent-event-card__title {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  line-height: 1.35;
+}
+
+.urgent-event-card__game {
+  font-size: 0.75rem;
+  color: var(--text-muted, #94a3b8);
+  margin-top: -0.3rem;
+}
+
+.urgent-event-card__countdown {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.urgent-countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.urgent-countdown-item strong {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #f8fafc;
+  line-height: 1;
+}
+
+.urgent-countdown-item span {
+  font-size: 0.58rem;
+  color: var(--text-muted, #94a3b8);
+  letter-spacing: 0.05em;
+  margin-top: 0.2rem;
+}

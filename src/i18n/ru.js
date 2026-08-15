@@ -11,6 +11,7 @@ export const ru = {
     btnCard: "Карточка игры",
     btnTimeline: "Хронология 2026",
     btnGames: "Игры",
+    btnEvents: "События и Drops",
     btnChangelog: "Чейнджлог",
     btnMore: "Ещё"
   },
@@ -111,7 +112,9 @@ export const ru = {
     fallbackTitle: "Хронология",
     fallbackNoGames: "Игры недоступны",
     tba: "TBA",
-    hype: "СКОРО СТАРТ"
+    hype: "СКОРО СТАРТ",
+    modeSeasons: "СЕЗОНЫ",
+    modeEvents: "ИВЕНТЫ"
   },
   footer: {
     copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",

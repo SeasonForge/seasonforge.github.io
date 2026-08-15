@@ -16,6 +16,7 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
+import { renderEventsTimeline } from './components/EventsTimeline.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
@@ -45,6 +46,8 @@ let countdownTimer = null;
 let toastTimer = null;
 let modalInstance = null;
 let toastInstance = null;
+let timelineMode = 'seasons';
+let eventsData = [];
 
 function updateSeo() {
   setMetaTags({
@@ -172,9 +175,12 @@ function renderApp() {
     mobMoreBtn.classList.toggle('mobile-nav__btn--active', state.activeView === 'more');
   }
 
+  const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+  const basePath = isEventsPage ? '../' : './';
+
   // Update navbar
   if (navbarRoot) {
-    navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView);
+    navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView, basePath);
   }
 
   renderModal();
@@ -220,7 +226,7 @@ function renderApp() {
       headerMeta.dataset.changelogBound = 'true';
       headerMeta.style.cursor = 'pointer';
       headerMeta.addEventListener('click', () => {
-        window.location.href = './changelog/';
+        window.location.href = `${basePath}changelog/`;
       });
     }
   }
@@ -231,7 +237,7 @@ function renderApp() {
   if (contentRoot) {
     if (state.activeView === 'card') {
       if (isMobile) {
-        contentRoot.innerHTML = renderTimeline(state.games, 'home');
+        contentRoot.innerHTML = renderTimeline(state.games, 'home', basePath);
       } else {
         let activeGame = state.activeGame;
         if (!activeGame && state.games.length > 0) {
@@ -257,10 +263,14 @@ function renderApp() {
         contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
       }
     } else if (state.activeView === 'timeline') {
-      if (isMobile) {
-        contentRoot.innerHTML = renderTimeline(state.games, 'timeline');
+      if (timelineMode === 'events') {
+        contentRoot.innerHTML = renderEventsTimeline(eventsData, state.games, { lang: state.settings?.lang, basePath });
       } else {
-        contentRoot.innerHTML = renderTimeline(state.games, 'all');
+        if (isMobile) {
+          contentRoot.innerHTML = renderTimeline(state.games, 'timeline', basePath);
+        } else {
+          contentRoot.innerHTML = renderTimeline(state.games, 'all', basePath);
+        }
       }
     } else if (state.activeView === 'games') {
       const catalogCards = state.games.map(game => {
@@ -759,22 +769,82 @@ function tickCountdown() {
       if (!targetDateStr) return;
 
       const targetDate = new Date(targetDateStr);
-      const total = targetDate.getTime() - Date.now();
-      
-      if (total <= 0) return;
+      const now = new Date();
+      if (targetDate <= now) {
+        if (!expiredUpcomingCountdowns.has(game.id)) {
+          expiredUpcomingCountdowns.add(game.id);
+          renderApp();
+        }
+        return;
+      }
 
       const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
-      const update = (attr, val) => {
-        const safeAttr = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(attr) : attr;
-        const el = document.querySelector(`[data-game-countdown="${safeGameId}"] [data-countdown="${safeAttr}"]`);
-        if (el) el.textContent = val;
-      };
-      update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
-      update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
-      update('minutes', Math.floor((total / (1000 * 60)) % 60));
-      update('seconds', Math.floor((total / 1000) % 60));
+      const upcomingEls = document.querySelectorAll(`.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown`);
+      upcomingEls.forEach(el => {
+        updateCountdownDOM(el, calculateCountdown(targetDateStr));
+      });
     });
+
+    // 3. Update Urgent Event Card Countdowns (if visible)
+    const urgentCountdowns = document.querySelectorAll('.urgent-event-card__countdown[data-countdown-target]');
+    if (urgentCountdowns.length > 0) {
+      const now = Date.now();
+      urgentCountdowns.forEach(el => {
+        const target = Number(el.getAttribute('data-countdown-target'));
+        if (!target) return;
+        const diffMs = Math.max(0, target - now);
+        const totalSecs = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+
+        const daysEl = el.querySelector('[data-countdown="days"]');
+        const hoursEl = el.querySelector('[data-countdown="hours"]');
+        const minsEl = el.querySelector('[data-countdown="minutes"]');
+
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours;
+        if (minsEl) minsEl.textContent = mins;
+      });
+    }
   }
+}
+
+// Global click handler for mode switcher (SEASONS <-> EVENTS)
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    const tabSeasons = e.target.closest('#tab-mode-seasons');
+    if (tabSeasons) {
+      e.preventDefault();
+      timelineMode = 'seasons';
+      if (window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'seasons' }, '', '../');
+      }
+      renderApp();
+      return;
+    }
+
+    const tabEvents = e.target.closest('#tab-mode-events');
+    if (tabEvents) {
+      e.preventDefault();
+      timelineMode = 'events';
+      if (!window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'events' }, '', './events/');
+      }
+      renderApp();
+      return;
+    }
+  });
+
+  window.addEventListener('popstate', () => {
+    if (window.location.pathname.includes('/events')) {
+      timelineMode = 'events';
+      setActiveView('timeline', false);
+    } else {
+      timelineMode = 'seasons';
+    }
+    renderApp();
+  });
 }
 
 function startCountdownLoop() {
@@ -785,6 +855,19 @@ function startCountdownLoop() {
 
 async function initializeApp() {
   setError(null);
+
+  const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+  if (isEventsPage) {
+    timelineMode = 'events';
+  }
+
+  const embeddedEventsScript = typeof document !== 'undefined' && document.getElementById('sf-events-json');
+  if (embeddedEventsScript) {
+    try {
+      const parsed = JSON.parse(embeddedEventsScript.textContent);
+      if (Array.isArray(parsed)) eventsData = parsed;
+    } catch (e) {}
+  }
 
   // 1. Immediately hydrate synchronously from fallback data for 0ms instantaneous render
   const initialGames = FALLBACK_SEASONS_DATA?.games || [];
@@ -814,9 +897,12 @@ async function initializeApp() {
       const isFirstVisit = !lastVisit;
       const isLongTimeNoSee = lastVisit && (now - parseInt(lastVisit, 10) > 30 * 24 * 60 * 60 * 1000);
       const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 1025px)').matches;
-      const defaultView = isDesktop ? 'timeline' : 'card';
+      const defaultView = isDesktop || isEventsPage ? 'timeline' : 'card';
 
-      if (isFirstVisit) {
+      if (isEventsPage) {
+        setActiveView('timeline', false);
+        setActiveGame(games[0] ?? null, false);
+      } else if (isFirstVisit) {
         setActiveView(defaultView, false);
         setActiveGame(games[0] ?? null, false);
       } else if (isLongTimeNoSee) {
@@ -857,7 +943,7 @@ async function initializeApp() {
     }
 
     ModalManager.initAll();
-    MobileNav.init({ basePath: './' });
+    MobileNav.init({ basePath: isEventsPage ? '../' : './' });
     Header.update({ lang: getState().settings?.lang });
 
     initHeroParallax();
@@ -866,6 +952,19 @@ async function initializeApp() {
     startCountdownLoop();
 
     // 2. Fetch fresh network data asynchronously in background (0ms latency!)
+    const eventsDataUrl = isEventsPage ? '../data/events.json' : './data/events.json';
+    fetch(eventsDataUrl)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.events) {
+          eventsData = data.events;
+          if (timelineMode === 'events') {
+            renderApp();
+          }
+        }
+      })
+      .catch(() => {});
+
     seasonService.loadSeasons().then(rawData => {
       if (rawData?.games) {
         setRawData(rawData);

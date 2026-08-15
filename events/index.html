@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z5BCJ4RB98"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-Z5BCJ4RB98');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge</title>
+    <meta name="description" content="Track active and upcoming Twitch Drops, PTR test servers, races, collabs, and login rewards for Path of Exile 1 &amp; 2, Diablo IV, Last Epoch, and Torchlight: Infinite." />
+    <meta name="keywords" content="ARPG twitch drops, PoE 2 twitch drops, Diablo 4 PTR dates, Last Epoch events, Torchlight Infinite collabs, ARPG event tracker" />
+    <meta name="google-site-verification" content="1ZmquktDWf9wST9j1OsRN_dFaSGy_9-yIFz_5vbRN0c" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seasonforge.online/events/" />
+    <meta property="og:title" content="Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge" />
+    <meta property="og:description" content="Live countdowns for Twitch Drops, PTR tests, races, and login rewards across major ARPGs." />
+    <meta property="og:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Live Events Timeline &amp; Twitch Drops Tracker — SeasonForge" />
+    <meta name="twitter:description" content="Live countdowns for Twitch Drops, PTR tests, races, and login rewards across major ARPGs." />
+    <meta name="twitter:image" content="https://seasonforge.online/assets/images/og-image.jpg" />
+
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Live Events Timeline & Twitch Drops Tracker",
+      "url": "https://seasonforge.online/events/",
+      "description": "Live countdowns and timeline for Twitch Drops, PTR tests, races, and login rewards across major ARPGs."
+    }
+    </script>
+
+    <!-- Google Fonts Preconnect & Styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
+
+    <link rel="stylesheet" href="../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
+    <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    <link rel="manifest" href="../manifest.json" />
+    <meta name="theme-color" content="#0b0f19" />
+    <link rel="canonical" href="https://seasonforge.online/events/" />
+  </head>
+  <body>
+    <div id="hero-parallax-bg" class="hero-parallax-bg" aria-hidden="true">
+      <img src="../assets/images/hero-parallax/bg.webp" class="hero-parallax__layer hero-parallax__bg" alt="" />
+      <img src="../assets/images/hero-parallax/body.webp" class="hero-parallax__layer hero-parallax__body" alt="" />
+      <img src="../assets/images/hero-parallax/head.webp" class="hero-parallax__layer hero-parallax__head" alt="" />
+      <img src="../assets/images/hero-parallax/eyes.webp" class="hero-parallax__layer hero-parallax__eyes" alt="" />
+      <div class="hero-parallax__overlay"></div>
+    </div>
+
+    <header class="app-header">
+      <h1 class="sr-only">ARPG Events, Drops &amp; PTR Tracker</h1>
+      <div class="app-header__logo-block">
+        <a href="../" class="app-header__icon" style="padding: 0; overflow: hidden; background: transparent; border: none; display: block; text-decoration: none;">
+          <img src="../assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
+        </a>
+        <div>
+          <div class="app-header__title"><a href="../" style="color: inherit; text-decoration: none;">SeasonForge</a></div>
+          <p class="app-header__subtitle" id="app-header-subtitle">Monitoring current and upcoming seasons of major action RPGs</p>
+        </div>
+      </div>
+
+      <div class="app-header__right-block">
+        <a href="../changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
+            <strong id="last-checked-time">Aug 15, 09:53 UTC</strong>
+          </div>
+          <div class="app-header__meta-item">
+            <span class="app-header__meta-label" id="lbl-last-updated">Updated</span>
+            <strong id="last-updated-time">Aug 13, 18:48 UTC</strong>
+          </div>
+        </a>
+
+        <div class="app-header__tools">
+          <div id="lang-switcher" class="lang-switcher"></div>
+          
+          <button id="mobile-app-trigger-btn" class="header-neon-btn mobile-app-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>
+            <span id="lbl-mobile-app-btn">App</span>
+          </button>
+          
+          <button id="feedback-trigger-btn" class="header-neon-btn feedback-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span id="lbl-feedback-btn">Отзывы</span>
+          </button>
+
+          <button id="streamer-trigger-btn" class="header-neon-btn streamer-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span id="lbl-streamer-btn">Виджет OBS</span>
+          </button>
+
+          <button id="web-widget-trigger-btn" class="header-neon-btn web-widget-trigger-btn">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            <span id="lbl-web-widget-btn">Виджет для сайта</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="app-layout">
+      <aside id="navbar">
+        
+    <section class="navbar-panel">
+      <div class="navbar-panel__header">
+        <div>
+          <p class="navbar-panel__eyebrow">navbar.eyebrow</p>
+          <h2 class="navbar-panel__title">SeasonForge</h2>
+        </div>
+        <div class="navbar-panel__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
+          <img src="../assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
+        </div>
+      </div>
+      <p class="navbar-panel__caption">navbar.caption</p>
+      <div class="navbar__list">
+        <div class="navbar__tab " data-game-id="path-of-exile" style="--tab-color: #f5c342;">
+          <div class="navbar__tab-icon"><img src="../assets/logos/path-of-exile.png" alt="Path of Exile 1" class="navbar__tab-logo" /></div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">Path of Exile 1</span>
+            <span class="navbar__tab-season">v3.29: Curse of the Allflame</span>
+          </div>
+          <div class="navbar__tab-badges">
+            
+            <span class="navbar__status navbar__status--in-progress">In Progress</span>
+          </div>
+        </div>
+      
+        <div class="navbar__tab " data-game-id="path-of-exile-2" style="--tab-color: #4b6e9c;">
+          <div class="navbar__tab-icon"><img src="../assets/logos/path-of-exile-2.png" alt="Path of Exile 2" class="navbar__tab-logo" /></div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">Path of Exile 2</span>
+            <span class="navbar__tab-season">0.5.0: Return of the Ancients</span>
+          </div>
+          <div class="navbar__tab-badges">
+            
+            <span class="navbar__status navbar__status--early-access">Early Access</span>
+          </div>
+        </div>
+      
+        <div class="navbar__tab " data-game-id="diablo-iv" style="--tab-color: #8b1f1f;">
+          <div class="navbar__tab-icon"><img src="../assets/logos/diablo-iv.png" alt="Diablo IV" class="navbar__tab-logo" /></div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">Diablo IV</span>
+            <span class="navbar__tab-season">Season 14: Season of Death Awakening</span>
+          </div>
+          <div class="navbar__tab-badges">
+            
+            <span class="navbar__status navbar__status--in-progress">In Progress</span>
+          </div>
+        </div>
+      
+        <div class="navbar__tab " data-game-id="last-epoch" style="--tab-color: #6b3fa0;">
+          <div class="navbar__tab-icon"><img src="../assets/logos/last-epoch.png" alt="Last Epoch" class="navbar__tab-logo" /></div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">Last Epoch</span>
+            <span class="navbar__tab-season">Cycle 4: Shattered Omens</span>
+          </div>
+          <div class="navbar__tab-badges">
+            
+            <span class="navbar__status navbar__status--late-season">Late Season</span>
+          </div>
+        </div>
+      
+        <div class="navbar__tab " data-game-id="torchlight-infinite" style="--tab-color: #c27a2b;">
+          <div class="navbar__tab-icon"><img src="../assets/logos/torchlight-infinite.png" alt="Torchlight: Infinite" class="navbar__tab-logo" /></div>
+          <div class="navbar__tab-info">
+            <span class="navbar__tab-name">Torchlight: Infinite</span>
+            <span class="navbar__tab-season">SS13: Afterlight</span>
+          </div>
+          <div class="navbar__tab-badges">
+            
+            <span class="navbar__status navbar__status--in-progress">In Progress</span>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-panel__footer">
+        <button id="view-card-btn" class="navbar-panel__action ">Game Card</button>
+        <button id="view-timeline-btn" class="navbar-panel__action navbar-panel__action--active">Timeline 2026</button>
+      </div>
+    </section>
+  
+      </aside>
+      <main id="content">
+        <div class="events-dashboard-container">
+      
+      <!-- Segmented Mode Switcher (SEASONS | EVENTS) -->
+      <div class="timeline-mode-switcher-bar">
+        <div class="timeline-mode-switcher">
+          <a href="../" class="timeline-mode-tab" id="tab-mode-seasons">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>SEASONS</span>
+          </a>
+          <a href="../events/" class="timeline-mode-tab active" id="tab-mode-events">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            <span>EVENTS</span>
+          </a>
+        </div>
+        <div class="timeline-card__year-badge">AUG–SEP 2026</div>
+      </div>
+
+      <!-- Main Live Events Timeline Card -->
+      <section class="timeline-card events-timeline-card">
+        <div class="timeline-card__header">
+          <div>
+            <h3 class="timeline-card__title">LIVE EVENTS TIMELINE</h3>
+            <p class="timeline-card__caption">All events, Twitch Drops, PTR and collabs across games on timeline</p>
+          </div>
+        </div>
+
+        <div class="timeline-map__scroll-container">
+          <div class="events-timeline__grid">
+            
+            <!-- Months Header -->
+            <div class="events-timeline__months-bar">
+              <div class="events-timeline__offset-blank"></div>
+              <div class="events-timeline__months-track">
+                <div class="events-timeline__month-label" style="width: 55.81395348837209%;">AUG 2026</div><div class="events-timeline__month-label" style="width: 44.18604651162791%;">SEP 2026</div>
+              </div>
+            </div>
+
+            <!-- Days Numbers Header -->
+            <div class="events-timeline__days-bar">
+              <div class="events-timeline__offset-blank"></div>
+              <div class="events-timeline__days-track">
+                
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">8</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">9</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">10</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">11</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">12</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">13</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">14</span>
+      </div>
+    
+      <div class="events-timeline__day-cell is-today is-major">
+        <span class="events-timeline__day-num">15</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">16</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">17</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">18</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">19</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">20</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">21</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">22</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">23</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">24</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">25</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">26</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">27</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">28</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">29</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">30</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">31</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">1</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">2</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">3</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">4</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">5</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">6</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">7</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">8</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">9</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">10</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">11</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">12</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">13</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">14</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  is-major">
+        <span class="events-timeline__day-num">15</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">16</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">17</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">18</span>
+      </div>
+    
+      <div class="events-timeline__day-cell  ">
+        <span class="events-timeline__day-num">19</span>
+      </div>
+    
+              </div>
+            </div>
+
+            <!-- Game Tracks / Rows -->
+            <div class="events-timeline__rows">
+              
+      <div class="events-timeline__row" data-game-id="path-of-exile">
+        <div class="events-timeline__game-label" style="--game-accent: #d97706;">
+          <span class="events-timeline__game-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7v2a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-2c0-2 2-4 2-7a7 7 0 0 0-7-7z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M10 17v-2"/><path d="M14 17v-2"/></svg></span>
+          <span class="events-timeline__game-name">Path of Exile 1</span>
+        </div>
+        <div class="events-timeline__track">
+          
+        <div class="events-timeline__bar is-live type-race" 
+             style="left: 16.567460317460316%; width: 23.809523809523807%; --event-color: #d97706;"
+             data-tooltip="Zizaran&#39;s Class Boss Gauntlet Event (Aug 14 – Aug 24)">
+          <div class="events-timeline__bar-content">
+            <span class="events-timeline__bar-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8v2h8v-2h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg></span>
+            <div class="events-timeline__bar-text">
+              <span class="events-timeline__bar-title">Zizaran&#39;s Class Boss Gauntlet Event</span>
+              <span class="events-timeline__bar-dates">Aug 14 – Aug 24</span>
+            </div>
+          </div>
+          
+        </div>
+      
+        </div>
+      </div>
+    
+
+      <div class="events-timeline__row" data-game-id="path-of-exile-2">
+        <div class="events-timeline__game-label" style="--game-accent: #8b5cf6;">
+          <span class="events-timeline__game-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3z"/><path d="M5 3 4 5.5 1.5 6.5 4 7.5 5 10 6 7.5 8.5 6.5 6 5.5 5 3z"/><path d="M19 15 18 17.5 15.5 18.5 18 19.5 19 22 20 19.5 22.5 18.5 20 17.5 19 15z"/></svg></span>
+          <span class="events-timeline__game-name">Path of Exile 2</span>
+        </div>
+        <div class="events-timeline__track">
+          
+        <div class="events-timeline__bar is-upcoming type-twitch_drops" 
+             style="left: 25.892857142857146%; width: 17.261877204585538%; --event-color: #8b5cf6;"
+             data-tooltip="Twitch Drops: Lightbringer Armor Set (Aug 18 – Aug 26)">
+          <div class="events-timeline__bar-content">
+            <span class="events-timeline__bar-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M21 2H3v16h5v4l4-4h5l4-4V2zm-10 9V7m5 4V7"/></svg></span>
+            <div class="events-timeline__bar-text">
+              <span class="events-timeline__bar-title">Twitch Drops: Lightbringer Armor Set</span>
+              <span class="events-timeline__bar-dates">Aug 18 – Aug 26</span>
+            </div>
+          </div>
+          <div class="events-timeline__dotted-trail"></div>
+        </div>
+      
+        </div>
+      </div>
+    
+
+      <div class="events-timeline__row" data-game-id="diablo-4">
+        <div class="events-timeline__game-label" style="--game-accent: #ef4444;">
+          <span class="events-timeline__game-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3.5z"/></svg></span>
+          <span class="events-timeline__game-name">Diablo IV</span>
+        </div>
+        <div class="events-timeline__track">
+          
+        <div class="events-timeline__bar is-upcoming type-ptr" 
+             style="left: 30.555555555555557%; width: 16.666666666666664%; --event-color: #ef4444;"
+             data-tooltip="Public Test Realm (PTR): Season 10 (Aug 20 – Aug 27)">
+          <div class="events-timeline__bar-content">
+            <span class="events-timeline__bar-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M10 2v7.31L4.62 18.27A2 2 0 0 0 6.34 21h11.32a2 2 0 0 0 1.72-2.73L14 9.31V2"/><line x1="8.5" y1="2" x2="15.5" y2="2"/><line x1="7.45" y1="14" x2="16.55" y2="14"/></svg></span>
+            <div class="events-timeline__bar-text">
+              <span class="events-timeline__bar-title">Public Test Realm (PTR): Season 10</span>
+              <span class="events-timeline__bar-dates">Aug 20 – Aug 27</span>
+            </div>
+          </div>
+          <div class="events-timeline__dotted-trail"></div>
+        </div>
+      
+        </div>
+      </div>
+    
+
+      <div class="events-timeline__row" data-game-id="last-epoch">
+        <div class="events-timeline__game-label" style="--game-accent: #f59e0b;">
+          <span class="events-timeline__game-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M5 22h14"/><path d="M5 2h14"/><path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"/><path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"/></svg></span>
+          <span class="events-timeline__game-name">Last Epoch</span>
+        </div>
+        <div class="events-timeline__track">
+          
+        <div class="events-timeline__bar is-live type-login" 
+             style="left: 6.25%; width: 48.80949625220459%; --event-color: #f59e0b;"
+             data-tooltip="Celebration Login Event: Relics of Eterra (Aug 10 – Aug 31)">
+          <div class="events-timeline__bar-content">
+            <span class="events-timeline__bar-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
+            <div class="events-timeline__bar-text">
+              <span class="events-timeline__bar-title">Celebration Login Event: Relics of Eterra</span>
+              <span class="events-timeline__bar-dates">Aug 10 – Aug 31</span>
+            </div>
+          </div>
+          
+        </div>
+      
+        </div>
+      </div>
+    
+
+      <div class="events-timeline__row" data-game-id="torchlight-infinite">
+        <div class="events-timeline__game-label" style="--game-accent: #06b6d4;">
+          <span class="events-timeline__game-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <span class="events-timeline__game-name">Torchlight: Infinite</span>
+        </div>
+        <div class="events-timeline__track">
+          
+        <div class="events-timeline__bar is-live type-collab" 
+             style="left: 10.218253968253968%; width: 50%; --event-color: #06b6d4;"
+             data-tooltip="Collaboration Event: Neon Surge (Aug 12 – Sep 2)">
+          <div class="events-timeline__bar-content">
+            <span class="events-timeline__bar-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class=""><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+            <div class="events-timeline__bar-text">
+              <span class="events-timeline__bar-title">Collaboration Event: Neon Surge</span>
+              <span class="events-timeline__bar-dates">Aug 12 – Sep 2</span>
+            </div>
+          </div>
+          
+        </div>
+      
+        </div>
+      </div>
+    
+            </div>
+
+            <!-- Vertical TODAY Line -->
+            <div class="events-timeline__today-line" style="left: calc(180px + (100% - 180px) * 0.17945446373456794);">
+              <span class="events-timeline__today-badge">TODAY</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Section: UPCOMING & ENDING SOON -->
+      <section class="upcoming-launches events-urgent-section">
+        <div class="upcoming-launches__header">
+          <h3 class="upcoming-launches__title">UPCOMING & ENDING SOON</h3>
+          <p class="upcoming-launches__caption">Don't miss important limited-time rewards and events</p>
+        </div>
+        <div class="urgent-events-grid">
+          
+      <div class="urgent-event-card badge--active" style="--card-game-color: #d97706;">
+        <div class="urgent-event-card__header">
+          <span class="urgent-event-card__badge badge--active">ACTIVE</span>
+        </div>
+        <h4 class="urgent-event-card__title">Zizaran&#39;s Class Boss Gauntlet Event</h4>
+        <div class="urgent-event-card__game">Path of Exile 1</div>
+
+        <div class="urgent-event-card__countdown" data-countdown-target="1787601600000">
+          <div class="urgent-countdown-item">
+            <strong data-countdown="days">9</strong>
+            <span>DAYS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="hours">10</strong>
+            <span>HOURS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="minutes">6</strong>
+            <span>MINS</span>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="urgent-event-card badge--active" style="--card-game-color: #f59e0b;">
+        <div class="urgent-event-card__header">
+          <span class="urgent-event-card__badge badge--active">ACTIVE</span>
+        </div>
+        <h4 class="urgent-event-card__title">Celebration Login Event: Relics of Eterra</h4>
+        <div class="urgent-event-card__game">Last Epoch</div>
+
+        <div class="urgent-event-card__countdown" data-countdown-target="1788134399000">
+          <div class="urgent-countdown-item">
+            <strong data-countdown="days">15</strong>
+            <span>DAYS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="hours">14</strong>
+            <span>HOURS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="minutes">6</strong>
+            <span>MINS</span>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="urgent-event-card badge--active" style="--card-game-color: #06b6d4;">
+        <div class="urgent-event-card__header">
+          <span class="urgent-event-card__badge badge--active">ACTIVE</span>
+        </div>
+        <h4 class="urgent-event-card__title">Collaboration Event: Neon Surge</h4>
+        <div class="urgent-event-card__game">Torchlight: Infinite</div>
+
+        <div class="urgent-event-card__countdown" data-countdown-target="1788321600000">
+          <div class="urgent-countdown-item">
+            <strong data-countdown="days">17</strong>
+            <span>DAYS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="hours">18</strong>
+            <span>HOURS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="minutes">6</strong>
+            <span>MINS</span>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="urgent-event-card badge--starting" style="--card-game-color: #8b5cf6;">
+        <div class="urgent-event-card__header">
+          <span class="urgent-event-card__badge badge--starting">STARTING SOON</span>
+        </div>
+        <h4 class="urgent-event-card__title">Twitch Drops: Lightbringer Armor Set</h4>
+        <div class="urgent-event-card__game">Path of Exile 2</div>
+
+        <div class="urgent-event-card__countdown" data-countdown-target="1787076000000">
+          <div class="urgent-countdown-item">
+            <strong data-countdown="days">3</strong>
+            <span>DAYS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="hours">8</strong>
+            <span>HOURS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="minutes">6</strong>
+            <span>MINS</span>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="urgent-event-card badge--starting" style="--card-game-color: #ef4444;">
+        <div class="urgent-event-card__header">
+          <span class="urgent-event-card__badge badge--starting">STARTING SOON</span>
+        </div>
+        <h4 class="urgent-event-card__title">Public Test Realm (PTR): Season 10</h4>
+        <div class="urgent-event-card__game">Diablo IV</div>
+
+        <div class="urgent-event-card__countdown" data-countdown-target="1787245200000">
+          <div class="urgent-countdown-item">
+            <strong data-countdown="days">5</strong>
+            <span>DAYS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="hours">7</strong>
+            <span>HOURS</span>
+          </div>
+          <div class="urgent-countdown-item">
+            <strong data-countdown="minutes">6</strong>
+            <span>MINS</span>
+          </div>
+        </div>
+      </div>
+    
+        </div>
+      </section>
+
+    </div>
+      </main>
+    </div>
+
+    <footer class="app-footer">
+      <span class="app-footer__copy" id="lbl-footer-copy">© 2026 SeasonForge. ARPG Season Tracker.</span>
+      <div class="app-footer__links">
+        <a href="../" class="app-footer__link">Seasons</a>
+        <a href="../events/" class="app-footer__link">Events &amp; Drops</a>
+        <a href="../changelog/" class="app-footer__link" id="lbl-footer-changelog">Changelog</a>
+        <a href="../privacy/" class="app-footer__link" id="lbl-footer-privacy">Privacy</a>
+      </div>
+    </footer>
+
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <script id="sf-events-json" type="application/json">
+      [{"id":"poe2_twitch_drops_lightbringer-armor","gameId":"path-of-exile-2","type":"twitch_drops","title_ru":"Twitch Drops: Набор брони Светоносца","title_en":"Twitch Drops: Lightbringer Armor Set","startDate":"2026-08-18T18:00:00Z","endDate":"2026-08-25T23:59:59Z","description_ru":"Смотрите любые трансляции по Path of Exile 2 от 3 часов и получите эксклюзивный декоративный сет доспехов.","description_en":"Watch any Path of Exile 2 stream for 3+ hours to earn the exclusive Lightbringer cosmetic armor set.","rewards":["Шлем Светоносца","Нагрудник Светоносца","Портал Хаоса"],"sourceUrl":"https://pathofexile2.com","updatedAt":"2026-08-15T09:00:00.000Z","status":"upcoming"},{"id":"diablo-4_ptr_season-10-public-test","gameId":"diablo-4","type":"ptr","title_ru":"Тестовый сервер PTR: Сезон 10","title_en":"Public Test Realm (PTR): Season 10","startDate":"2026-08-20T17:00:00Z","endDate":"2026-08-27T17:00:00Z","description_ru":"Опробуйте масштабную переработку механики самоцветов, новые классовые аспекты и эндгейм-боссов до официального релиза.","description_en":"Test the major gem system rework, new class aspects, and endgame bosses ahead of the official season release.","rewards":["Доступ к раннему тестированию","Особое знамя участника PTR"],"sourceUrl":"https://news.blizzard.com/en-us/diablo4","updatedAt":"2026-08-15T09:00:00.000Z","status":"upcoming"},{"id":"path-of-exile_race_boss-kill-gauntlet","gameId":"path-of-exile","type":"race","title_ru":"Zizaran Boss Kill Gauntlet 2026","title_en":"Zizaran's Class Boss Gauntlet Event","startDate":"2026-08-14T20:00:00Z","endDate":"2026-08-24T20:00:00Z","description_ru":"Хардкорный соло-марафон с усиленными модификаторами монстров и призовым фондом за убийство убей-боссов.","description_en":"Hardcore SSF marathon with amplified monster modifiers and a cash prize pool for pinnacle boss kills.","rewards":["Денежный призовой фонд","Эксклюзивная микротранзакция финалиста"],"sourceUrl":"https://pathofexile.com/forum","updatedAt":"2026-08-15T09:00:00.000Z","status":"active"},{"id":"last-epoch_login_anniversary-relic-cache","gameId":"last-epoch","type":"login","title_ru":"Праздничный логин-ивент: Реликвии Этерры","title_en":"Celebration Login Event: Relics of Eterra","startDate":"2026-08-10T12:00:00Z","endDate":"2026-08-30T23:59:59Z","description_ru":"Заходите в игру в течение двух недель, чтобы забрать бесплатный косметический сундук и светящегося питомца.","description_en":"Log into Last Epoch over the next two weeks to claim a free cosmetic cache and an ethereal companion pet.","rewards":["Питомец 'Призрачный олень'","Сундук с декоративным шлемом"],"sourceUrl":"https://forum.lastepoch.com","updatedAt":"2026-08-15T09:00:00.000Z","status":"active"},{"id":"torchlight-infinite_collab_cyber-crossover-event","gameId":"torchlight-infinite","type":"collab","title_ru":"Коллаборация: Неоновый Шторм","title_en":"Collaboration Event: Neon Surge","startDate":"2026-08-12T04:00:00Z","endDate":"2026-09-02T04:00:00Z","description_ru":"Особое кроссовер-событие: выполняйте сезонные квесты и получайте футуристические облики оружия и крылья.","description_en":"Special crossover event: complete seasonal challenges to unlock futuristic weapon skins and glowing wings.","rewards":["Крылья Неонового Шторма","Аватарка профиля"],"sourceUrl":"https://store.steampowered.com/app/1974050","updatedAt":"2026-08-15T09:00:00.000Z","status":"active"}]
+    </script>
+    <script type="module" src="../src/app.js?v=1.2.1"></script>
+  </body>
+</html>

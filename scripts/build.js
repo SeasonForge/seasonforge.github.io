@@ -90,6 +90,12 @@ async function build() {
 
   const lastCheckedAt = database.lastCheckedAt;
   const updateTimes = games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  if (Array.isArray(database.changelog)) {
+    database.changelog.forEach(c => {
+      const ts = new Date(c.timestamp).getTime();
+      if (!Number.isNaN(ts)) updateTimes.push(ts);
+    });
+  }
   const latestUpdateTime = updateTimes.length > 0 ? Math.max(...updateTimes) : Date.now();
   
   const lastCheckedFormatted = formatLastUpdated(lastCheckedAt);

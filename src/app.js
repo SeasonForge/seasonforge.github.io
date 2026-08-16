@@ -198,6 +198,12 @@ function renderApp() {
   }
 
   const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  if (Array.isArray(state.rawData?.changelog)) {
+    state.rawData.changelog.forEach(c => {
+      const ts = new Date(c.timestamp).getTime();
+      if (!Number.isNaN(ts)) updateTimes.push(ts);
+    });
+  }
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
   const updatedLbl = document.getElementById('lbl-last-updated');
@@ -896,7 +902,7 @@ function tickCountdown() {
     }
 
     // 4. Update Event Detail Drawer Countdown (if open and has active target)
-    const drawerCountdown = document.querySelector('.events-detail-countdown[data-countdown-target]');
+    const drawerCountdown = document.querySelector('.events-detail-status-row[data-countdown-target], .events-detail-countdown[data-countdown-target]');
     if (drawerCountdown) {
       const target = Number(drawerCountdown.getAttribute('data-countdown-target'));
       const displayEl = drawerCountdown.querySelector('[data-countdown-display]');
@@ -909,15 +915,25 @@ function tickCountdown() {
         const mins = Math.floor((totalSecs % 3600) / 60);
 
         const isEn = (getState().settings?.lang || 'en') === 'en';
+        let formatted = '';
         if (days > 0) {
-          displayEl.textContent = isEn 
-            ? `${days}d ${hours}h` 
-            : `${days} ${days === 1 ? 'день' : (days >= 2 && days <= 4 ? 'дня' : 'дней')} ${hours} ч.`;
+          formatted = isEn ? `${days}d ${hours}h ${mins}m` : `${days}д ${hours}ч ${mins}м`;
         } else if (hours > 0) {
-          displayEl.textContent = isEn ? `${hours}h ${mins}m` : `${hours} ч. ${mins} мин.`;
+          formatted = isEn ? `${hours}h ${mins}m` : `${hours}ч ${mins}м`;
         } else {
-          displayEl.textContent = isEn ? `${mins}m` : `${mins} мин.`;
+          formatted = isEn ? `${mins}m` : `${mins}м`;
         }
+
+        const currentText = displayEl.textContent.trim();
+        let prefix = '';
+        if (currentText.startsWith('Starts in')) prefix = 'Starts in ';
+        else if (currentText.startsWith('Ends soon in')) prefix = 'Ends soon in ';
+        else if (currentText.startsWith('Ends in')) prefix = 'Ends in ';
+        else if (currentText.startsWith('Начнётся через')) prefix = 'Начнётся через ';
+        else if (currentText.startsWith('Скоро завершится через')) prefix = 'Скоро завершится через ';
+        else if (currentText.startsWith('Завершится через')) prefix = 'Завершится через ';
+
+        displayEl.textContent = `${prefix}${formatted}`;
       }
     }
   }
@@ -945,28 +961,68 @@ export function initSwitcherSlider() {
   });
 }
 
+let isSwitchingTimelineMode = false;
+
+function switchTimelineMode(targetMode) {
+  if (timelineMode === targetMode || isSwitchingTimelineMode) return;
+  isSwitchingTimelineMode = true;
+
+  const currentSwitcher = document.querySelector('.timeline-integrated-switcher');
+  const targetTab = document.getElementById(`tab-mode-${targetMode}`);
+  const currentTab = document.getElementById(`tab-mode-${timelineMode}`);
+  const container = document.querySelector('.timeline-view-wrapper, .events-dashboard-container');
+
+  if (currentSwitcher && targetTab) {
+    const slider = currentSwitcher.querySelector('.timeline-switcher-slider');
+    if (slider) {
+      const left = targetTab.offsetLeft;
+      const width = targetTab.offsetWidth;
+      slider.style.width = `${width}px`;
+      slider.style.transform = `translate3d(${left - 3}px, 0, 0)`;
+      if (targetMode === 'events') {
+        slider.classList.add('is-events');
+      } else {
+        slider.classList.remove('is-events');
+      }
+    }
+    if (currentTab) {
+      currentTab.classList.remove('active');
+      currentTab.setAttribute('aria-selected', 'false');
+    }
+    targetTab.classList.add('active');
+    targetTab.setAttribute('aria-selected', 'true');
+  }
+
+  setTimeout(() => {
+    timelineMode = targetMode;
+    if (targetMode === 'events') {
+      if (!window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'events' }, '', './events/');
+      }
+    } else {
+      if (window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'seasons' }, '', '../');
+      }
+    }
+    renderApp();
+    isSwitchingTimelineMode = false;
+  }, 120);
+}
+
 // Global click handler for mode switcher (SEASONS <-> EVENTS)
 if (typeof document !== 'undefined') {
   document.addEventListener('click', (e) => {
     const tabSeasons = e.target.closest('#tab-mode-seasons');
     if (tabSeasons) {
       e.preventDefault();
-      timelineMode = 'seasons';
-      if (window.location.pathname.includes('/events')) {
-        window.history.pushState({ mode: 'seasons' }, '', '../');
-      }
-      renderApp();
+      switchTimelineMode('seasons');
       return;
     }
 
     const tabEvents = e.target.closest('#tab-mode-events');
     if (tabEvents) {
       e.preventDefault();
-      timelineMode = 'events';
-      if (!window.location.pathname.includes('/events')) {
-        window.history.pushState({ mode: 'events' }, '', './events/');
-      }
-      renderApp();
+      switchTimelineMode('events');
       return;
     }
   });

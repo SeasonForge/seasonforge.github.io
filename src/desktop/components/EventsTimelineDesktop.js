@@ -310,11 +310,11 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
             <!-- Seamless Integrated Switcher embedded right inside Card Header -->
             <div class="timeline-integrated-switcher" role="tablist">
               <a href="${seasonsHref}" class="timeline-switcher-tab" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="false">
-                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 17 })}</span>
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 15 })}</span>
                 <span class="switcher-text">${isEn ? 'SEASONS' : 'СЕЗОНЫ'}</span>
               </a>
               <a href="${eventsHref}" class="timeline-switcher-tab active" id="tab-mode-events" data-mode="events" role="tab" aria-selected="true">
-                <span class="switcher-icon">${getIconSvg('layers', { size: 17 })}</span>
+                <span class="switcher-icon">${getIconSvg('layers', { size: 15 })}</span>
                 <span class="switcher-text">${isEn ? 'EVENTS' : 'ИВЕНТЫ'}</span>
               </a>
               <div class="timeline-switcher-slider is-events"></div>
@@ -418,30 +418,30 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
   const isLive = !isUpcoming && !isEnded;
 
   // Status & Countdown
-  let statusText = isEn ? 'Upcoming' : 'Предстоит';
+  let statusText = isEn ? 'UPCOMING' : 'ПРЕДСТОИТ';
   let statusClass = 'status--upcoming';
-  let countdownLabel = isEn ? 'starts in' : 'начнётся через';
+  let countdownLabel = isEn ? 'Starts in' : 'Начнётся через';
   let targetTime = startMs;
 
   if (isLive) {
-    statusText = isEn ? 'Live Now' : 'В разгаре';
+    statusText = isEn ? 'LIVE NOW' : 'В РАЗГАРЕ';
     statusClass = 'status--live';
     if (endMs) {
       const hoursLeft = (endMs - nowMs) / 3600000;
       if (hoursLeft <= 48) {
-        countdownLabel = isEn ? 'ends soon' : 'скоро завершится';
+        countdownLabel = isEn ? 'Ends soon in' : 'Скоро завершится через';
       } else {
-        countdownLabel = isEn ? 'ends in' : 'завершится через';
+        countdownLabel = isEn ? 'Ends in' : 'Завершится через';
       }
       targetTime = endMs;
     } else {
-      countdownLabel = isEn ? 'duration' : 'длительность';
+      countdownLabel = isEn ? 'Duration' : 'Длительность';
       targetTime = null;
     }
   } else if (isEnded) {
-    statusText = isEn ? 'Ended' : 'Завершено';
+    statusText = isEn ? 'ENDED' : 'ЗАВЕРШЕНО';
     statusClass = 'status--ended';
-    countdownLabel = isEn ? 'status' : 'статус';
+    countdownLabel = isEn ? 'Status' : 'Статус';
     targetTime = null;
   }
 
@@ -454,13 +454,11 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
     const mins = Math.floor((totalSecs % 3600) / 60);
 
     if (days > 0) {
-      countdownValueStr = isEn 
-        ? `${days}d ${hours}h` 
-        : `${days} ${days === 1 ? 'день' : (days >= 2 && days <= 4 ? 'дня' : 'дней')} ${hours} ч.`;
+      countdownValueStr = isEn ? `${days}d ${hours}h ${mins}m` : `${days}д ${hours}ч ${mins}м`;
     } else if (hours > 0) {
-      countdownValueStr = isEn ? `${hours}h ${mins}m` : `${hours} ч. ${mins} мин.`;
+      countdownValueStr = isEn ? `${hours}h ${mins}m` : `${hours}ч ${mins}м`;
     } else {
-      countdownValueStr = isEn ? `${mins}m` : `${mins} мин.`;
+      countdownValueStr = isEn ? `${mins}m` : `${mins}м`;
     }
   } else if (isLive && !endMs) {
     countdownValueStr = isEn ? 'Ongoing' : 'Бессрочно';
@@ -518,41 +516,46 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
 
         <h3 class="events-detail-title">${escapeHtml(title)}</h3>
 
-        <!-- Unified Single Metadata Row (Status + Timer in 1 compact line) -->
-        <div class="events-detail-meta-line" ${targetTime ? `data-countdown-target="${targetTime}"` : ''}>
-          <span class="events-detail-status-pill ${statusClass}">
-            <span class="status-dot"></span>
-            <span>${escapeHtml(statusText)}</span>
+        <!-- Status & Countdown Pills Row -->
+        <div class="events-detail-status-row" ${targetTime ? `data-countdown-target="${targetTime}"` : ''}>
+          <span class="events-detail-status-badge ${statusClass}">
+            ${escapeHtml(statusText)}
           </span>
           ${countdownValueStr ? `
-            <span class="events-detail-meta-divider">·</span>
-            <span class="events-detail-countdown-pill">
-              <span class="events-detail-countdown-lbl">${escapeHtml(countdownLabel)}:</span>
-              <strong data-countdown-display>${escapeHtml(countdownValueStr)}</strong>
+            <span class="events-detail-countdown-box">
+              <span class="events-detail-countdown-text" data-countdown-display>${escapeHtml(countdownLabel)} ${escapeHtml(countdownValueStr)}</span>
             </span>
           ` : ''}
         </div>
       </div>
 
-      <!-- Date & Time Section -->
+      <!-- Date & Time Section with Card Container -->
       <div class="events-detail-section">
         <h4 class="events-detail-section__heading">${isEn ? 'DATE & TIME' : 'ДАТА И ВРЕМЯ'}</h4>
-        <div class="events-detail-dates-list">
+        <div class="events-detail-dates-card">
           ${eStart ? `
             <div class="events-detail-date-item">
-              <span class="events-detail-date-icon">${getIconSvg('calendar', { size: 14 })}</span>
-              <span class="events-detail-date-text">${escapeHtml(startDateStr)}</span>
+              <span class="events-detail-date-icon">${getIconSvg('calendar', { size: 15 })}</span>
+              <span class="events-detail-date-text">
+                <span class="events-detail-date-val">${escapeHtml(startDateStr)}</span>
+                <span class="events-detail-date-suffix">(${isEn ? 'Starts' : 'Старт'})</span>
+              </span>
             </div>
           ` : ''}
           ${eEnd ? `
             <div class="events-detail-date-item">
-              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 14 })}</span>
-              <span class="events-detail-date-text"><span class="events-detail-date-lbl">${isEn ? 'End:' : 'Конец:'}</span> ${escapeHtml(endDateStr)}</span>
+              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 15 })}</span>
+              <span class="events-detail-date-text">
+                <span class="events-detail-date-val">${escapeHtml(endDateStr)}</span>
+                <span class="events-detail-date-suffix">(${isEn ? 'Ends' : 'Конец'})</span>
+              </span>
             </div>
           ` : (eStart && !eEnd ? `
             <div class="events-detail-date-item">
-              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 14 })}</span>
-              <span class="events-detail-date-text">${isEn ? 'Ongoing / Until season ends' : 'Активно / До окончания сезона'}</span>
+              <span class="events-detail-date-icon">${getIconSvg('clock', { size: 15 })}</span>
+              <span class="events-detail-date-text">
+                <span class="events-detail-date-val">${isEn ? 'Until season ends' : 'До окончания сезона'}</span>
+              </span>
             </div>
           ` : '')}
         </div>
@@ -585,7 +588,7 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
           <ul class="events-detail-list events-detail-list--rewards">
             ${rewards.map(r => `
               <li>
-                <span class="events-detail-reward-icon">${getIconSvg('gift', { size: 14 })}</span>
+                <span class="events-detail-bullet">•</span>
                 <span class="events-detail-reward-text">${escapeHtml(typeof r === 'object' ? (r[lang] || r.en || r.ru) : r)}</span>
               </li>
             `).join('')}

@@ -268,6 +268,12 @@ function renderApp() {
   }
 
   const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  if (Array.isArray(state.rawData?.changelog)) {
+    state.rawData.changelog.forEach(c => {
+      const ts = new Date(c.timestamp).getTime();
+      if (!Number.isNaN(ts)) updateTimes.push(ts);
+    });
+  }
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
   if (timeEl && latestTime) {

@@ -75,6 +75,12 @@ export class Header {
     let updatedTs = lastUpdated;
     if (!updatedTs && state.games && state.games.length > 0) {
       const times = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+      if (Array.isArray(state.rawData?.changelog)) {
+        state.rawData.changelog.forEach(c => {
+          const ts = new Date(c.timestamp).getTime();
+          if (!Number.isNaN(ts)) times.push(ts);
+        });
+      }
       if (times.length > 0) updatedTs = Math.max(...times);
     }
     const updatedTimeEl = document.getElementById('last-updated-time');

@@ -550,11 +550,11 @@ export function render(games = [], viewMode = 'all') {
             <!-- Seamless Integrated Switcher embedded right inside Card Header -->
             <div class="timeline-integrated-switcher" role="tablist">
               <a href="${seasonsHref}" class="timeline-switcher-tab active" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="true">
-                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 17 })}</span>
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 15 })}</span>
                 <span class="switcher-text">${t('timeline.modeSeasons') || 'СЕЗОНЫ'}</span>
               </a>
               <a href="${eventsHref}" class="timeline-switcher-tab" id="tab-mode-events" data-mode="events" role="tab" aria-selected="false">
-                <span class="switcher-icon">${getIconSvg('layers', { size: 17 })}</span>
+                <span class="switcher-icon">${getIconSvg('layers', { size: 15 })}</span>
                 <span class="switcher-text">${t('timeline.modeEvents') || 'ИВЕНТЫ'}</span>
               </a>
               <div class="timeline-switcher-slider"></div>

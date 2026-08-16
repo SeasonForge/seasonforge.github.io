@@ -771,6 +771,44 @@ async function build() {
     console.log('[SSG] events/index.html generated successfully.');
   }
 
+  // 5b. Generate widget/index.html
+  const widgetDir = path.join(__dirname, '../widget');
+  if (!fs.existsSync(widgetDir)) {
+    fs.mkdirSync(widgetDir, { recursive: true });
+  }
+  const widgetHtmlContent = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeasonForge Widget</title>
+  <link rel="stylesheet" href="../src/styles/obs-widgets.css" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent !important;
+      background-color: transparent !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body>
+  <div id="widget-root"></div>
+  <script type="module" src="../src/widget-entry.js"></script>
+</body>
+</html>
+`;
+  fs.writeFileSync(path.join(widgetDir, 'index.html'), widgetHtmlContent, 'utf-8');
+  console.log('[SSG] widget/index.html generated successfully.');
+
   // 6. Generate sitemap.xml
   console.log('[SSG] Generating sitemap.xml...');
   const todayStr = new Date().toISOString().split('T')[0];

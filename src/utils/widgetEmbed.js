@@ -29,7 +29,7 @@ export function generateEmbedUrl({
   const sanitizedLang = VALID_WIDGET_LANGS.includes(lang) ? lang : 'ru';
 
   const cleanBase = baseUrl ? (baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`) : '';
-  const path = `${cleanBase}widget.html`;
+  const path = `${cleanBase}widget/`;
 
   const queryParams = new URLSearchParams();
   queryParams.set('game', sanitizedGame);

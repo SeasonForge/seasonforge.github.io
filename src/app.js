@@ -1051,7 +1051,11 @@ function startCountdownLoop() {
 async function initializeApp() {
   setError(null);
 
-  const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+  const isEventsPage = typeof window !== 'undefined' && (
+    window.location.pathname.includes('/events') || 
+    window.location.search.includes('tab=events') || 
+    window.location.hash === '#events'
+  );
   if (isEventsPage) {
     timelineMode = 'events';
   }

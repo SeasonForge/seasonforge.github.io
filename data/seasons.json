@@ -1,6 +1,26 @@
 {
-  "lastCheckedAt": "2026-08-16T13:54:39.923Z",
+  "lastCheckedAt": "2026-08-16T13:58:19.649Z",
   "changelog": [
+    {
+      "timestamp": "2026-08-16T13:50:00.000Z",
+      "gameId": "path-of-exile-2",
+      "url": "https://www.pathofexile.com/forum/view-thread/3991262",
+      "type": "article",
+      "text": {
+        "en": "Path of Exile 2: New article published — \"Path of Exile 2: Shader and Device Removed Fixed\"",
+        "ru": "Path of Exile 2: Опубликована новость — «Path of Exile 2: Shader and Device Removed Fixed»"
+      }
+    },
+    {
+      "timestamp": "2026-08-14T11:20:00.000Z",
+      "gameId": "path-of-exile",
+      "url": "https://www.pathofexile.com/forum/view-thread/3993346",
+      "type": "article",
+      "text": {
+        "en": "Path of Exile 1: New article published — \"Path of Exile 1: Curse of the Allflame Developer Interview\"",
+        "ru": "Path of Exile 1: Опубликована новость — «Path of Exile 1: Curse of the Allflame Developer Interview»"
+      }
+    },
     {
       "timestamp": "2026-08-10T06:35:53.403Z",
       "gameId": "path-of-exile",

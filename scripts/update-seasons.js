@@ -613,7 +613,7 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
   // Check CLI arguments for dry-run or auto mode
   const args = process.argv.slice(2);
   const isDryRun = args.includes('--dry-run');
-  const isAutoApprove = args.includes('--auto');
+  const isAutoApprove = args.includes('--auto') || args.includes('--auto-approve') || process.env.AUTO_APPROVE === 'true';
 
   // 3. Compare with old seasons.json to check if we have actual changes
   let hasActualChanges = true;

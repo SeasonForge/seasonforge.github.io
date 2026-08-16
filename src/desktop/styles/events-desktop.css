@@ -90,6 +90,39 @@
   gap: 1rem;
 }
 
+/* Events Timeline Vertical NOW Line (Exact Match to Seasons) */
+.events-timeline__today-line {
+  position: absolute;
+  top: 1.8rem;
+  bottom: 0.5rem;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(167, 139, 250, 0.9) 0%, rgba(139, 92, 246, 0.5) 30%, rgba(139, 92, 246, 0.18) 75%, transparent 100%);
+  box-shadow: 0 0 4px rgba(167, 139, 250, 0.4);
+  z-index: 15;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.events-timeline__today-badge {
+  position: absolute;
+  top: -1.35rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(99, 102, 241, 0.85);
+  border: 1px solid rgba(199, 210, 254, 0.35);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #ffffff;
+  font-size: 0.52rem;
+  font-weight: 800;
+  padding: 0.08rem 0.38rem;
+  border-radius: 999px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+  white-space: nowrap;
+}
+
 /* Desktop Events Detail Drawer (Exact Match to Center Glass Panel) */
 .events-detail-drawer {
   position: fixed;

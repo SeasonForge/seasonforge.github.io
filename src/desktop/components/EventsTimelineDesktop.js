@@ -348,9 +348,9 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
               ${rowsHtml}
             </div>
 
-            <!-- Vertical TODAY Line -->
+            <!-- Vertical NOW Line -->
             <div class="events-timeline__today-line" style="left: calc(165px + (100% - 165px) * ${nowPercent / 100});">
-              <span class="events-timeline__today-badge">${isEn ? 'TODAY' : 'СЕГОДНЯ'}</span>
+              <span class="events-timeline__today-badge">${isEn ? 'NOW' : 'СЕЙЧАС'}</span>
             </div>
 
           </div>

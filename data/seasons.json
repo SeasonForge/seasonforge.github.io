@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-08-16T13:58:19.649Z",
+  "lastCheckedAt": "2026-08-16T14:03:51.359Z",
   "changelog": [
     {
       "timestamp": "2026-08-16T13:50:00.000Z",
@@ -175,10 +175,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3995722",
-        "title": "Fan Art Competition",
-        "url": "https://www.pathofexile.com/forum/view-thread/3995722",
-        "publishDate": "Sun, 09 Aug 2026 23:47:56 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3994393",
+        "title": "Path of Exile: Curse of the Allflame Interview with Zizaran",
+        "url": "https://www.pathofexile.com/forum/view-thread/3994393",
+        "publishDate": "2026-08-06T10:17:25.334Z",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -278,10 +278,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1840944183772575",
-        "title": "Play Path of Exile 2 at gamescom 2026",
-        "url": "https://www.pathofexile.com/forum/view-thread/3996271",
-        "publishDate": "2026-08-11T18:00:00.000Z",
+        "id": "1840944183777884",
+        "title": "Path of Exile 2 ExileCon Qualifier #2 Is Going On Now!",
+        "url": "https://store.steampowered.com/news/app/2694490/view/1840944183777884",
+        "publishDate": "2026-08-16T12:00:00.000Z",
         "source": "Path of Exile 2 Official Steam"
       },
       "status": {

@@ -8,11 +8,16 @@ export const en = {
   navbar: {
     eyebrow: "SELECT GAME",
     caption: "Compact list of current seasons",
+    title: "SeasonForge",
+    compactList: "Compact list of current seasons",
     btnCard: "Game Card",
     btnTimeline: "Timeline 2026",
     btnGames: "Games",
+    btnMore: "More",
+    btnEvents: "Events & Drops",
     btnChangelog: "Changelog",
-    btnMore: "More"
+    modeSeasons: "Seasons",
+    modeEvents: "Events"
   },
   mobileApp: {
     badge: "BETA",
@@ -111,7 +116,31 @@ export const en = {
     fallbackTitle: "Timeline",
     fallbackNoGames: "No games available",
     tba: "TBA",
-    hype: "STARTING SOON"
+    hype: "STARTING SOON",
+    modeSeasons: "SEASONS",
+    modeEvents: "EVENTS"
+  },
+  eventDrawer: {
+    header: "ABOUT EVENT",
+    status: "STATUS",
+    startsIn: "STARTS IN",
+    endsIn: "ENDS IN",
+    duration: "DURATION",
+    statusUpcoming: "Upcoming",
+    statusActive: "Active",
+    statusLiveNow: "Live Now",
+    statusEnded: "Ended",
+    dateTime: "DATE & TIME",
+    start: "Start",
+    end: "End",
+    ongoing: "Ongoing / Until season ends",
+    description: "DESCRIPTION",
+    conditions: "CONDITIONS & RULES",
+    rewards: "REWARDS",
+    links: "LINKS",
+    officialAnnouncement: "Official Announcement",
+    openOnSite: "Open on Website",
+    close: "Close"
   },
   footer: {
     copy: "© 2026 SeasonForge. ARPG Season Tracker.",

@@ -60,6 +60,11 @@ export class Header {
       lblWebWidget.textContent = isEn ? 'Website Widget' : 'Виджет для сайта';
     }
 
+    const lblEvents = document.getElementById('lbl-events-btn');
+    if (lblEvents) {
+      lblEvents.textContent = isEn ? 'Events & Drops' : 'События и Drops';
+    }
+
     // Timestamps (fallback to state.rawData / state.games if not explicitly passed)
     const checkedTs = lastChecked || state.rawData?.lastCheckedAt || state.lastCheckedAt;
     const checkedTimeEl = document.getElementById('last-checked-time');
@@ -70,6 +75,12 @@ export class Header {
     let updatedTs = lastUpdated;
     if (!updatedTs && state.games && state.games.length > 0) {
       const times = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+      if (Array.isArray(state.rawData?.changelog)) {
+        state.rawData.changelog.forEach(c => {
+          const ts = new Date(c.timestamp).getTime();
+          if (!Number.isNaN(ts)) times.push(ts);
+        });
+      }
       if (times.length > 0) updatedTs = Math.max(...times);
     }
     const updatedTimeEl = document.getElementById('last-updated-time');

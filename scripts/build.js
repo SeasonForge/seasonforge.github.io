@@ -18,6 +18,9 @@ const { getProgressPercent, calculateCountdown } = await import('../src/utils/co
 const { escapeAttr, escapeHtml } = await import('../src/utils/helpers.js');
 const { SeoGenerator } = await import('../src/utils/SeoGenerator.js');
 const { formatLastUpdated } = await import('../src/utils/date.js');
+const { renderEventCard } = await import('../src/components/EventCard.js');
+const { renderEventsTimeline } = await import('../src/components/EventsTimeline.js');
+const { render: renderNavbar } = await import('../src/components/Navbar.js');
 
 function escapeJsonForScript(str) {
   return String(str || '')
@@ -87,6 +90,12 @@ async function build() {
 
   const lastCheckedAt = database.lastCheckedAt;
   const updateTimes = games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  if (Array.isArray(database.changelog)) {
+    database.changelog.forEach(c => {
+      const ts = new Date(c.timestamp).getTime();
+      if (!Number.isNaN(ts)) updateTimes.push(ts);
+    });
+  }
   const latestUpdateTime = updateTimes.length > 0 ? Math.max(...updateTimes) : Date.now();
   
   const lastCheckedFormatted = formatLastUpdated(lastCheckedAt);
@@ -715,6 +724,91 @@ async function build() {
     console.log('[SSG] changelog/index.html generated successfully.');
   }
 
+  // 5.6 Generate events/index.html page
+  const eventsTemplatePath = path.join(__dirname, '../src/templates/events.html');
+  const eventsDataPath = path.join(__dirname, '../data/events.json');
+
+  if (fs.existsSync(eventsTemplatePath) && fs.existsSync(eventsDataPath)) {
+    console.log('[SSG] Compiling ARPG Events & Drops page (events)...');
+    const eventsTemplate = fs.readFileSync(eventsTemplatePath, 'utf-8');
+    let eventsData = { events: [] };
+    try {
+      eventsData = JSON.parse(fs.readFileSync(eventsDataPath, 'utf-8'));
+    } catch (e) {
+      console.warn('[SSG] Failed reading events.json');
+    }
+
+    const rawEvents = Array.isArray(eventsData.events) ? eventsData.events : [];
+    const now = new Date();
+
+    const normalizedEvents = rawEvents.map(evt => {
+      const nowMs = now.getTime();
+      const startMs = new Date(evt.startDate).getTime();
+      const endMs = evt.endDate ? new Date(evt.endDate).getTime() : null;
+
+      let status = 'active';
+      if (startMs > nowMs) status = 'upcoming';
+      else if (endMs && nowMs > endMs) status = 'ended';
+
+      return { ...evt, status };
+    });
+
+    const navbarHtml = renderNavbar(database.games || [], null, 'timeline', '../');
+    const eventsContentHtml = renderEventsTimeline(normalizedEvents, database.games || [], { lang: 'en', basePath: '../' });
+
+    let eventsHtml = eventsTemplate
+      .replace(/{{NAVBAR}}/g, navbarHtml)
+      .replace(/{{EVENTS_CONTENT}}/g, eventsContentHtml)
+      .replace(/{{RAW_EVENTS_JSON}}/g, escapeJsonForScript(JSON.stringify(normalizedEvents)))
+      .replace(/{{LAST_CHECKED_TIME}}/g, lastCheckedFormatted)
+      .replace(/{{LAST_UPDATED_TIME}}/g, lastUpdatedFormatted);
+
+    const eventsDir = path.join(__dirname, '../events');
+    if (!fs.existsSync(eventsDir)) {
+      fs.mkdirSync(eventsDir, { recursive: true });
+    }
+    fs.writeFileSync(path.join(eventsDir, 'index.html'), eventsHtml, 'utf-8');
+    console.log('[SSG] events/index.html generated successfully.');
+  }
+
+  // 5b. Generate widget/index.html
+  const widgetDir = path.join(__dirname, '../widget');
+  if (!fs.existsSync(widgetDir)) {
+    fs.mkdirSync(widgetDir, { recursive: true });
+  }
+  const widgetHtmlContent = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SeasonForge Widget</title>
+  <link rel="stylesheet" href="../src/styles/obs-widgets.css" />
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent !important;
+      background-color: transparent !important;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+</head>
+<body>
+  <div id="widget-root"></div>
+  <script type="module" src="../src/widget-entry.js"></script>
+</body>
+</html>
+`;
+  fs.writeFileSync(path.join(widgetDir, 'index.html'), widgetHtmlContent, 'utf-8');
+  console.log('[SSG] widget/index.html generated successfully.');
+
   // 6. Generate sitemap.xml
   console.log('[SSG] Generating sitemap.xml...');
   const todayStr = new Date().toISOString().split('T')[0];
@@ -725,6 +819,12 @@ async function build() {
     <lastmod>${todayStr}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${BASE_URL}/events/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>${BASE_URL}/changelog/</loc>

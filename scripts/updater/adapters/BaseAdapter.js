@@ -152,8 +152,8 @@ export class BaseAdapter {
     atomicWriteFileSync(cachePath, JSON.stringify(data, null, 2));
   }
 
-  // Call Gemini API to extract structured fields
-  async callGemini(text, systemInstruction, schema) {
+  // Call Gemini API to extract structured fields with automatic retry for 503/429
+  async callGemini(text, systemInstruction, schema, retries = 3) {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY environment variable is not set');
@@ -187,44 +187,48 @@ export class BaseAdapter {
       requestBody.generationConfig.responseSchema = schema;
     }
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 18000);
 
-    let response;
-    try {
-      response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody),
-        signal: controller.signal
-      });
-      clearTimeout(timeoutId);
-    } catch (err) {
-      clearTimeout(timeoutId);
-      if (err.name === 'AbortError') {
-        throw new Error('Gemini API request timed out (15000ms)');
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody),
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          const errText = await response.text();
+          if ((response.status === 503 || response.status === 429) && attempt < retries) {
+            console.log(`[Gemini] Rate/Demand limit (${response.status}). Retrying attempt ${attempt + 1}/${retries} in 2.5s...`);
+            await new Promise(res => setTimeout(res, 2500 * attempt));
+            continue;
+          }
+          throw new Error(`Gemini API error: ${response.status} - ${errText}`);
+        }
+
+        const result = await response.json();
+        const responseText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!responseText) {
+          throw new Error('Gemini returned an empty response');
+        }
+
+        return JSON.parse(responseText);
+      } catch (err) {
+        clearTimeout(timeoutId);
+        if (attempt < retries && (err.name === 'AbortError' || err.message?.includes('503'))) {
+          console.log(`[Gemini] Network/Demand retry ${attempt + 1}/${retries}...`);
+          await new Promise(res => setTimeout(res, 2000 * attempt));
+          continue;
+        }
+        throw err;
       }
-      throw err;
-    }
-
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Gemini API error: ${response.status} - ${errText}`);
-    }
-
-    const result = await response.json();
-    const responseText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-    if (!responseText) {
-      throw new Error('Gemini returned an empty response');
-    }
-
-    try {
-      return JSON.parse(responseText);
-    } catch (e) {
-      throw new Error(`Failed to parse Gemini response as JSON: ${e.message}\nResponse: ${responseText}`);
     }
   }
 

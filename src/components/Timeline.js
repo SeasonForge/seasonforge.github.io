@@ -533,6 +533,10 @@ export function render(games = [], viewMode = 'all') {
   const endYear = endTimelineDate.getFullYear();
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
+  const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
+  const seasonsHref = cleanBase;
+  const eventsHref = `${cleanBase}events/`;
+
   const timelineChartHtml = `
     <div class="timeline-view-wrapper">
       <section class="timeline-card">
@@ -541,7 +545,23 @@ export function render(games = [], viewMode = 'all') {
             <h3 class="timeline-card__title">${t('timeline.title')}</h3>
             <p class="timeline-card__caption">${t('timeline.subtitle')}</p>
           </div>
-          <div class="timeline-card__year-badge">${yearBadgeText}</div>
+          
+          <div class="timeline-card__header-actions">
+            <!-- Seamless Integrated Switcher embedded right inside Card Header -->
+            <div class="timeline-integrated-switcher" role="tablist">
+              <a href="${seasonsHref}" class="timeline-switcher-tab active" id="tab-mode-seasons" data-mode="seasons" role="tab" aria-selected="true">
+                <span class="switcher-icon">${getIconSvg('gear-sun', { size: 15 })}</span>
+                <span class="switcher-text">${t('timeline.modeSeasons') || 'СЕЗОНЫ'}</span>
+              </a>
+              <a href="${eventsHref}" class="timeline-switcher-tab" id="tab-mode-events" data-mode="events" role="tab" aria-selected="false">
+                <span class="switcher-icon">${getIconSvg('layers', { size: 15 })}</span>
+                <span class="switcher-text">${t('timeline.modeEvents') || 'ИВЕНТЫ'}</span>
+              </a>
+              <div class="timeline-switcher-slider"></div>
+            </div>
+
+            <div class="timeline-card__year-badge">${yearBadgeText}</div>
+          </div>
         </div>
         
         <div class="timeline-map__scroll-container">

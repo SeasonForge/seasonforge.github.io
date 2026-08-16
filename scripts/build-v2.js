@@ -25,6 +25,9 @@ const modulePaths = [
   path.join(v2Dir, 'modals.css'),
   path.join(v2Dir, 'mobile-nav.css'),
   path.join(v2Dir, 'event-feed.css'),
+  path.join(v2Dir, 'events.css'),
+  path.join(srcDir, 'desktop/styles/events-desktop.css'),
+  path.join(srcDir, 'mobile/styles/events-mobile.css'),
 ];
 
 function buildV2() {

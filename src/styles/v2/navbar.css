@@ -182,6 +182,13 @@
   text-overflow: ellipsis;
 }
 
+.navbar__status-stack {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
 /* Status Badges */
 .navbar__status {
   padding: 0.15rem 0.45rem;

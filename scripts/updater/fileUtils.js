@@ -9,6 +9,19 @@ import fs from 'fs';
  */
 export function atomicWriteFileSync(filePath, content, encoding = 'utf-8') {
   const tmpPath = `${filePath}.${Date.now()}.${Math.random().toString(36).slice(2)}.tmp`;
-  fs.writeFileSync(tmpPath, content, encoding);
-  fs.renameSync(tmpPath, filePath);
+  try {
+    fs.writeFileSync(tmpPath, content, encoding);
+    try {
+      fs.renameSync(tmpPath, filePath);
+    } catch (renameErr) {
+      // On Windows EPERM/EBUSY, fallback to copyFileSync + unlink
+      fs.copyFileSync(tmpPath, filePath);
+      try {
+        fs.unlinkSync(tmpPath);
+      } catch {}
+    }
+  } catch (err) {
+    // If temp file creation failed, write directly
+    fs.writeFileSync(filePath, content, encoding);
+  }
 }

@@ -1,0 +1,138 @@
+{
+  "lastCheckedAt": "2026-08-15T16:12:00.000Z",
+  "events": [
+    {
+      "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
+      "gameId": "torchlight-infinite",
+      "type": "login",
+      "title_ru": "Сезон Afterlight: Награды за вход «Ночной дозор»",
+      "title_en": "Afterlight Season: The Night Watch Begins Login Event",
+      "startDate": "2026-07-16T00:00:00Z",
+      "endDate": null,
+      "description_ru": "Заходите в игру ежедневно для получения легендарного боевого пактспирита на выбор, призывов пактспиритов и эксклюзивных обликов оружия.",
+      "description_en": "Log in daily to claim a Legendary Battle Pactspirit Selection Pack, Battle Pactspirit draws, and Exclusive Weapon Appearances.",
+      "rewards": [
+        "Legendary Battle Pactspirit Selection Pack",
+        "Exclusive Weapon Appearances",
+        "Rare Season Drop Pactspirits"
+      ],
+      "sourceUrl": "https://store.steampowered.com/news/app/1974050/view/693139048964820952",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "diablo-4_collab_diablo-iv-x-overwatch-crossover",
+      "gameId": "diablo-4",
+      "type": "collab",
+      "title_ru": "Коллаборация Diablo IV × Overwatch",
+      "title_en": "Diablo IV × Overwatch Crossover",
+      "startDate": "2026-06-30T17:00:00Z",
+      "endDate": "2026-09-15T17:00:00Z",
+      "description_ru": "Уничтожайте элитных монстров ради валюты «Око Overwatch» и открывайте Реликварий Overwatch с легендарной косметикой и первой краской за игровой прогресс.",
+      "description_en": "Defeat Elite and Champion monsters for Eye of the Overwatch currency to unlock the Overwatch Reliquary featuring legendary crossover cosmetics and gameplay-earned dyes.",
+      "rewards": [
+        "Overwatch Reliquary Legendary Cosmetics",
+        "Exclusive Progress Dyes",
+        "Overwatch Weapon Skins"
+      ],
+      "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "path-of-exile_event_curse-of-the-allflame-fan-art-competition",
+      "gameId": "path-of-exile",
+      "type": "event",
+      "title_ru": "Конкурс фан-арта Curse of the Allflame",
+      "title_en": "Curse of the Allflame Fan Art Competition",
+      "startDate": "2026-08-09T23:56:51Z",
+      "endDate": "2026-09-03T05:00:00Z",
+      "description_ru": "Создайте фан-арт по мотивам обновлений Curse of the Allflame или Return of the Ancients для получения наборов доспехов, эффектов портала и сундуков.",
+      "description_en": "Create fan art inspired by Curse of the Allflame or Return of the Ancients expansions to win armour sets, portal effects, and mystery boxes.",
+      "rewards": [
+        "Choice of Armour Set",
+        "Choice of Portal Effect",
+        "Choice of Footprints Effect",
+        "Curse of the Allflame Mystery Box"
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "path-of-exile-2_event_return-of-the-ancients-fan-art-competition",
+      "gameId": "path-of-exile-2",
+      "type": "event",
+      "title_ru": "Конкурс фан-арта Return of the Ancients",
+      "title_en": "Return of the Ancients Fan Art Competition",
+      "startDate": "2026-08-09T23:56:51Z",
+      "endDate": "2026-09-03T05:00:00Z",
+      "description_ru": "Официальный конкурс фанатского творчества по мотивам дополнения Return of the Ancients с наборами брони и порталами в награду.",
+      "description_en": "Official community fan art competition inspired by Return of the Ancients expansion, awarding in-game cosmetics and merchandise.",
+      "rewards": [
+        "Choice of Armour Set",
+        "Choice of Portal Effect",
+        "Curse of the Allflame Mystery Box",
+        "Choice of Footprints Effect"
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-3",
+      "gameId": "path-of-exile-2",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №3",
+      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #3",
+      "startDate": "2026-08-20T21:00:00Z",
+      "endDate": "2026-08-21T03:00:00Z",
+      "description_ru": "Третий отборочный раунд Solo Self-Found гонки с фиксированной генерацией карт до убийства Тавакая в 4 Акте. Победитель получает поездку на финал ExileCon и шлем Demigod's Virtue.",
+      "description_en": "The third Solo Self-Found fixed-layout race qualifier to defeat Tavakai in Act 4. Winner receives a paid trip to the ExileCon live finale and the Demigod's Virtue helmet.",
+      "rewards": [
+        "Demigod's Virtue Unique Helmet",
+        "ExileCon Race Finale Ticket & Flights"
+      ],
+      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "torchlight-infinite_special_server_afterlight-hardcore-server-launch",
+      "gameId": "torchlight-infinite",
+      "type": "special_server",
+      "title_ru": "Открытие Afterlight Hardcore Server",
+      "title_en": "Afterlight Hardcore Server Launch",
+      "startDate": "2026-08-21T02:00:00Z",
+      "endDate": "2026-09-15T00:00:00Z",
+      "description_ru": "Специальный хардкорный сервер сезона Afterlight с перманентной смертью персонажей, эксклюзивными достижениями и обликами оружия.",
+      "description_en": "Dedicated hardcore seasonal server with permadeath mechanics, exclusive HC achievements, and exclusive weapon appearances.",
+      "rewards": [
+        "Exclusive HC Weapon Skin",
+        "Hero Relics",
+        "Microtransactions"
+      ],
+      "sourceUrl": "https://x.com/torchlight_xd/status/2087444905933348907",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4",
+      "gameId": "path-of-exile-2",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал)",
+      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #4 (Final)",
+      "startDate": "2026-08-27T21:00:00Z",
+      "endDate": "2026-08-28T03:00:00Z",
+      "description_ru": "Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.",
+      "description_en": "The fourth and final Solo Self-Found qualifier race leading into the live championship at ExileCon.",
+      "rewards": [
+        "Demigod's Virtue Unique Helmet",
+        "ExileCon Race Finale Ticket & Flights"
+      ],
+      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
+      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "upcoming"
+    }
+  ]
+}

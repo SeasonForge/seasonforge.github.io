@@ -16,6 +16,8 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
+import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.2';
+import { renderEventDetailContent } from './desktop/components/EventsTimelineDesktop.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
 import { Modal } from './components/Modal.js';
@@ -45,6 +47,8 @@ let countdownTimer = null;
 let toastTimer = null;
 let modalInstance = null;
 let toastInstance = null;
+let timelineMode = 'seasons';
+let eventsData = [];
 
 function updateSeo() {
   setMetaTags({
@@ -172,9 +176,12 @@ function renderApp() {
     mobMoreBtn.classList.toggle('mobile-nav__btn--active', state.activeView === 'more');
   }
 
+  const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+  const basePath = isEventsPage ? '../' : './';
+
   // Update navbar
   if (navbarRoot) {
-    navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView);
+    navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView, basePath);
   }
 
   renderModal();
@@ -191,6 +198,12 @@ function renderApp() {
   }
 
   const updateTimes = state.games.map(g => new Date(g.status?.updatedAt).getTime()).filter(ts => !Number.isNaN(ts));
+  if (Array.isArray(state.rawData?.changelog)) {
+    state.rawData.changelog.forEach(c => {
+      const ts = new Date(c.timestamp).getTime();
+      if (!Number.isNaN(ts)) updateTimes.push(ts);
+    });
+  }
   const latestTime = updateTimes.length > 0 ? Math.max(...updateTimes) : null;
   const timeEl = document.getElementById('last-updated-time');
   const updatedLbl = document.getElementById('lbl-last-updated');
@@ -220,7 +233,7 @@ function renderApp() {
       headerMeta.dataset.changelogBound = 'true';
       headerMeta.style.cursor = 'pointer';
       headerMeta.addEventListener('click', () => {
-        window.location.href = './changelog/';
+        window.location.href = `${basePath}changelog/`;
       });
     }
   }
@@ -231,7 +244,7 @@ function renderApp() {
   if (contentRoot) {
     if (state.activeView === 'card') {
       if (isMobile) {
-        contentRoot.innerHTML = renderTimeline(state.games, 'home');
+        contentRoot.innerHTML = renderTimeline(state.games, 'home', basePath);
       } else {
         let activeGame = state.activeGame;
         if (!activeGame && state.games.length > 0) {
@@ -257,10 +270,14 @@ function renderApp() {
         contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
       }
     } else if (state.activeView === 'timeline') {
-      if (isMobile) {
-        contentRoot.innerHTML = renderTimeline(state.games, 'timeline');
+      if (timelineMode === 'events') {
+        contentRoot.innerHTML = renderEventsTimeline(eventsData, state.games, { lang: state.settings?.lang, basePath });
       } else {
-        contentRoot.innerHTML = renderTimeline(state.games, 'all');
+        if (isMobile) {
+          contentRoot.innerHTML = renderTimeline(state.games, 'timeline', basePath);
+        } else {
+          contentRoot.innerHTML = renderTimeline(state.games, 'all', basePath);
+        }
       }
     } else if (state.activeView === 'games') {
       const catalogCards = state.games.map(game => {
@@ -270,7 +287,7 @@ function renderApp() {
         const statusCode = game.status?.code || 'active';
         const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
         const color = escapeHtml(game.color || '#6366f1');
-        const icon = escapeHtml(game.icon || '🎮');
+        const icon = escapeHtml(game.icon || 'skull');
         const logo = game.logo ? escapeHtml(game.logo) : '';
         
         const iconHtml = logo 
@@ -317,6 +334,8 @@ function renderApp() {
   
   if (state.activeView === 'timeline' || state.activeView === 'card') {
     attachTimelineTooltipEvents();
+    attachEventsDetailDrawer();
+    requestAnimationFrame(() => initSwitcherSlider());
   }
   checkForecastViewed();
   initAnalyticsSourceDelegate();
@@ -607,6 +626,90 @@ function attachTimelineTooltipEvents() {
   }, { signal });
 }
 
+let selectedEventId = null;
+let eventsDrawerAbortController = null;
+
+function attachEventsDetailDrawer() {
+  const container = document.querySelector('.events-dashboard-desktop');
+  const drawer = document.getElementById('events-detail-drawer');
+  const drawerContent = document.getElementById('events-detail-drawer-content');
+
+  if (!container || !drawer || !drawerContent) return;
+
+  if (eventsDrawerAbortController) {
+    eventsDrawerAbortController.abort();
+  }
+  eventsDrawerAbortController = new AbortController();
+  const { signal } = eventsDrawerAbortController;
+
+  const closeDrawer = () => {
+    selectedEventId = null;
+    drawer.classList.remove('is-open');
+    drawer.setAttribute('aria-hidden', 'true');
+    container.querySelectorAll('.events-timeline__bar.is-selected').forEach(bar => {
+      bar.classList.remove('is-selected');
+    });
+  };
+
+  const openEvent = (eventId) => {
+    const event = eventsData.find(e => e.id === eventId);
+    if (!event) return;
+
+    selectedEventId = eventId;
+    const state = getState();
+    const lang = state.settings?.lang || 'en';
+    const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+    const basePath = isEventsPage ? '../' : './';
+
+    drawerContent.innerHTML = renderEventDetailContent(event, { lang, basePath });
+    drawer.classList.add('is-open');
+    drawer.setAttribute('aria-hidden', 'false');
+
+    container.querySelectorAll('.events-timeline__bar').forEach(bar => {
+      if (bar.dataset.eventId === eventId) {
+        bar.classList.add('is-selected');
+      } else {
+        bar.classList.remove('is-selected');
+      }
+    });
+  };
+
+  // Click on event bars in the timeline grid or close button
+  container.addEventListener('click', (e) => {
+    const bar = e.target.closest('.events-timeline__bar[data-event-id]');
+    if (bar) {
+      const eventId = bar.dataset.eventId;
+      if (selectedEventId === eventId) {
+        // Re-clicking same event toggles it closed
+        closeDrawer();
+      } else {
+        openEvent(eventId);
+      }
+      return;
+    }
+
+    // Close button click
+    if (e.target.closest('#events-detail-drawer-close')) {
+      closeDrawer();
+    }
+  }, { signal });
+
+  // Click outside drawer to close
+  document.addEventListener('click', (e) => {
+    if (!drawer.classList.contains('is-open')) return;
+    if (drawer.contains(e.target)) return;
+    if (e.target.closest('.events-timeline__bar')) return;
+    closeDrawer();
+  }, { signal });
+
+  // Escape key closes drawer
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    }
+  }, { signal });
+}
+
 function attachNavbarEvents() {
   const navbarRoot = document.getElementById('navbar');
 
@@ -759,22 +862,184 @@ function tickCountdown() {
       if (!targetDateStr) return;
 
       const targetDate = new Date(targetDateStr);
-      const total = targetDate.getTime() - Date.now();
-      
-      if (total <= 0) return;
+      const now = new Date();
+      if (targetDate <= now) {
+        if (!expiredUpcomingCountdowns.has(game.id)) {
+          expiredUpcomingCountdowns.add(game.id);
+          renderApp();
+        }
+        return;
+      }
 
       const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
-      const update = (attr, val) => {
-        const safeAttr = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(attr) : attr;
-        const el = document.querySelector(`[data-game-countdown="${safeGameId}"] [data-countdown="${safeAttr}"]`);
-        if (el) el.textContent = val;
-      };
-      update('days',    Math.floor(total / (1000 * 60 * 60 * 24)));
-      update('hours',   Math.floor((total / (1000 * 60 * 60)) % 24));
-      update('minutes', Math.floor((total / (1000 * 60)) % 60));
-      update('seconds', Math.floor((total / 1000) % 60));
+      const upcomingEls = document.querySelectorAll(`.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown`);
+      upcomingEls.forEach(el => {
+        updateCountdownDOM(el, calculateCountdown(targetDateStr));
+      });
     });
+
+    // 3. Update Urgent Event Card Countdowns (if visible)
+    const urgentCountdowns = document.querySelectorAll('.urgent-event-card__countdown[data-countdown-target]');
+    if (urgentCountdowns.length > 0) {
+      const now = Date.now();
+      urgentCountdowns.forEach(el => {
+        const target = Number(el.getAttribute('data-countdown-target'));
+        if (!target) return;
+        const diffMs = Math.max(0, target - now);
+        const totalSecs = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+
+        const daysEl = el.querySelector('[data-countdown="days"]');
+        const hoursEl = el.querySelector('[data-countdown="hours"]');
+        const minsEl = el.querySelector('[data-countdown="minutes"]');
+
+        if (daysEl) daysEl.textContent = days;
+        if (hoursEl) hoursEl.textContent = hours;
+        if (minsEl) minsEl.textContent = mins;
+      });
+    }
+
+    // 4. Update Event Detail Drawer Countdown (if open and has active target)
+    const drawerCountdown = document.querySelector('.events-detail-status-row[data-countdown-target], .events-detail-countdown[data-countdown-target]');
+    if (drawerCountdown) {
+      const target = Number(drawerCountdown.getAttribute('data-countdown-target'));
+      const displayEl = drawerCountdown.querySelector('[data-countdown-display]');
+      if (target && displayEl) {
+        const now = Date.now();
+        const diffMs = Math.max(0, target - now);
+        const totalSecs = Math.floor(diffMs / 1000);
+        const days = Math.floor(totalSecs / 86400);
+        const hours = Math.floor((totalSecs % 86400) / 3600);
+        const mins = Math.floor((totalSecs % 3600) / 60);
+
+        const isEn = (getState().settings?.lang || 'en') === 'en';
+        let formatted = '';
+        if (days > 0) {
+          formatted = isEn ? `${days}d ${hours}h ${mins}m` : `${days}д ${hours}ч ${mins}м`;
+        } else if (hours > 0) {
+          formatted = isEn ? `${hours}h ${mins}m` : `${hours}ч ${mins}м`;
+        } else {
+          formatted = isEn ? `${mins}m` : `${mins}м`;
+        }
+
+        const currentText = displayEl.textContent.trim();
+        let prefix = '';
+        if (currentText.startsWith('Starts in')) prefix = 'Starts in ';
+        else if (currentText.startsWith('Ends soon in')) prefix = 'Ends soon in ';
+        else if (currentText.startsWith('Ends in')) prefix = 'Ends in ';
+        else if (currentText.startsWith('Начнётся через')) prefix = 'Начнётся через ';
+        else if (currentText.startsWith('Скоро завершится через')) prefix = 'Скоро завершится через ';
+        else if (currentText.startsWith('Завершится через')) prefix = 'Завершится через ';
+
+        displayEl.textContent = `${prefix}${formatted}`;
+      }
+    }
   }
+}
+
+export function initSwitcherSlider() {
+  if (typeof document === 'undefined') return;
+  const switchers = document.querySelectorAll('.timeline-integrated-switcher');
+  switchers.forEach(switcher => {
+    const slider = switcher.querySelector('.timeline-switcher-slider');
+    const activeTab = switcher.querySelector('.timeline-switcher-tab.active');
+    if (!slider || !activeTab) return;
+
+    const left = activeTab.offsetLeft;
+    const width = activeTab.offsetWidth;
+
+    slider.style.width = `${width}px`;
+    slider.style.transform = `translate3d(${left - 3}px, 0, 0)`;
+
+    if (activeTab.dataset.mode === 'events') {
+      slider.classList.add('is-events');
+    } else {
+      slider.classList.remove('is-events');
+    }
+  });
+}
+
+let isSwitchingTimelineMode = false;
+
+function switchTimelineMode(targetMode) {
+  if (timelineMode === targetMode || isSwitchingTimelineMode) return;
+  isSwitchingTimelineMode = true;
+
+  const currentSwitcher = document.querySelector('.timeline-integrated-switcher');
+  const targetTab = document.getElementById(`tab-mode-${targetMode}`);
+  const currentTab = document.getElementById(`tab-mode-${timelineMode}`);
+  const container = document.querySelector('.timeline-view-wrapper, .events-dashboard-container');
+
+  if (currentSwitcher && targetTab) {
+    const slider = currentSwitcher.querySelector('.timeline-switcher-slider');
+    if (slider) {
+      const left = targetTab.offsetLeft;
+      const width = targetTab.offsetWidth;
+      slider.style.width = `${width}px`;
+      slider.style.transform = `translate3d(${left - 3}px, 0, 0)`;
+      if (targetMode === 'events') {
+        slider.classList.add('is-events');
+      } else {
+        slider.classList.remove('is-events');
+      }
+    }
+    if (currentTab) {
+      currentTab.classList.remove('active');
+      currentTab.setAttribute('aria-selected', 'false');
+    }
+    targetTab.classList.add('active');
+    targetTab.setAttribute('aria-selected', 'true');
+  }
+
+  setTimeout(() => {
+    timelineMode = targetMode;
+    if (targetMode === 'events') {
+      if (!window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'events' }, '', './events/');
+      }
+    } else {
+      if (window.location.pathname.includes('/events')) {
+        window.history.pushState({ mode: 'seasons' }, '', '../');
+      }
+    }
+    renderApp();
+    isSwitchingTimelineMode = false;
+  }, 120);
+}
+
+// Global click handler for mode switcher (SEASONS <-> EVENTS)
+if (typeof document !== 'undefined') {
+  document.addEventListener('click', (e) => {
+    const tabSeasons = e.target.closest('#tab-mode-seasons');
+    if (tabSeasons) {
+      e.preventDefault();
+      switchTimelineMode('seasons');
+      return;
+    }
+
+    const tabEvents = e.target.closest('#tab-mode-events');
+    if (tabEvents) {
+      e.preventDefault();
+      switchTimelineMode('events');
+      return;
+    }
+  });
+
+  window.addEventListener('popstate', () => {
+    if (window.location.pathname.includes('/events')) {
+      timelineMode = 'events';
+      setActiveView('timeline', false);
+    } else {
+      timelineMode = 'seasons';
+    }
+    renderApp();
+  });
+
+  window.addEventListener('resize', () => {
+    initSwitcherSlider();
+  });
 }
 
 function startCountdownLoop() {
@@ -785,6 +1050,23 @@ function startCountdownLoop() {
 
 async function initializeApp() {
   setError(null);
+
+  const isEventsPage = typeof window !== 'undefined' && (
+    window.location.pathname.includes('/events') || 
+    window.location.search.includes('tab=events') || 
+    window.location.hash === '#events'
+  );
+  if (isEventsPage) {
+    timelineMode = 'events';
+  }
+
+  const embeddedEventsScript = typeof document !== 'undefined' && document.getElementById('sf-events-json');
+  if (embeddedEventsScript) {
+    try {
+      const parsed = JSON.parse(embeddedEventsScript.textContent);
+      if (Array.isArray(parsed)) eventsData = parsed;
+    } catch (e) {}
+  }
 
   // 1. Immediately hydrate synchronously from fallback data for 0ms instantaneous render
   const initialGames = FALLBACK_SEASONS_DATA?.games || [];
@@ -814,9 +1096,12 @@ async function initializeApp() {
       const isFirstVisit = !lastVisit;
       const isLongTimeNoSee = lastVisit && (now - parseInt(lastVisit, 10) > 30 * 24 * 60 * 60 * 1000);
       const isDesktop = typeof window !== 'undefined' && window.matchMedia('(min-width: 1025px)').matches;
-      const defaultView = isDesktop ? 'timeline' : 'card';
+      const defaultView = isDesktop || isEventsPage ? 'timeline' : 'card';
 
-      if (isFirstVisit) {
+      if (isEventsPage) {
+        setActiveView('timeline', false);
+        setActiveGame(games[0] ?? null, false);
+      } else if (isFirstVisit) {
         setActiveView(defaultView, false);
         setActiveGame(games[0] ?? null, false);
       } else if (isLongTimeNoSee) {
@@ -857,7 +1142,7 @@ async function initializeApp() {
     }
 
     ModalManager.initAll();
-    MobileNav.init({ basePath: './' });
+    MobileNav.init({ basePath: isEventsPage ? '../' : './' });
     Header.update({ lang: getState().settings?.lang });
 
     initHeroParallax();
@@ -866,6 +1151,19 @@ async function initializeApp() {
     startCountdownLoop();
 
     // 2. Fetch fresh network data asynchronously in background (0ms latency!)
+    const eventsDataUrl = isEventsPage ? '../data/events.json' : './data/events.json';
+    fetch(eventsDataUrl)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.events) {
+          eventsData = data.events;
+          if (timelineMode === 'events') {
+            renderApp();
+          }
+        }
+      })
+      .catch(() => {});
+
     seasonService.loadSeasons().then(rawData => {
       if (rawData?.games) {
         setRawData(rawData);

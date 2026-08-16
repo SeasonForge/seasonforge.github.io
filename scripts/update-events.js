@@ -121,6 +121,13 @@ async function updateEvents() {
     events: sortedEvents
   };
 
+  const isDryRun = process.argv.includes('--dry-run');
+
+  if (isDryRun) {
+    console.log(`\n[Events Updater] DRY RUN MODE: Extracted ${sortedEvents.length} events. Skipping file write.`);
+    return;
+  }
+
   atomicWriteFileSync(eventsFilePath, JSON.stringify(outputData, null, 2));
 
   const activeCount = sortedEvents.filter(e => e.status === 'active').length;

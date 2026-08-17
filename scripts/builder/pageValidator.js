@@ -44,6 +44,10 @@ export function validatePages(BASE_URL, games, generatedSeasonUrls, rootDir) {
 
     const content = fs.readFileSync(filePath, 'utf-8');
 
+    if (/<{7}|>{7}|={7}/.test(content)) {
+      errors.push(`[CONFLICT_MARKER] ${relName} contains unresolved git merge conflict markers.`);
+    }
+
     if (!/<title>(.*?)<\/title>/i.test(content)) {
       errors.push(`[NO_TITLE] ${relName} missing <title> tag.`);
     }

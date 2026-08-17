@@ -67,7 +67,13 @@ async function build() {
     process.exit(1);
   }
 
-  const database = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
+  let seasonsRaw = fs.readFileSync(seasonsPath, 'utf-8');
+  if (/<{7}[^\n]*\n/.test(seasonsRaw)) {
+    seasonsRaw = seasonsRaw.replace(/<{7}[^\n]*\n([\s\S]*?)={7}[^\n]*\n([\s\S]*?)>{7}[^\n]*\n/g, '$1');
+    fs.writeFileSync(seasonsPath, seasonsRaw, 'utf-8');
+  }
+
+  const database = JSON.parse(seasonsRaw);
   const games = database.games || [];
   let template = fs.readFileSync(templatePath, 'utf-8');
 
@@ -105,6 +111,10 @@ async function build() {
   const rootIndexHtmlPath = path.join(__dirname, '../index.html');
   if (fs.existsSync(rootIndexHtmlPath)) {
     let indexContent = fs.readFileSync(rootIndexHtmlPath, 'utf-8');
+    
+    // Clean any git conflict markers around last-checked/updated items if present
+    indexContent = indexContent.replace(/<{7}[^\n]*\n([\s\S]*?)={7}[^\n]*\n([\s\S]*?)>{7}[^\n]*\n/g, '$1');
+
     indexContent = indexContent
       .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
       .replace(/<strong id="last-updated-time">[\s\S]*?<\/strong>/g, `<strong id="last-updated-time">${lastUpdatedFormatted}</strong>`);

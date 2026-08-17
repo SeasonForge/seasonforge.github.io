@@ -19,41 +19,43 @@ export class Header {
     const state = getState();
     const activeLang = lang || state.settings?.lang || 'en';
 
+    const isEn = activeLang === 'en';
+
     // Subtitle
     const subtitleEl = document.getElementById('app-header-subtitle');
     if (subtitleEl) {
-      subtitleEl.textContent = t('header.subtitle');
+      subtitleEl.textContent = isEn
+        ? 'Monitoring current and upcoming seasons of major action RPGs'
+        : 'Мониторинг текущих и будущих сезонов главных ARPG';
     }
 
     // Status Labels
     const lblChecked = document.getElementById('lbl-status-check');
     if (lblChecked) {
       const dotHtml = '<span class="status-dot"></span>';
-      lblChecked.innerHTML = `${dotHtml} ${t('header.statusCheck')}`;
+      lblChecked.innerHTML = `${dotHtml} ${isEn ? 'Checked' : 'Проверено'}`;
     }
 
     const lblUpdated = document.getElementById('lbl-last-updated');
     if (lblUpdated) {
-      lblUpdated.textContent = t('header.lastUpdated');
+      lblUpdated.textContent = isEn ? 'Updated' : 'Обновлено';
     }
 
     // Tool Buttons
     const lblMobileApp = document.getElementById('lbl-mobile-app-btn');
     if (lblMobileApp) {
-      lblMobileApp.textContent = t('mobileApp.headerBtn');
+      lblMobileApp.textContent = isEn ? 'App' : 'Приложение';
     }
 
     const lblFeedback = document.getElementById('lbl-feedback-btn');
     if (lblFeedback) {
-      lblFeedback.textContent = t('feedback.btnLabel');
+      lblFeedback.textContent = isEn ? 'Feedback' : 'Отзывы';
     }
 
     const lblStreamer = document.getElementById('lbl-streamer-btn');
     if (lblStreamer) {
-      lblStreamer.textContent = t('streamer.btnLabel');
+      lblStreamer.textContent = isEn ? 'OBS Widget' : 'Виджет OBS';
     }
-
-    const isEn = activeLang === 'en';
 
     const lblWebWidget = document.getElementById('lbl-web-widget-btn');
     if (lblWebWidget) {
@@ -63,6 +65,11 @@ export class Header {
     const lblEvents = document.getElementById('lbl-events-btn');
     if (lblEvents) {
       lblEvents.textContent = isEn ? 'Events & Drops' : 'События и Drops';
+    }
+
+    const lblDonate = document.getElementById('lbl-donate-btn');
+    if (lblDonate) {
+      lblDonate.textContent = isEn ? 'Support' : 'Поддержать';
     }
 
     // Timestamps (fallback to state.rawData / state.games if not explicitly passed)

@@ -145,7 +145,28 @@ export const en = {
   footer: {
     copy: "© 2026 SeasonForge. ARPG Season Tracker.",
     changelog: "Changelog",
-    privacy: "Privacy Policy"
+    privacy: "Privacy Policy",
+    donate: "Support Project"
+  },
+  donate: {
+    headerBtn: "Support",
+    title: "Support SeasonForge",
+    subtitle: "SeasonForge is a free project. You can support development via the services below.",
+    donatikTitle: "Donatik",
+    donatikDesc: "International payments & crypto",
+    cardsTitle: "Bank Cards",
+    cardsDesc: "Russian bank cards & SBP",
+    btnPay: "Proceed to payment",
+    backLink: "← Back to Tracker",
+    badges: {
+      visaMastercard: "Visa / Mastercard",
+      applePay: "Apple Pay",
+      googlePay: "Google Pay",
+      crypto: "Crypto / USDT",
+      mir: "MIR",
+      sbp: "SBP",
+      rfCards: "Russian bank cards"
+    }
   },
   seo: {
     title: "SeasonForge - ARPG Season Tracker",

@@ -28,6 +28,7 @@ const modulePaths = [
   path.join(v2Dir, 'events.css'),
   path.join(srcDir, 'desktop/styles/events-desktop.css'),
   path.join(srcDir, 'mobile/styles/events-mobile.css'),
+  path.join(v2Dir, 'donate.css'),
 ];
 
 function buildV2() {

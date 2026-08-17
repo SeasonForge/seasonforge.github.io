@@ -141,7 +141,28 @@ export const ru = {
   footer: {
     copy: "© 2026 SeasonForge. Трекер сезонов ARPG.",
     changelog: "История обновлений",
-    privacy: "Политика конфиденциальности"
+    privacy: "Политика конфиденциальности",
+    donate: "Поддержать проект"
+  },
+  donate: {
+    headerBtn: "Поддержать",
+    title: "Поддержать SeasonForge",
+    subtitle: "SeasonForge — бесплатный проект. Поддержать разработку можно через сервисы ниже.",
+    donatikTitle: "Donatik",
+    donatikDesc: "Международные платежи и криптовалюта",
+    cardsTitle: "Банковские карты",
+    cardsDesc: "Карты банков РФ и СБП",
+    btnPay: "Переход к оплате",
+    backLink: "← На главную",
+    badges: {
+      visaMastercard: "Visa / Mastercard",
+      applePay: "Apple Pay",
+      googlePay: "Google Pay",
+      crypto: "Crypto / USDT",
+      mir: "МИР",
+      sbp: "СБП",
+      rfCards: "Карты банков РФ"
+    }
   },
   seo: {
     title: "SeasonForge - Мониторинг ARPG Сезонов",

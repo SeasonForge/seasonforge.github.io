@@ -12,7 +12,9 @@ export function validatePages(BASE_URL, games, generatedSeasonUrls, rootDir) {
   const pagesToValidate = [
     path.join(rootDir, 'index.html'),
     path.join(rootDir, 'events/index.html'),
-    path.join(rootDir, 'changelog/index.html')
+    path.join(rootDir, 'changelog/index.html'),
+    path.join(rootDir, 'donate/index.html'),
+    path.join(rootDir, 'privacy/index.html')
   ];
 
   for (const game of games) {

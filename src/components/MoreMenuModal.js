@@ -52,10 +52,18 @@ export class MoreMenuModal {
               <span class="more-menu-item__label">${t('navbar.btnTimeline')}</span>
             </div>
             <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
+          </a>
           <a href="${cleanBase}events/" class="more-menu-item">
             <div class="more-menu-item__left">
               <span class="more-menu-item__icon">${getIconSvg('gift', { size: 18 })}</span>
               <span class="more-menu-item__label">${t('navbar.btnEvents') || 'Events & Drops'}</span>
+            </div>
+            <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
+          </a>
+          <a href="${cleanBase}donate/" class="more-menu-item">
+            <div class="more-menu-item__left">
+              <span class="more-menu-item__icon">${getIconSvg('heart', { size: 18 })}</span>
+              <span class="more-menu-item__label">${t('donate.headerBtn') || 'Поддержать'}</span>
             </div>
             <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>

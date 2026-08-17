@@ -152,6 +152,11 @@ function renderApp() {
     mobileAppBtn.textContent = t('mobileApp.headerBtn');
   }
 
+  const donateBtn = document.getElementById('lbl-donate-btn');
+  if (donateBtn) {
+    donateBtn.textContent = state.settings?.lang === 'ru' ? 'Поддержать' : 'Support';
+  }
+
   const mobLblTracker = document.getElementById('mob-lbl-tracker');
   if (mobLblTracker) mobLblTracker.textContent = t('navbar.btnCard');
 
@@ -218,10 +223,12 @@ function renderApp() {
   const footerCopy = document.getElementById('lbl-footer-copy');
   const footerChangelog = document.getElementById('lbl-footer-changelog');
   const footerPrivacy = document.getElementById('lbl-footer-privacy');
+  const footerDonate = document.getElementById('lbl-footer-donate');
 
   if (footerCopy) footerCopy.textContent = t('footer.copy') || '© 2026 SeasonForge.';
   if (footerChangelog) footerChangelog.textContent = t('footer.changelog') || 'Changelog';
   if (footerPrivacy) footerPrivacy.textContent = t('footer.privacy') || 'Privacy Policy';
+  if (footerDonate) footerDonate.textContent = t('footer.donate') || 'Поддержать';
 
   // Attach click listener for header meta date to navigate to ./changelog/ with custom glassmorphic tooltip
   const headerMeta = document.querySelector('.app-header__meta');

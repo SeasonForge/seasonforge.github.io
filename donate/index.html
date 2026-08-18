@@ -104,16 +104,16 @@
 
           <!-- Payment Methods Grid (2 cols desktop, 1 col mobile) -->
           <div class="donate-grid">
-            <!-- Card 1: Donatik -->
+            <!-- Card 1: Donatik (Международные карты / Apple Pay / Google Pay) -->
             <div class="donate-card">
               <div>
                 <div class="donate-card__header">
                   <div class="donate-card__icon-box">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                   </div>
                   <div class="donate-card__info">
                     <h2 class="donate-card__name" id="lbl-donatik-name">Donatik</h2>
-                    <p class="donate-card__desc" id="lbl-donatik-desc">Международные платежи и криптовалюта</p>
+                    <p class="donate-card__desc" id="lbl-donatik-desc">Международные карты, Apple Pay, Google Pay</p>
                   </div>
                 </div>
 
@@ -122,7 +122,6 @@
                   <span class="donate-badge" id="badge-donatik-cards">Visa / Mastercard</span>
                   <span class="donate-badge" id="badge-donatik-apple">Apple Pay</span>
                   <span class="donate-badge" id="badge-donatik-google">Google Pay</span>
-                  <span class="donate-badge" id="badge-donatik-crypto">Crypto / USDT</span>
                 </div>
               </div>
 
@@ -134,29 +133,30 @@
               </a>
             </div>
 
-            <!-- Card 2: Банковские карты -->
+            <!-- Card 2: Криптовалюта (Plisio) -->
             <div class="donate-card">
               <div>
                 <div class="donate-card__header">
                   <div class="donate-card__icon-box">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2m0 8v2"/></svg>
                   </div>
                   <div class="donate-card__info">
-                    <h2 class="donate-card__name" id="lbl-cards-name">Банковские карты</h2>
-                    <p class="donate-card__desc" id="lbl-cards-desc">Карты банков РФ и СБП</p>
+                    <h2 class="donate-card__name" id="lbl-crypto-name">Криптовалюта</h2>
+                    <p class="donate-card__desc" id="lbl-crypto-desc">USDT, TON, Solana, BNB, LTC, TRX</p>
                   </div>
                 </div>
 
                 <!-- Badges -->
                 <div class="donate-card__badges" style="margin-top: 1rem;">
-                  <span class="donate-badge" id="badge-cards-mir">МИР</span>
-                  <span class="donate-badge" id="badge-cards-sbp">СБП</span>
-                  <span class="donate-badge" id="badge-cards-rf">Карты банков РФ</span>
+                  <span class="donate-badge" id="badge-crypto-usdt">USDT (TRC20 / BEP20 / TON)</span>
+                  <span class="donate-badge" id="badge-crypto-ton">Toncoin (TON)</span>
+                  <span class="donate-badge" id="badge-crypto-sol">Solana (SOL)</span>
+                  <span class="donate-badge" id="badge-crypto-more">BNB / TRX / LTC / DOGE</span>
                 </div>
               </div>
 
-              <a href="https://yoomoney.ru/to/4100115636363174" target="_blank" rel="noopener noreferrer" class="donate-card__btn" id="btn-cards">
-                <span id="lbl-cards-btn-text">Переход к оплате</span>
+              <a href="https://plisio.net/donate/DA_TwEDL" target="_blank" rel="noopener noreferrer" class="donate-card__btn" id="btn-crypto">
+                <span id="lbl-crypto-btn-text">Переход к оплате</span>
                 <span class="donate-card__btn-icon">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 </span>
@@ -188,13 +188,10 @@
         const donateSubheading = document.getElementById('donate-subheading');
         const donatikName = document.getElementById('lbl-donatik-name');
         const donatikDesc = document.getElementById('lbl-donatik-desc');
-        const cardsName = document.getElementById('lbl-cards-name');
-        const cardsDesc = document.getElementById('lbl-cards-desc');
+        const cryptoName = document.getElementById('lbl-crypto-name');
+        const cryptoDesc = document.getElementById('lbl-crypto-desc');
         const donatikBtnText = document.getElementById('lbl-donatik-btn-text');
-        const cardsBtnText = document.getElementById('lbl-cards-btn-text');
-        const badgeCardsMir = document.getElementById('badge-cards-mir');
-        const badgeCardsSbp = document.getElementById('badge-cards-sbp');
-        const badgeCardsRf = document.getElementById('badge-cards-rf');
+        const cryptoBtnText = document.getElementById('lbl-crypto-btn-text');
         const footerHome = document.getElementById('lbl-footer-home');
         const footerEvents = document.getElementById('lbl-footer-events');
         const footerChangelog = document.getElementById('lbl-footer-changelog');
@@ -216,14 +213,11 @@
             if (donateHeading) donateHeading.textContent = 'Support SeasonForge';
             if (donateSubheading) donateSubheading.textContent = 'SeasonForge is a free project. You can support development via the services below.';
             if (donatikName) donatikName.textContent = 'Donatik';
-            if (donatikDesc) donatikDesc.textContent = 'International payments & crypto';
-            if (cardsName) cardsName.textContent = 'Bank Cards';
-            if (cardsDesc) cardsDesc.textContent = 'Russian bank cards & SBP';
-            if (badgeCardsMir) badgeCardsMir.textContent = 'MIR';
-            if (badgeCardsSbp) badgeCardsSbp.textContent = 'SBP';
-            if (badgeCardsRf) badgeCardsRf.textContent = 'Russian bank cards';
+            if (donatikDesc) donatikDesc.textContent = 'International cards, Apple Pay, Google Pay';
+            if (cryptoName) cryptoName.textContent = 'Cryptocurrency';
+            if (cryptoDesc) cryptoDesc.textContent = 'USDT, TON, Solana, BNB, LTC, TRX';
             if (donatikBtnText) donatikBtnText.textContent = 'Proceed to payment';
-            if (cardsBtnText) cardsBtnText.textContent = 'Proceed to payment';
+            if (cryptoBtnText) cryptoBtnText.textContent = 'Proceed to payment';
             if (footerHome) footerHome.textContent = 'Home';
             if (footerEvents) footerEvents.textContent = 'Events & Drops';
             if (footerChangelog) footerChangelog.textContent = 'Changelog';
@@ -240,14 +234,11 @@
             if (donateHeading) donateHeading.textContent = 'Поддержать SeasonForge';
             if (donateSubheading) donateSubheading.textContent = 'SeasonForge — бесплатный проект. Поддержать разработку можно через сервисы ниже.';
             if (donatikName) donatikName.textContent = 'Donatik';
-            if (donatikDesc) donatikDesc.textContent = 'Международные платежи и криптовалюта';
-            if (cardsName) cardsName.textContent = 'Банковские карты';
-            if (cardsDesc) cardsDesc.textContent = 'Карты банков РФ и СБП';
-            if (badgeCardsMir) badgeCardsMir.textContent = 'МИР';
-            if (badgeCardsSbp) badgeCardsSbp.textContent = 'СБП';
-            if (badgeCardsRf) badgeCardsRf.textContent = 'Карты банков РФ';
+            if (donatikDesc) donatikDesc.textContent = 'Международные карты, Apple Pay, Google Pay';
+            if (cryptoName) cryptoName.textContent = 'Криптовалюта';
+            if (cryptoDesc) cryptoDesc.textContent = 'USDT, TON, Solana, BNB, LTC, TRX';
             if (donatikBtnText) donatikBtnText.textContent = 'Переход к оплате';
-            if (cardsBtnText) cardsBtnText.textContent = 'Переход к оплате';
+            if (cryptoBtnText) cryptoBtnText.textContent = 'Переход к оплате';
             if (footerHome) footerHome.textContent = 'Главная';
             if (footerEvents) footerEvents.textContent = 'События и Drops';
             if (footerChangelog) footerChangelog.textContent = 'История обновлений';

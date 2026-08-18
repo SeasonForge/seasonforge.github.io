@@ -153,19 +153,19 @@ export const en = {
     title: "Support SeasonForge",
     subtitle: "SeasonForge is a free project. You can support development via the services below.",
     donatikTitle: "Donatik",
-    donatikDesc: "International payments & crypto",
-    cardsTitle: "Bank Cards",
-    cardsDesc: "Russian bank cards & SBP",
+    donatikDesc: "International cards, Apple Pay, Google Pay",
+    cryptoTitle: "Cryptocurrency",
+    cryptoDesc: "USDT, TON, Solana, BNB, LTC, TRX",
     btnPay: "Proceed to payment",
     backLink: "← Back to Tracker",
     badges: {
       visaMastercard: "Visa / Mastercard",
       applePay: "Apple Pay",
       googlePay: "Google Pay",
-      crypto: "Crypto / USDT",
-      mir: "MIR",
-      sbp: "SBP",
-      rfCards: "Russian bank cards"
+      usdt: "USDT (TRC20 / BEP20 / TON)",
+      ton: "Toncoin (TON)",
+      sol: "Solana (SOL)",
+      moreCoins: "BNB / TRX / LTC / DOGE"
     }
   },
   seo: {

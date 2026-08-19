@@ -342,7 +342,7 @@ async function build() {
                   ${mechanicsListEn.length > 0 ? `
                     <div style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
                       <h2 id="lbl-mechanics-heading" style="font-size: 1.15rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>⚔️</span> <span id="lbl-mechanics-title">Key Mechanics &amp; Features</span>
+                        <span style="display: inline-flex; align-items: center; color: #818cf8;">${getIconSvg('swords', { size: 16 })}</span> <span id="lbl-mechanics-title">Key Mechanics &amp; Features</span>
                       </h2>
                       <ul id="mechanics-list" style="padding-left: 1.25rem; margin: 0;">${mechanicsLis}</ul>
                     </div>
@@ -350,7 +350,7 @@ async function build() {
                   ${rewardsListEn.length > 0 ? `
                     <div style="background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 1rem; padding: 1.5rem;">
                       <h2 id="lbl-rewards-heading" style="font-size: 1.15rem; font-weight: 700; color: #ffffff; margin-top: 0; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-                        <span>🏆</span> <span id="lbl-rewards-title">Challenge Rewards</span>
+                        <span style="display: inline-flex; align-items: center; color: #fbbf24;">${getIconSvg('trophy', { size: 16 })}</span> <span id="lbl-rewards-title">Challenge Rewards</span>
                       </h2>
                       <ul id="rewards-list" style="padding-left: 1.25rem; margin: 0;">${rewardsLis}</ul>
                     </div>

@@ -31,7 +31,7 @@ export const GAME_META = {
     accentBg: 'rgba(139, 92, 246, 0.15)',
     borderColor: 'rgba(139, 92, 246, 0.4)'
   },
-  'diablo-4': {
+  'diablo-iv': {
     name: 'Diablo IV',
     shortName: 'Diablo IV',
     icon: 'flame',
@@ -75,6 +75,7 @@ export function cleanSourceUrl(url, gameId) {
     const defaultHubs = {
       'path-of-exile': 'https://www.pathofexile.com/forum',
       'path-of-exile-2': 'https://www.pathofexile.com/forum',
+      'diablo-iv': 'https://news.blizzard.com/en-us/diablo4',
       'diablo-4': 'https://news.blizzard.com/en-us/diablo4',
       'last-epoch': 'https://forum.lastepoch.com',
       'torchlight-infinite': 'https://torchlight.xd.com'

@@ -418,7 +418,7 @@ export function render(games = [], viewMode = 'all') {
       const statusCode = calculateDynamicStatus(game);
       const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
       const logo = game.logo ? escapeHtml(game.logo) : '';
-      const icon = escapeHtml(game.icon || '🎮');
+      const icon = escapeHtml(game.icon || 'gamepad');
 
       const iconHtml = logo 
         ? `<img src="./assets/logos/${logo}" alt="${gameName}" class="unified-card__logo" />`

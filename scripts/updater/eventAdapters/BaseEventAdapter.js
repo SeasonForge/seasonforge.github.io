@@ -20,7 +20,7 @@ export function cleanSourceUrl(url, gameId) {
     const defaultHubs = {
       'path-of-exile': 'https://www.pathofexile.com/forum',
       'path-of-exile-2': 'https://www.pathofexile.com/forum',
-      'diablo-4': 'https://news.blizzard.com/en-us/diablo4',
+      'diablo-iv': 'https://news.blizzard.com/en-us/diablo4',
       'last-epoch': 'https://forum.lastepoch.com',
       'torchlight-infinite': 'https://torchlight.xd.com'
     };
@@ -92,7 +92,7 @@ export const EVENT_SCHEMA = {
           },
           gameId: {
             type: 'STRING',
-            description: 'Target game ID (e.g. "path-of-exile", "path-of-exile-2", "diablo-4", "last-epoch", "torchlight-infinite")'
+            description: 'Target game ID (e.g. "path-of-exile", "path-of-exile-2", "diablo-iv", "last-epoch", "torchlight-infinite")'
           },
           sourceUrl: { type: 'STRING', description: 'Official link to article/announcement' }
         },
@@ -237,7 +237,10 @@ OTHER RULES:
         updatedAt: nowIso
       };
 
-      eventMap.set(detId, merged);
+      if (matchedKey && matchedKey !== finalId) {
+        eventMap.delete(matchedKey);
+      }
+      eventMap.set(finalId, merged);
     }
 
     return Array.from(eventMap.values());

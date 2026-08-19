@@ -39,7 +39,7 @@ export function render(games = [], activeGame = null, activeView = 'card', baseP
       let statusCode = id === newestGameId ? 'newest' : calculateDynamicStatus(game);
       const statusLabel = escapeHtml(t(`statuses.${statusCode}`) || game.status?.label || 'Active');
       const color = escapeHtml(game.color || '#6366f1');
-      const icon = escapeHtml(game.icon || '🎮');
+      const icon = escapeHtml(game.icon || 'gamepad');
       const logo = game.logo ? escapeHtml(game.logo) : '';
       
       let ptrBadge = '';

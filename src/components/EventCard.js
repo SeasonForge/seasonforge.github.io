@@ -22,7 +22,7 @@ const TYPE_LABELS = {
 const GAME_NAMES = {
   'path-of-exile': 'PoE 1',
   'path-of-exile-2': 'PoE 2',
-  'diablo-4': 'Diablo IV',
+  'diablo-iv': 'Diablo IV',
   'last-epoch': 'Last Epoch',
   'torchlight-infinite': 'Torchlight'
 };

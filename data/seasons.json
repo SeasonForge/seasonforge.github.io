@@ -1,6 +1,16 @@
 {
-  "lastCheckedAt": "2026-08-18T14:22:59.296Z",
+  "lastCheckedAt": "2026-08-19T08:16:24.040Z",
   "changelog": [
+    {
+      "timestamp": "2026-08-18T21:55:12.000Z",
+      "gameId": "path-of-exile",
+      "url": "https://www.pathofexile.com/forum/view-thread/3998062",
+      "type": "article",
+      "text": {
+        "en": "Path of Exile 1: New article published — \"Path of Exile 1 Build Showcase: Spinning Magma Saboteur\"",
+        "ru": "Path of Exile 1: Опубликована новость — «Path of Exile 1 Build Showcase: Spinning Magma Saboteur»"
+      }
+    },
     {
       "timestamp": "2026-08-16T13:50:00.000Z",
       "gameId": "path-of-exile-2",
@@ -175,10 +185,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/3994393",
-        "title": "Path of Exile: Curse of the Allflame Interview with Zizaran",
-        "url": "https://www.pathofexile.com/forum/view-thread/3994393",
-        "publishDate": "2026-08-06T10:17:25.334Z",
+        "id": "https://www.pathofexile.com/forum/view-thread/3998062",
+        "title": "Path of Exile 1 Build Showcase: Spinning Magma Saboteur",
+        "url": "https://www.pathofexile.com/forum/view-thread/3998062",
+        "publishDate": "2026-08-18T21:55:12.000Z",
         "source": "Path of Exile RSS"
       },
       "status": {

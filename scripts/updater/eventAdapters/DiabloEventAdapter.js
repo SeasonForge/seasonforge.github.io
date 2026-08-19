@@ -2,7 +2,7 @@ import { BaseEventAdapter, EVENT_SCHEMA } from './BaseEventAdapter.js';
 
 export class DiabloEventAdapter extends BaseEventAdapter {
   constructor() {
-    super('diablo-4');
+    super('diablo-iv');
   }
 
   async fetchAndExtract(existingGameEvents = []) {

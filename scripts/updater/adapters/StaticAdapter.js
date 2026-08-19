@@ -16,7 +16,7 @@ export class StaticAdapter extends BaseAdapter {
       developer: staticData.developer || 'Unknown',
       logo: staticData.logo || '',
       color: staticData.color || '#4b5563',
-      icon: staticData.icon || gameConfig.icon || '🎮',
+      icon: staticData.icon || gameConfig.icon || 'gamepad',
       website: staticData.website || '#',
       latestNews: {
         id: 'static-config',

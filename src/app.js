@@ -323,7 +323,7 @@ function renderApp() {
 
       contentRoot.innerHTML = `
         <div class="games-catalog">
-          <h2 class="games-catalog__title">🎮 ${t('navbar.btnGames') || 'Games'}</h2>
+          <h2 class="games-catalog__title"><span style="display: inline-flex; vertical-align: -2px; margin-right: 6px;">${getIconSvg('gamepad', { size: 20 })}</span>${t('navbar.btnGames') || 'Games'}</h2>
           <div class="games-catalog__grid">${catalogCards}</div>
         </div>
       `;
@@ -350,6 +350,7 @@ function renderApp() {
 
 let timelineAbortController = null;
 const expiredGameCountdowns = new Set();
+const expiredUpcomingCountdowns = new Set();
 const trackedForecastGames = new Set();
 
 function checkForecastViewed() {
@@ -427,9 +428,9 @@ function getTimelineTooltipContent(gameId, seasonType) {
       <div class="timeline-tooltip__season" style="color: #a7f3d0; font-size: 0.82rem;">${gameName}</div>
       <div class="timeline-tooltip__detail" style="margin-top: 0.35rem;"><strong>${lang === 'ru' ? 'Старт тестов' : 'PTR Start'}:</strong> ${startStr}</div>
       <div class="timeline-tooltip__detail"><strong>${lang === 'ru' ? 'Завершение' : 'PTR End'}:</strong> ${endStr}</div>
-      <div class="timeline-tooltip__detail" style="color: #94a3b8; font-size: 0.75rem; margin-top: 0.2rem;">🎮 <strong>${lang === 'ru' ? 'Платформы' : 'Platforms'}:</strong> ${platforms}</div>
-      <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.15); font-style: italic;">
-        ℹ️ ${note}
+      <div class="timeline-tooltip__detail" style="color: #94a3b8; font-size: 0.75rem; margin-top: 0.2rem; display: flex; align-items: center; gap: 4px;">${getIconSvg('gamepad', { size: 13 })} <span><strong>${lang === 'ru' ? 'Платформы' : 'Platforms'}:</strong> ${platforms}</span></div>
+      <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.15); font-style: italic; display: flex; align-items: flex-start; gap: 4px;">
+        <span style="flex-shrink: 0; margin-top: 1px;">${getIconSvg('info', { size: 12 })}</span> <span>${note}</span>
       </div>
     `;
   }
@@ -489,8 +490,8 @@ function getTimelineTooltipContent(gameId, seasonType) {
       const headerText = lang === 'ru' ? 'ОБОСНОВАНИЕ ПРОГНОЗА:' : 'FORECAST RATIONALE:';
       verificationNoteHtml = `
         <div style="margin-top: 0.5rem; padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.15); font-size: 0.74rem; color: #cbd5e1; line-height: 1.35;">
-          <div style="font-size: 0.68rem; font-weight: 700; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display); margin-bottom: 0.25rem;">
-            💡 ${headerText}
+          <div style="font-size: 0.68rem; font-weight: 700; color: #fbbf24; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--font-display); margin-bottom: 0.25rem; display: flex; align-items: center; gap: 4px;">
+            ${getIconSvg('lightbulb', { size: 13 })} <span>${headerText}</span>
           </div>
           ${escaped}
         </div>

@@ -625,6 +625,17 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
       const oldSeasons = JSON.parse(fs.readFileSync(seasonsPath, 'utf-8'));
       existingChangelog = Array.isArray(oldSeasons.changelog) ? oldSeasons.changelog : [];
       
+      const formatEventDate = (dateStr, locale = 'en') => {
+        if (!dateStr) return 'TBA';
+        const d = new Date(dateStr);
+        if (Number.isNaN(d.getTime())) return dateStr;
+        return d.toLocaleDateString(locale === 'ru' ? 'ru-RU' : 'en-US', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      };
+
       if (Array.isArray(oldSeasons.games)) {
         finalGames.forEach(newG => {
           const oldG = oldSeasons.games.find(g => g.id === newG.id);
@@ -633,39 +644,86 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           const gNameEn = newG.name?.en || newG.id;
           const gNameRu = newG.name?.ru || gNameEn;
 
-          const oldNewsId = oldG.latestNews?.id;
-          const newNewsId = newG.latestNews?.id;
-          const newsTitle = newG.latestNews?.title || '';
-
           const oldCur = oldG.currentSeason?.name?.en;
           const newCur = newG.currentSeason?.name?.en;
-          const oldNext = oldG.nextSeason?.startDate;
-          const newNext = newG.nextSeason?.startDate;
+          const newCurRu = newG.currentSeason?.name?.ru || newCur;
 
-          if (oldNewsId && newNewsId && oldNewsId !== newNewsId && newsTitle) {
-            detectedDiffs.push({
-              gameId: newG.id,
-              url: newG.latestNews?.url || newG.currentSeason?.sourceUrl || newG.website,
-              type: 'article',
-              en: `${gNameEn}: New article published — "${newsTitle}"`,
-              ru: `${gNameRu}: Опубликована новость — «${newsTitle}»`
-            });
-          } else if (oldCur !== newCur && newCur) {
+          const oldNextName = oldG.nextSeason?.name?.en;
+          const newNextName = newG.nextSeason?.name?.en;
+          const newNextNameRu = newG.nextSeason?.name?.ru || newNextName;
+
+          const oldNextDate = oldG.nextSeason?.startDate;
+          const newNextDate = newG.nextSeason?.startDate;
+
+          const oldStatusCode = oldG.status?.code;
+          const newStatusCode = newG.status?.code;
+
+          // 1. Season Launch (Active season changed)
+          if (oldCur !== newCur && newCur && newCur !== 'TBA') {
             detectedDiffs.push({
               gameId: newG.id,
               url: newG.currentSeason?.sourceUrl || newG.website,
               type: 'launch',
-              en: `${gNameEn}: Current season updated — ${newG.currentSeason?.name?.en || 'TBA'}`,
-              ru: `${gNameRu}: Текущий сезон обновлён — ${newG.currentSeason?.name?.ru || 'TBA'}`
+              en: `${gNameEn}: New season launched — "${newCur}"!`,
+              ru: `${gNameRu}: Стартовал новый сезон — «${newCurRu}»!`
             });
-          } else if (oldNext !== newNext && newNext) {
+          }
+          // 2. Next Season Start Date announced or changed
+          else if (oldNextDate !== newNextDate && newNextDate && newNextDate !== 'TBA') {
+            const dateEn = formatEventDate(newNextDate, 'en');
+            const dateRu = formatEventDate(newNextDate, 'ru');
+            const seasonLabelEn = newNextName && newNextName !== 'TBA' ? ` (${newNextName})` : '';
+            const seasonLabelRu = newNextNameRu && newNextNameRu !== 'TBA' ? ` (${newNextNameRu})` : '';
             detectedDiffs.push({
               gameId: newG.id,
               url: newG.nextSeason?.sourceUrl || newG.website,
               type: 'announcement',
-              en: `${gNameEn}: Next season start date announced (${newG.nextSeason?.name?.en || 'TBA'})`,
-              ru: `${gNameRu}: Анонсирована дата старта следующего сезона (${newG.nextSeason?.name?.ru || 'TBA'})`
+              en: `${gNameEn}: Next season start date announced — ${dateEn}${seasonLabelEn}`,
+              ru: `${gNameRu}: Анонсирована дата старта следующего сезона — ${dateRu}${seasonLabelRu}`
             });
+          }
+          // 3. Next Season theme / name announced (even if date is TBA)
+          else if (oldNextName !== newNextName && newNextName && newNextName !== 'TBA') {
+            detectedDiffs.push({
+              gameId: newG.id,
+              url: newG.nextSeason?.sourceUrl || newG.website,
+              type: 'announcement',
+              en: `${gNameEn}: Next season announced — "${newNextName}"`,
+              ru: `${gNameRu}: Анонсирован следующий сезон — «${newNextNameRu}»`
+            });
+          }
+          // 4. Season status changed (e.g. active -> ending)
+          else if (oldStatusCode !== newStatusCode && (newStatusCode === 'ending' || oldStatusCode === 'ending')) {
+            const statusLabelEn = newG.status?.label?.en || newStatusCode;
+            const statusLabelRu = newG.status?.label?.ru || newStatusCode;
+            detectedDiffs.push({
+              gameId: newG.id,
+              url: newG.currentSeason?.sourceUrl || newG.website,
+              type: 'status',
+              en: `${gNameEn}: Season "${newCur || 'Current'}" is now ${statusLabelEn}`,
+              ru: `${gNameRu}: Сезон «${newCurRu || 'Текущий'}» перешёл в статус: ${statusLabelRu}`
+            });
+          }
+
+          // 5. New or updated Events with dates (Streams, PTR, Twitch Drops, Contests)
+          const oldEvents = Array.isArray(oldG.events) ? oldG.events : [];
+          const newEvents = Array.isArray(newG.events) ? newG.events : [];
+          for (const newEv of newEvents) {
+            if (!newEv.startDate) continue;
+            const exists = oldEvents.some(ex => ex.id === newEv.id || (ex.type === newEv.type && ex.startDate === newEv.startDate));
+            if (!exists) {
+              const evTitleEn = newEv.title?.en || newEv.title || 'Event';
+              const evTitleRu = newEv.title?.ru || evTitleEn;
+              const dateEn = formatEventDate(newEv.startDate, 'en');
+              const dateRu = formatEventDate(newEv.startDate, 'ru');
+              detectedDiffs.push({
+                gameId: newG.id,
+                url: newEv.sourceUrl || newG.currentSeason?.sourceUrl || newG.website,
+                type: 'event',
+                en: `${gNameEn}: Scheduled event — "${evTitleEn}" (${dateEn})`,
+                ru: `${gNameRu}: Анонсировано событие — «${evTitleRu}» (${dateRu})`
+              });
+            }
           }
         });
       }

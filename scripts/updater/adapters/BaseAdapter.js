@@ -67,19 +67,25 @@ export class BaseAdapter {
     const desc = (item.description || item.properties?.summary || '').toLowerCase();
     const text = `${title} ${desc}`;
 
-    // Noise: typos, duplicate posts, shop/mystery box microtransactions, fan art/cosplay competitions
-    if (/mystery box|supporter pack|microtransaction|store|shop sale|typo|translation fix|fan art|fanart|competition|cosplay/i.test(text)) {
+    // Noise: store sales, microtransactions, supporter packs, build showcases/guides without dates, typos
+    if (/mystery box|supporter pack|microtransaction|store|shop sale|typo|translation fix/i.test(text)) {
       return 'noise';
     }
 
-    // Minor: minor bug fixes, small hotfixes, ui fixes, visual tweaks
+    // Build spotlights and player guides (non-timeline content)
+    if (/build showcase|build guide|build of the week|character spotlight/i.test(text) &&
+        !/announc|season|league|cycle|expansion|livestream|stream|twitch drops|ptr|event|contest/i.test(text)) {
+      return 'noise';
+    }
+
+    // Minor: minor bug fixes, small hotfixes, ui fixes, visual tweaks without timeline info
     if (/hotfix|bug fix|technical issue|improvements|maintenance|server restart/i.test(text) && 
-        !/expansion|league|season|cycle|gamescom|exilecon|blizzcon|campfire/i.test(text)) {
+        !/expansion|league|season|cycle|gamescom|exilecon|blizzcon|campfire|stream|live|launch/i.test(text)) {
       return 'minor';
     }
 
-    // Critical: major conventions, releases, EA, stream reveals, roadmap, acts
-    const criticalKeywords = ['gamescom', 'exilecon', 'blizzcon', 'summer game fest', 'opening night live', 'early access', 'release date', 'launch date', 'roadmap', 'act reveal', 'ggg live', 'campfire chat', 'showcase'];
+    // Critical: major conventions, releases, launch dates, streams & live reveals, roadmaps
+    const criticalKeywords = ['gamescom', 'exilecon', 'blizzcon', 'summer game fest', 'opening night live', 'early access', 'release date', 'launch date', 'roadmap', 'act reveal', 'ggg live', 'campfire chat', 'showcase livestream', 'developer update'];
     if (criticalKeywords.some(kw => text.includes(kw))) {
       return 'critical';
     }
@@ -90,8 +96,8 @@ export class BaseAdapter {
       return 'major';
     }
 
-    // Important: patch notes, PTR, balance changes, economy overhauls
-    const importantKeywords = ['patch notes', 'ptr', 'public test', 'beta', 'balance changes', 'developer interview', 'qol', 'twitch drops', ...extraKeywords.map(k => k.toLowerCase())];
+    // Important: patch notes, PTR, balance changes, community events/competitions, Twitch Drops
+    const importantKeywords = ['patch notes', 'ptr', 'public test', 'beta', 'balance changes', 'developer interview', 'qol', 'twitch drops', 'competition', 'contest', 'race event', 'anniversary', ...extraKeywords.map(k => k.toLowerCase())];
     if (importantKeywords.some(kw => text.includes(kw))) {
       return 'important';
     }

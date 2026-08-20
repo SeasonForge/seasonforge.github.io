@@ -86,8 +86,14 @@
 
 .events-dashboard-desktop .urgent-events-grid-desktop {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 1100px) {
+  .events-dashboard-desktop .urgent-events-grid-desktop {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* Events Timeline Vertical NOW Line (Exact Match to Seasons) */
@@ -523,9 +529,3 @@
   box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
 }
 
-@media (min-width: 1400px) {
-  .events-dashboard-desktop .urgent-events-grid-desktop {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
-  }
-}

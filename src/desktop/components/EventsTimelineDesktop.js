@@ -54,6 +54,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
       countInMonth = 1;
       monthSpans.push({
         label: d.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { month: 'short', year: 'numeric' }).toUpperCase(),
+        shortLabel: d.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { month: 'short' }).toUpperCase(),
         count: 1
       });
     } else {
@@ -66,7 +67,8 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
   const monthsHeaderHtml = monthSpans.map(m => {
     const widthPct = (m.count / days.length) * 100;
-    return `<div class="events-timeline__month-label" style="width: ${widthPct}%;">${escapeHtml(m.label)}</div>`;
+    const displayLabel = widthPct < 12 ? m.shortLabel : m.label;
+    return `<div class="events-timeline__month-label" style="width: ${widthPct}%;">${escapeHtml(displayLabel)}</div>`;
   }).join('');
 
   const daysHeaderHtml = days.map((d) => {
@@ -75,8 +77,8 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     const isMajor = dayNum === 1 || dayNum % 5 === 0 || isToday;
 
     return `
-      <div class="events-timeline__day-cell ${isToday ? 'is-today' : ''} ${isMajor ? 'is-major' : ''}">
-        <span class="events-timeline__day-num">${dayNum}</span>
+      <div class="events-timeline__day-cell ${isToday ? 'is-today' : ''} ${isMajor ? 'is-major' : 'is-minor'}" title="${d.toLocaleDateString(isEn ? 'en-US' : 'ru-RU', { day: 'numeric', month: 'short' })}">
+        ${isMajor ? `<span class="events-timeline__day-num">${dayNum}</span>` : '<span class="events-timeline__day-tick"></span>'}
       </div>
     `;
   }).join('');
@@ -215,26 +217,23 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     `;
   }).join('\n');
 
-  // 4. Build Desktop Urgent Cards Grid (3 Columns)
+  // 4. Build Desktop Urgent Cards Grid (4 Columns, ordered by nearest urgency)
   const urgentEvents = [...localizedEventsList].filter(e => {
     if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId)) return false;
     if (!e.endDate) return false;
     const eEnd = new Date(e.endDate).getTime();
     return eEnd >= nowMs;
   }).sort((a, b) => {
-    const aEnd = a.endDate ? new Date(a.endDate).getTime() : Infinity;
-    const bEnd = b.endDate ? new Date(b.endDate).getTime() : Infinity;
     const aStart = new Date(a.startDate).getTime();
     const bStart = new Date(b.startDate).getTime();
+    const aEnd = a.endDate ? new Date(a.endDate).getTime() : Infinity;
+    const bEnd = b.endDate ? new Date(b.endDate).getTime() : Infinity;
 
-    const aIsLive = aStart <= nowMs && aEnd >= nowMs;
-    const bIsLive = bStart <= nowMs && bEnd >= nowMs;
+    const aTarget = (aStart <= nowMs && aEnd >= nowMs) ? aEnd : aStart;
+    const bTarget = (bStart <= nowMs && bEnd >= nowMs) ? bEnd : bStart;
 
-    if (aIsLive && !bIsLive) return -1;
-    if (!aIsLive && bIsLive) return 1;
-    if (aIsLive && bIsLive) return aEnd - bEnd;
-    return aStart - bStart;
-  }).slice(0, 9);
+    return aTarget - bTarget;
+  }).slice(0, 8);
 
   const urgentCardsHtml = urgentEvents.length > 0 ? urgentEvents.map(event => {
     const meta = GAME_META[event.gameId] || GAME_META['path-of-exile'];
@@ -350,7 +349,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
             </div>
 
             <!-- Vertical NOW Line -->
-            <div class="events-timeline__today-line" style="left: calc(165px + (100% - 165px) * ${nowPercent / 100});">
+            <div class="events-timeline__today-line" style="left: calc(185px + (100% - 185px) * ${nowPercent / 100});">
               <span class="events-timeline__today-badge">${isEn ? 'NOW' : 'СЕЙЧАС'}</span>
             </div>
 

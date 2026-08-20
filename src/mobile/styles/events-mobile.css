@@ -63,12 +63,6 @@
   padding: 0.85rem 1rem;
 }
 
-.events-dashboard-mobile .urgent-event-card__game-tag {
-  font-size: 0.7rem;
-  color: var(--text-muted, #94a3b8);
-  font-weight: 600;
-}
-
 .events-dashboard-mobile .timeline-wave-tab#tab-mode-seasons {
   left: 20px;
   font-size: 0.75rem;

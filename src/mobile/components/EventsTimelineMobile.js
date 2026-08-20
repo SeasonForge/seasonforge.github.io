@@ -202,25 +202,22 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     `;
   }).join('\n');
 
-  // Mobile Urgent Cards Grid (1 Column Touch Stack)
+  // Mobile Urgent Cards Grid (1 Column Touch Stack, ordered by nearest urgency)
   const urgentEvents = [...localizedEventsList].filter(e => {
     if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId)) return false;
     if (!e.endDate) return false;
     const eEnd = new Date(e.endDate).getTime();
     return eEnd >= nowMs;
   }).sort((a, b) => {
-    const aEnd = a.endDate ? new Date(a.endDate).getTime() : Infinity;
-    const bEnd = b.endDate ? new Date(b.endDate).getTime() : Infinity;
     const aStart = new Date(a.startDate).getTime();
     const bStart = new Date(b.startDate).getTime();
+    const aEnd = a.endDate ? new Date(a.endDate).getTime() : Infinity;
+    const bEnd = b.endDate ? new Date(b.endDate).getTime() : Infinity;
 
-    const aIsLive = aStart <= nowMs && aEnd >= nowMs;
-    const bIsLive = bStart <= nowMs && bEnd >= nowMs;
+    const aTarget = (aStart <= nowMs && aEnd >= nowMs) ? aEnd : aStart;
+    const bTarget = (bStart <= nowMs && bEnd >= nowMs) ? bEnd : bStart;
 
-    if (aIsLive && !bIsLive) return -1;
-    if (!aIsLive && bIsLive) return 1;
-    if (aIsLive && bIsLive) return aEnd - bEnd;
-    return aStart - bStart;
+    return aTarget - bTarget;
   }).slice(0, 8);
 
   const urgentCardsHtml = urgentEvents.length > 0 ? urgentEvents.map(event => {
@@ -257,9 +254,9 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
       <div class="urgent-event-card ${badgeClass} urgent-event-card-mobile" style="--card-game-color: ${meta.color};">
         <div class="urgent-event-card__header">
           <span class="urgent-event-card__badge ${badgeClass}">${escapeHtml(badgeText)}</span>
-          <span class="urgent-event-card__game-tag">${escapeHtml(gameName)}</span>
         </div>
         <h4 class="urgent-event-card__title">${escapeHtml(title)}</h4>
+        <div class="urgent-event-card__game">${escapeHtml(gameName)}</div>
 
         <div class="urgent-event-card__countdown" data-countdown-target="${targetTime}">
           <div class="urgent-countdown-item">

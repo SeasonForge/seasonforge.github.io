@@ -31,7 +31,7 @@
     <!-- Google Fonts Preconnect & Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Unbounded:wght@400;600;700;800&amp;display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
     <link rel="stylesheet" href="../../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
     <link rel="icon" href="../../assets/favicon.png" type="image/png" />
@@ -54,12 +54,13 @@
       <div class="hero-parallax__overlay"></div>
     </div>
     <header class="app-header">
+      <h1 class="sr-only">{{GAME_TITLE}}</h1>
       <a href="../../" class="app-header__logo-block" style="text-decoration: none; color: inherit;">
         <div class="app-header__icon" style="padding: 0; overflow: hidden; background: transparent; border: none;">
           <img src="../../assets/favicon.png" alt="SeasonForge Icon" style="width: 100%; height: 100%; object-fit: cover; border-radius: inherit;" />
         </div>
         <div>
-          <h1 class="app-header__title">SeasonForge</h1>
+          <div class="app-header__title">SeasonForge</div>
           <p class="app-header__subtitle" id="app-header-subtitle">Monitoring current and upcoming seasons of major action RPGs</p>
         </div>
       </a>

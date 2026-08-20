@@ -184,9 +184,10 @@ function renderApp() {
   const getBasePath = () => {
     if (typeof window === 'undefined') return './';
     const path = window.location.pathname;
-    if (path.includes('/games/') && path.split('/').filter(Boolean).length >= 3) return '../../../';
+    const isSeasonPage = typeof document !== 'undefined' && document.getElementById('game-page-root')?.classList.contains('season-page-root');
+    if (isSeasonPage) return '../../../';
     if (path.includes('/games/')) return '../../';
-    if (path.includes('/events') || path.includes('/changelog') || path.includes('/donate') || path.includes('/privacy')) return '../';
+    if (path.includes('/events') || path.includes('/changelog') || path.includes('/donate') || path.includes('/privacy') || path.includes('/widget')) return '../';
     return './';
   };
   const basePath = getBasePath();

@@ -331,55 +331,24 @@ export function render(games = [], viewMode = 'all') {
     `;
   }).join('\n');
 
-  // 5. Render Upcoming Cards (STRICTLY 1 Card Per Game, Earliest Milestone First)
+  // 5. Render Upcoming Cards (STRICTLY 1 Card Per Game, Next Season Launches)
   const upcomingCards = items
     .map(g => {
-      const milestones = [];
-      
-      if (g.events && Array.isArray(g.events)) {
-        g.events.forEach(ev => {
-          if (ev.startDate) {
-            const d = new Date(ev.startDate);
-            if (d.getTime() > Date.now()) {
-              milestones.push({
-                date: d,
-                startDateStr: ev.startDate,
-                name: getVal(ev.title),
-                type: ev.type || 'event'
-              });
-            }
-          }
-        });
-      }
-      
-      if (g.nextSeason?.startDate) {
-        const d = new Date(g.nextSeason.startDate);
-        if (d.getTime() > Date.now()) {
-          milestones.push({
-            date: d,
-            startDateStr: g.nextSeason.startDate,
-            name: getVal(g.nextSeason.name),
-            type: 'season'
-          });
-        }
-      }
-      
-      if (milestones.length === 0) return null;
+      if (!g.nextSeason?.startDate) return null;
+      const d = new Date(g.nextSeason.startDate);
+      if (d.getTime() <= Date.now()) return null;
 
-      milestones.sort((a, b) => a.date - b.date);
-      const earliest = milestones[0];
-      
-      let seasonSubtext = '';
-      if (earliest.type !== 'season' && g.nextSeason?.startDate) {
-        const nextSeasonName = escapeHtml(getVal(g.nextSeason.name) || 'TBA');
-        const nextSeasonFormatted = formatDate(g.nextSeason.startDate, lang);
-        seasonSubtext = `${nextSeasonName}: ${nextSeasonFormatted}`;
-      }
+      const earliest = {
+        date: d,
+        startDateStr: g.nextSeason.startDate,
+        name: getVal(g.nextSeason.name),
+        type: 'season'
+      };
 
       return {
         game: g,
         earliest,
-        seasonSubtext
+        seasonSubtext: ''
       };
     })
     .filter(Boolean)

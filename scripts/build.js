@@ -865,6 +865,14 @@ async function build() {
   }
 
   sitemapXml += `  <url>
+    <loc>${BASE_URL}/donate/</loc>
+    <lastmod>${todayStr}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+`;
+
+  sitemapXml += `  <url>
     <loc>${BASE_URL}/privacy/</loc>
     <lastmod>${todayStr}</lastmod>
     <changefreq>monthly</changefreq>

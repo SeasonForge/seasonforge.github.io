@@ -110,7 +110,7 @@ export function renderEventCard(event, { lang = 'en' } = {}) {
         ${rewards.map(r => `
           <span class="event-reward-chip">
             ${getIconSvg('gift', { size: 12 })}
-            ${escapeHtml(r)}
+            ${escapeHtml(typeof r === 'object' ? (r[lang] || r.en || r.ru) : r)}
           </span>
         `).join('')}
       </div>

@@ -841,62 +841,49 @@ function attachFooterEvents() {
 }
 
 /**
- * Updates only the countdown number elements in the DOM without a full re-render.
- * Falls back to a full renderApp() when the countdown expires (state change).
+ * Updates all visible countdowns regardless of view and selector.
  */
 function tickCountdown() {
   if (typeof document !== 'undefined' && !document.querySelector('[data-countdown]')) return;
   const state = getState();
-  
-  // 1. Update Game Card Countdowns
-  if (state.activeView === 'card') {
-    state.games.forEach((game) => {
-      const targetDateStr = game.nextSeason?.startDate;
-      if (!targetDateStr) return;
+  const games = state.games || [];
 
-      const targetDate = new Date(targetDateStr);
-      const now = new Date();
-      if (targetDate <= now) {
-        if (!expiredGameCountdowns.has(game.id)) {
-          expiredGameCountdowns.add(game.id);
-          renderApp();
-        }
-        return;
+  // 1. Update Game Cards & Upcoming Launch Cards
+  games.forEach((game) => {
+    const targetDateStr = game.nextSeason?.startDate;
+    if (!targetDateStr) return;
+
+    const targetDate = new Date(targetDateStr);
+    const now = new Date();
+    if (targetDate <= now) {
+      if (!expiredGameCountdowns.has(game.id) || !expiredUpcomingCountdowns.has(game.id)) {
+        expiredGameCountdowns.add(game.id);
+        expiredUpcomingCountdowns.add(game.id);
+        renderApp();
       }
-      
-      const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
-      const cardEls = document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
-      cardEls.forEach(cardEl => {
-        updateCountdownDOM(cardEl, calculateCountdown(targetDateStr));
-      });
-    });
-  }
+      return;
+    }
 
-  // 2. Update Timeline Upcoming Launches Countdowns (if visible)
-  if (state.activeView === 'timeline' || state.activeView === 'card') {
-    state.games.forEach((game) => {
-      const targetDateStr = game.nextSeason?.startDate;
-      if (!targetDateStr) return;
+    const countdownValues = calculateCountdown(targetDateStr);
+    const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
 
-      const targetDate = new Date(targetDateStr);
-      const now = new Date();
-      if (targetDate <= now) {
-        if (!expiredUpcomingCountdowns.has(game.id)) {
-          expiredUpcomingCountdowns.add(game.id);
-          renderApp();
-        }
-        return;
-      }
-
-      const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
-      const upcomingEls = document.querySelectorAll(`.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown`);
-      upcomingEls.forEach(el => {
-        updateCountdownDOM(el, calculateCountdown(targetDateStr));
-      });
+    // Update Game Cards (Desktop & Mobile)
+    const cardEls = document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
+    cardEls.forEach(cardEl => {
+      updateCountdownDOM(cardEl, countdownValues);
     });
 
-    // 3. Update Urgent Event Card Countdowns (if visible)
-    const urgentCountdowns = document.querySelectorAll('.urgent-event-card__countdown[data-countdown-target]');
+    // Update Upcoming Launches Cards (Desktop, Mobile, Home)
+    const upcomingEls = document.querySelectorAll(
+      `.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown, .upcoming-card[data-game-countdown="${safeGameId}"] .upcoming-card__countdown, [data-game-countdown="${safeGameId}"] .upcoming-card__countdown`
+    );
+    upcomingEls.forEach(el => {
+      updateCountdownDOM(el, countdownValues);
+    });
+  });
+
+  // 2. Update Urgent Event Card Countdowns (if visible)
+  const urgentCountdowns = document.querySelectorAll('.urgent-event-card__countdown[data-countdown-target]');
     if (urgentCountdowns.length > 0) {
       const now = Date.now();
       urgentCountdowns.forEach(el => {
@@ -953,7 +940,6 @@ function tickCountdown() {
         displayEl.textContent = `${prefix}${formatted}`;
       }
     }
-  }
 }
 
 export function initSwitcherSlider() {

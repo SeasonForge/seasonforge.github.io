@@ -402,7 +402,7 @@ export function render(games = [], viewMode = 'all') {
       if (viewMode === 'home') {
         const eyebrowLabel = lang === 'ru' ? 'До старта сезона' : 'Until season start';
         return `
-          <div class="upcoming-card unified-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color};" data-game-countdown="${game.id}">
+          <div class="upcoming-card unified-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color};" data-game-id="${game.id}" data-game-countdown="${game.id}">
             <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
             
             <!-- Top Section: Current Season & Status -->
@@ -462,7 +462,7 @@ export function render(games = [], viewMode = 'all') {
 
       // Default Compact Card for Desktop Timeline View
       return `
-        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-countdown="${game.id}">
+        <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-id="${game.id}" data-game-countdown="${game.id}">
           <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
           <div class="upcoming-card__date-wrapper">
             <span class="upcoming-card__date">${formattedDate}</span>

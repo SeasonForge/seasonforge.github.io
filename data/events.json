@@ -12,9 +12,18 @@
       "description_ru": "Заходите в игру ежедневно для получения легендарного боевого пактспирита на выбор, призывов пактспиритов и эксклюзивных обликов оружия.",
       "description_en": "Log in daily to claim a Legendary Battle Pactspirit Selection Pack, Battle Pactspirit draws, and Exclusive Weapon Appearances.",
       "rewards": [
-        "Legendary Battle Pactspirit Selection Pack",
-        "Exclusive Weapon Appearances",
-        "Rare Season Drop Pactspirits"
+        {
+          "ru": "Легендарный боевой пактспирит на выбор",
+          "en": "Legendary Battle Pactspirit Selection Pack"
+        },
+        {
+          "ru": "Эксклюзивные облики оружия",
+          "en": "Exclusive Weapon Appearances"
+        },
+        {
+          "ru": "Редкие сезонные пактспириты",
+          "en": "Rare Season Drop Pactspirits"
+        }
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/1974050/view/693139048964820952",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -31,9 +40,18 @@
       "description_ru": "Уничтожайте элитных монстров ради валюты «Око Overwatch» и открывайте Реликварий Overwatch с легендарной косметикой и первой краской за игровой прогресс.",
       "description_en": "Defeat Elite and Champion monsters for Eye of the Overwatch currency to unlock the Overwatch Reliquary featuring legendary crossover cosmetics and gameplay-earned dyes.",
       "rewards": [
-        "Overwatch Reliquary Legendary Cosmetics",
-        "Exclusive Progress Dyes",
-        "Overwatch Weapon Skins"
+        {
+          "ru": "Легендарная косметика Реликвария Overwatch",
+          "en": "Overwatch Reliquary Legendary Cosmetics"
+        },
+        {
+          "ru": "Эксклюзивные краски за прогресс",
+          "en": "Exclusive Progress Dyes"
+        },
+        {
+          "ru": "Облики оружия Overwatch",
+          "en": "Overwatch Weapon Skins"
+        }
       ],
       "sourceUrl": "https://news.blizzard.com/en-us/article/24268702/hunt-the-death-cult-in-season-of-death-awakening",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -50,10 +68,22 @@
       "description_ru": "Создайте фан-арт по мотивам обновлений Curse of the Allflame или Return of the Ancients для получения наборов доспехов, эффектов портала и сундуков.",
       "description_en": "Create fan art inspired by Curse of the Allflame or Return of the Ancients expansions to win armour sets, portal effects, and mystery boxes.",
       "rewards": [
-        "Choice of Armour Set",
-        "Choice of Portal Effect",
-        "Choice of Footprints Effect",
-        "Curse of the Allflame Mystery Box"
+        {
+          "ru": "Набор доспехов на выбор",
+          "en": "Choice of Armour Set"
+        },
+        {
+          "ru": "Эффект портала на выбор",
+          "en": "Choice of Portal Effect"
+        },
+        {
+          "ru": "Эффект следов на выбор",
+          "en": "Choice of Footprints Effect"
+        },
+        {
+          "ru": "Сундук Curse of the Allflame",
+          "en": "Curse of the Allflame Mystery Box"
+        }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -70,10 +100,22 @@
       "description_ru": "Официальный конкурс фанатского творчества по мотивам дополнения Return of the Ancients с наборами брони и порталами в награду.",
       "description_en": "Official community fan art competition inspired by Return of the Ancients expansion, awarding in-game cosmetics and merchandise.",
       "rewards": [
-        "Choice of Armour Set",
-        "Choice of Portal Effect",
-        "Curse of the Allflame Mystery Box",
-        "Choice of Footprints Effect"
+        {
+          "ru": "Набор доспехов на выбор",
+          "en": "Choice of Armour Set"
+        },
+        {
+          "ru": "Эффект портала на выбор",
+          "en": "Choice of Portal Effect"
+        },
+        {
+          "ru": "Сундук Curse of the Allflame",
+          "en": "Curse of the Allflame Mystery Box"
+        },
+        {
+          "ru": "Эффект следов на выбор",
+          "en": "Choice of Footprints Effect"
+        }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3995722",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -90,8 +132,14 @@
       "description_ru": "Третий отборочный раунд Solo Self-Found гонки с фиксированной генерацией карт до убийства Тавакая в 4 Акте. Победитель получает поездку на финал ExileCon и шлем Demigod's Virtue.",
       "description_en": "The third Solo Self-Found fixed-layout race qualifier to defeat Tavakai in Act 4. Winner receives a paid trip to the ExileCon live finale and the Demigod's Virtue helmet.",
       "rewards": [
-        "Demigod's Virtue Unique Helmet",
-        "ExileCon Race Finale Ticket & Flights"
+        {
+          "ru": "Уникальный шлем Demigod's Virtue",
+          "en": "Demigod's Virtue Unique Helmet"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -108,9 +156,18 @@
       "description_ru": "Специальный хардкорный сервер сезона Afterlight с перманентной смертью персонажей, эксклюзивными достижениями и обликами оружия.",
       "description_en": "Dedicated hardcore seasonal server with permadeath mechanics, exclusive HC achievements, and exclusive weapon appearances.",
       "rewards": [
-        "Exclusive HC Weapon Skin",
-        "Hero Relics",
-        "Microtransactions"
+        {
+          "ru": "Эксклюзивный хардкорный облик оружия",
+          "en": "Exclusive HC Weapon Skin"
+        },
+        {
+          "ru": "Реликвии героя",
+          "en": "Hero Relics"
+        },
+        {
+          "ru": "Микротранзакции",
+          "en": "Microtransactions"
+        }
       ],
       "sourceUrl": "https://x.com/torchlight_xd/status/2087444905933348907",
       "updatedAt": "2026-08-15T16:12:00.000Z",
@@ -127,11 +184,113 @@
       "description_ru": "Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.",
       "description_en": "The fourth and final Solo Self-Found qualifier race leading into the live championship at ExileCon.",
       "rewards": [
-        "Demigod's Virtue Unique Helmet",
-        "ExileCon Race Finale Ticket & Flights"
+        {
+          "ru": "Уникальный шлем Demigod's Virtue",
+          "en": "Demigod's Virtue Unique Helmet"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
       ],
       "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
       "updatedAt": "2026-08-15T16:12:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-1",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №1",
+      "title_en": "ExileCon 2026: PoE 1 Race Qualifier #1",
+      "startDate": "2026-09-04T21:00:00Z",
+      "endDate": "2026-09-05T03:00:00Z",
+      "description_ru": "Первый отборочный раунд Solo Self-Found гонки в Path of Exile 1 до убийства Китавы в 5 Акте. Победитель получает поездку на финал ExileCon и эксклюзивный доспех на выбор.",
+      "description_en": "First Solo Self-Found race qualifier in Path of Exile 1 to defeat Act 5 Kitava. Winner receives a paid trip to the ExileCon live finale and a choice of body armour MTX.",
+      "rewards": [
+        {
+          "ru": "Эксклюзивный доспех на выбор",
+          "en": "Choice of Exclusive Body Armour"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-2",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №2",
+      "title_en": "ExileCon 2026: PoE 1 Race Qualifier #2",
+      "startDate": "2026-09-11T21:00:00Z",
+      "endDate": "2026-09-12T03:00:00Z",
+      "description_ru": "Второй отборочный раунд Solo Self-Found гонки в Path of Exile 1 за слот в гранд-финале ExileCon и эксклюзивный доспех.",
+      "description_en": "Second Solo Self-Found race qualifier in Path of Exile 1 for a slot in the ExileCon live championship and body armour MTX.",
+      "rewards": [
+        {
+          "ru": "Эксклюзивный доспех на выбор",
+          "en": "Choice of Exclusive Body Armour"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-3",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №3",
+      "title_en": "ExileCon 2026: PoE 1 Race Qualifier #3",
+      "startDate": "2026-09-18T21:00:00Z",
+      "endDate": "2026-09-19T03:00:00Z",
+      "description_ru": "Третий отборочный раунд Solo Self-Found гонки в Path of Exile 1. Победитель отправляется на гранд-финал ExileCon.",
+      "description_en": "Third Solo Self-Found race qualifier in Path of Exile 1. Winner qualifies for the ExileCon live stage grand finale.",
+      "rewards": [
+        {
+          "ru": "Эксклюзивный доспех на выбор",
+          "en": "Choice of Exclusive Body Armour"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-4",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №4 (Финал)",
+      "title_en": "ExileCon 2026: PoE 1 Race Qualifier #4 (Final)",
+      "startDate": "2026-09-25T21:00:00Z",
+      "endDate": "2026-09-26T03:00:00Z",
+      "description_ru": "Четвертый финальный отборочный раунд гонки по Path of Exile 1 перед гранд-финалом на главной сцене ExileCon.",
+      "description_en": "The fourth and final Solo Self-Found qualifier race for Path of Exile 1 leading into the ExileCon main stage finale.",
+      "rewards": [
+        {
+          "ru": "Эксклюзивный доспех на выбор",
+          "en": "Choice of Exclusive Body Armour"
+        },
+        {
+          "ru": "Билет и перелет на финал ExileCon",
+          "en": "ExileCon Race Finale Ticket & Flights"
+        }
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "updatedAt": "2026-08-20T20:20:00.000Z",
       "status": "upcoming"
     },
     {

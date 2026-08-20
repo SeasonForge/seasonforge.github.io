@@ -1,26 +1,6 @@
 {
-  "lastCheckedAt": "2026-08-15T16:12:00.000Z",
+  "lastCheckedAt": "2026-08-20T09:25:00.000Z",
   "events": [
-    {
-      "id": "last-epoch_stream_ve4hblu_cycle-prep",
-      "gameId": "last-epoch",
-      "type": "stream",
-      "title_ru": "Подготовка к новому циклу с Ve4Hblu",
-      "title_en": "Cycle Preparation Stream with Ve4Hblu",
-      "startDate": "2026-09-25T15:00:00Z",
-      "endDate": "2026-09-25T21:00:00Z",
-      "description_ru": "Большой стрим стримера Ve4Hblu: детальный разбор стартовых билдов к новому циклу Last Epoch, прокачка, выбор фракции (CoF vs MG) и ответы на вопросы сообщества.",
-      "description_en": "Community stream with Ve4Hblu: starter build guides, leveling tips, and cycle strategy discussion.",
-      "rewards": [
-        "Разбор стартовых билдов и фильтров лута",
-        "Гайд по прокачке и крафтовым механикам",
-        "Розыгрыши и интерактив со зрителями"
-      ],
-      "sourceUrl": "https://www.twitch.tv/ve4hblu",
-      "locales": ["ru"],
-      "updatedAt": "2026-08-19T14:25:00.000Z",
-      "status": "active"
-    },
     {
       "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
       "gameId": "torchlight-infinite",

@@ -658,8 +658,10 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           const oldStatusCode = oldG.status?.code;
           const newStatusCode = newG.status?.code;
 
-          // 1. Season Launch (Active season changed)
-          if (oldCur !== newCur && newCur && newCur !== 'TBA') {
+          // 1. Season Launch (Active season changed, strictly within ±3 days window of launch)
+          const newCurStartDate = newG.currentSeason?.startDate;
+          const isRecentlyLaunched = newCurStartDate && Math.abs(Date.now() - new Date(newCurStartDate).getTime()) < 3 * 86400000;
+          if (oldCur !== newCur && newCur && newCur !== 'TBA' && isRecentlyLaunched) {
             detectedDiffs.push({
               gameId: newG.id,
               url: newG.currentSeason?.sourceUrl || newG.website,
@@ -670,6 +672,7 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           }
           // 2. Next Season Start Date announced or changed
           else if (oldNextDate !== newNextDate && newNextDate && newNextDate !== 'TBA') {
+            const isOfficial = newG.nextSeason?.verification === 'official';
             const dateEn = formatEventDate(newNextDate, 'en');
             const dateRu = formatEventDate(newNextDate, 'ru');
             const seasonLabelEn = newNextName && newNextName !== 'TBA' ? ` (${newNextName})` : '';
@@ -678,8 +681,12 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
               gameId: newG.id,
               url: newG.nextSeason?.sourceUrl || newG.website,
               type: 'announcement',
-              en: `${gNameEn}: Next season start date announced — ${dateEn}${seasonLabelEn}`,
-              ru: `${gNameRu}: Анонсирована дата старта следующего сезона — ${dateRu}${seasonLabelRu}`
+              en: isOfficial 
+                ? `${gNameEn}: Official next season start date — ${dateEn}${seasonLabelEn}`
+                : `${gNameEn}: Estimated next season start date — ~${dateEn}${seasonLabelEn}`,
+              ru: isOfficial
+                ? `${gNameRu}: Официальная дата старта следующего сезона — ${dateRu}${seasonLabelRu}`
+                : `${gNameRu}: Расчётная дата старта следующего сезона — ~${dateRu}${seasonLabelRu}`
             });
           }
           // 3. Next Season theme / name announced (even if date is TBA)
@@ -708,8 +715,14 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           // 5. New or updated Events with dates (Streams, PTR, Twitch Drops, Contests)
           const oldEvents = Array.isArray(oldG.events) ? oldG.events : [];
           const newEvents = Array.isArray(newG.events) ? newG.events : [];
+          const nowMs = Date.now();
           for (const newEv of newEvents) {
             if (!newEv.startDate) continue;
+            const startMs = new Date(newEv.startDate).getTime();
+            const endMs = newEv.endDate ? new Date(newEv.endDate).getTime() : startMs + 86400000;
+            // Ignore events that already completely ended in the past (more than 24h ago)
+            if (endMs < nowMs - 86400000) continue;
+
             const exists = oldEvents.some(ex => ex.id === newEv.id || (ex.type === newEv.type && ex.startDate === newEv.startDate));
             if (!exists) {
               const evTitleEn = newEv.title?.en || newEv.title || 'Event';

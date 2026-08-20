@@ -64,13 +64,13 @@ export class PoEAdapter extends BaseAdapter {
         .join('\n\n---\n\n');
 
       const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile 1 RSS feed content.
-1. Current League name EN/RU, startDate, endDate.
-2. Next League name EN/RU, startDate, endDate, verification ("official" or "estimated").
-3. Events (livestreams, teaser schedules, league launches) with titles EN/RU and dates.
+1. Current League details (name EN/RU, startDate, endDate if mentioned).
+2. Next League details ONLY IF explicitly announced by developers (name EN/RU, startDate, endDate, verification: "official" or "estimated").
+3. Events (livestreams, teaser schedules, league launches, tournaments, Twitch drops) with titles EN/RU and dates.
 4. Game status: "active", "in-development", "maintenance".
 5. Key features list EN/RU.
 
-Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launches are almost always on Fridays.`;
+Formatting rule: Extract dates ONLY when explicitly stated in the source text. Format all dates as YYYY-MM-DD or full ISO strings. If next season dates or names are not mentioned, return empty strings. Do NOT calculate, guess, or invent dates.`;
 
       const schema = {
         type: 'OBJECT',
@@ -93,7 +93,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
               type: 'OBJECT',
               properties: {
                 id: { type: 'STRING' },
-                type: { type: 'STRING', description: 'One of: livestream, season_start, expansion, convention' },
+                type: { type: 'STRING', description: 'One of: livestream, season_start, expansion, convention, tournament, drops' },
                 titleEn: { type: 'STRING' },
                 titleRu: { type: 'STRING' },
                 startDate: { type: 'STRING' },
@@ -105,8 +105,6 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
           }
         },
         required: [
-          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate',
-          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate',
           'status', 'featuresEn', 'featuresRu'
         ]
       };
@@ -114,7 +112,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
       const rawExtracted = await this.callGemini(feedContent, systemInstruction, schema);
       const extracted = rawExtracted || {};
 
-      let seasonNameEn = extracted.currentSeasonNameEn || 'TBA';
+      let seasonNameEn = extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || 'TBA';
       if (seasonNameEn !== 'TBA' && !/^\s*v?\d+\.\d+/i.test(seasonNameEn)) {
         seasonNameEn = `v3.29: ${seasonNameEn}`;
       }
@@ -150,23 +148,23 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings. PoE league launch
         currentSeason: {
           name: {
             en: seasonNameEn,
-            ru: extracted.currentSeasonNameRu || seasonNameEn
+            ru: extracted.currentSeasonNameRu || existingGame?.currentSeason?.name?.ru || seasonNameEn
           },
-          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate) || existingGame?.currentSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate) || existingGame?.currentSeason?.endDate || '',
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
+            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'TBA',
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'TBA'
           },
-          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verification: extracted.nextSeasonStartDate ? (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated') : (existingGame?.nextSeason?.verification || 'estimated'),
           verificationNote: existingGame?.nextSeason?.verificationNote || {
             en: "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
             ru: "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"

@@ -11,14 +11,15 @@ import { TYPE_ICONS, GAME_META, TYPE_LABELS, cleanSourceUrl, getSourceInfo, assi
 
 export function render(eventsList = [], gamesList = [], { lang = 'en', activeGameId = null, filterGames = null, basePath = './' } = {}) {
   const isEn = lang === 'en';
+  const localizedEventsList = eventsList.filter(e => !e.locales || (Array.isArray(e.locales) && e.locales.includes(lang)));
   const now = new Date();
   const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
   const seasonsHref = cleanBase;
   const eventsHref = `${cleanBase}events/`;
 
-  // 1. Determine Timeline Window: 7 days before today to 35 days ahead (approx 6 weeks / 42 days)
+  // 1. Determine Timeline Window: 7 days before today to 45 days ahead (~7 weeks)
   const windowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-  const windowEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 35);
+  const windowEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 45);
   const totalWindowMs = windowEnd.getTime() - windowStart.getTime();
 
   const nowMs = now.getTime();
@@ -88,7 +89,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     }
 
     const meta = GAME_META[gameId];
-    const gameEvents = eventsList.filter(e => e.gameId === gameId);
+    const gameEvents = localizedEventsList.filter(e => e.gameId === gameId);
 
     const overlappingEvents = gameEvents.filter(event => {
       const eStart = new Date(event.startDate);
@@ -215,7 +216,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   }).join('\n');
 
   // 4. Build Desktop Urgent Cards Grid (3 Columns)
-  const urgentEvents = [...eventsList].filter(e => {
+  const urgentEvents = [...localizedEventsList].filter(e => {
     if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId)) return false;
     if (!e.endDate) return false;
     const eEnd = new Date(e.endDate).getTime();
@@ -233,7 +234,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     if (!aIsLive && bIsLive) return 1;
     if (aIsLive && bIsLive) return aEnd - bEnd;
     return aStart - bStart;
-  }).slice(0, 6);
+  }).slice(0, 9);
 
   const urgentCardsHtml = urgentEvents.length > 0 ? urgentEvents.map(event => {
     const meta = GAME_META[event.gameId] || GAME_META['path-of-exile'];

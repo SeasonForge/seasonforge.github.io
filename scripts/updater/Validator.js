@@ -91,7 +91,7 @@ export class Validator {
       throw new Error(`Missing gameId in event ${evt.id}`);
     }
 
-    const validTypes = ['twitch_drops', 'drops', 'ptr', 'race', 'collab', 'login', 'login-event', 'event', 'special_server'];
+    const validTypes = ['twitch_drops', 'drops', 'ptr', 'race', 'collab', 'login', 'login-event', 'event', 'special_server', 'stream'];
     if (evt.type && !validTypes.includes(evt.type)) {
       throw new Error(`Invalid event type "${evt.type}" in ${evt.id}. Must be one of: ${validTypes.join(', ')}`);
     }

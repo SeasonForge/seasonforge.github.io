@@ -181,8 +181,15 @@ function renderApp() {
     mobMoreBtn.classList.toggle('mobile-nav__btn--active', state.activeView === 'more');
   }
 
-  const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
-  const basePath = isEventsPage ? '../' : './';
+  const getBasePath = () => {
+    if (typeof window === 'undefined') return './';
+    const path = window.location.pathname;
+    if (path.includes('/games/') && path.split('/').filter(Boolean).length >= 3) return '../../../';
+    if (path.includes('/games/')) return '../../';
+    if (path.includes('/events') || path.includes('/changelog') || path.includes('/donate') || path.includes('/privacy')) return '../';
+    return './';
+  };
+  const basePath = getBasePath();
 
   // Update navbar
   if (navbarRoot) {
@@ -239,8 +246,9 @@ function renderApp() {
     if (!headerMeta.dataset.changelogBound) {
       headerMeta.dataset.changelogBound = 'true';
       headerMeta.style.cursor = 'pointer';
-      headerMeta.addEventListener('click', () => {
-        window.location.href = `${basePath}changelog/`;
+      headerMeta.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = `${getBasePath()}changelog/#latest`;
       });
     }
   }

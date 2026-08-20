@@ -4,6 +4,7 @@ import { escapeHtml } from './helpers.js';
 export const TYPE_ICONS = {
   twitch_drops: 'twitch',
   drops: 'twitch',
+  stream: 'twitch',
   ptr: 'flask',
   race: 'trophy',
   collab: 'users',
@@ -60,6 +61,7 @@ export const GAME_META = {
 export const TYPE_LABELS = {
   twitch_drops: { en: 'Twitch Drops', ru: 'Twitch Drops' },
   drops: { en: 'Twitch Drops', ru: 'Twitch Drops' },
+  stream: { en: 'Twitch Stream', ru: 'Стрим' },
   ptr: { en: 'Public Test Realm', ru: 'Тестовый сервер PTR' },
   race: { en: 'Boss Gauntlet & Race', ru: 'Gauntlet & Гонка' },
   collab: { en: 'Collaboration', ru: 'Коллаборация' },
@@ -139,7 +141,7 @@ export function getSourceInfo(url, isEn) {
     return { label: isEn ? 'Last Epoch Forum' : 'Форум Last Epoch', icon: 'external-link' };
   }
   if (lower.includes('twitch.tv')) {
-    return { label: isEn ? 'Twitch Drops' : 'Twitch Drops', icon: 'twitch' };
+    return { label: isEn ? 'Watch on Twitch' : 'Смотреть на Twitch', icon: 'twitch' };
   }
   if (lower.includes('x.com') || lower.includes('twitter.com')) {
     return { label: isEn ? 'Official Post (X)' : 'Официальный пост (X)', icon: 'external-link' };

@@ -78,9 +78,7 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
           }
         },
         required: [
-          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate',
-          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate',
-          'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
+          'status', 'featuresEn', 'featuresRu'
         ]
       };
 
@@ -116,24 +114,24 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || 'TBA',
-            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || 'TBA'
+            en: extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || 'TBA',
+            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.ru || 'TBA'
           },
-          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate) || existingGame?.currentSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate) || existingGame?.currentSeason?.endDate || '',
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: newsitems[0].url || 'https://torchlightinfinite.com/'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'TBA'
+            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'TBA',
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'TBA'
           },
-          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verification: extracted.nextSeasonStartDate ? (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated') : (existingGame?.nextSeason?.verification || 'estimated'),
           verificationNote: existingGame?.nextSeason?.verificationNote || {
             en: "Estimated date based on standard 3-month seasonal cycle of Torchlight: Infinite",
             ru: "Расчётная дата запуска на основе стандартного 3-месячного сезонного цикла Torchlight: Infinite"

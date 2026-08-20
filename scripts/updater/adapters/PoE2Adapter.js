@@ -44,14 +44,14 @@ export class PoE2Adapter extends BaseAdapter {
         .map(item => `Title: ${item.title}\nDate: ${item.pubDate}\nDescription: ${this.cleanHtml(item.description)}`)
         .join('\n\n---\n\n');
 
-      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season/league and timeline event details for Path of Exile 2:
-1. Current Season/League details (name EN/RU, startDate, endDate).
-2. Next Season/League or Major Event details (name EN/RU, startDate, endDate, verification).
-3. Major events (ExileCon, Early Access updates, Livestreams) with EN/RU titles and dates.
+      const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game league/season details from Path of Exile 2 Steam feed content.
+1. Current Early Access phase/update (name EN/RU, startDate, endDate if explicitly mentioned).
+2. Next release/major phase (ExileCon, 1.0 Launch, next major chapter) ONLY IF explicitly announced with dates.
+3. Major events (ExileCon, Early Access updates, Livestreams, Tournaments) with EN/RU titles and dates.
 4. Game status: "early-access", "active", "in-development".
 5. Key features list EN/RU.
 
-Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
+Formatting rule: Extract dates ONLY when explicitly mentioned in the source text. Format all dates as YYYY-MM-DD or full ISO strings. If next season dates or names are not explicitly stated, return empty strings. Do NOT calculate, guess, or invent dates.`;
 
       const schema = {
         type: 'OBJECT',
@@ -74,7 +74,7 @@ Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
               type: 'OBJECT',
               properties: {
                 id: { type: 'STRING' },
-                type: { type: 'STRING', description: 'One of: convention, livestream, season_start, expansion, ptr' },
+                type: { type: 'STRING', description: 'One of: convention, livestream, season_start, expansion, ptr, tournament' },
                 titleEn: { type: 'STRING' },
                 titleRu: { type: 'STRING' },
                 startDate: { type: 'STRING' },
@@ -86,9 +86,7 @@ Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
           }
         },
         required: [
-          'currentSeasonNameEn', 'currentSeasonNameRu', 'currentSeasonStartDate',
-          'nextSeasonNameEn', 'nextSeasonNameRu', 'nextSeasonStartDate',
-          'nextSeasonVerification', 'status', 'featuresEn', 'featuresRu'
+          'status', 'featuresEn', 'featuresRu'
         ]
       };
 
@@ -124,24 +122,24 @@ Formatting rule: All dates MUST be YYYY-MM-DD or full ISO strings.`;
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || '0.5.0: Return of the Ancients',
-            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || '0.5.0: Return of the Ancients'
+            en: extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || '0.5.0: Return of the Ancients',
+            ru: extracted.currentSeasonNameRu || existingGame?.currentSeason?.name?.ru || '0.5.0: Return of the Ancients'
           },
-          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate) || existingGame?.currentSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate) || existingGame?.currentSeason?.endDate || '',
           isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
           verification: 'official',
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || 'ExileCon 2026 (League & 1.0 Reveal)',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || 'ExileCon 2026 (Анонс лиги и 1.0)'
+            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'ExileCon 2026 (League & 1.0 Reveal)',
+            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'ExileCon 2026 (Анонс лиги и 1.0)'
           },
-          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate),
-          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate),
+          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
+          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
           isActive: false,
-          verification: extracted.nextSeasonVerification === 'official' ? 'official' : (existingGame?.nextSeason?.verification || 'estimated'),
+          verification: extracted.nextSeasonStartDate ? (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated') : (existingGame?.nextSeason?.verification || 'announcement'),
           verificationNote: existingGame?.nextSeason?.verificationNote || {
             en: "Official ExileCon 2026 presentation & 1.0 reveal dates",
             ru: "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"

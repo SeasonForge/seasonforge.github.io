@@ -72,20 +72,29 @@ export const TYPE_LABELS = {
   event: { en: 'In-Game Event', ru: 'Игровое событие' }
 };
 
-export function cleanSourceUrl(url, gameId) {
-  if (!url || typeof url !== 'string' || !url.startsWith('http')) {
+export function resolveLocalizedUrl(url, lang = 'en') {
+  if (!url) return '';
+  if (typeof url === 'object') {
+    return url[lang] || url.en || url.ru || '';
+  }
+  return String(url);
+}
+
+export function cleanSourceUrl(url, gameId, lang = 'en') {
+  const resolved = resolveLocalizedUrl(url, lang);
+  if (!resolved || typeof resolved !== 'string' || !resolved.startsWith('http')) {
     const defaultHubs = {
       'path-of-exile': 'https://www.pathofexile.com/forum',
       'path-of-exile-2': 'https://www.pathofexile.com/forum',
-      'diablo-iv': 'https://news.blizzard.com/en-us/diablo4',
-      'diablo-4': 'https://news.blizzard.com/en-us/diablo4',
+      'diablo-iv': lang === 'ru' ? 'https://news.blizzard.com/ru-ru/diablo4' : 'https://news.blizzard.com/en-us/diablo4',
+      'diablo-4': lang === 'ru' ? 'https://news.blizzard.com/ru-ru/diablo4' : 'https://news.blizzard.com/en-us/diablo4',
       'last-epoch': 'https://forum.lastepoch.com',
       'torchlight-infinite': 'https://torchlight.xd.com'
     };
     return defaultHubs[gameId] || '';
   }
 
-  let cleaned = url.trim();
+  let cleaned = resolved.trim();
 
   // 1. Steam akamaihd/externalpost URLs conversion
   if (cleaned.includes('steamstore-a.akamaihd.net') || cleaned.includes('/news/externalpost/')) {
@@ -130,6 +139,9 @@ export function getSourceInfo(url, isEn) {
   const lower = url.toLowerCase();
   if (lower.includes('steampowered.com') || lower.includes('steamstore-a.akamaihd.net') || lower.includes('steamcommunity.com')) {
     return { label: isEn ? 'Steam Announcement' : 'Анонс в Steam', icon: 'steam' };
+  }
+  if (lower.includes('blizzcon.com')) {
+    return { label: isEn ? 'BlizzCon Portal' : 'Портал BlizzCon', icon: 'external-link' };
   }
   if (lower.includes('blizzard.com')) {
     return { label: isEn ? 'Blizzard News' : 'Новости Blizzard', icon: 'external-link' };

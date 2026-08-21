@@ -488,15 +488,30 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
     });
   }
 
+  const sourceUrl = event.sourceUrl ? cleanSourceUrl(event.sourceUrl, event.gameId, lang) : null;
+  const postUrl = event.postUrl ? cleanSourceUrl(event.postUrl, event.gameId, lang) : null;
+  const streamUrl = event.streamUrl ? cleanSourceUrl(event.streamUrl, event.gameId, lang) : null;
+
+  const actionLinks = [];
+  if (streamUrl) {
+    actionLinks.push({ url: streamUrl, info: getSourceInfo(streamUrl, isEn) });
+  }
+  if (sourceUrl && (!streamUrl || sourceUrl !== streamUrl)) {
+    actionLinks.push({ url: sourceUrl, info: getSourceInfo(sourceUrl, isEn) });
+  }
+  if (postUrl && postUrl !== sourceUrl && postUrl !== streamUrl) {
+    actionLinks.push({ url: postUrl, info: getSourceInfo(postUrl, isEn) });
+  }
+  if (actionLinks.length === 0 && sourceUrl) {
+    actionLinks.push({ url: sourceUrl, info: getSourceInfo(sourceUrl, isEn) });
+  }
+
   // Strictly conditional data checks
   const conditions = Array.isArray(event.conditions) && event.conditions.length > 0
     ? event.conditions
     : (Array.isArray(event.requirements) && event.requirements.length > 0 ? event.requirements : null);
 
   const rewards = Array.isArray(event.rewards) && event.rewards.length > 0 ? event.rewards : null;
-
-  const sourceUrl = event.sourceUrl ? cleanSourceUrl(event.sourceUrl, event.gameId) : null;
-  const sourceInfo = sourceUrl ? getSourceInfo(sourceUrl, isEn) : null;
 
   return `
     <div class="events-detail-body" style="--event-accent: ${meta.color};">
@@ -596,13 +611,17 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
         </div>
       ` : ''}
 
-      <!-- Official Source Action Button (ONLY IF PRESENT) -->
-      ${sourceUrl ? `
+      <!-- Official Source Action Buttons (ONLY IF PRESENT) -->
+      ${actionLinks.length > 0 ? `
         <div class="events-detail-section events-detail-section--action">
-          <a href="${escapeAttr(sourceUrl)}" target="_blank" rel="noopener noreferrer" class="events-detail-btn-action" style="--btn-color: ${meta.color};">
-            <span>${escapeHtml(sourceInfo ? sourceInfo.label : (isEn ? 'Official Announcement' : 'Официальный анонс'))}</span>
-            ${getIconSvg('external-link', { size: 14 })}
-          </a>
+          <div class="events-detail-actions-grid" style="${actionLinks.length > 1 ? 'display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;' : ''}">
+            ${actionLinks.map(link => `
+              <a href="${escapeAttr(link.url)}" target="_blank" rel="noopener noreferrer" class="events-detail-btn-action" style="--btn-color: ${meta.color};">
+                <span>${escapeHtml(link.info.label)}</span>
+                ${getIconSvg(link.info.icon || 'external-link', { size: 14 })}
+              </a>
+            `).join('')}
+          </div>
         </div>
       ` : ''}
 

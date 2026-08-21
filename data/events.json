@@ -58,6 +58,42 @@
       "status": "active"
     },
     {
+      "id": "diablo-iv_convention_blizzcon-2026-showcase",
+      "gameId": "diablo-iv",
+      "type": "convention",
+      "title_ru": "Презентация BlizzCon 2026: Анонсы Diablo IV и Сезона 15",
+      "title_en": "BlizzCon 2026 Showcase: Diablo IV & Season 15 Reveal",
+      "startDate": "2026-09-12T17:00:00Z",
+      "endDate": "2026-09-13T23:59:59Z",
+      "description_ru": "Главный фестиваль Blizzard с прямой трансляцией: масштабная презентация контента 15-го Сезона Diablo IV, демонстрация механики Soul Splinters, системы перерождения персонажей (Rebirth) и новых подземелий испытаний.",
+      "description_en": "Major Blizzard global showcase: live presentation of Diablo IV Season 15 features, Soul Splinters mechanic, character Rebirth system, Challenge Dungeons, and class balance updates.",
+      "rewards": [
+        {
+          "ru": "Анонс механик и даты запуска Сезона 15",
+          "en": "Season 15 Mechanics & Launch Reveal"
+        },
+        {
+          "ru": "Twitch Drops и эксклюзивная косметика трансляции",
+          "en": "Twitch Drops & Broadcast Cosmetics"
+        },
+        {
+          "ru": "Презентация системы перерождения (Rebirth)",
+          "en": "Character Rebirth System Showcase"
+        }
+      ],
+      "sourceUrl": {
+        "ru": "https://blizzcon.com/ru-ru/",
+        "en": "https://blizzcon.com/en-us/"
+      },
+      "postUrl": {
+        "ru": "https://blizzcon.com/ru-ru/",
+        "en": "https://blizzcon.com/en-us/"
+      },
+      "streamUrl": "https://www.twitch.tv/diablo",
+      "updatedAt": "2026-08-21T13:45:00.000Z",
+      "status": "upcoming"
+    },
+    {
       "id": "path-of-exile_event_curse-of-the-allflame-fan-art-competition",
       "gameId": "path-of-exile",
       "type": "event",
@@ -127,7 +163,7 @@
       "type": "stream",
       "title_ru": "Трансляция GGG Live: Анонсы PoE 2 и версии 0.5.5",
       "title_en": "GGG Live: Path of Exile 2 & Update 0.5.5 Reveal",
-      "startDate": "2026-08-27T20:00:00Z",
+      "startDate": "2026-08-27T19:30:00Z",
       "endDate": "2026-08-27T22:00:00Z",
       "description_ru": "Официальная презентация новой информации о Path of Exile 2 и обновлении 0.5.5, сессия Q&A с Джонатаном Роджерсом и ZiggyD, а также финальный отборочный этап ExileCon.",
       "description_en": "Official livestream previewing new Path of Exile 2 details and the 0.5.5 update, followed by a live Q&A with Jonathan Rogers and ZiggyD, leading into the final ExileCon qualifier.",
@@ -141,8 +177,10 @@
           "en": "Live Dev Q&A with Jonathan Rogers"
         }
       ],
-      "sourceUrl": "https://twitch.tv/pathofexile",
-      "updatedAt": "2026-08-21T12:00:00.000Z",
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3998582",
+      "streamUrl": "https://twitch.tv/pathofexile",
+      "postUrl": "https://www.pathofexile.com/forum/view-thread/3998582",
+      "updatedAt": "2026-08-21T13:30:00.000Z",
       "status": "upcoming"
     },
     {

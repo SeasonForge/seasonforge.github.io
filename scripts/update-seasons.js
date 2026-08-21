@@ -636,6 +636,78 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
         });
       };
 
+      // Helper for fuzzy event similarity matching
+      const extractEventKeywords = (str) => {
+        return String(str || '')
+          .toLowerCase()
+          .replace(/[^a-z0-9а-яё\s]/gi, ' ')
+          .split(/\s+/)
+          .filter(w => w.length > 2 && !['and', 'the', 'for', 'with', 'path', 'exile', 'event', 'анонс', 'событие'].includes(w));
+      };
+
+      const areEventsSimilar = (ev1, ev2) => {
+        if (!ev1 || !ev2) return false;
+        if (ev1.id && ev2.id && ev1.id === ev2.id) return true;
+
+        // Exact start date match
+        if (ev1.startDate && ev2.startDate && ev1.startDate === ev2.startDate) {
+          return true;
+        }
+
+        // Date proximity check (within 30 days window)
+        let datesClose = false;
+        if (ev1.startDate && ev2.startDate) {
+          const d1 = new Date(ev1.startDate).getTime();
+          const d2 = new Date(ev2.startDate).getTime();
+          if (!Number.isNaN(d1) && !Number.isNaN(d2) && Math.abs(d1 - d2) <= 30 * 86400000) {
+            datesClose = true;
+          }
+        }
+
+        const title1En = ev1.title?.en || (typeof ev1.title === 'string' ? ev1.title : (ev1.title_en || ''));
+        const title2En = ev2.title?.en || (typeof ev2.title === 'string' ? ev2.title : (ev2.title_en || ''));
+        const title1Ru = ev1.title?.ru || (typeof ev1.title_ru === 'string' ? ev1.title_ru : '');
+        const title2Ru = ev2.title?.ru || (typeof ev2.title_ru === 'string' ? ev2.title_ru : '');
+
+        const kw1 = new Set([...extractEventKeywords(title1En), ...extractEventKeywords(title1Ru)]);
+        const kw2 = new Set([...extractEventKeywords(title2En), ...extractEventKeywords(title2Ru)]);
+
+        // Major event anchor keywords
+        const anchors = ['gamescom', 'onl', 'exilecon', 'qualifier', 'drops', 'twitch', 'ptr', 'beta', 'launch', 'blizzcon', 'contest', 'art'];
+        for (const anchor of anchors) {
+          if (kw1.has(anchor) && kw2.has(anchor)) {
+            const qual1 = [...kw1].find(w => w.match(/^#?\d+$/) || w.startsWith('qualifier'));
+            const qual2 = [...kw2].find(w => w.match(/^#?\d+$/) || w.startsWith('qualifier'));
+            if (qual1 && qual2 && qual1 !== qual2) continue;
+
+            if (datesClose) return true;
+          }
+        }
+
+        let intersection = 0;
+        for (const w of kw1) {
+          if (kw2.has(w)) intersection++;
+        }
+        const union = new Set([...kw1, ...kw2]).size;
+        if (union > 0 && (intersection / union) >= 0.35 && datesClose) {
+          return true;
+        }
+
+        return false;
+      };
+
+      // Load standalone events.json if present to cross-check tracked events
+      let standaloneEvents = [];
+      const standaloneEventsPath = path.join(dataDir, 'events.json');
+      if (fs.existsSync(standaloneEventsPath)) {
+        try {
+          const parsedStandalone = JSON.parse(fs.readFileSync(standaloneEventsPath, 'utf-8'));
+          standaloneEvents = Array.isArray(parsedStandalone.events) ? parsedStandalone.events : [];
+        } catch (e) {
+          // ignore
+        }
+      }
+
       if (Array.isArray(oldSeasons.games)) {
         finalGames.forEach(newG => {
           const oldG = oldSeasons.games.find(g => g.id === newG.id);
@@ -713,7 +785,10 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           }
 
           // 5. New or updated Events with dates (Streams, PTR, Twitch Drops, Contests)
-          const oldEvents = Array.isArray(oldG.events) ? oldG.events : [];
+          const oldEvents = [
+            ...(Array.isArray(oldG.events) ? oldG.events : []),
+            ...standaloneEvents.filter(e => e.gameId === newG.id)
+          ];
           const newEvents = Array.isArray(newG.events) ? newG.events : [];
           const nowMs = Date.now();
           for (const newEv of newEvents) {
@@ -723,9 +798,9 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
             // Ignore events that already completely ended in the past (more than 24h ago)
             if (endMs < nowMs - 86400000) continue;
 
-            const exists = oldEvents.some(ex => ex.id === newEv.id || (ex.type === newEv.type && ex.startDate === newEv.startDate));
+            const exists = oldEvents.some(ex => areEventsSimilar(ex, newEv));
             if (!exists) {
-              const evTitleEn = newEv.title?.en || newEv.title || 'Event';
+              const evTitleEn = newEv.title?.en || (typeof newEv.title === 'string' ? newEv.title : 'Event');
               const evTitleRu = newEv.title?.ru || evTitleEn;
               const dateEn = formatEventDate(newEv.startDate, 'en');
               const dateRu = formatEventDate(newEv.startDate, 'ru');

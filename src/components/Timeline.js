@@ -79,7 +79,109 @@ function formatFullDate(dateStr, lang = 'en') {
   return new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' }).format(date).toUpperCase();
 }
 
-export function render(games = [], viewMode = 'all') {
+function getNearestEvent(game, eventsList = []) {
+  if (!game) return null;
+  const now = Date.now();
+  const directEvents = Array.isArray(game.events) ? game.events.map(e => ({
+    id: e.id,
+    type: e.type,
+    title_ru: e.title?.ru || (typeof e.title === 'string' ? e.title : ''),
+    title_en: e.title?.en || (typeof e.title === 'string' ? e.title : ''),
+    startDate: e.startDate,
+    endDate: e.endDate,
+    gameId: game.id
+  })) : [];
+
+  const fromGlobal = Array.isArray(eventsList) ? eventsList.filter(e => e.gameId === game.id) : [];
+  const allGameEvents = [...fromGlobal, ...directEvents];
+
+  // 1. First priority: Upcoming future events (startDate > now)
+  const upcomingEvents = allGameEvents.filter(ev => {
+    if (!ev.startDate) return false;
+    const startMs = new Date(ev.startDate).getTime();
+    return !Number.isNaN(startMs) && startMs > now;
+  });
+
+  let chosenEvent = null;
+
+  if (upcomingEvents.length > 0) {
+    // Sort upcoming by earliest startDate
+    upcomingEvents.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+    chosenEvent = upcomingEvents[0];
+  } else {
+    // 2. Second priority (fallback): Currently ongoing active events (startDate <= now && endDate > now)
+    const activeEvents = allGameEvents.filter(ev => {
+      if (!ev.startDate) return false;
+      const startMs = new Date(ev.startDate).getTime();
+      if (Number.isNaN(startMs) || startMs > now) return false;
+      const endMs = ev.endDate ? new Date(ev.endDate).getTime() : startMs + 24 * 60 * 60 * 1000;
+      return endMs > now;
+    });
+
+    if (activeEvents.length > 0) {
+      // Sort active by earliest ending or earliest start
+      activeEvents.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+      chosenEvent = activeEvents[0];
+    }
+  }
+
+  if (!chosenEvent) return null;
+
+  const type = (chosenEvent.type || 'event').toLowerCase();
+  const titleStr = chosenEvent.title_ru || chosenEvent.title?.ru || chosenEvent.title_en || chosenEvent.title?.en || (typeof chosenEvent.title === 'string' ? chosenEvent.title : 'Event');
+  const titleLower = titleStr.toLowerCase();
+
+  let tag = 'EVENT';
+  let tagClass = 'upcoming-card__event-badge--event';
+  if (type === 'stream' || type === 'livestream') {
+    tag = 'STREAM';
+    tagClass = 'upcoming-card__event-badge--stream';
+  } else if (type === 'race' || type === 'tournament') {
+    tag = 'RACE';
+    tagClass = 'upcoming-card__event-badge--race';
+  } else if (type === 'drops' || type === 'twitch_drops') {
+    tag = 'DROPS';
+    tagClass = 'upcoming-card__event-badge--drops';
+  } else if (type === 'ptr' || type === 'beta') {
+    tag = 'PTR';
+    tagClass = 'upcoming-card__event-badge--ptr';
+  } else if (type === 'collab' || type === 'crossover') {
+    tag = 'COLLAB';
+    tagClass = 'upcoming-card__event-badge--collab';
+  } else if (type === 'bonus_exp' || type === 'exp') {
+    tag = 'EXP';
+    tagClass = 'upcoming-card__event-badge--exp';
+  } else if (type === 'special_server' || type === 'server') {
+    tag = 'SERVER';
+    tagClass = 'upcoming-card__event-badge--server';
+  } else if (type === 'convention' || type === 'showcase') {
+    if (titleLower.includes('blizzcon')) {
+      tag = 'BLIZZCON';
+      tagClass = 'upcoming-card__event-badge--event';
+    } else if (titleLower.includes('gamescom')) {
+      tag = 'GAMESCOM';
+      tagClass = 'upcoming-card__event-badge--event';
+    } else if (titleLower.includes('exilecon')) {
+      tag = 'EXILECON';
+      tagClass = 'upcoming-card__event-badge--event';
+    } else {
+      tag = 'EVENT';
+      tagClass = 'upcoming-card__event-badge--event';
+    }
+  }
+
+  return {
+    id: chosenEvent.id || `${game.id}_${chosenEvent.type}_${chosenEvent.startDate}`,
+    tag,
+    tagClass,
+    title: titleStr,
+    startDate: chosenEvent.startDate,
+    endDate: chosenEvent.endDate,
+    raw: chosenEvent
+  };
+}
+
+export function render(games = [], viewMode = 'all', basePath = './', customEvents = null) {
   const items = Array.isArray(games) ? games : [];
   const state = getState();
   const lang = state.settings?.lang || 'en';
@@ -399,6 +501,13 @@ export function render(games = [], viewMode = 'all') {
         </div>
       ` : '';
 
+      const nearestEvent = getNearestEvent(game, customEvents || state.eventsData || []);
+      const nearestEventBadgeHtml = nearestEvent ? `
+        <button type="button" class="upcoming-card__event-badge ${nearestEvent.tagClass}" data-event-id="${escapeHtml(nearestEvent.id)}" title="${escapeHtml(nearestEvent.title)}">
+          ${nearestEvent.tag}
+        </button>
+      ` : '';
+
       if (viewMode === 'home') {
         const eyebrowLabel = lang === 'ru' ? 'До старта сезона' : 'Until season start';
         return `
@@ -435,6 +544,7 @@ export function render(games = [], viewMode = 'all') {
             <div class="unified-card__bottom">
               <div class="unified-card__next-header">
                 <span class="unified-card__next-eyebrow">${eyebrowLabel}</span>
+                ${nearestEventBadgeHtml}
               </div>
 
               <div class="upcoming-card__countdown unified-card__countdown">
@@ -466,7 +576,10 @@ export function render(games = [], viewMode = 'all') {
           <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
           <div class="upcoming-card__date-wrapper">
             <span class="upcoming-card__date">${formattedDate}</span>
-            ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+            <div class="upcoming-card__badges-group">
+              ${nearestEventBadgeHtml}
+              ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
+            </div>
           </div>
           <h4 class="upcoming-card__game-name">${gameName}</h4>
           <div class="upcoming-card__season-name">${eventTitle}</div>

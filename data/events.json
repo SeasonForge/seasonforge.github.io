@@ -122,27 +122,27 @@
       "status": "active"
     },
     {
-      "id": "path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-3",
+      "id": "path-of-exile-2_stream_ggg-live-august-2026",
       "gameId": "path-of-exile-2",
-      "type": "race",
-      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №3",
-      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #3",
-      "startDate": "2026-08-20T21:00:00Z",
-      "endDate": "2026-08-21T03:00:00Z",
-      "description_ru": "Третий отборочный раунд Solo Self-Found гонки с фиксированной генерацией карт до убийства Тавакая в 4 Акте. Победитель получает поездку на финал ExileCon и шлем Demigod's Virtue.",
-      "description_en": "The third Solo Self-Found fixed-layout race qualifier to defeat Tavakai in Act 4. Winner receives a paid trip to the ExileCon live finale and the Demigod's Virtue helmet.",
+      "type": "stream",
+      "title_ru": "Трансляция GGG Live: Анонсы PoE 2 и версии 0.5.5",
+      "title_en": "GGG Live: Path of Exile 2 & Update 0.5.5 Reveal",
+      "startDate": "2026-08-27T20:00:00Z",
+      "endDate": "2026-08-27T22:00:00Z",
+      "description_ru": "Официальная презентация новой информации о Path of Exile 2 и обновлении 0.5.5, сессия Q&A с Джонатаном Роджерсом и ZiggyD, а также финальный отборочный этап ExileCon.",
+      "description_en": "Official livestream previewing new Path of Exile 2 details and the 0.5.5 update, followed by a live Q&A with Jonathan Rogers and ZiggyD, leading into the final ExileCon qualifier.",
       "rewards": [
         {
-          "ru": "Уникальный шлем Demigod's Virtue",
-          "en": "Demigod's Virtue Unique Helmet"
+          "ru": "Анонсы обновления 0.5.5 и PoE 2",
+          "en": "PoE 2 & 0.5.5 Reveal"
         },
         {
-          "ru": "Билет и перелет на финал ExileCon",
-          "en": "ExileCon Race Finale Ticket & Flights"
+          "ru": "Сессия вопросов и ответов (Q&A)",
+          "en": "Live Dev Q&A with Jonathan Rogers"
         }
       ],
-      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
-      "updatedAt": "2026-08-15T16:12:00.000Z",
+      "sourceUrl": "https://twitch.tv/pathofexile",
+      "updatedAt": "2026-08-21T12:00:00.000Z",
       "status": "upcoming"
     },
     {

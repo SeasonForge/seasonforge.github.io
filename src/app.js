@@ -260,7 +260,7 @@ function renderApp() {
   if (contentRoot) {
     if (state.activeView === 'card') {
       if (isMobile) {
-        contentRoot.innerHTML = renderTimeline(state.games, 'home', basePath);
+        contentRoot.innerHTML = renderTimeline(state.games, 'home', basePath, eventsData);
       } else {
         let activeGame = state.activeGame;
         if (!activeGame && state.games.length > 0) {
@@ -290,9 +290,9 @@ function renderApp() {
         contentRoot.innerHTML = renderEventsTimeline(eventsData, state.games, { lang: state.settings?.lang, basePath });
       } else {
         if (isMobile) {
-          contentRoot.innerHTML = renderTimeline(state.games, 'timeline', basePath);
+          contentRoot.innerHTML = renderTimeline(state.games, 'timeline', basePath, eventsData);
         } else {
-          contentRoot.innerHTML = renderTimeline(state.games, 'all', basePath);
+          contentRoot.innerHTML = renderTimeline(state.games, 'all', basePath, eventsData);
         }
       }
     } else if (state.activeView === 'games') {
@@ -1026,6 +1026,61 @@ if (typeof document !== 'undefined') {
     if (tabEvents) {
       e.preventDefault();
       switchTimelineMode('events');
+      return;
+    }
+
+    // Click on upcoming-card event badge -> Switch to events timeline & open event detail drawer
+    const eventBadge = e.target.closest('.upcoming-card__event-badge[data-event-id]');
+    if (eventBadge) {
+      e.preventDefault();
+      e.stopPropagation();
+      const eventId = eventBadge.dataset.eventId;
+      if (!eventId) return;
+
+      if (getState().activeView !== 'timeline') {
+        setActiveView('timeline', false);
+      }
+      if (timelineMode !== 'events') {
+        switchTimelineMode('events');
+      } else {
+        renderApp();
+      }
+
+      setTimeout(() => {
+        const drawer = document.getElementById('events-detail-drawer');
+        const drawerContent = document.getElementById('events-detail-drawer-content');
+        const container = document.querySelector('.events-dashboard-desktop');
+        const event = eventsData.find(ev => ev.id === eventId) || 
+                      (getState().games || []).flatMap(g => g.events || []).find(ev => ev.id === eventId);
+        
+        if (drawer && drawerContent && event) {
+          selectedEventId = eventId;
+          const state = getState();
+          const lang = state.settings?.lang || 'en';
+          const isEventsPage = typeof window !== 'undefined' && window.location.pathname.includes('/events');
+          const basePath = isEventsPage ? '../' : './';
+
+          drawerContent.innerHTML = renderEventDetailContent(event, { lang, basePath });
+          drawer.classList.add('is-open');
+          drawer.setAttribute('aria-hidden', 'false');
+
+          if (container) {
+            container.querySelectorAll('.events-timeline__bar').forEach(bar => {
+              if (bar.dataset.eventId === eventId) {
+                bar.classList.add('is-selected');
+                bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              } else {
+                bar.classList.remove('is-selected');
+              }
+            });
+          }
+        }
+
+        const timelineEl = document.querySelector('.timeline-view-wrapper') || document.querySelector('.events-dashboard-desktop');
+        if (timelineEl) {
+          timelineEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 160);
       return;
     }
   });

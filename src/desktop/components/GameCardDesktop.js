@@ -331,10 +331,13 @@ export function render(game = {}, options = {}) {
   }
 
   const isDetailPage = options.isDetailPage || false;
-  const logoPrefix = isDetailPage ? '../../' : './';
+  const cleanBase = typeof options.basePath === 'string' && options.basePath.endsWith('/')
+    ? options.basePath
+    : (typeof options.basePath === 'string' ? `${options.basePath}/` : (isDetailPage ? '../../' : './'));
+  const logoPrefix = cleanBase;
   const moreDetailsUrl = isDetailPage 
     ? (game.nextSeason?.sourceUrl || game.currentSeason?.sourceUrl || website)
-    : `./games/${game.id}/`;
+    : `${cleanBase}games/${game.id}/`;
   const moreDetailsTarget = isDetailPage ? 'target="_blank" rel="noopener noreferrer"' : '';
   const uppercaseStatusPill = `${statusLabel}`.toUpperCase();
 
@@ -403,10 +406,10 @@ export function render(game = {}, options = {}) {
           </div>
           ${eventsBannerHtml}
           ${!isDetailPage ? `
-            <a class="game-card__cta-block" href="./games/${game.id}/">
+            <a class="game-card__cta-block" href="${cleanBase}games/${game.id}/">
               <div class="game-card__cta-icon-box">
                 ${game.logo 
-                  ? `<img src="./assets/logos/${escapeAttr(game.logo)}" alt="${name}" class="game-card__cta-game-logo" />`
+                  ? `<img src="${cleanBase}assets/logos/${escapeAttr(game.logo)}" alt="${name}" class="game-card__cta-game-logo" />`
                   : getIconSvg(game.icon, { size: 20, class: 'game-card__cta-game-svg' })
                 }
               </div>

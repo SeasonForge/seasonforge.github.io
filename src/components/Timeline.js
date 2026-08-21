@@ -519,7 +519,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
               <div class="unified-card__header-row">
                 <div class="unified-card__game-title-group">
                   <div class="unified-card__icon-box">${iconHtml}</div>
-                  <h4 class="unified-card__game-name">${gameName}</h4>
+                  <h4 class="unified-card__game-name"><a href="./games/${game.id}/" class="unified-card__game-link">${gameName}</a></h4>
                 </div>
                 <span class="game-card__pill game-card__pill--${statusCode}">${statusLabel.toUpperCase()}</span>
               </div>
@@ -581,7 +581,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
               ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
             </div>
           </div>
-          <h4 class="upcoming-card__game-name">${gameName}</h4>
+          <h4 class="upcoming-card__game-name"><a href="./games/${game.id}/" class="upcoming-card__game-link">${gameName}</a></h4>
           <div class="upcoming-card__season-name">${eventTitle}</div>
           ${subtextHtml}
           <div class="upcoming-card__countdown">

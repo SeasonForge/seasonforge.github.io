@@ -74,10 +74,14 @@ jobs:
           if git diff --cached --quiet; then
             echo "No data changes detected. Skipping commit."
           else
-            echo "Content changes detected. Committing..."
             git commit -m "chore: auto-update seasons data and cache [skip ci]"
             git fetch origin main
             git rebase origin/main
             git push origin HEAD:main
           fi
+
+      - name: Ping Search Engines (IndexNow)
+        if: success()
+        run: node scripts/indexnow.js
+
 

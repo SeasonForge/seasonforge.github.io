@@ -375,6 +375,8 @@
 
 .events-detail-countdown-text {
   font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 /* Detail Sections */

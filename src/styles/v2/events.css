@@ -197,6 +197,13 @@
   align-items: center;
   gap: 0.5rem;
   padding-right: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.events-timeline__game-label:hover {
+  opacity: 0.85;
 }
 
 .events-timeline__game-icon {
@@ -727,6 +734,8 @@
   font-weight: 800;
   color: #f8fafc;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .urgent-countdown-item span {

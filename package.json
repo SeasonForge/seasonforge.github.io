@@ -6,6 +6,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "update": "node scripts/update-seasons.js",
-    "update:events": "node scripts/update-events.js"
+    "update:events": "node scripts/update-events.js",
+    "indexnow": "node scripts/indexnow.js"
   }
 }

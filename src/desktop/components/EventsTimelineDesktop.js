@@ -206,10 +206,10 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
     return `
       <div class="events-timeline__row" data-game-id="${escapeAttr(gameId)}" style="min-height: ${trackHeight + 8}px;">
-        <div class="events-timeline__game-label" style="--game-accent: ${meta.color};">
+        <a href="${cleanBase}games/${escapeAttr(gameId)}/" class="events-timeline__game-label" style="--game-accent: ${meta.color};" title="${escapeAttr(meta.name)}">
           <span class="events-timeline__game-icon">${getIconSvg(meta.icon, { size: 16 })}</span>
           <span class="events-timeline__game-name">${escapeHtml(meta.name)}</span>
-        </div>
+        </a>
         <div class="events-timeline__track" style="height: ${trackHeight}px;">
           ${barsHtml || `<div class="events-timeline__track-empty">${isEn ? 'No scheduled events in this period' : 'Нет событий в этом периоде'}</div>`}
         </div>

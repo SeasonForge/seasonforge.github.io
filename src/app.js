@@ -278,7 +278,8 @@ function renderApp() {
             countdown,
             progressBar,
             statusBadge,
-            isActive
+            isActive,
+            basePath
           });
 
           return card;
@@ -307,11 +308,11 @@ function renderApp() {
         const logo = game.logo ? escapeHtml(game.logo) : '';
         
         const iconHtml = logo 
-          ? `<img src="./assets/logos/${logo}" alt="${name}" class="catalog-card__logo" />`
+          ? `<img src="${basePath}assets/logos/${logo}" alt="${name}" class="catalog-card__logo" />`
           : getIconSvg(game.icon, { size: 22, class: 'catalog-card__svg' });
           
         return `
-          <a class="catalog-card" href="./games/${id}/" style="--game-color: ${color};">
+          <a class="catalog-card" href="${basePath}games/${id}/" style="--game-color: ${color};">
             <div class="catalog-card__main">
               <div class="catalog-card__icon">${iconHtml}</div>
               <div class="catalog-card__info">

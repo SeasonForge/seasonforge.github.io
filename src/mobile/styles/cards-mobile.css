@@ -296,6 +296,8 @@
     display: block;
     line-height: 1;
     font-family: var(--font);
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
   }
 
   .sf-mobile-card .game-card__countdown-item span {

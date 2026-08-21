@@ -628,6 +628,8 @@
   font-weight: 800;
   color: #ffffff;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .game-card__countdown-item span {
@@ -1240,6 +1242,18 @@
   z-index: 1;
 }
 
+.upcoming-card__game-link,
+.unified-card__game-link {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.upcoming-card__game-link:hover,
+.unified-card__game-link:hover {
+  opacity: 0.85;
+}
+
 .upcoming-card__season-name {
   font-size: 0.68rem;
   color: rgba(226, 232, 240, 0.75);
@@ -1296,6 +1310,8 @@
   font-size: 0.78rem;
   font-weight: 800;
   color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .upcoming-card__countdown-item span {
@@ -1496,6 +1512,14 @@
   color: #ffffff;
   display: block;
   line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+[data-countdown],
+[data-countdown-display] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
 }
 
 .unified-card__countdown .upcoming-card__countdown-item span {

@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-08-22T13:04:09.997Z",
+  "lastCheckedAt": "2026-08-23T02:02:06.292Z",
   "changelog": [
     {
       "timestamp": "2026-08-20T12:00:00.000Z",
@@ -379,7 +379,9 @@
           },
           "startDate": "2026-08-20T00:00:00.000Z",
           "endDate": "2026-08-21T00:00:00.000Z",
-          "verification": "confirmed"
+          "verification": "confirmed",
+          "isPast": true,
+          "status": "archived"
         }
       ],
       "ptr": null,

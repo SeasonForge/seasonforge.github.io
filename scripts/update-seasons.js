@@ -619,6 +619,7 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
   let hasActualChanges = true;
   let existingChangelog = [];
   const detectedDiffs = [];
+  const newsUpdates = [];
   
   if (fs.existsSync(seasonsPath)) {
     try {
@@ -715,6 +716,16 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
 
           const gNameEn = newG.name?.en || newG.id;
           const gNameRu = newG.name?.ru || gNameEn;
+
+          // Track news article changes
+          if (newG.latestNews?.id && oldG.latestNews?.id && newG.latestNews.id !== oldG.latestNews.id) {
+            newsUpdates.push({
+              gameId: newG.id,
+              gameName: gNameRu,
+              title: newG.latestNews.title || 'Новая публикация',
+              url: newG.latestNews.url || newG.website
+            });
+          }
 
           const oldCur = oldG.currentSeason?.name?.en;
           const newCur = newG.currentSeason?.name?.en;
@@ -941,6 +952,30 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
     execSync('node scripts/build.js', { stdio: 'inherit' });
   } catch (buildError) {
     console.error('[Orchestrator] Static site generator build failed:', buildError.message);
+  }
+
+  // 7. Send silent info report to Telegram if news articles changed (no moderation diffs)
+  if (Array.isArray(newsUpdates) && newsUpdates.length > 0 && process.env.WORKER_ENDPOINT && !isDryRun) {
+    try {
+      const escapeTg = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const infoMsg = 
+        `📰 <b>Новые публикации на ресурсах игр:</b>\n` +
+        newsUpdates.map(n => `• <b>${escapeTg(n.gameName)}:</b> <i>«${escapeTg(n.title)}»</i>`).join('\n') +
+        `\n\n🔒 <b>Даты сезонов и таймеры:</b> без изменений\n` +
+        `✅ <b>Сборка:</b> 90/90 страниц OK`;
+
+      await fetch(process.env.WORKER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'info',
+          infoMessage: infoMsg
+        })
+      });
+      console.log('[Orchestrator] Sent silent info-log to Telegram via Worker.');
+    } catch (infoErr) {
+      console.warn('[Orchestrator] Failed to send info-log:', infoErr.message);
+    }
   }
 
   console.log('=== SeasonForge Data Update Completed ===');

@@ -35,12 +35,32 @@ export default {
         body = await request.json().catch(() => ({}));
       }
 
-      // 1. Endpoint for GitHub Actions to submit draft update for moderation
-      if (url.pathname === '/api/pending-log' && request.method === 'POST') {
-        const { diffs, updatedSeasonsJson, authKey } = body;
+      // 1. Endpoint for GitHub Actions to submit draft update for moderation OR silent info-log
+      if ((url.pathname === '/api/pending-log' || url.pathname === '/api/info-log') && request.method === 'POST') {
+        const { diffs, infoMessage, type, updatedSeasonsJson, authKey } = body;
 
         if (env.WORKER_AUTH_KEY && authKey !== env.WORKER_AUTH_KEY) {
           return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: corsHeaders });
+        }
+
+        // A) Routine Info Log (Silent Notification without moderation buttons)
+        if (type === 'info' || url.pathname === '/api/info-log' || (infoMessage && (!diffs || diffs.length === 0))) {
+          const textToSend = infoMessage || (diffs && diffs.map(d => `• ${escapeHtml(d.ru || d.en || '')}`).join('\n')) || 'Плановая проверка завершена.';
+          const messageText = `ℹ️ <b>SeasonForge: Фоновое обновление данных</b>\n\n${textToSend}`;
+
+          const tgRes = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chat_id: targetChatId,
+              text: messageText,
+              parse_mode: 'HTML',
+              disable_web_page_preview: true,
+              disable_notification: true
+            })
+          });
+
+          return new Response(JSON.stringify({ success: true, type: 'info' }), { status: 200, headers: corsHeaders });
         }
 
         if (!Array.isArray(diffs) || diffs.length === 0) {

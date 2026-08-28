@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-08-28T11:30:51.544Z",
+  "lastCheckedAt": "2026-08-28T12:25:41.679Z",
   "changelog": [
     {
       "timestamp": "2026-08-28T00:30:00.000Z",
@@ -305,39 +305,6 @@
           "endDate": "2026-10-04T20:00:00.000Z",
           "verification": "official",
           "sourceUrl": "https://pathofexile2.com"
-        },
-        {
-          "id": "poe2-ggg-live-august-2026",
-          "type": "livestream",
-          "title": {
-            "en": "GGG Live: Path of Exile 2 & Update 0.5.5 Reveal",
-            "ru": "Трансляция GGG Live: Анонсы PoE 2 и версии 0.5.5"
-          },
-          "startDate": "2026-08-27T19:30:00.000Z",
-          "endDate": "2026-08-27T22:00:00.000Z",
-          "verification": "official"
-        },
-        {
-          "id": "poe2-gamescom-2026-onl",
-          "type": "convention",
-          "title": {
-            "en": "Path of Exile 2 at gamescom 2026 & Opening Night Live Reveal",
-            "ru": "Path of Exile 2 на gamescom 2026 и презентация Opening Night Live"
-          },
-          "startDate": "2026-08-21T08:00:00.000Z",
-          "endDate": "2026-08-25T23:59:59.000Z",
-          "verification": "official"
-        },
-        {
-          "id": "poe2-exilecon-qualifier-4",
-          "type": "tournament",
-          "title": {
-            "en": "ExileCon 2026 — Race Qualifier #4",
-            "ru": "ExileCon 2026 — Отборочный турнир №4"
-          },
-          "startDate": "2026-08-27T21:00:00.000Z",
-          "endDate": "2026-08-28T03:00:00.000Z",
-          "verification": "official"
         },
         {
           "id": "poe2-exilecon-2026",

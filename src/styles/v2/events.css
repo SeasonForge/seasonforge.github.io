@@ -215,6 +215,15 @@
   color: var(--game-accent, #6366f1);
 }
 
+.events-timeline__game-logo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
 .events-timeline__game-name {
   font-size: 0.825rem;
   font-weight: 700;

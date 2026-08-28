@@ -20,6 +20,7 @@ export const GAME_META = {
     name: 'Path of Exile 1',
     shortName: 'PoE 1',
     icon: 'skull',
+    logo: 'path-of-exile.png',
     color: '#d97706',
     accentBg: 'rgba(217, 119, 6, 0.15)',
     borderColor: 'rgba(217, 119, 6, 0.4)'
@@ -28,6 +29,7 @@ export const GAME_META = {
     name: 'Path of Exile 2',
     shortName: 'PoE 2',
     icon: 'sparkles',
+    logo: 'path-of-exile-2.png',
     color: '#8b5cf6',
     accentBg: 'rgba(139, 92, 246, 0.15)',
     borderColor: 'rgba(139, 92, 246, 0.4)'
@@ -36,6 +38,7 @@ export const GAME_META = {
     name: 'Diablo IV',
     shortName: 'Diablo IV',
     icon: 'flame',
+    logo: 'diablo-iv.png',
     color: '#ef4444',
     accentBg: 'rgba(239, 68, 68, 0.15)',
     borderColor: 'rgba(239, 68, 68, 0.4)'
@@ -44,6 +47,7 @@ export const GAME_META = {
     name: 'Last Epoch',
     shortName: 'Last Epoch',
     icon: 'hourglass',
+    logo: 'last-epoch.png',
     color: '#f59e0b',
     accentBg: 'rgba(245, 158, 11, 0.15)',
     borderColor: 'rgba(245, 158, 11, 0.4)'
@@ -52,6 +56,7 @@ export const GAME_META = {
     name: 'Torchlight: Infinite',
     shortName: 'Torchlight',
     icon: 'zap',
+    logo: 'torchlight-infinite.png',
     color: '#06b6d4',
     accentBg: 'rgba(6, 182, 212, 0.15)',
     borderColor: 'rgba(6, 182, 212, 0.4)'

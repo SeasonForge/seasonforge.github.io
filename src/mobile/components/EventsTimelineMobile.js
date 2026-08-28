@@ -192,7 +192,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     return `
       <div class="events-timeline__row" data-game-id="${escapeAttr(gameId)}" style="min-height: ${trackHeight + 8}px;">
         <a href="${cleanBase}games/${escapeAttr(gameId)}/" class="events-timeline__game-label" style="--game-accent: ${meta.color};" title="${escapeAttr(meta.name)}">
-          <span class="events-timeline__game-icon">${getIconSvg(meta.icon, { size: 14 })}</span>
+          ${meta.logo ? `<img src="${cleanBase}assets/logos/${escapeAttr(meta.logo)}" alt="${escapeAttr(meta.name)}" class="events-timeline__game-logo" width="18" height="18" loading="lazy" />` : `<span class="events-timeline__game-icon">${getIconSvg(meta.icon, { size: 14 })}</span>`}
           <span class="events-timeline__game-name">${escapeHtml(meta.shortName || meta.name)}</span>
         </a>
         <div class="events-timeline__track" style="height: ${trackHeight}px;">

@@ -158,32 +158,6 @@
       "status": "active"
     },
     {
-      "id": "path-of-exile-2_stream_ggg-live-august-2026",
-      "gameId": "path-of-exile-2",
-      "type": "stream",
-      "title_ru": "Трансляция GGG Live: Анонсы PoE 2 и версии 0.5.5",
-      "title_en": "GGG Live: Path of Exile 2 & Update 0.5.5 Reveal",
-      "startDate": "2026-08-27T19:30:00Z",
-      "endDate": "2026-08-27T22:00:00Z",
-      "description_ru": "Официальная презентация новой информации о Path of Exile 2 и обновлении 0.5.5, сессия Q&A с Джонатаном Роджерсом и ZiggyD, а также финальный отборочный этап ExileCon.",
-      "description_en": "Official livestream previewing new Path of Exile 2 details and the 0.5.5 update, followed by a live Q&A with Jonathan Rogers and ZiggyD, leading into the final ExileCon qualifier.",
-      "rewards": [
-        {
-          "ru": "Анонсы обновления 0.5.5 и PoE 2",
-          "en": "PoE 2 & 0.5.5 Reveal"
-        },
-        {
-          "ru": "Сессия вопросов и ответов (Q&A)",
-          "en": "Live Dev Q&A with Jonathan Rogers"
-        }
-      ],
-      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3998582",
-      "streamUrl": "https://twitch.tv/pathofexile",
-      "postUrl": "https://www.pathofexile.com/forum/view-thread/3998582",
-      "updatedAt": "2026-08-21T13:30:00.000Z",
-      "status": "upcoming"
-    },
-    {
       "id": "torchlight-infinite_special_server_afterlight-hardcore-server-launch",
       "gameId": "torchlight-infinite",
       "type": "special_server",
@@ -209,37 +183,10 @@
       ],
       "sourceUrl": "https://x.com/torchlight_xd/status/2087444905933348907",
       "updatedAt": "2026-08-15T16:12:00.000Z",
-      "status": "upcoming"
-    },
-    {
-      "id": "path-of-exile-2_race_exilecon-2026-poe-2-race-qualifier-4",
-      "gameId": "path-of-exile-2",
-      "type": "race",
-      "title_ru": "ExileCon 2026: Отборочная гонка PoE 2 №4 (Финал)",
-      "title_en": "ExileCon 2026: PoE 2 Race Qualifier #4 (Final)",
-      "startDate": "2026-08-27T21:00:00Z",
-      "endDate": "2026-08-28T03:00:00Z",
-      "description_ru": "Четвертый финальный отборочный этап Solo Self-Found гонки перед гранд-финалом на ExileCon.",
-      "description_en": "The fourth and final Solo Self-Found qualifier race leading into the live championship at ExileCon.",
-      "rewards": [
-        {
-          "ru": "Уникальный шлем Demigod's Virtue",
-          "en": "Demigod's Virtue Unique Helmet"
-        },
-        {
-          "ru": "Билет и перелет на финал ExileCon",
-          "en": "ExileCon Race Finale Ticket & Flights"
-        }
-      ],
-      "sourceUrl": "https://store.steampowered.com/news/app/2694490/view/690887249156375325",
-      "updatedAt": "2026-08-15T16:12:00.000Z",
-      "status": "upcoming"
+      "status": "active"
     },
     {
       "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-1",
-      "gameId": "path-of-exile",
-      "type": "race",
-      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №1",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #1",
       "startDate": "2026-09-04T21:00:00Z",
       "endDate": "2026-09-05T03:00:00Z",

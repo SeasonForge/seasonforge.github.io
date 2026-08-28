@@ -349,6 +349,34 @@
       "sourceUrl": "https://pathofexile2.com",
       "updatedAt": "2026-08-20T09:25:00.000Z",
       "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile-2_event_forbidden-rites-league-0-5-5",
+      "gameId": "path-of-exile-2",
+      "type": "event",
+      "title_ru": "Ивент-лига 0.5.5: The Forbidden Rites",
+      "title_en": "Event League 0.5.5: The Forbidden Rites",
+      "startDate": "2026-09-04T20:00:00Z",
+      "endDate": "2026-10-04T20:00:00Z",
+      "description_ru": "Параллельная ивент-лига 0.5.5: Ритуал во всех локациях кампании, возвращение Диколесья (Wildwood), переработанный Trial of Chaos, 8 испытаний и эксклюзивные награды.",
+      "description_en": "Parallel 0.5.5 event league: Ritual in all campaign areas, return of the Wildwood, reworked Trial of Chaos, 8 challenges, and exclusive cosmetics.",
+      "rewards": [
+        {
+          "ru": "8 испытаний и эксклюзивная косметика",
+          "en": "8 Challenges & Exclusive Cosmetics"
+        },
+        {
+          "ru": "Механики Ritual и Wildwood",
+          "en": "Ritual & Wildwood Mechanics"
+        },
+        {
+          "ru": "Переработанный Trial of Chaos",
+          "en": "Reworked Trial of Chaos"
+        }
+      ],
+      "sourceUrl": "https://pathofexile2.com",
+      "updatedAt": "2026-08-28T00:30:00.000Z",
+      "status": "upcoming"
     }
   ]
 }

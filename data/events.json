@@ -187,6 +187,9 @@
     },
     {
       "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-1",
+      "gameId": "path-of-exile",
+      "type": "race",
+      "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №1",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #1",
       "startDate": "2026-09-04T21:00:00Z",
       "endDate": "2026-09-05T03:00:00Z",

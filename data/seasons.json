@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-01T15:19:57.702Z",
+  "lastCheckedAt": "2026-09-01T15:34:01.980Z",
   "changelog": [
     {
       "timestamp": "2026-08-31T05:45:39.247Z",
@@ -326,7 +326,7 @@
             "ru": "PoE 2: Ивент-лига 0.5.5 «The Forbidden Rites»"
           },
           "startDate": "2026-09-04T20:00:00.000Z",
-          "endDate": "2026-10-04T20:00:00.000Z",
+          "endDate": "2026-12-11T19:00:00.000Z",
           "verification": "official",
           "sourceUrl": "https://pathofexile2.com"
         },

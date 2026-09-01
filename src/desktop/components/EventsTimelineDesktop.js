@@ -161,7 +161,6 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
              tabindex="0">
           <span class="events-timeline__bar-icon">${getIconSvg(typeIcon, { size: 14 })}</span>
           <span class="events-timeline__bar-title">${escapeHtml(title)}</span>
-          ${isUpcoming ? '<div class="events-timeline__dotted-trail"></div>' : ''}
 
           <!-- Desktop Rich Interactive Hover Tooltip -->
           <div class="events-timeline__tooltip ${vAlignClass} ${hAlignClass}" role="tooltip">

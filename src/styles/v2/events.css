@@ -350,16 +350,6 @@
   display: none;
 }
 
-.events-timeline__dotted-trail {
-  position: absolute;
-  right: -45px;
-  top: 50%;
-  width: 45px;
-  height: 1px;
-  border-top: 2px dotted rgba(255, 255, 255, 0.3);
-  pointer-events: none;
-}
-
 /* Rich Interactive Tooltip: Auto-flip & Boundary Aware */
 .events-timeline__tooltip {
   position: absolute;

@@ -62,4 +62,18 @@ export class MobileNav {
     const lblMore = document.getElementById('mob-lbl-more');
     if (lblMore) lblMore.textContent = t('navbar.btnMore');
   }
+
+  static syncActive(activeView) {
+    if (typeof document === 'undefined') return;
+    const mobTrackerBtn = document.getElementById('mob-btn-tracker');
+    const mobTimelineBtn = document.getElementById('mob-btn-timeline');
+    const mobGamesBtn = document.getElementById('mob-btn-games');
+    const mobMoreBtn = document.getElementById('mob-btn-more');
+
+    [mobTrackerBtn, mobTimelineBtn, mobGamesBtn, mobMoreBtn].forEach(b => b?.classList.remove('mobile-nav__btn--active'));
+    if (activeView === 'card' && mobTrackerBtn) mobTrackerBtn.classList.add('mobile-nav__btn--active');
+    else if (activeView === 'timeline' && mobTimelineBtn) mobTimelineBtn.classList.add('mobile-nav__btn--active');
+    else if (activeView === 'games' && mobGamesBtn) mobGamesBtn.classList.add('mobile-nav__btn--active');
+    else if (activeView === 'more' && mobMoreBtn) mobMoreBtn.classList.add('mobile-nav__btn--active');
+  }
 }

@@ -1241,4 +1241,14 @@ async function initializeApp() {
   }
 }
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((reg) => {
+      reg.update().catch(() => {});
+    }).catch((err) => {
+      console.warn('[SW] Registration failed:', err);
+    });
+  });
+}
+
 initializeApp();

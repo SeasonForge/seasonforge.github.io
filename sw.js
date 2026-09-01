@@ -1,13 +1,9 @@
-const CACHE_NAME = 'seasonforge-v2.0.2';
-const STATIC_ASSETS = [
+const CACHE_NAME = 'seasonforge-v2.3.0';
+const CRITICAL_SHELL_ASSETS = [
   '/',
   '/index.html',
   '/offline.html',
   '/manifest.json',
-  '/src/styles/v2/dist/v2-bundle.css?v=2.0.0',
-  '/src/app.js',
-  '/src/game-page.js',
-  '/src/config.js',
   '/assets/favicon.png',
   '/assets/logo.png',
   '/assets/bg-smoke.jpeg'
@@ -17,7 +13,7 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(async (cache) => {
-      for (const asset of STATIC_ASSETS) {
+      for (const asset of CRITICAL_SHELL_ASSETS) {
         try {
           await cache.add(asset);
         } catch (err) {
@@ -29,13 +25,14 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: Clean up old caches
+// Activate: Immediately claim clients and purge old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log(`[SW] Purging old cache: ${key}`);
             return caches.delete(key);
           }
         })
@@ -46,8 +43,8 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch Strategy:
-// 1. Page Navigations & Data JSON -> Network First (Fallback to Cache, then Offline Page)
-// 2. Static Assets (CSS, JS, Fonts, Images) -> Stale-While-Revalidate
+// 1. HTML Pages, JSON Data, JS modules, CSS -> Network-First (always fresh, fallback to cache if offline)
+// 2. Static Media (Images, Fonts, Audio) -> Stale-While-Revalidate (fast cached delivery with bg update)
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -55,14 +52,20 @@ self.addEventListener('fetch', (event) => {
   // Skip non-GET requests and browser extensions
   if (request.method !== 'GET' || !url.protocol.startsWith('http')) return;
 
-  // Strategy A: HTML Page Navigations & Seasons Data JSON -> Network First
-  if (request.mode === 'navigate' || url.pathname.endsWith('.json')) {
+  const isCodeOrData = 
+    request.mode === 'navigate' ||
+    url.pathname.endsWith('.json') ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.mjs') ||
+    url.pathname.endsWith('.css');
+
+  if (isCodeOrData) {
+    // Network-First Strategy for Code and Data
     event.respondWith(
       (async () => {
         try {
-          // Explicitly construct request with redirect: 'follow' to prevent browser SW navigation redirect errors
           const fetchOptions = request.mode === 'navigate' ? { redirect: 'follow' } : {};
-          const networkResponse = await fetch(request.url, fetchOptions);
+          const networkResponse = await fetch(request, fetchOptions);
           
           if (networkResponse && networkResponse.status === 200) {
             const copy = networkResponse.clone();
@@ -71,6 +74,7 @@ self.addEventListener('fetch', (event) => {
           }
           return networkResponse;
         } catch (error) {
+          // Offline fallback
           const cachedResponse = await caches.match(request);
           if (cachedResponse) return cachedResponse;
 
@@ -90,7 +94,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Strategy B: Static Assets (CSS, JS, Fonts, Images) -> Stale-While-Revalidate
+  // Strategy B: Static Assets (Images, Fonts, Icons) -> Stale-While-Revalidate
   event.respondWith(
     (async () => {
       const cachedResponse = await caches.match(request);

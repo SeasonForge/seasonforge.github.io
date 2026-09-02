@@ -327,6 +327,30 @@
       "sourceUrl": "https://pathofexile2.com",
       "updatedAt": "2026-08-28T00:30:00.000Z",
       "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_announcement_season-5-pre-season-calendar-reveal",
+      "gameId": "last-epoch",
+      "type": "announcement",
+      "title_ru": "Last Epoch: Публикация предсезонного календаря Сезона 5",
+      "title_en": "Last Epoch: Season 5 Pre-Season Calendar Reveal",
+      "startDate": "2026-09-14T16:00:00Z",
+      "endDate": "2026-09-14T23:59:59Z",
+      "description_ru": "Eleventh Hour Games публикует официальный предсезонный календарь: расписание анонсов, стримов разработчиков и раскрытия механик до запуска Season 5: Rage of the Frostborn (1 октября 2026).",
+      "description_en": "Eleventh Hour Games releases the official pre-season calendar outlining reveal streams, developer deep-dives, and feature showcases leading up to the Season 5: Rage of the Frostborn launch on October 1, 2026.",
+      "rewards": [
+        {
+          "ru": "Официальный календарь предсезонных показов",
+          "en": "Official pre-season reveal schedule"
+        },
+        {
+          "ru": "Даты стримов и демонстраций Season 5",
+          "en": "Season 5 stream & showcase dates"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694",
+      "updatedAt": "2026-09-02T16:00:00.000Z",
+      "status": "upcoming"
     }
   ]
 }

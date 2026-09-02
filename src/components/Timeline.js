@@ -616,8 +616,8 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
   const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
-  const seasonsHref = cleanBase;
-  const eventsHref = `${cleanBase}events/`;
+  const seasonsHref = '/';
+  const eventsHref = '/events/';
 
   const timelineChartHtml = `
     <div class="timeline-view-wrapper">

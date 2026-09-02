@@ -69,11 +69,11 @@ export function switchTimelineMode(targetMode, onRender) {
     timelineMode = targetMode;
     if (targetMode === 'events') {
       if (!window.location.pathname.includes('/events')) {
-        window.history.pushState({ mode: 'events' }, '', './events/');
+        window.history.pushState({ mode: 'events' }, '', '/events/');
       }
     } else {
       if (window.location.pathname.includes('/events')) {
-        window.history.pushState({ mode: 'seasons' }, '', '../');
+        window.history.pushState({ mode: 'seasons' }, '', '/');
       }
     }
     if (typeof onRender === 'function') {

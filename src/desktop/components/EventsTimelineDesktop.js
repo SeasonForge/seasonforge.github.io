@@ -14,8 +14,8 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   const localizedEventsList = eventsList.filter(e => !e.locales || (Array.isArray(e.locales) && e.locales.includes(lang)));
   const now = new Date();
   const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
-  const seasonsHref = cleanBase;
-  const eventsHref = `${cleanBase}events/`;
+  const seasonsHref = '/';
+  const eventsHref = '/events/';
 
   // 1. Determine Timeline Window: 7 days before today to 45 days ahead (~7 weeks)
   const windowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);

@@ -53,14 +53,14 @@ export class MoreMenuModal {
             </div>
             <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <a href="${cleanBase}events/" class="more-menu-item">
+          <a href="/events/" class="more-menu-item">
             <div class="more-menu-item__left">
               <span class="more-menu-item__icon">${getIconSvg('gift', { size: 18 })}</span>
               <span class="more-menu-item__label">${t('navbar.btnEvents') || 'Events & Drops'}</span>
             </div>
             <span class="more-menu-item__arrow">${getIconSvg('chevron-right', { size: 16 })}</span>
           </a>
-          <a href="${cleanBase}changelog/" class="more-menu-item">
+          <a href="/changelog/" class="more-menu-item">
             <div class="more-menu-item__left">
               <span class="more-menu-item__icon">${getIconSvg('clipboard-list', { size: 18 })}</span>
               <span class="more-menu-item__label">${t('footer.changelog')}</span>

@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-04T16:28:20.550Z",
+  "lastCheckedAt": "2026-09-04T16:58:14.153Z",
   "changelog": [
     {
       "timestamp": "2026-09-02T14:35:00.000Z",
@@ -125,10 +125,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "title": "The Path of Exile 1 ExileCon Qualifiers Have Begun!",
-        "url": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "publishDate": "Thu, 03 Sep 2026 21:00:00 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/3999357",
+        "title": "Path of Exile 1 ExileCon Qualifiers Begin Next Week",
+        "url": "https://www.pathofexile.com/forum/view-thread/3999357",
+        "publishDate": "Tue, 25 Aug 2026 03:00:00 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -137,7 +137,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-04T16:28:12.160Z"
+        "updatedAt": "2026-08-31T05:45:19.815Z"
       },
       "history": [
         {
@@ -158,7 +158,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3999357"
       },
       "nextSeason": {
         "name": {
@@ -169,7 +169,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3999357",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -177,13 +177,15 @@
       },
       "features": {
         "en": [
-          "Allflame league mechanics",
-          "Mercenaries",
-          "ExileCon qualifier tournaments"
+          "Curse of the Allflame League and Expansion",
+          "Allflame mechanics and Mercenaries improvements",
+          "New Unique item: The Draugur's Lantern",
+          "ExileCon Qualifiers competition events"
         ],
         "ru": [
-          "Механики лиги Всепламени",
-          "Наемники",
+          "Лига и дополнение «Проклятие Всепламени»",
+          "Улучшения механики Всепламени и Наёмников",
+          "Новый уникальный предмет: Фонарь Драугра (The Draugur's Lantern)",
           "Отборочные турниры ExileCon"
         ]
       },
@@ -234,18 +236,7 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #1",
-            "ru": "Первый отборочный турнир ExileCon Path of Exile 1"
-          },
-          "startDate": "2026-09-03T00:00:00.000Z",
-          "endDate": "",
-          "verification": "official"
-        },
-        {
-          "id": "poe1-exilecon-qualifier-drops-1",
-          "type": "drops",
-          "title": {
-            "en": "ExileCon Qualifier Twitch Drops: Wild Footprints Effect",
-            "ru": "Twitch Drops отборочных ExileCon: Дикие следы"
+            "ru": "Отборочный турнир #1 к ExileCon по Path of Exile 1"
           },
           "startDate": "2026-09-03T00:00:00.000Z",
           "endDate": "",
@@ -594,10 +585,10 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1842212951313902",
-        "title": "Eterra Monthly: August Edition 2026",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902",
-        "publishDate": "2026-09-01T16:00:24.000Z",
+        "id": "1840310314342343",
+        "title": "Eterra Monthly: July Edition 2026",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1840310314342343",
+        "publishDate": "2026-08-06T16:01:02.000Z",
         "source": "Last Epoch Steam News"
       },
       "status": {
@@ -606,7 +597,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-02T16:41:01.234Z"
+        "updatedAt": "2026-08-07T15:15:31.828Z"
       },
       "history": [
         {
@@ -620,19 +611,19 @@
       ],
       "currentSeason": {
         "name": {
-          "en": "Season 4",
-          "ru": "Сезон 4"
+          "en": "Cycle 4: Shattered Omens",
+          "ru": "Cycle 4: Shattered Omens"
         },
-        "startDate": "2026-04-08T00:00:00.000Z",
+        "startDate": "2026-03-27T16:00:00Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902"
+        "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694"
       },
       "nextSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Ярость рождённых морозом"
+          "ru": "Сезон 5: Rage of the Frostborn"
         },
         "startDate": "2026-10-01T16:00:00Z",
         "endDate": "",
@@ -642,22 +633,20 @@
           "ru": "Официальный анонс EHG: старт Сезона 5 — 1 октября 2026 года. Публикация предсезонного календаря инфоподачи — 14 сентября.",
           "en": "Official EHG announcement: Season 5 launches October 1, 2026. Pre-season reveal calendar will be published on September 14."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902"
+        "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694"
       },
       "features": {
         "en": [
-          "Season 5: Rage of the Frostborn thematic content featuring Morditas",
-          "New unique items including Gift of the Eidolon and Perilous Reflection",
-          "Comprehensive audio redesign across combat, skills, and enemy sound effects",
-          "Enhanced Feedback and Suggestions Tracker system",
-          "Day-by-day reveal countdown calendar leading up to season launch"
+          "Random encounters with Omens",
+          "Rework of crafting and trade factions systems",
+          "Second major expansion with new subclasses",
+          "Expanded Monolith of Fate endgame content"
         ],
         "ru": [
-          "Тематический контент 5-го сезона «Ярость рождённых морозом» с участием Мордитаса",
-          "Новые уникальные предметы, включая Gift of the Eidolon и Perilous Reflection",
-          "Полная переработка звукового дизайна боевой системы, умений и врагов",
-          "Улучшенная система отслеживания предложений и отзывов игроков",
-          "Ежедневный календарь анонсов и событий перед запуском сезона"
+          "Случайные энкаунтеры с Предзнаменованиями (Omens)",
+          "Реворк системы крафта и фракций торговли",
+          "Второе крупное дополнение с новыми подклассами",
+          "Расширенный эндгейм-контент монолитов судьбы"
         ]
       },
       "links": {

@@ -185,6 +185,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
   const items = Array.isArray(games) ? games : [];
   const state = getState();
   const lang = state.settings?.lang || 'en';
+  const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
 
   if (!items.length) {
     return `<section class="timeline-card"><h3>${t('timeline.fallbackTitle')}</h3><p>${t('timeline.fallbackNoGames')}</p></section>`;
@@ -512,14 +513,14 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
         const eyebrowLabel = lang === 'ru' ? 'До старта сезона' : 'Until season start';
         return `
           <div class="upcoming-card unified-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color};" data-game-id="${game.id}" data-game-countdown="${game.id}">
-            <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
+            <img src="${cleanBase}assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
             
             <!-- Top Section: Current Season & Status -->
             <div class="unified-card__top">
               <div class="unified-card__header-row">
                 <div class="unified-card__game-title-group">
                   <div class="unified-card__icon-box">${iconHtml}</div>
-                  <h4 class="unified-card__game-name"><a href="./games/${game.id}/" class="unified-card__game-link">${gameName}</a></h4>
+                  <h4 class="unified-card__game-name"><a href="/games/${game.id}/" class="unified-card__game-link">${gameName}</a></h4>
                 </div>
                 <span class="game-card__pill game-card__pill--${statusCode}">${statusLabel.toUpperCase()}</span>
               </div>
@@ -560,7 +561,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
               </div>
 
               <div class="unified-card__footer-row">
-                <a href="./games/${game.id}/" class="unified-card__arrow-btn">
+                <a href="/games/${game.id}/" class="unified-card__arrow-btn">
                   <span>${lang === 'ru' ? 'Перейти к игре' : 'View Game'}</span>
                   <span class="unified-card__arrow-icon">→</span>
                 </a>
@@ -573,7 +574,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
       // Default Compact Card for Desktop Timeline View
       return `
         <div class="upcoming-card ${isHype ? 'upcoming-card--hype' : ''} ${isPtr ? 'upcoming-card--ptr' : ''}" style="--game-color: ${color}" data-game-id="${game.id}" data-game-countdown="${game.id}">
-          <img src="./assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
+          <img src="${cleanBase}assets/images/cards/${game.id}.webp" alt="${gameName}" class="upcoming-card__bg" loading="lazy" />
           <div class="upcoming-card__date-wrapper">
             <span class="upcoming-card__date">${formattedDate}</span>
             <div class="upcoming-card__badges-group">
@@ -581,7 +582,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
               ${badgeText ? `<span class="upcoming-card__hype-badge ${isPtr ? 'upcoming-card__hype-badge--ptr' : ''}">${badgeText}</span>` : ''}
             </div>
           </div>
-          <h4 class="upcoming-card__game-name"><a href="./games/${game.id}/" class="upcoming-card__game-link">${gameName}</a></h4>
+          <h4 class="upcoming-card__game-name"><a href="/games/${game.id}/" class="upcoming-card__game-link">${gameName}</a></h4>
           <div class="upcoming-card__season-name">${eventTitle}</div>
           ${subtextHtml}
           <div class="upcoming-card__countdown">
@@ -615,7 +616,6 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
   const endYear = endTimelineDate.getFullYear();
   const yearBadgeText = startYear === endYear ? `${startYear}` : `${startYear}–${endYear}`;
 
-  const cleanBase = typeof basePath === 'string' && basePath.endsWith('/') ? basePath : (typeof basePath === 'string' ? `${basePath}/` : './');
   const seasonsHref = '/';
   const eventsHref = '/events/';
 

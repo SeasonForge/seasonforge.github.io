@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-08T16:43:55.450Z",
+  "lastCheckedAt": "2026-09-09T04:51:08.838Z",
   "changelog": [
     {
       "timestamp": "2026-09-05T04:38:15.853Z",
@@ -405,19 +405,19 @@
       "icon": "flame",
       "website": "https://diablo4.blizzard.com/",
       "latestNews": {
-        "id": "24292852",
-        "title": "Season 14: Season of Death Awakening Update",
-        "url": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know",
-        "publishDate": "2026-07-30T17:00:00Z",
+        "id": "24293056",
+        "title": "Your Preview Guide to Diablo at BlizzCon 2026",
+        "url": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026",
+        "publishDate": "2026-09-08T17:33:00Z",
         "source": "Official Diablo IV News"
       },
       "status": {
-        "code": "in-progress",
+        "code": "active",
         "label": {
-          "en": "In Progress",
-          "ru": "В разгаре"
+          "en": "Active",
+          "ru": "Активен"
         },
-        "updatedAt": "2026-07-30T23:23:34.443Z"
+        "updatedAt": "2026-09-09T04:50:50.558Z"
       },
       "history": [
         {
@@ -431,14 +431,14 @@
       ],
       "currentSeason": {
         "name": {
-          "en": "Season 14: Season of Death Awakening",
-          "ru": "Season 14: Season of Death Awakening"
+          "en": "Season of Death Awakening",
+          "ru": "Сезон Пробуждения Смерти"
         },
-        "startDate": "2026-06-30T17:00:00Z",
+        "startDate": "2026-06-23T17:00:00.000Z",
         "endDate": "2026-09-15T17:00:00Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know"
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026"
       },
       "nextSeason": {
         "name": {
@@ -453,9 +453,16 @@
           "en": "Estimated date based on in-game Season 14 Battle Pass end (Sept 15)",
           "ru": "Расчётная дата по окончанию Battle Pass Сезона 14 в игре (15 сентября)"
         },
-        "sourceUrl": "https://news.blizzard.com/en-us/article/24292852/the-3-2-0-ptr-what-you-need-to-know"
+        "sourceUrl": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026"
       },
-      "ptr": null,
+      "ptr": {
+        "startDate": "2026-07-30T17:00:00.000Z",
+        "endDate": "",
+        "title": {
+          "en": "3.2.0 PTR",
+          "ru": "PTR обновления 3.2.0"
+        }
+      },
       "events": [
         {
           "id": "diablo-iv_convention_blizzcon-2026-showcase",
@@ -569,18 +576,18 @@
       },
       "features": {
         "en": [
-          "Fight the new threat from Death Cults",
-          "Trials Tower progression and updated leaderboards",
-          "Free trial access to the new character class",
-          "Return of the Realmwalkers mechanic to the game",
-          "Massive rework of the mythical unique items system"
+          "Death Cult threats",
+          "The Tower and Leaderboards",
+          "Warlock Trial",
+          "Seasonal Soul Splinters",
+          "New Charms and Mythic Unique changes"
         ],
         "ru": [
-          "Борьба с новой угрозой от культов Смерти (Death Cults)",
-          "Прогрессия Башни испытаний и обновленные таблицы лидеров",
-          "Бесплатный пробный доступ к новому игровому классу",
-          "Возвращение механики Мироходцев (Realmwalkers) в игру",
-          "Масштабный реворк системы эпохальных уникальных предметов"
+          "Угрозы Культа Смерти",
+          "Башня и списки лидеров",
+          "Пробный период Чернокнижника",
+          "Сезонные Осколки душ",
+          "Новые чары и изменения мифических уникальных предметов"
         ]
       },
       "links": {

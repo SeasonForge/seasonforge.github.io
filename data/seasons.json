@@ -1,6 +1,26 @@
 {
-  "lastCheckedAt": "2026-09-10T16:00:45.104Z",
+  "lastCheckedAt": "2026-09-10T17:42:10.845Z",
   "changelog": [
+    {
+      "timestamp": "2026-09-10T15:00:00.000Z",
+      "gameId": "diablo-iv",
+      "url": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026",
+      "type": "event",
+      "text": {
+        "en": "Diablo IV: BlizzCon 2026 Twitch Drops announced — Sept 12–15 with 3 weapon cosmetics and streamer badge",
+        "ru": "Diablo IV: Анонсированы Twitch Drops к BlizzCon 2026 — 12–15 сентября с 3 обликами оружия и бейджем"
+      }
+    },
+    {
+      "timestamp": "2026-09-10T14:00:00.000Z",
+      "gameId": "path-of-exile",
+      "url": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "type": "event",
+      "text": {
+        "en": "Path of Exile 1: ExileCon Race Qualifier #2 starts today with Scavenger Hood Twitch Drops",
+        "ru": "Path of Exile 1: Второй отборочный турнир ExileCon стартует сегодня с Twitch Drops на Scavenger Hood"
+      }
+    },
     {
       "timestamp": "2026-09-05T04:38:15.853Z",
       "gameId": "path-of-exile-2",
@@ -246,8 +266,8 @@
             "en": "Path of Exile 1 ExileCon Qualifier #1",
             "ru": "Первый отборочный турнир ExileCon по Path of Exile 1"
           },
-          "startDate": "2026-09-03T00:00:00.000Z",
-          "endDate": "",
+          "startDate": "2026-09-03T21:00:00.000Z",
+          "endDate": "2026-09-04T03:00:00.000Z",
           "verification": "official",
           "isPast": true,
           "status": "archived"
@@ -259,11 +279,55 @@
             "en": "ExileCon Qualifier Twitch Drops - Wild Footprints Effect",
             "ru": "Twitch Drops отборочного турнира ExileCon - эффект Диких следов"
           },
-          "startDate": "2026-09-03T00:00:00.000Z",
-          "endDate": "",
+          "startDate": "2026-09-03T21:00:00.000Z",
+          "endDate": "2026-09-04T21:00:00.000Z",
           "verification": "official",
           "isPast": true,
           "status": "archived"
+        },
+        {
+          "id": "poe1-exilecon-qualifier-2",
+          "type": "tournament",
+          "title": {
+            "en": "Path of Exile 1 ExileCon Qualifier #2",
+            "ru": "Второй отборочный турнир ExileCon по Path of Exile 1"
+          },
+          "startDate": "2026-09-10T21:00:00.000Z",
+          "endDate": "2026-09-11T03:00:00.000Z",
+          "verification": "official"
+        },
+        {
+          "id": "poe1-exilecon-qualifier-2-twitch-drops",
+          "type": "drops",
+          "title": {
+            "en": "ExileCon Qualifier #2 Twitch Drops - Scavenger Hood",
+            "ru": "Twitch Drops отборочного турнира ExileCon №2 - Капюшон мусорщика"
+          },
+          "startDate": "2026-09-10T21:00:00.000Z",
+          "endDate": "2026-09-11T21:00:00.000Z",
+          "verification": "official"
+        },
+        {
+          "id": "poe1-exilecon-qualifier-3",
+          "type": "tournament",
+          "title": {
+            "en": "Path of Exile 1 ExileCon Qualifier #3",
+            "ru": "Третий отборочный турнир ExileCon по Path of Exile 1"
+          },
+          "startDate": "2026-09-17T21:00:00.000Z",
+          "endDate": "2026-09-18T03:00:00.000Z",
+          "verification": "official"
+        },
+        {
+          "id": "poe1-exilecon-qualifier-4",
+          "type": "tournament",
+          "title": {
+            "en": "Path of Exile 1 ExileCon Qualifier #4 (Final)",
+            "ru": "Четвертый отборочный турнир ExileCon по Path of Exile 1 (Финал)"
+          },
+          "startDate": "2026-09-24T21:00:00.000Z",
+          "endDate": "2026-09-25T03:00:00.000Z",
+          "verification": "official"
         }
       ],
       "ptr": null
@@ -475,6 +539,18 @@
           "endDate": "2026-09-13T23:59:59Z",
           "verification": "official",
           "sourceUrl": "https://blizzcon.com/ru-ru/"
+        },
+        {
+          "id": "diablo-iv-blizzcon-2026-twitch-drops",
+          "type": "drops",
+          "title": {
+            "en": "BlizzCon 2026 Twitch Drops (Weapons & Badge)",
+            "ru": "Twitch Drops к BlizzCon 2026 (Оружие и бейдж)"
+          },
+          "startDate": "2026-09-12T17:00:00Z",
+          "endDate": "2026-09-15T16:59:00Z",
+          "verification": "official",
+          "sourceUrl": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026"
         },
         {
           "id": "season-15-launch",

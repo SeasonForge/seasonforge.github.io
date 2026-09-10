@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-08-20T09:25:00.000Z",
+  "lastCheckedAt": "2026-09-10T20:35:00.000Z",
   "events": [
     {
       "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
@@ -91,6 +91,39 @@
       },
       "streamUrl": "https://www.twitch.tv/diablo",
       "updatedAt": "2026-08-21T13:45:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "diablo-iv_drops_blizzcon-2026-twitch-drops",
+      "gameId": "diablo-iv",
+      "type": "twitch_drops",
+      "title_ru": "Twitch Drops в честь BlizzCon 2026: Облики оружия и бейдж",
+      "title_en": "BlizzCon 2026 Twitch Drops: Weapon Cosmetics & Streamer Badge",
+      "startDate": "2026-09-12T17:00:00Z",
+      "endDate": "2026-09-15T16:59:00Z",
+      "description_ru": "Смотрите трансляции в категории Diablo IV на Twitch с 12 по 15 сентября для получения обликов оружия: кинжала Serrated Skean (2 ч), топора Corroded Cleaver (4 ч) и булавы Tintinnabulation (6 ч), а также бейджа за подписку на стримера-участника.",
+      "description_en": "Watch Diablo IV directory streams on Twitch during BlizzCon: earn Serrated Skean Dagger (2h), Corroded Cleaver Axe (4h), Tintinnabulation Mace (6h), and a Support a Streamer badge for gifting a sub.",
+      "rewards": [
+        {
+          "ru": "Кинжал Serrated Skean Dagger (2 часа просмотра)",
+          "en": "Serrated Skean Dagger (2 hours watch time)"
+        },
+        {
+          "ru": "Топор Corroded Cleaver Axe (4 часа просмотра)",
+          "en": "Corroded Cleaver Axe (4 hours watch time)"
+        },
+        {
+          "ru": "Булава Tintinnabulation Mace (6 часов просмотра)",
+          "en": "Tintinnabulation Mace (6 hours watch time)"
+        },
+        {
+          "ru": "Бейдж поддержки за платную подписку на стримера",
+          "en": "Support a Streamer Badge"
+        }
+      ],
+      "sourceUrl": "https://news.blizzard.com/en-us/article/24293056/your-preview-guide-to-diablo-at-blizzcon-2026",
+      "streamUrl": "https://www.twitch.tv/diablo",
+      "updatedAt": "2026-09-10T20:35:00.000Z",
       "status": "upcoming"
     },
     {
@@ -191,8 +224,8 @@
       "type": "race",
       "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №1",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #1",
-      "startDate": "2026-09-04T21:00:00Z",
-      "endDate": "2026-09-05T03:00:00Z",
+      "startDate": "2026-09-03T21:00:00Z",
+      "endDate": "2026-09-04T03:00:00Z",
       "description_ru": "Первый отборочный раунд Solo Self-Found гонки в Path of Exile 1 до убийства Китавы в 5 Акте. Победитель получает поездку на финал ExileCon и эксклюзивный доспех на выбор.",
       "description_en": "First Solo Self-Found race qualifier in Path of Exile 1 to defeat Act 5 Kitava. Winner receives a paid trip to the ExileCon live finale and a choice of body armour MTX.",
       "rewards": [
@@ -206,8 +239,8 @@
         }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
-      "updatedAt": "2026-08-20T20:20:00.000Z",
-      "status": "upcoming"
+      "updatedAt": "2026-09-10T20:41:00.000Z",
+      "status": "ended"
     },
     {
       "id": "path-of-exile_race_exilecon-2026-poe-1-race-qualifier-2",
@@ -215,8 +248,8 @@
       "type": "race",
       "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №2",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #2",
-      "startDate": "2026-09-11T21:00:00Z",
-      "endDate": "2026-09-12T03:00:00Z",
+      "startDate": "2026-09-10T21:00:00Z",
+      "endDate": "2026-09-11T03:00:00Z",
       "description_ru": "Второй отборочный раунд Solo Self-Found гонки в Path of Exile 1 за слот в гранд-финале ExileCon и эксклюзивный доспех.",
       "description_en": "Second Solo Self-Found race qualifier in Path of Exile 1 for a slot in the ExileCon live championship and body armour MTX.",
       "rewards": [
@@ -230,7 +263,28 @@
         }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
-      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "updatedAt": "2026-09-10T20:35:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "path-of-exile_drops_exilecon-2026-qualifier-2-twitch-drops",
+      "gameId": "path-of-exile",
+      "type": "twitch_drops",
+      "title_ru": "ExileCon Qualifier №2: Twitch Drops — Scavenger Hood",
+      "title_en": "ExileCon Qualifier #2: Twitch Drops — Scavenger Hood",
+      "startDate": "2026-09-10T21:00:00Z",
+      "endDate": "2026-09-11T21:00:00Z",
+      "description_ru": "Смотрите официальный стрим или любую трансляцию в категории Path of Exile 1 от 30 минут для получения шлема Scavenger Hood. Drops действуют 24 часа со старта гонки (до 11 сентября 14:00 PDT).",
+      "description_en": "Watch the official broadcast or any PoE 1 stream for 30 minutes to earn the Scavenger Hood helmet MTX. Active for 24 hours after race start (until Sep 11, 14:00 PDT).",
+      "rewards": [
+        {
+          "ru": "Капюшон мусорщика (Scavenger Hood) за 30 мин просмотра",
+          "en": "Scavenger Hood MTX (30 min watch time)"
+        }
+      ],
+      "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
+      "streamUrl": "https://www.twitch.tv/pathofexile",
+      "updatedAt": "2026-09-10T20:35:00.000Z",
       "status": "upcoming"
     },
     {
@@ -239,8 +293,8 @@
       "type": "race",
       "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №3",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #3",
-      "startDate": "2026-09-18T21:00:00Z",
-      "endDate": "2026-09-19T03:00:00Z",
+      "startDate": "2026-09-17T21:00:00Z",
+      "endDate": "2026-09-18T03:00:00Z",
       "description_ru": "Третий отборочный раунд Solo Self-Found гонки в Path of Exile 1. Победитель отправляется на гранд-финал ExileCon.",
       "description_en": "Third Solo Self-Found race qualifier in Path of Exile 1. Winner qualifies for the ExileCon live stage grand finale.",
       "rewards": [
@@ -254,7 +308,7 @@
         }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
-      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "updatedAt": "2026-09-10T20:41:00.000Z",
       "status": "upcoming"
     },
     {
@@ -263,8 +317,8 @@
       "type": "race",
       "title_ru": "ExileCon 2026: Отборочная гонка PoE 1 №4 (Финал)",
       "title_en": "ExileCon 2026: PoE 1 Race Qualifier #4 (Final)",
-      "startDate": "2026-09-25T21:00:00Z",
-      "endDate": "2026-09-26T03:00:00Z",
+      "startDate": "2026-09-24T21:00:00Z",
+      "endDate": "2026-09-25T03:00:00Z",
       "description_ru": "Четвертый финальный отборочный раунд гонки по Path of Exile 1 перед гранд-финалом на главной сцене ExileCon.",
       "description_en": "The fourth and final Solo Self-Found qualifier race for Path of Exile 1 leading into the ExileCon main stage finale.",
       "rewards": [
@@ -278,7 +332,7 @@
         }
       ],
       "sourceUrl": "https://www.pathofexile.com/forum/view-thread/3985393",
-      "updatedAt": "2026-08-20T20:20:00.000Z",
+      "updatedAt": "2026-09-10T20:41:00.000Z",
       "status": "upcoming"
     },
     {

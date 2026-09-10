@@ -1,6 +1,6 @@
 import { t, getVal } from '../i18n/index.js';
 import { getState } from '../store/state.js';
-import { calculateDynamicStatus } from '../utils/status.js';
+import { calculateDynamicStatus, getActivePtr } from '../utils/status.js';
 import { escapeHtml } from '../utils/helpers.js';
 import { getIconSvg } from '../utils/icons.js';
 
@@ -43,11 +43,11 @@ export function render(games = [], activeGame = null, activeView = 'card', baseP
       const logo = game.logo ? escapeHtml(game.logo) : '';
       
       let ptrBadge = '';
-      if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
-        const ptrItem = game.ptr || game.events.find(e => e.type === 'ptr');
+      const activePtr = getActivePtr(game);
+      if (activePtr) {
         let datePart = lang === 'ru' ? '4 АВГ' : 'AUG 4';
-        if (ptrItem?.startDate) {
-          const d = new Date(ptrItem.startDate);
+        if (activePtr.startDate) {
+          const d = new Date(activePtr.startDate);
           if (!Number.isNaN(d.getTime())) {
             const monthNames = lang === 'ru' 
               ? ['ЯНВ', 'ФЕВ', 'МАР', 'АПР', 'МАЙ', 'ИЮН', 'ИЮЛ', 'АВГ', 'СЕН', 'ОКТ', 'НОЯ', 'ДЕК']

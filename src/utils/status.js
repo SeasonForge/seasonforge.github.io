@@ -84,3 +84,30 @@ export function calculateDynamicStatus(game = {}) {
   }
   return 'final-days';
 }
+
+/**
+ * Returns the active or upcoming PTR item if valid and not expired, otherwise null.
+ */
+export function getActivePtr(game = {}) {
+  const ptrItem = game.ptr || (Array.isArray(game.events) ? game.events.find(e => e.type === 'ptr') : null);
+  if (!ptrItem) return null;
+  if (ptrItem.isPast || ptrItem.status === 'archived') return null;
+
+  const now = Date.now();
+  if (ptrItem.endDate) {
+    const endMs = new Date(ptrItem.endDate).getTime();
+    if (!Number.isNaN(endMs)) {
+      return endMs >= now ? ptrItem : null;
+    }
+  }
+
+  if (ptrItem.startDate) {
+    const startMs = new Date(ptrItem.startDate).getTime();
+    if (!Number.isNaN(startMs)) {
+      // Active if in future, or started within the last 7 days (standard PTR window)
+      return (startMs >= now || (now - startMs <= 7 * 24 * 60 * 60 * 1000)) ? ptrItem : null;
+    }
+  }
+
+  return null;
+}

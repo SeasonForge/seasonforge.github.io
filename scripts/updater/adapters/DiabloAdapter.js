@@ -150,11 +150,19 @@ Formatting rule: Format all dates strictly as YYYY-MM-DD or full ISO-8601 string
           en: (extracted.featuresEn && extracted.featuresEn.length > 0) ? extracted.featuresEn : (existingGame?.features?.en || []),
           ru: (extracted.featuresRu && extracted.featuresRu.length > 0) ? extracted.featuresRu : (existingGame?.features?.ru || [])
         },
-        ptr: existingGame?.ptr || (extracted.ptr?.startDate ? {
-          startDate: this.normalizeAndValidateDate(extracted.ptr.startDate),
-          endDate: this.normalizeAndValidateDate(extracted.ptr.endDate),
-          title: { en: extracted.ptr.titleEn || 'PTR', ru: extracted.ptr.titleRu || 'PTR' }
-        } : null),
+        ptr: (() => {
+          const rawPtr = extracted.ptr?.startDate ? {
+            startDate: this.normalizeAndValidateDate(extracted.ptr.startDate),
+            endDate: this.normalizeAndValidateDate(extracted.ptr.endDate),
+            title: { en: extracted.ptr.titleEn || 'PTR', ru: extracted.ptr.titleRu || 'PTR' }
+          } : existingGame?.ptr;
+
+          if (!rawPtr || !rawPtr.startDate) return null;
+          const nowMs = Date.now();
+          const endMs = rawPtr.endDate ? new Date(rawPtr.endDate).getTime() : new Date(rawPtr.startDate).getTime() + (7 * 24 * 60 * 60 * 1000);
+          if (endMs < nowMs) return null;
+          return rawPtr;
+        })(),
         events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
         featureCategories: existingGame?.featureCategories || null,
         links: { official: 'https://diablo4.blizzard.com/', wiki: '', community: '' },

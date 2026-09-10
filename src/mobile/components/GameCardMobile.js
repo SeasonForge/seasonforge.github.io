@@ -6,7 +6,7 @@
 
 import { t, getVal } from '../../i18n/index.js';
 import { getState } from '../../store/state.js';
-import { calculateDynamicStatus } from '../../utils/status.js';
+import { calculateDynamicStatus, getActivePtr } from '../../utils/status.js';
 import { escapeHtml, escapeAttr } from '../../utils/helpers.js';
 import { getIconSvg } from '../../utils/icons.js';
 import { formatLocalDate, formatShortDate } from '../../utils/date.js';
@@ -52,13 +52,13 @@ export function render(game = {}, options = {}) {
   const features = Array.isArray(getVal(game.features)) ? getVal(game.features) : [];
   
   let ptrBadgeHtml = '';
-  if (game.ptr || (game.events && game.events.some(e => e.type === 'ptr'))) {
-    const ptrItem = game.ptr || game.events.find(e => e.type === 'ptr');
+  const activePtr = getActivePtr(game);
+  if (activePtr) {
     const state = getState ? getState() : {};
     const lang = state.settings?.lang || 'en';
     const startVerb = lang === 'ru' ? 'Старт' : 'Starts';
-    const ptrTitle = escapeHtml(getVal(ptrItem.name) || getVal(ptrItem.title) || 'PTR 3.2.0');
-    const ptrText = ptrItem.startDate ? `${ptrTitle}: ${startVerb} ${formatShortDate(ptrItem.startDate)}` : ptrTitle;
+    const ptrTitle = escapeHtml(getVal(activePtr.name) || getVal(activePtr.title) || 'PTR 3.2.0');
+    const ptrText = activePtr.startDate ? `${ptrTitle}: ${startVerb} ${formatShortDate(activePtr.startDate)}` : ptrTitle;
     ptrBadgeHtml = `
       <div class="game-card__ptr-chip">
         <span class="game-card__ptr-chip-badge">PTR TEST</span>

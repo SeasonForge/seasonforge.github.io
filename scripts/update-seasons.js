@@ -182,6 +182,14 @@ function mergeGameData(existingGame, newGame) {
       return ev;
     });
   }
+
+  // Expire or clean up stale PTR data
+  if (merged.ptr) {
+    const ptrEnd = merged.ptr.endDate ? new Date(merged.ptr.endDate).getTime() : (merged.ptr.startDate ? new Date(merged.ptr.startDate).getTime() + (7 * 24 * 60 * 60 * 1000) : 0);
+    if (ptrEnd < Date.now()) {
+      merged.ptr = null;
+    }
+  }
   
   return merged;
 }

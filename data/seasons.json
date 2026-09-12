@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-12T04:43:48.292Z",
+  "lastCheckedAt": "2026-09-12T15:36:50.222Z",
   "changelog": [
     {
       "timestamp": "2026-09-10T15:00:00.000Z",
@@ -155,10 +155,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "title": "The Path of Exile 1 ExileCon Qualifiers Have Begun!",
-        "url": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "publishDate": "Thu, 03 Sep 2026 21:00:00 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "title": "The Path of Exile 1 ExileCon Qualifier #2 Has Begun!",
+        "url": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "publishDate": "Thu, 10 Sep 2026 21:00:00 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -167,7 +167,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-05T04:38:05.383Z"
+        "updatedAt": "2026-09-12T15:36:49.883Z"
       },
       "history": [
         {
@@ -188,7 +188,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028"
       },
       "nextSeason": {
         "name": {
@@ -199,7 +199,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -207,14 +207,14 @@
       },
       "features": {
         "en": [
-          "Curse of the Allflame league",
-          "Mercenaries",
-          "Patch 3.29.1 updates"
+          "ExileCon 2026 Qualifiers",
+          "Twitch Drops rewards",
+          "Community Fan Art Competition"
         ],
         "ru": [
-          "Лига Проклятие Огня предков",
-          "Наёмники",
-          "Обновления патча 3.29.1"
+          "Отборочные турниры к ExileCon 2026",
+          "Награды Twitch Drops",
+          "Конкурс фан-арта сообщества"
         ]
       },
       "links": {
@@ -264,23 +264,23 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #1",
-            "ru": "Первый отборочный турнир ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #1 к ExileCon по Path of Exile 1"
           },
-          "startDate": "2026-09-03T21:00:00.000Z",
-          "endDate": "2026-09-04T03:00:00.000Z",
+          "startDate": "2026-09-03T00:00:00.000Z",
+          "endDate": "",
           "verification": "official",
           "isPast": true,
           "status": "archived"
         },
         {
-          "id": "poe1-exilecon-qualifier-twitch-drops",
+          "id": "poe1-drops-wild-footprints",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier Twitch Drops - Wild Footprints Effect",
-            "ru": "Twitch Drops отборочного турнира ExileCon - эффект Диких следов"
+            "en": "Twitch Drops: Wild Footprints Effect",
+            "ru": "Twitch Drops: эффект следов Wild Footprints"
           },
-          "startDate": "2026-09-03T21:00:00.000Z",
-          "endDate": "2026-09-04T21:00:00.000Z",
+          "startDate": "2026-09-03T00:00:00.000Z",
+          "endDate": "",
           "verification": "official",
           "isPast": true,
           "status": "archived"
@@ -290,21 +290,21 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #2",
-            "ru": "Второй отборочный турнир ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #2 к ExileCon по Path of Exile 1"
           },
-          "startDate": "2026-09-10T21:00:00.000Z",
-          "endDate": "2026-09-11T03:00:00.000Z",
+          "startDate": "2026-09-10T00:00:00.000Z",
+          "endDate": "",
           "verification": "official"
         },
         {
-          "id": "poe1-exilecon-qualifier-2-twitch-drops",
+          "id": "poe1-drops-scavenger-hood",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier #2 Twitch Drops - Scavenger Hood",
-            "ru": "Twitch Drops отборочного турнира ExileCon №2 - Капюшон мусорщика"
+            "en": "Twitch Drops: Scavenger Hood",
+            "ru": "Twitch Drops: капюшон Scavenger Hood"
           },
-          "startDate": "2026-09-10T21:00:00.000Z",
-          "endDate": "2026-09-11T21:00:00.000Z",
+          "startDate": "2026-09-10T00:00:00.000Z",
+          "endDate": "",
           "verification": "official"
         },
         {

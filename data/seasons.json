@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-12T19:33:41.176Z",
+  "lastCheckedAt": "2026-09-12T19:37:00.170Z",
   "changelog": [
     {
       "timestamp": "2026-09-10T15:00:00.000Z",
@@ -155,10 +155,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "title": "The Path of Exile 1 ExileCon Qualifiers Have Begun!",
-        "url": "https://www.pathofexile.com/forum/view-thread/4001053",
-        "publishDate": "Thu, 03 Sep 2026 21:00:00 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "title": "The Path of Exile 1 ExileCon Qualifier #2 Has Begun!",
+        "url": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "publishDate": "Thu, 10 Sep 2026 21:00:00 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -167,7 +167,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-05T04:38:05.383Z"
+        "updatedAt": "2026-09-12T15:36:49.883Z"
       },
       "history": [
         {
@@ -188,7 +188,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028"
       },
       "nextSeason": {
         "name": {
@@ -199,7 +199,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4001053",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -207,14 +207,14 @@
       },
       "features": {
         "en": [
-          "Curse of the Allflame league",
-          "Mercenaries",
-          "Patch 3.29.1 updates"
+          "ExileCon 2026 Qualifiers",
+          "Twitch Drops rewards",
+          "Community Fan Art Competition"
         ],
         "ru": [
-          "Лига Проклятие Огня предков",
-          "Наёмники",
-          "Обновления патча 3.29.1"
+          "Отборочные турниры к ExileCon 2026",
+          "Награды Twitch Drops",
+          "Конкурс фан-арта сообщества"
         ]
       },
       "links": {
@@ -264,23 +264,23 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #1",
-            "ru": "Первый отборочный турнир ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #1 к ExileCon по Path of Exile 1"
           },
-          "startDate": "2026-09-03T21:00:00.000Z",
-          "endDate": "2026-09-04T03:00:00.000Z",
+          "startDate": "2026-09-03T00:00:00.000Z",
+          "endDate": "",
           "verification": "official",
           "isPast": true,
           "status": "archived"
         },
         {
-          "id": "poe1-exilecon-qualifier-twitch-drops",
+          "id": "poe1-drops-wild-footprints",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier Twitch Drops - Wild Footprints Effect",
-            "ru": "Twitch Drops отборочного турнира ExileCon - эффект Диких следов"
+            "en": "Twitch Drops: Wild Footprints Effect",
+            "ru": "Twitch Drops: эффект следов Wild Footprints"
           },
-          "startDate": "2026-09-03T21:00:00.000Z",
-          "endDate": "2026-09-04T21:00:00.000Z",
+          "startDate": "2026-09-03T00:00:00.000Z",
+          "endDate": "",
           "verification": "official",
           "isPast": true,
           "status": "archived"
@@ -290,21 +290,21 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #2",
-            "ru": "Второй отборочный турнир ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #2 к ExileCon по Path of Exile 1"
           },
-          "startDate": "2026-09-10T21:00:00.000Z",
-          "endDate": "2026-09-11T03:00:00.000Z",
+          "startDate": "2026-09-10T00:00:00.000Z",
+          "endDate": "",
           "verification": "official"
         },
         {
-          "id": "poe1-exilecon-qualifier-2-twitch-drops",
+          "id": "poe1-drops-scavenger-hood",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier #2 Twitch Drops - Scavenger Hood",
-            "ru": "Twitch Drops отборочного турнира ExileCon №2 - Капюшон мусорщика"
+            "en": "Twitch Drops: Scavenger Hood",
+            "ru": "Twitch Drops: капюшон Scavenger Hood"
           },
-          "startDate": "2026-09-10T21:00:00.000Z",
-          "endDate": "2026-09-11T21:00:00.000Z",
+          "startDate": "2026-09-10T00:00:00.000Z",
+          "endDate": "",
           "verification": "official"
         },
         {
@@ -343,10 +343,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1842846814441855",
-        "title": "Path of Exile 2 Full Release Registration",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842846814441855",
-        "publishDate": "2026-09-03T01:00:53.000Z",
+        "id": "1843481262686262",
+        "title": "Fan Art Competition Winners",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262",
+        "publishDate": "2026-09-08T22:12:59.000Z",
         "source": "Path of Exile Official RSS"
       },
       "status": {
@@ -355,7 +355,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-09-05T04:37:54.062Z"
+        "updatedAt": "2026-09-11T04:49:02.873Z"
       },
       "currentSeason": {
         "name": {
@@ -366,18 +366,18 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842846814441855"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262"
       },
       "nextSeason": {
         "name": {
           "en": "1.0 Full Release",
-          "ru": "Релиз 1.0"
+          "ru": "Полный релиз 1.0"
         },
         "startDate": "2026-12-11T19:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842846814441855",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262",
         "verificationNote": {
           "en": "Official ExileCon 2026 presentation & 1.0 reveal dates",
           "ru": "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"
@@ -385,20 +385,18 @@
       },
       "features": {
         "en": [
-          "Forbidden Rites event league with 8 new challenges and exclusive rewards",
-          "Fresh economy and Private League support",
-          "Trial of Chaos major overhaul",
-          "New Soul Core augments, Sacred Bloom map fragment, and Expedition Tablet",
-          "Runes of Aldur content added to the core game and Standard",
-          "Duelist class and new weapon types arriving with 1.0 Full Release"
+          "Forbidden Rites event league with fresh economy and 8 new challenges",
+          "Major Trial of Chaos overhaul",
+          "New Soul Core augments from Jiquani and Atziri",
+          "Expedition Tablets and Sacred Bloom map fragments",
+          "Duelist class and Swords previewed for 1.0 Full Release"
         ],
         "ru": [
-          "Лига-событие «Запретные ритуалы» с 8 новыми испытаниями и эксклюзивными наградами",
-          "Свежая экономика и поддержка приватных лиг",
+          "Событие-лига «Запретные ритуалы» с новой экономикой и 8 новыми испытаниями",
           "Масштабная переработка Испытания Хаоса",
-          "Новые ядра души, фрагмент карты Священный цвет и Табличка экспедиции",
-          "Добавление механики «Руны Алдура» в основную игру и режим «Стандарт»",
-          "Класс Дуэлянт и новые типы оружия в релизной версии 1.0"
+          "Новые ядра душ Джикуани и Азири",
+          "Планшеты Экспедиции и фрагменты карт «Священный цвет»",
+          "Демонстрация класса Дуэлянт и мечей перед релизом 1.0"
         ]
       },
       "links": {

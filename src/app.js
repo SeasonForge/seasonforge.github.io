@@ -24,6 +24,7 @@ import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
 import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
+import { initPerformanceDetection } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
 import { initWebWidget } from './utils/initWebWidget.js';
@@ -234,6 +235,7 @@ function renderApp() {
 }
 
 async function initializeApp() {
+  initPerformanceDetection();
   setError(null);
 
   const isEventsPage = typeof window !== 'undefined' && (

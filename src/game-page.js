@@ -5,7 +5,7 @@ import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
-import { escapeAttr, escapeHtml } from './utils/helpers.js';
+import { escapeAttr, escapeHtml, initPerformanceDetection } from './utils/helpers.js';
 import { initFeedback } from './utils/initFeedback.js';
 import { initStreamer } from './utils/initStreamer.js';
 import { initMobileAppModal } from './utils/initMobileAppModal.js';
@@ -326,6 +326,7 @@ function startCountdownLoop() {
 
 async function init() {
   try {
+    initPerformanceDetection();
     initHeroParallax();
     const rootEl = document.getElementById('game-page-root');
     if (!rootEl) return;

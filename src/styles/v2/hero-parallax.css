@@ -10,6 +10,9 @@
   overflow: hidden;
   opacity: 0.95;
   transition: opacity 0.6s ease;
+  isolation: isolate;
+  contain: strict;
+  transform: translate3d(0, 0, 0);
 }
 
 .hero-parallax__layer {
@@ -22,6 +25,7 @@
   object-position: center center;
   will-change: transform;
   backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .hero-parallax__bg {
@@ -56,4 +60,32 @@
   z-index: 4;
   background: linear-gradient(180deg, rgba(8, 6, 15, 0.15) 0%, rgba(8, 6, 15, 0.45) 100%);
   pointer-events: none;
+}
+
+/* GPU-composited subtle breathing motion for touch / reduced-motion */
+.hero-parallax-bg--breathing .hero-parallax__body {
+  animation: heroBreathBody 6s ease-in-out infinite alternate;
+}
+
+.hero-parallax-bg--breathing .hero-parallax__head {
+  animation: heroBreathHead 6s ease-in-out infinite alternate;
+}
+
+.hero-parallax-bg--breathing .hero-parallax__eyes {
+  animation: heroBreathEyes 6s ease-in-out infinite alternate;
+}
+
+@keyframes heroBreathBody {
+  0% { transform: translate3d(0, -0.9px, 0); }
+  100% { transform: translate3d(0, 0.9px, 0); }
+}
+
+@keyframes heroBreathHead {
+  0% { transform: translate3d(0, -1.65px, 0); }
+  100% { transform: translate3d(0, 1.65px, 0); }
+}
+
+@keyframes heroBreathEyes {
+  0% { transform: translate3d(0, -2.2px, 0); }
+  100% { transform: translate3d(0, 2.2px, 0); }
 }

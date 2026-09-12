@@ -32,26 +32,17 @@ export function initHeroParallax() {
 
   let isTicking = false;
 
-  // Check touch or prefers-reduced-motion
-  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Check touch or prefers-reduced-motion vs fine mouse pointer
+  const hasFinePointer = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (isTouchDevice || prefersReducedMotion) {
-    // Subtle auto-breathing motion for mobile / reduced motion
-    let breathAngle = 0;
-    function animateBreathing() {
-      breathAngle += 0.015;
-      const breathY = Math.sin(breathAngle) * 2.2;
-      if (body) body.style.transform = `translate3d(0, ${(breathY * 0.4).toFixed(2)}px, 0)`;
-      head.style.transform = `translate3d(0, ${(breathY * 0.75).toFixed(2)}px, 0)`;
-      eyes.style.transform = `translate3d(0, ${breathY.toFixed(2)}px, 0)`;
-      requestAnimationFrame(animateBreathing);
-    }
-    animateBreathing();
+  if (!hasFinePointer || prefersReducedMotion) {
+    // Pure GPU-composited CSS breathing animation, zero JS rAF overhead
+    container.classList.add('hero-parallax-bg--breathing');
     return;
   }
 
-  // Mousemove listener
+  // Mousemove listener for fine pointers
   window.addEventListener('mousemove', (e) => {
     targetX = (e.clientX / window.innerWidth - 0.5) * 2;
     targetY = (e.clientY / window.innerHeight - 0.5) * 2;
@@ -83,7 +74,7 @@ export function initHeroParallax() {
     eyes.style.transform = `translate3d(${eyesX.toFixed(2)}px, ${eyesY.toFixed(2)}px, 0)`;
 
     const diff = Math.abs(targetX - currentX) + Math.abs(targetY - currentY);
-    if (diff > 0.0005) {
+    if (diff > 0.001) {
       requestAnimationFrame(updateParallax);
     } else {
       isTicking = false;

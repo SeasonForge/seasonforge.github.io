@@ -38,7 +38,7 @@ function getCleanSeasonTag(name, gameId) {
 
   // Fallbacks for known league names when version number is missing from string
   if (gameId === 'path-of-exile') {
-    if (/(?:Curse of the Allflame|Проклятие Всепламени)/i.test(str)) return 'v3.29';
+    if (/(?:Curse of the Allflame|Проклятие Всепламени|Проклятие Огня предков|Огня предков)/i.test(str)) return 'v3.29';
     if (/(?:Necropolis|Некрополь)/i.test(str)) return 'v3.28';
     if (/(?:Settlers of Kalguur|Поселенцы Кальгуура)/i.test(str)) return 'v3.27';
     if (/(?:Affliction|Аффликшн)/i.test(str)) return 'v3.25';
@@ -46,10 +46,13 @@ function getCleanSeasonTag(name, gameId) {
     if (/(?:Crucible|Горнило)/i.test(str)) return 'v3.23';
     if (/(?:Sanctum|Святилище)/i.test(str)) return 'v3.22';
   } else if (gameId === 'path-of-exile-2') {
+    if (/(?:Forbidden Rites|Запретные ритуалы)/i.test(str)) return 'v0.5.0';
     if (/(?:Return of the Ancients|Возвращение Древних)/i.test(str)) return 'v0.5.0';
     if (/(?:ExileCon)/i.test(str)) return 'v1.0';
   } else if (gameId === 'diablo-iv') {
-    if (/(?:Death Awakening|Пробуждение смерти)/i.test(str)) return 'S14';
+    if (/(?:Hell's Legacy|Инфернальн|Наследи[ея] Преисподней)/i.test(str)) return 'S15';
+    if (/(?:Death Awakening|Пробуждени[ея] Смерти)/i.test(str)) return 'S14';
+    if (/(?:Lord of Hatred|Повелитель Ненависти)/i.test(str)) return 'S13';
   } else if (gameId === 'last-epoch') {
     if (/(?:Shattered Omens|Разрушенные знамения)/i.test(str)) return 'C4';
   } else if (gameId === 'torchlight-infinite') {

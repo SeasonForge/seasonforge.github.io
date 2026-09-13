@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-13T20:07:12.226Z",
+  "lastCheckedAt": "2026-09-13T20:11:17.040Z",
   "changelog": [
     {
       "timestamp": "2026-09-13T20:00:00.000Z",
@@ -9,6 +9,16 @@
       "text": {
         "en": "Diablo IV: Season of Hell's Legacy launch officially announced for Sept 15 at 16:30 UTC (19:30 MSK)",
         "ru": "Diablo IV: Официально подтверждён старт Сезона Инфернального Наследия — 15 сентября в 19:30 МСК"
+      }
+    },
+    {
+      "timestamp": "2026-09-13T04:56:32.795Z",
+      "gameId": "diablo-iv",
+      "url": "https://news.blizzard.com/en-us/article/24297204/diablo-v-forging-the-next-era",
+      "type": "announcement",
+      "text": {
+        "en": "Diablo IV: Next season announced — \"Season of Hell's Legacy\"",
+        "ru": "Diablo IV: Анонсирован следующий сезон — «Сезон Наследия Преисподней»"
       }
     },
     {
@@ -304,7 +314,9 @@
           },
           "startDate": "2026-09-10T00:00:00.000Z",
           "endDate": "",
-          "verification": "official"
+          "verification": "official",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "poe1-drops-scavenger-hood",
@@ -315,7 +327,9 @@
           },
           "startDate": "2026-09-10T00:00:00.000Z",
           "endDate": "",
-          "verification": "official"
+          "verification": "official",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "poe1-exilecon-qualifier-3",
@@ -477,10 +491,10 @@
       "icon": "flame",
       "website": "https://diablo4.blizzard.com/",
       "latestNews": {
-        "id": "24295394",
-        "title": "Celebrate 30 Years of Diablo in Season of Hell's Legacy",
-        "url": "https://news.blizzard.com/en-us/article/24295394/celebrate-30-years-of-diablo-in-season-of-hell-s-legacy",
-        "publishDate": "2026-09-12T18:15:00Z",
+        "id": "24297204",
+        "title": "Diablo V: Forging the Next Era",
+        "url": "https://news.blizzard.com/en-us/article/24297204/diablo-v-forging-the-next-era",
+        "publishDate": "2026-09-12T21:20:35Z",
         "source": "Official Diablo IV News"
       },
       "status": {
@@ -650,18 +664,20 @@
       },
       "features": {
         "en": [
-          "Death Cult threats",
-          "The Tower and Leaderboards",
-          "Warlock Trial",
+          "Amazon class",
           "Seasonal Soul Splinters",
-          "New Charms and Mythic Unique changes"
+          "Legacy Uniques",
+          "Mythic Unique changes",
+          "Charms",
+          "Diablo 30th Anniversary celebration"
         ],
         "ru": [
-          "Угрозы Культа Смерти",
-          "Башня и списки лидеров",
-          "Пробный период Чернокнижника",
-          "Сезонные Осколки душ",
-          "Новые чары и изменения мифических уникальных предметов"
+          "Класс Амазонка",
+          "Сезонные Осколки Душ",
+          "Уникальные предметы прошлого",
+          "Изменения мифических уникальных предметов",
+          "Талисманы",
+          "Празднование 30-летия Diablo"
         ]
       },
       "links": {

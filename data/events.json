@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-10T20:35:00.000Z",
+  "lastCheckedAt": "2026-09-14T16:24:18.000Z",
   "events": [
     {
       "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
@@ -402,8 +402,128 @@
           "en": "Season 5 stream & showcase dates"
         }
       ],
-      "sourceUrl": "https://forum.lastepoch.com/t/eterra-monthly-july-edition-2026/81694",
-      "updatedAt": "2026-09-02T16:00:00.000Z",
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "active"
+    },
+    {
+      "id": "last-epoch_stream_season-5-reveal-showcase-trailer",
+      "gameId": "last-epoch",
+      "type": "stream",
+      "title_ru": "Показ Сезона 5: Трейлер, Showcase-сайт и девстрим",
+      "title_en": "Season 5 Reveal: Trailer, Seasonal Showcase & Stream",
+      "startDate": "2026-09-18T16:00:00Z",
+      "endDate": "2026-09-18T19:00:00Z",
+      "description_ru": "Премьера официального трейлера Season 5: Rage of the Frostborn, открытие сайта Seasonal Showcase и стрим с Mike и приглашенным гостем.",
+      "description_en": "Official Season 5: Rage of the Frostborn trailer premiere, Seasonal Showcase website launch, and live stream with Mike.",
+      "rewards": [
+        {
+          "ru": "Первый полный показ контента Сезона 5",
+          "en": "First full Season 5 content reveal"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_announcement_season-5-hype-week-patch-notes",
+      "gameId": "last-epoch",
+      "type": "announcement",
+      "title_ru": "Hype Week механик и полные Patch Notes Сезона 5",
+      "title_en": "Season 5 Hype Week & Full Patch Notes",
+      "startDate": "2026-09-21T16:00:00Z",
+      "endDate": "2026-09-25T23:59:59Z",
+      "description_ru": "4 дня подробных анонсов составляющих Сезона 5, публикация финальных Patch Notes, видеообзор патча и специальный стрим.",
+      "description_en": "Four days detailing core Season 5 mechanics followed by full Patch Notes, patch overview video, and developer stream.",
+      "rewards": [
+        {
+          "ru": "Полный список изменений баланса, классов и механик",
+          "en": "Full patch notes, balance, and mechanic changes"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_stream_season-5-campfire-chat-raxxanterax",
+      "gameId": "last-epoch",
+      "type": "stream",
+      "title_ru": "Campfire Chat: Разбор Сезона 5 с Mike и Raxxanterax",
+      "title_en": "Campfire Chat: Season 5 Deep Dive with Mike & Raxxanterax",
+      "startDate": "2026-09-28T18:00:00Z",
+      "endDate": "2026-09-28T20:30:00Z",
+      "description_ru": "Глубокий разбор Сезона 5 и ответов на вопросы игроков после публикации патчноутов: Mike вместе с Raxxanterax.",
+      "description_en": "In-depth Season 5 discussion and community Q&A with Mike and Raxxanterax following patch notes release.",
+      "rewards": [
+        {
+          "ru": "Детальный разбор эндгейма и систем билдов",
+          "en": "Endgame & build meta deep-dive"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_drops_season-5-twitch-drops",
+      "gameId": "last-epoch",
+      "type": "drops",
+      "title_ru": "Twitch Drops к запуску Сезона 5",
+      "title_en": "Season 5 Launch Twitch Drops Campaign",
+      "startDate": "2026-09-29T16:00:00Z",
+      "endDate": "2026-10-06T23:59:59Z",
+      "description_ru": "Анонс условий и наград Twitch Drops за просмотр трансляций по Last Epoch во время старта Сезона 5.",
+      "description_en": "Announcement of Twitch Drops cosmetic rewards and watch time requirements for Season 5 launch week.",
+      "rewards": [
+        {
+          "ru": "Эксклюзивная косметика Twitch Drops",
+          "en": "Exclusive Twitch Drops Cosmetics"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_stream_season-5-town-portal-podcast",
+      "gameId": "last-epoch",
+      "type": "stream",
+      "title_ru": "Town Portal Podcast с AaronActionRPG (Финальный Q&A)",
+      "title_en": "Town Portal Podcast with AaronActionRPG (Final Pre-Launch Q&A)",
+      "startDate": "2026-09-30T18:00:00Z",
+      "endDate": "2026-09-30T20:00:00Z",
+      "description_ru": "Финальный девстрим и последние раскрытия перед стартом Сезона 5: разработчики в гостях у AaronActionRPG.",
+      "description_en": "Final pre-launch developer stream and community Q&A on the Town Portal Podcast with AaronActionRPG.",
+      "rewards": [
+        {
+          "ru": "Финальная порция информации перед запуском серверов",
+          "en": "Final details and insights ahead of server launch"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
+      "status": "upcoming"
+    },
+    {
+      "id": "last-epoch_race_season-5-first-blood-morditas",
+      "gameId": "last-epoch",
+      "type": "race",
+      "title_ru": "Гонка First Blood: первое убийство Pinnacle Morditas",
+      "title_en": "First Blood Community Event: Pinnacle Morditas Race",
+      "startDate": "2026-10-01T16:00:00Z",
+      "endDate": "2026-10-08T23:59:59Z",
+      "description_ru": "Соревновательный ивент сообщества в момент старта Сезона 5: гонка за первое в мире убийство вершина-босса Pinnacle Morditas.",
+      "description_en": "Community competition launching alongside Season 5: race to claim world-first kill on Pinnacle Morditas.",
+      "rewards": [
+        {
+          "ru": "Признание сообщества и первое убийство Pinnacle Morditas",
+          "en": "First Blood glory & Pinnacle Morditas kill"
+        }
+      ],
+      "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "updatedAt": "2026-09-14T16:00:00.000Z",
       "status": "upcoming"
     }
   ]

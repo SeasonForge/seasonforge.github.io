@@ -1,6 +1,16 @@
 {
-  "lastCheckedAt": "2026-09-14T05:05:22.181Z",
+  "lastCheckedAt": "2026-09-14T16:57:20.088Z",
   "changelog": [
+    {
+      "timestamp": "2026-09-14T16:00:00.000Z",
+      "gameId": "last-epoch",
+      "url": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+      "type": "announcement",
+      "text": {
+        "en": "Last Epoch: Season 5 countdown roadmap revealed — launches Oct 1 with First Blood event & Pinnacle Morditas",
+        "ru": "Last Epoch: Опубликована дорожная карта раскрытия Сезона 5 — старт 1 октября с ивентом First Blood и боссом Pinnacle Morditas"
+      }
+    },
     {
       "timestamp": "2026-09-13T20:00:00.000Z",
       "gameId": "diablo-iv",
@@ -175,10 +185,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4005269",
-        "title": "Fan Art Competition Runners-Up",
-        "url": "https://www.pathofexile.com/forum/view-thread/4005269",
-        "publishDate": "Mon, 14 Sep 2026 00:18:27 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "title": "The Path of Exile 1 ExileCon Qualifier #2 Has Begun!",
+        "url": "https://www.pathofexile.com/forum/view-thread/4004028",
+        "publishDate": "Thu, 10 Sep 2026 21:00:00 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -187,7 +197,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-14T05:05:20.622Z"
+        "updatedAt": "2026-09-12T15:36:49.883Z"
       },
       "history": [
         {
@@ -208,7 +218,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4005269"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028"
       },
       "nextSeason": {
         "name": {
@@ -219,7 +229,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4005269",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4004028",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -227,12 +237,12 @@
       },
       "features": {
         "en": [
-          "ExileCon Qualifiers",
-          "Twitch Drops Rewards",
+          "ExileCon 2026 Qualifiers",
+          "Twitch Drops rewards",
           "Community Fan Art Competition"
         ],
         "ru": [
-          "Отборочные турниры на ExileCon",
+          "Отборочные турниры к ExileCon 2026",
           "Награды Twitch Drops",
           "Конкурс фан-арта сообщества"
         ]
@@ -284,7 +294,7 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #1",
-            "ru": "Квалификация #1 на ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #1 к ExileCon по Path of Exile 1"
           },
           "startDate": "2026-09-03T00:00:00.000Z",
           "endDate": "",
@@ -293,11 +303,11 @@
           "status": "archived"
         },
         {
-          "id": "poe1-exilecon-qualifier-1-drops",
+          "id": "poe1-drops-wild-footprints",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier #1 Twitch Drops",
-            "ru": "Twitch Drops квалификации #1 на ExileCon"
+            "en": "Twitch Drops: Wild Footprints Effect",
+            "ru": "Twitch Drops: эффект следов Wild Footprints"
           },
           "startDate": "2026-09-03T00:00:00.000Z",
           "endDate": "",
@@ -310,7 +320,7 @@
           "type": "tournament",
           "title": {
             "en": "Path of Exile 1 ExileCon Qualifier #2",
-            "ru": "Квалификация #2 на ExileCon по Path of Exile 1"
+            "ru": "Отборочный турнир #2 к ExileCon по Path of Exile 1"
           },
           "startDate": "2026-09-10T00:00:00.000Z",
           "endDate": "",
@@ -319,11 +329,11 @@
           "status": "archived"
         },
         {
-          "id": "poe1-exilecon-qualifier-2-drops",
+          "id": "poe1-drops-scavenger-hood",
           "type": "drops",
           "title": {
-            "en": "ExileCon Qualifier #2 Twitch Drops",
-            "ru": "Twitch Drops квалификации #2 на ExileCon"
+            "en": "Twitch Drops: Scavenger Hood",
+            "ru": "Twitch Drops: капюшон Scavenger Hood"
           },
           "startDate": "2026-09-10T00:00:00.000Z",
           "endDate": "",
@@ -367,10 +377,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1843481262700434",
-        "title": "Fan Art Competition Runners-Up",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434",
-        "publishDate": "2026-09-14T00:32:55.000Z",
+        "id": "1843481262686262",
+        "title": "Fan Art Competition Winners",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262",
+        "publishDate": "2026-09-08T22:12:59.000Z",
         "source": "Path of Exile Official RSS"
       },
       "status": {
@@ -379,7 +389,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-09-14T05:05:14.202Z"
+        "updatedAt": "2026-09-11T04:49:02.873Z"
       },
       "currentSeason": {
         "name": {
@@ -390,7 +400,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262"
       },
       "nextSeason": {
         "name": {
@@ -401,7 +411,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262686262",
         "verificationNote": {
           "en": "Official ExileCon 2026 presentation & 1.0 reveal dates",
           "ru": "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"
@@ -409,20 +419,18 @@
       },
       "features": {
         "en": [
-          "Forbidden Rites event league with fresh economy",
-          "8 new challenges and exclusive event rewards",
+          "Forbidden Rites event league with fresh economy and 8 new challenges",
           "Major Trial of Chaos overhaul",
-          "New Augment Soul Cores and item base types",
-          "Runes of Aldur content added to core/Standard",
-          "Upcoming 1.0 Full Release introducing Duelist class and Swords weapon type"
+          "New Soul Core augments from Jiquani and Atziri",
+          "Expedition Tablets and Sacred Bloom map fragments",
+          "Duelist class and Swords previewed for 1.0 Full Release"
         ],
         "ru": [
-          "Лига событий «Запретные ритуалы» с новой экономикой",
-          "8 новых испытаний и эксклюзивные награды события",
+          "Событие-лига «Запретные ритуалы» с новой экономикой и 8 новыми испытаниями",
           "Масштабная переработка Испытания Хаоса",
-          "Новые ядра душ и типы предметов",
-          "Контент «Руны Алдура» перенесен в основную игру и режим «Стандарт»",
-          "Предстоящий релиз 1.0 с классом Дуэлянт и новым типом оружия — мечами"
+          "Новые ядра душ Джикуани и Азири",
+          "Планшеты Экспедиции и фрагменты карт «Священный цвет»",
+          "Демонстрация класса Дуэлянт и мечей перед релизом 1.0"
         ]
       },
       "links": {
@@ -711,11 +719,11 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1842212951313902",
-        "title": "Eterra Monthly: August Edition 2026",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902",
-        "publishDate": "2026-09-01T16:00:24.000Z",
-        "source": "Last Epoch Steam News"
+        "id": "81745",
+        "title": "Countdown to Season 5: Rage of the Frostborn hits October 1",
+        "url": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+        "publishDate": "2026-09-14T16:00:00.000Z",
+        "source": "Official Last Epoch Forums"
       },
       "status": {
         "code": "active",
@@ -723,7 +731,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-05T04:38:15.850Z"
+        "updatedAt": "2026-09-14T16:00:00.000Z"
       },
       "history": [
         {
@@ -756,25 +764,154 @@
         "isActive": false,
         "verification": "official",
         "verificationNote": {
-          "ru": "Официальный анонс EHG: старт Сезона 5 — 1 октября 2026 года. Публикация предсезонного календаря инфоподачи — 14 сентября.",
-          "en": "Official EHG announcement: Season 5 launches October 1, 2026. Pre-season reveal calendar will be published on September 14."
+          "ru": "Официальный анонс EHG: старт Сезона 5 — 1 октября 2026 года (19:00 Киев / МСК). Дорожная карта раскрытий с 18 по 30 сентября, стартовый ивент First Blood и новый Pinnacle-босс Morditas.",
+          "en": "Official EHG announcement: Season 5 launches October 1, 2026 (11:00 CDT / 16:00 UTC). Reveal countdown runs Sep 18–30, featuring First Blood event and Pinnacle Morditas."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902"
+        "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+      },
+      "events": [
+        {
+          "id": "last-epoch-s5-trailer-showcase",
+          "type": "stream",
+          "title": {
+            "en": "Season 5 Reveal: Trailer, Seasonal Showcase & Stream",
+            "ru": "Показ Сезона 5: Трейлер, Showcase-сайт и девстрим с Mike"
+          },
+          "startDate": "2026-09-18T16:00:00Z",
+          "endDate": "2026-09-18T19:00:00Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "last-epoch-s5-hype-week-patch-notes",
+          "type": "announcement",
+          "title": {
+            "en": "Hype Week & Full Patch Notes (Balance, Endgame, QoL)",
+            "ru": "Hype Week и полные Patch Notes (Баланс классов, эндгейм, QoL)"
+          },
+          "startDate": "2026-09-21T16:00:00Z",
+          "endDate": "2026-09-25T23:59:59Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "last-epoch-s5-campfire-chat",
+          "type": "stream",
+          "title": {
+            "en": "Campfire Chat: Season 5 Deep Dive with Mike & Raxxanterax",
+            "ru": "Campfire Chat: детальный разбор Сезона 5 с Mike и Raxxanterax"
+          },
+          "startDate": "2026-09-28T18:00:00Z",
+          "endDate": "2026-09-28T20:30:00Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "last-epoch-s5-twitch-drops",
+          "type": "drops",
+          "title": {
+            "en": "Season 5 Launch Twitch Drops Campaign",
+            "ru": "Анонс наград Twitch Drops к запуску сезона"
+          },
+          "startDate": "2026-09-29T16:00:00Z",
+          "endDate": "2026-10-06T23:59:59Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "last-epoch-s5-town-portal-podcast",
+          "type": "stream",
+          "title": {
+            "en": "Town Portal Podcast with AaronActionRPG (Final Pre-Launch Q&A)",
+            "ru": "Town Portal Podcast с AaronActionRPG (Финальные ответы перед стартом)"
+          },
+          "startDate": "2026-09-30T18:00:00Z",
+          "endDate": "2026-09-30T20:00:00Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "last-epoch-s5-first-blood-race",
+          "type": "race",
+          "title": {
+            "en": "First Blood Community Event: Pinnacle Morditas Race",
+            "ru": "Гонка First Blood: первое убийство Pinnacle Morditas"
+          },
+          "startDate": "2026-10-01T16:00:00Z",
+          "endDate": "2026-10-08T23:59:59Z",
+          "verification": "official",
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        }
+      ],
+      "featureCategories": {
+        "official": [
+          {
+            "category": {
+              "en": "Pinnacle Boss: Morditas & First Blood Event",
+              "ru": "Вершинный босс Мордитас и соревновательный ивент First Blood"
+            },
+            "items": {
+              "en": [
+                "Pinnacle Morditas introduced as the ultimate endgame boss of Season 5.",
+                "First Blood community race event kicking off simultaneously with the season launch."
+              ],
+              "ru": [
+                "Pinnacle Morditas представлен как ключевой финальный эндгейм-босс Сезона 5.",
+                "Соревновательный ивент First Blood стартует одновременно с открытием серверов лиги."
+              ]
+            }
+          },
+          {
+            "category": {
+              "en": "Pre-Season Roadmap & Reveals",
+              "ru": "Дорожная карта предсезонных показов"
+            },
+            "items": {
+              "en": [
+                "Sep 18: Full cinematic trailer, official Seasonal Showcase website, and reveal stream.",
+                "Sep 21–25: Hype Week detailing core mechanics followed by full Patch Notes.",
+                "Sep 28 & 30: Campfire Chat deep dive with Raxxanterax and Town Portal Podcast with AaronActionRPG."
+              ],
+              "ru": [
+                "18 сен: Официальный трейлер, запуск сайта Seasonal Showcase и девстрим.",
+                "21–25 сен: Hype Week с разбором систем лиги и полными Patch Notes.",
+                "28 и 30 сен: Campfire Chat с Raxxanterax и Town Portal Podcast с AaronActionRPG."
+              ]
+            }
+          },
+          {
+            "category": {
+              "en": "New Items & Mechanics",
+              "ru": "Новые предметы и механики"
+            },
+            "items": {
+              "en": [
+                "Gift of the Eidolon unique gloves scaling Haste/Frenzy effectiveness based on lowest attribute.",
+                "Overhaul of combat audio mix and legacy skill sound effects."
+              ],
+              "ru": [
+                "Уникальные перчатки Gift of the Eidolon с усилением Спешки и Бешенства от наименьшего атрибута.",
+                "Масштабная переработка боевого звукового микса и звуков старых умений."
+              ]
+            }
+          }
+        ],
+        "expectations": []
       },
       "features": {
         "en": [
-          "Season 5: Rage of the Frostborn with Morditas",
-          "New uniques including Gift of the Eidolon granting Haste and Frenzy",
-          "Full overhaul of combat audio mix and legacy skill sound effects",
-          "Countdown calendar reveals leading up to season launch",
-          "Feedback and Suggestions Tracker improvements"
+          "Season 5: Rage of the Frostborn with Pinnacle Morditas",
+          "First Blood community competition at season launch",
+          "New uniques including Gift of the Eidolon scaling Haste and Frenzy",
+          "Hype Week and comprehensive Patch Notes rollout (Sep 21–25)",
+          "Full overhaul of combat audio mix and legacy skill sound effects"
         ],
         "ru": [
-          "Сезон 5: Ярость Морозных с Мордитасом",
-          "Новые уникальные предметы, включая Gift of the Eidolon, дающие Спешку и Бешенство",
-          "Полная переработка звукового баланса боя и звуковых эффектов старых умений",
-          "Календарь обратного отсчета с анонсами перед запуском сезона",
-          "Улучшенная система отслеживания отзывов и предложений игроков"
+          "Сезон 5: Ярость Морозных с финальным боссом Pinnacle Morditas",
+          "Соревновательный ивент First Blood в день старта лиги",
+          "Новые уникальные предметы, включая Gift of the Eidolon с механикой атрибутов",
+          "Неделя анонсов механик Hype Week и полные Patch Notes (21–25 сен)",
+          "Полная переработка звукового баланса боя и эффектов умений"
         ]
       },
       "links": {
@@ -792,7 +929,6 @@
           "Crafting"
         ]
       },
-      "events": [],
       "ptr": null
     },
     {

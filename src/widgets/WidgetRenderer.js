@@ -3,6 +3,7 @@ import { renderStatusWidget } from './StatusWidget.js';
 import { renderCountdownWidget } from './CountdownWidget.js';
 import { renderTimelineWidget } from './TimelineWidget.js';
 import { renderVe4HbluWidget } from './custom/Ve4HbluWidget.js';
+import { renderErgrinWidget } from './custom/ErgrinWidget.js';
 
 let countdownTimerInterval = null;
 
@@ -30,6 +31,9 @@ export function initOBSOverlay(games = [], state = {}) {
   let widgetHtml = '';
   if (streamer === 've4hblu') {
     widgetHtml = renderVe4HbluWidget(matchedGame, state);
+  } else if (streamer === 'ergrin' || streamer === 'ergrinthered') {
+    const diabloGame = games.find(g => g.id === 'diablo-iv') || matchedGame;
+    widgetHtml = renderErgrinWidget(diabloGame, state);
   } else if (widgetType === 'timeline') {
     widgetHtml = renderTimelineWidget(games, state);
   } else if (widgetType === 'status') {

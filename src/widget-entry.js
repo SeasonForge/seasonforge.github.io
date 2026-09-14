@@ -3,6 +3,8 @@ import { renderFullCardWidget } from './widgets/FullCardWidget.js';
 import { renderStatusWidget } from './widgets/StatusWidget.js';
 import { renderCountdownWidget } from './widgets/CountdownWidget.js';
 import { renderTimelineWidget } from './widgets/TimelineWidget.js';
+import { renderVe4HbluWidget } from './widgets/custom/Ve4HbluWidget.js';
+import { renderErgrinWidget } from './widgets/custom/ErgrinWidget.js';
 import { FALLBACK_SEASONS_DATA } from './data/fallback-seasons.js';
 
 let countdownTimerInterval = null;
@@ -52,9 +54,26 @@ async function initWidgetPage() {
   const stateObj = { settings: { lang } };
 
   const matchedGame = games.find(g => g.id === gameParam) || games[0];
+  const streamer = (params.get('streamer') || '').toLowerCase();
+
+  // bgOpacity support
+  const bgOpacityParam = params.get('bgOpacity') || params.get('opacity');
+  const bgOpacityVal = bgOpacityParam !== null ? parseInt(bgOpacityParam, 10) : null;
+  if (bgOpacityVal !== null && !isNaN(bgOpacityVal)) {
+    stateObj.bgOpacity = bgOpacityVal;
+  }
 
   let html = '';
-  if (type === 'timeline') {
+  let widgetWidth = 400;
+  let widgetHeight = 240;
+
+  if (streamer === 'ergrin' || streamer === 'ergrinthered') {
+    const diabloGame = games.find(g => g.id === 'diablo-iv') || matchedGame;
+    html = renderErgrinWidget(diabloGame, stateObj);
+  } else if (streamer === 've4hblu') {
+    const leGame = games.find(g => g.id === 'last-epoch') || matchedGame;
+    html = renderVe4HbluWidget(leGame, stateObj);
+  } else if (type === 'timeline') {
     html = renderTimelineWidget(games, stateObj);
   } else if (type === 'countdown') {
     html = renderCountdownWidget(matchedGame, stateObj);
@@ -64,7 +83,49 @@ async function initWidgetPage() {
     html = renderStatusWidget(matchedGame, stateObj);
   }
 
-  container.innerHTML = html;
+  // For custom streamer widgets — wrap in fixed-size zone + instruction panel
+  if (streamer) {
+    const widgetUrl = window.location.href;
+    container.innerHTML = `
+      <div class="obs-widget-setup-layout">
+        <div class="obs-widget-setup-zone" style="width:${widgetWidth}px; min-width:${widgetWidth}px; height:${widgetHeight}px; min-height:${widgetHeight}px; overflow:hidden; position:relative;">
+          ${html}
+        </div>
+        <div class="obs-widget-setup-instructions">
+          <h3>OBS Setup</h3>
+          <ol>
+            <li>В OBS нажми <strong>+</strong> в «Источники»</li>
+            <li>Выбери <strong>«Браузер» (Browser)</strong></li>
+            <li>Вставь URL:<br><code>${widgetUrl}</code></li>
+            <li>Задай размеры:<br><strong>Ширина: ${widgetWidth}</strong> &nbsp; <strong>Высота: ${widgetHeight}</strong></li>
+            <li>Поставь галку <strong>«Пользовательский CSS»</strong> и очисти поле (или оставь пустым)</li>
+            <li>Нажми <strong>OK</strong> — инструкция обрежется автоматически</li>
+          </ol>
+          <div class="obs-widget-setup-hint">
+            <span>Размер виджета: <strong>${widgetWidth}×${widgetHeight}px</strong></span>
+            <button type="button" class="obs-widget-copy-btn" id="obs-copy-url-btn">Копировать URL</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const copyBtn = document.getElementById('obs-copy-url-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(widgetUrl);
+          copyBtn.textContent = 'Скопировано!';
+          setTimeout(() => {
+            copyBtn.textContent = 'Копировать URL';
+          }, 2000);
+        } catch (e) {
+          copyBtn.textContent = 'Ошибка';
+        }
+      });
+    }
+  } else {
+    container.innerHTML = html;
+  }
 
   // Start live ticking timer
   const grid = document.getElementById('obs-countdown-grid');

@@ -5,8 +5,8 @@ import { escapeHtml } from '../../utils/helpers.js';
 export function renderErgrinWidget(game, state = {}) {
   const lang = state.settings?.lang || 'ru';
   const gameName = escapeHtml(game ? getVal(game.name) : 'Diablo IV');
-  const avatarPath = '/assets/streamers/ergrin-avatar.png';
-  const bgPath = '/assets/streamers/ergrin-bg.png';
+  const avatarPath = '/assets/streamers/ergrin-avatar.webp';
+  const bgPath = '/assets/streamers/ergrin-bg.webp';
 
   // Next Season Info
   const nextSeason = game?.nextSeason;

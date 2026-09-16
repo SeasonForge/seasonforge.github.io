@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-15T19:11:44.046Z",
+  "lastCheckedAt": "2026-09-16T04:56:57.703Z",
   "changelog": [
     {
       "timestamp": "2026-09-15T17:06:36.455Z",
@@ -699,11 +699,11 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "81745",
-        "title": "Countdown to Season 5: Rage of the Frostborn hits October 1",
-        "url": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
-        "publishDate": "2026-09-14T16:00:00.000Z",
-        "source": "Official Last Epoch Forums"
+        "id": "1843481262702173",
+        "title": "Countdown to Season 5: Rage of the Frostborn hits October 1st",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262702173",
+        "publishDate": "2026-09-14T16:02:29.000Z",
+        "source": "Last Epoch Steam News"
       },
       "status": {
         "code": "active",
@@ -711,7 +711,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-14T16:00:00.000Z"
+        "updatedAt": "2026-09-16T04:56:57.635Z"
       },
       "history": [
         {
@@ -728,16 +728,16 @@
           "en": "Season 4",
           "ru": "Сезон 4"
         },
-        "startDate": "2026-04-01T00:00:00.000Z",
+        "startDate": "2026-04-16T00:00:00.000Z",
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1842212951313902"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262702173"
       },
       "nextSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Ярость Морозных"
+          "ru": "Сезон 5: Ярость Морознорожденных"
         },
         "startDate": "2026-10-01T16:00:00Z",
         "endDate": "",
@@ -747,7 +747,7 @@
           "ru": "Официальный анонс EHG: старт Сезона 5 — 1 октября 2026 года (19:00 Киев / МСК). Дорожная карта раскрытий с 18 по 30 сентября, стартовый ивент First Blood и новый Pinnacle-босс Morditas.",
           "en": "Official EHG announcement: Season 5 launches October 1, 2026 (11:00 CDT / 16:00 UTC). Reveal countdown runs Sep 18–30, featuring First Blood event and Pinnacle Morditas."
         },
-        "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262702173"
       },
       "events": [
         {
@@ -775,14 +775,14 @@
           "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
         },
         {
-          "id": "last-epoch-s5-campfire-chat",
+          "id": "last-epoch-s5-town-portal-podcast",
           "type": "stream",
           "title": {
-            "en": "Campfire Chat: Season 5 Deep Dive with Mike & Raxxanterax",
-            "ru": "Campfire Chat: детальный разбор Сезона 5 с Mike и Raxxanterax"
+            "en": "Town Portal Podcast with AaronActionRPG (Final Pre-Launch Q&A)",
+            "ru": "Town Portal Podcast с AaronActionRPG (Финальные ответы перед стартом)"
           },
-          "startDate": "2026-09-28T18:00:00Z",
-          "endDate": "2026-09-28T20:30:00Z",
+          "startDate": "2026-09-30T18:00:00Z",
+          "endDate": "2026-09-30T20:00:00Z",
           "verification": "official",
           "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
         },
@@ -880,18 +880,20 @@
       },
       "features": {
         "en": [
-          "Season 5: Rage of the Frostborn with Pinnacle Morditas",
-          "First Blood community competition at season launch",
-          "New uniques including Gift of the Eidolon scaling Haste and Frenzy",
-          "Hype Week and comprehensive Patch Notes rollout (Sep 21–25)",
-          "Full overhaul of combat audio mix and legacy skill sound effects"
+          "Season 5: Rage of the Frostborn expansion",
+          "Encounter and defeat Pinnacle Boss Morditas",
+          "First Blood community race to slay Pinnacle Morditas",
+          "New unique items including Gift of the Eidolon and Perilous Reflection",
+          "Updated audio design overhaul across skills and encounters",
+          "New seasonal supporter packs and Twitch drops"
         ],
         "ru": [
-          "Сезон 5: Ярость Морозных с финальным боссом Pinnacle Morditas",
-          "Соревновательный ивент First Blood в день старта лиги",
-          "Новые уникальные предметы, включая Gift of the Eidolon с механикой атрибутов",
-          "Неделя анонсов механик Hype Week и полные Patch Notes (21–25 сен)",
-          "Полная переработка звукового баланса боя и эффектов умений"
+          "Сезон 5: Ярость Морознорожденных (Rage of the Frostborn)",
+          "Битва с новым пиковым боссом Мордитасом",
+          "Соревновательное событие «First Blood» за победу над Мордитасом",
+          "Новые уникальные предметы, включая Gift of the Eidolon и Perilous Reflection",
+          "Полная переработка звукового дизайна умений и сражений",
+          "Новые наборы поддержки сезона и награды Twitch Drops"
         ]
       },
       "links": {

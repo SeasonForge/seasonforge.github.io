@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-19T15:56:24.307Z",
+  "lastCheckedAt": "2026-09-20T05:00:34.546Z",
   "changelog": [
     {
       "timestamp": "2026-09-15T17:06:36.455Z",
@@ -330,7 +330,9 @@
           },
           "startDate": "2026-09-17T21:00:00.000Z",
           "endDate": "2026-09-18T03:00:00.000Z",
-          "verification": "official"
+          "verification": "official",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "poe1-exilecon-qualifier-4",

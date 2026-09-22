@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-21T18:13:48.789Z",
+  "lastCheckedAt": "2026-09-22T04:53:27.573Z",
   "changelog": [
     {
       "timestamp": "2026-09-15T17:06:36.455Z",
@@ -507,6 +507,14 @@
           },
           "startDate": "2026-04-16T17:00:00Z",
           "endDate": "2026-06-30T17:00:00Z"
+        },
+        {
+          "name": {
+            "en": "Season 14: Season of Death Awakening",
+            "ru": "Сезон 14: Пробуждение Смерти"
+          },
+          "startDate": "2026-06-30T17:00:00Z",
+          "endDate": "2026-09-15T16:30:00Z"
         }
       ],
       "currentSeason": {
@@ -515,22 +523,25 @@
           "ru": "Сезон Инфернального Наследия"
         },
         "startDate": "2026-09-15T16:30:00Z",
-        "endDate": "",
+        "endDate": "2026-12-01T17:00:00Z",
         "isActive": true,
         "verification": "official",
         "sourceUrl": "https://news.blizzard.com/en-us/article/24297205/diablo-iv-what-s-next-panel-recap"
       },
       "nextSeason": {
         "name": {
-          "en": "TBA",
-          "ru": "TBA"
+          "en": "Season 16",
+          "ru": "Сезон 16"
         },
-        "startDate": "",
+        "startDate": "2026-12-01T17:00:00Z",
         "endDate": "",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://news.blizzard.com/en-us/article/24297205/diablo-iv-what-s-next-panel-recap",
-        "verificationNote": null
+        "sourceUrl": "https://diablo4.blizzard.com/ru-ru/upcoming",
+        "verificationNote": {
+          "en": "Estimated date based on in-game Season 15 Battle Pass end (Dec 1)",
+          "ru": "Расчётная дата по окончанию Battle Pass Сезона 15 в игре (1 декабря)"
+        }
       },
       "ptr": null,
       "events": [

@@ -658,9 +658,14 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
         if (!ev1 || !ev2) return false;
         if (ev1.id && ev2.id && ev1.id === ev2.id) return true;
 
-        // Exact start date match
-        if (ev1.startDate && ev2.startDate && ev1.startDate === ev2.startDate) {
-          return true;
+        // Exact start date match (exact string or normalized YYYY-MM-DD)
+        if (ev1.startDate && ev2.startDate) {
+          if (ev1.startDate === ev2.startDate) return true;
+          const d1Str = String(ev1.startDate).slice(0, 10);
+          const d2Str = String(ev2.startDate).slice(0, 10);
+          if (d1Str.length === 10 && d2Str.length === 10 && d1Str === d2Str) {
+            return true;
+          }
         }
 
         // Date proximity check (within 30 days window)
@@ -816,6 +821,8 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
             const endMs = newEv.endDate ? new Date(newEv.endDate).getTime() : startMs + 86400000;
             // Ignore events that already completely ended in the past (more than 24h ago)
             if (endMs < nowMs - 86400000) continue;
+            // Ignore events that already started in the past (more than 48 hours ago) for new scheduled event alerts
+            if (startMs < nowMs - 2 * 86400000) continue;
 
             const exists = oldEvents.some(ex => areEventsSimilar(ex, newEv));
             if (!exists) {

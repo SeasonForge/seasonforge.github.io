@@ -30,11 +30,14 @@ export class PoE2Adapter extends BaseAdapter {
       const filteredItems = this.filterRelevantNews(items, ['poe 2', 'league', 'early access', 'exilecon', 'gamescom', 'release', 'showcase', 'onl']);
       const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : items.slice(0, 5);
 
+      const rawLatestItem = items[0];
+      const feedLatestId = rawLatestItem ? (rawLatestItem.guid || rawLatestItem.link || this.hashString(rawLatestItem.title + rawLatestItem.pubDate)) : null;
+
       const firstItem = targetItems[0] || items[0];
       const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
 
-      if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
-        console.log(`[Orchestrator] [Path of Exile 2] Latest news unchanged (id=${latestNewsId}). Skipping Gemini call.`);
+      if (existingGame && existingGame.latestNews && (existingGame.latestNews.id === feedLatestId || existingGame.latestNews.id === latestNewsId)) {
+        console.log(`[Orchestrator] [Path of Exile 2] Latest news unchanged. Skipping Gemini call.`);
         return existingGame;
       }
 
@@ -110,11 +113,11 @@ Formatting rule: Extract dates ONLY when explicitly mentioned in the source text
         icon: 'sparkles',
         website: 'https://pathofexile2.com',
         latestNews: {
-          id: latestNewsId,
-          title: firstItem.title || 'Path of Exile News Update',
-          url: firstItem.link || 'https://www.pathofexile.com/news',
-          publishDate: firstItem.pubDate ? new Date(firstItem.pubDate).toISOString() : new Date().toISOString(),
-          source: 'Path of Exile Official RSS'
+          id: feedLatestId || latestNewsId,
+          title: (items[0] || firstItem).title || 'Path of Exile News Update',
+          url: (items[0] || firstItem).link || 'https://store.steampowered.com/news/app/2694490',
+          publishDate: (items[0] || firstItem).pubDate ? new Date((items[0] || firstItem).pubDate).toISOString() : new Date().toISOString(),
+          source: 'Path of Exile 2 Official Steam'
         },
         status: {
           ...this.normalizeStatus(extracted.status),

@@ -17,9 +17,9 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   const seasonsHref = '/';
   const eventsHref = '/events/';
 
-  // 1. Determine Timeline Window: 7 days before today to 45 days ahead (~7 weeks)
+  // 1. Determine Timeline Window: 7 days before today to 35 days ahead (~5 weeks)
   const windowStart = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-  const windowEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 45);
+  const windowEnd = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 35);
   const totalWindowMs = windowEnd.getTime() - windowStart.getTime();
 
   const nowMs = now.getTime();
@@ -112,9 +112,18 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
       const clampedStart = Math.max(windowStart.getTime(), eStart.getTime());
       const clampedEnd = Math.min(windowEnd.getTime(), eEnd.getTime());
 
-      const leftPct = Math.max(0, ((clampedStart - windowStart.getTime()) / totalWindowMs) * 100);
+      let leftPct = Math.max(0, ((clampedStart - windowStart.getTime()) / totalWindowMs) * 100);
       const rawWidthPct = ((clampedEnd - clampedStart) / totalWindowMs) * 100;
-      const widthPct = Math.max(7.5, rawWidthPct);
+      let widthPct = Math.max(7.5, rawWidthPct);
+
+      if (leftPct + widthPct > 100) {
+        if (widthPct > 100) {
+          widthPct = 100;
+          leftPct = 0;
+        } else {
+          leftPct = Math.max(0, 100 - widthPct);
+        }
+      }
 
       const isIconOnly = widthPct < 5;
       const widthClass = isIconOnly ? 'is-icon-only' : 'is-full';

@@ -2,6 +2,42 @@
   "lastCheckedAt": "2026-09-14T16:24:18.000Z",
   "events": [
     {
+      "id": "diablo-iv_event_gift-of-the-tree-whispers",
+      "gameId": "diablo-iv",
+      "type": "event",
+      "title_ru": "Игровое событие «Дар Древа»: Утроенные тайники и супер-буст",
+      "title_en": "Gift of the Tree: Tripled Whisper Caches & Super Boost",
+      "startDate": "2026-09-23T17:00:00Z",
+      "endDate": "2026-10-07T17:00:00Z",
+      "description_ru": "Поручения Шепчущего Древа утраивают награды и содержат вложенные сумки («матрёшка»). Экстремально быстрая прокачка твинков (1–70 за пару сумок), колоссальный приток опыта для Парагона 300, ускоренный фарм Сверкающих искр и повышенный шанс на мифические уники.",
+      "description_en": "Whispers event: caches are tripled and contain nested bags. Instant alt leveling (1–70 in seconds), massive Paragon 300 XP boost, up to 6x Resplendent Sparks, and elevated Mythic drop chances.",
+      "rewards": [
+        {
+          "ru": "Утроенные сумки Шепота («матрёшка»)",
+          "en": "Tripled Nested Whisper Caches"
+        },
+        {
+          "ru": "Мгновенная прокачка твинков (1–70 ур.)",
+          "en": "Instant Alt Leveling (Lv 1–70)"
+        },
+        {
+          "ru": "Массовый буст опыта (Парагон 300)",
+          "en": "Massive Paragon 300 XP Boost"
+        },
+        {
+          "ru": "Сверкающие искры для мификов (до 6x)",
+          "en": "Resplendent Sparks for Mythics (up to 6x)"
+        },
+        {
+          "ru": "Оскверненные корни для Натиска",
+          "en": "Corrupted Roots for Helltide"
+        }
+      ],
+      "sourceUrl": "https://news.blizzard.com/en-us/diablo4",
+      "updatedAt": "2026-09-24T07:15:00.000Z",
+      "status": "active"
+    },
+    {
       "id": "torchlight-infinite_login_the-night-watch-begins-season-launch-sign-in",
       "gameId": "torchlight-infinite",
       "type": "login",

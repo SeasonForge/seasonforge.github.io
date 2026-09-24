@@ -16,7 +16,7 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
-import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.2';
+import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.3';
 import { renderGamesCatalog } from './components/GamesCatalog.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';

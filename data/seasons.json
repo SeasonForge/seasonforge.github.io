@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-24T17:18:19.154Z",
+  "lastCheckedAt": "2026-09-25T05:05:40.566Z",
   "changelog": [
     {
       "timestamp": "2026-09-15T17:06:36.455Z",
@@ -165,10 +165,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4006328",
-        "title": "The Third Path of Exile 1 ExileCon Qualifier Is Going Live!",
-        "url": "https://www.pathofexile.com/forum/view-thread/4006328",
-        "publishDate": "Thu, 17 Sep 2026 20:45:00 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/4007872",
+        "title": "The Final Path of Exile 1 ExileCon Qualifier Is Going Live!",
+        "url": "https://www.pathofexile.com/forum/view-thread/4007872",
+        "publishDate": "Thu, 24 Sep 2026 20:45:00 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -177,7 +177,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-18T04:52:06.428Z"
+        "updatedAt": "2026-09-25T05:05:34.686Z"
       },
       "history": [
         {
@@ -198,7 +198,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4006328"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4007872"
       },
       "nextSeason": {
         "name": {
@@ -209,7 +209,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4006328",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4007872",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -218,13 +218,13 @@
       "features": {
         "en": [
           "ExileCon 2026 Qualifiers",
-          "Twitch Drops Rewards",
-          "Fan Art Competition"
+          "Exclusive Twitch Drops cosmetic rewards",
+          "Competitive racing events"
         ],
         "ru": [
-          "Отборочные турниры к ExileCon 2026",
-          "Награды Twitch Drops",
-          "Конкурс фан-арта"
+          "Отборочные турниры ExileCon 2026",
+          "Эксклюзивные косметические награды Twitch Drops",
+          "Соревновательные гонки"
         ]
       },
       "links": {
@@ -359,11 +359,11 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1843481262700434",
-        "title": "Fan Art Competition Runners-Up",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434",
-        "publishDate": "2026-09-14T00:32:55.000Z",
-        "source": "Path of Exile Official RSS"
+        "id": "1844751498223024",
+        "title": "The Last of the Druids Sale - Get One Free Mystery Box When You Spend Points",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498223024",
+        "publishDate": "2026-09-25T00:54:22.000Z",
+        "source": "Path of Exile 2 Official Steam"
       },
       "status": {
         "code": "early-access",
@@ -371,18 +371,18 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-09-16T17:07:06.126Z"
+        "updatedAt": "2026-09-25T05:05:30.468Z"
       },
       "currentSeason": {
         "name": {
           "en": "Forbidden Rites",
-          "ru": "Запретные ритуалы"
+          "ru": "Запретные обряды"
         },
         "startDate": "2026-09-04T00:00:00.000Z",
-        "endDate": "",
+        "endDate": "2026-12-11T00:00:00.000Z",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221460"
       },
       "nextSeason": {
         "name": {
@@ -393,7 +393,7 @@
         "endDate": "",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1843481262700434",
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221460",
         "verificationNote": {
           "en": "Official ExileCon 2026 presentation & 1.0 reveal dates",
           "ru": "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"
@@ -401,20 +401,20 @@
       },
       "features": {
         "en": [
-          "Forbidden Rites event league with 8 new challenges and exclusive rewards",
-          "Trial of Chaos major overhaul",
-          "New Augments: Soul Cores of Jiquani and Atziri",
-          "New Map Fragments and Tablets including Sacred Bloom and Expedition Tablet",
-          "Runes of Aldur content added to core game",
-          "Upcoming Duelist class and Swords weapon type announced for 1.0 Full Release"
+          "Steam Deck Verified support",
+          "Forbidden Rites event league with fresh economy and challenges",
+          "New Duelist class arriving at full release",
+          "Trial of Chaos changes and improvements",
+          "Runes of Aldur added to core game",
+          "New Augment Soul Cores, Sacred Bloom fragments, and Expedition Tablets"
         ],
         "ru": [
-          "Событийная лига «Запретные ритуалы» с 8 испытаниями и эксклюзивными наградами",
-          "Масштабная переработка Испытания Хаоса (Trial of Chaos)",
-          "Новые аугментации: Ядра душ Джикуани и Ацири",
-          "Новые фрагменты карт и таблички, включая Священное цветение и Табличку Экспедиции",
-          "Контент «Рун Алдура» добавлен в основную игру",
-          "Анонс класса Дуэлянт и мечей к релизу версии 1.0"
+          "Подтвержденная совместимость со Steam Deck (Steam Deck Verified)",
+          "Событие-лига Запретные обряды с новой экономикой и испытаниями",
+          "Новый класс Дуэлянт, выходящий с релизом 1.0",
+          "Изменения и улучшения Испытания Хаоса",
+          "Добавление Рун Алдура в основную игру",
+          "Новые предметы: Ядра душ, фрагменты Священного цвета и Скрижали экспедиции"
         ]
       },
       "links": {
@@ -436,16 +436,18 @@
       "icon": "sparkles",
       "events": [
         {
-          "id": "poe2-league-0-5-5-forbidden-rites",
+          "id": "poe2-forbidden-rites-launch",
           "type": "season_start",
           "title": {
-            "en": "PoE 2: Event League 0.5.5 \"The Forbidden Rites\"",
-            "ru": "PoE 2: Ивент-лига 0.5.5 «The Forbidden Rites»"
+            "en": "Path of Exile 2: Forbidden Rites Launch",
+            "ru": "Запуск события «Запретные обряды»"
           },
-          "startDate": "2026-09-04T20:00:00.000Z",
-          "endDate": "2026-12-11T19:00:00.000Z",
+          "startDate": "2026-09-04T00:00:00.000Z",
+          "endDate": "",
           "verification": "official",
-          "sourceUrl": "https://pathofexile2.com"
+          "sourceUrl": "https://pathofexile2.com",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "poe2-exilecon-2026",
@@ -468,6 +470,17 @@
           "startDate": "2026-12-11T19:00:00.000Z",
           "endDate": "2026-12-11T23:59:59.000Z",
           "verification": "official"
+        },
+        {
+          "id": "poe2-1-0-full-release",
+          "type": "expansion",
+          "title": {
+            "en": "Path of Exile 2 1.0 Full Release",
+            "ru": "Полный релиз Path of Exile 2 1.0"
+          },
+          "startDate": "2026-12-11T00:00:00.000Z",
+          "endDate": "",
+          "verification": "confirmed"
         }
       ],
       "ptr": null,
@@ -721,10 +734,10 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1844115010495693",
-        "title": "A New Chapter for Last Epoch: Mike Weicker takes over as Game Director",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844115010495693",
-        "publishDate": "2026-09-18T18:00:05.000Z",
+        "id": "1844751498221995",
+        "title": "Hype Week Day 4: New Uniques",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221995",
+        "publishDate": "2026-09-24T16:00:54.000Z",
         "source": "Last Epoch Steam News"
       },
       "status": {
@@ -733,7 +746,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-19T04:44:37.473Z"
+        "updatedAt": "2026-09-25T05:05:40.502Z"
       },
       "history": [
         {
@@ -754,12 +767,12 @@
         "endDate": "",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844115010495693"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221995"
       },
       "nextSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Ярость Морознорожденных"
+          "ru": "Сезон 5: Ярость хладорожденных"
         },
         "startDate": "2026-10-01T16:00:00Z",
         "endDate": "",
@@ -769,7 +782,7 @@
           "ru": "Официальный анонс EHG: старт Сезона 5 — 1 октября 2026 года (19:00 Киев / МСК). Дорожная карта раскрытий с 18 по 30 сентября, стартовый ивент First Blood и новый Pinnacle-босс Morditas.",
           "en": "Official EHG announcement: Season 5 launches October 1, 2026 (11:00 CDT / 16:00 UTC). Reveal countdown runs Sep 18–30, featuring First Blood event and Pinnacle Morditas."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844115010495693"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221995"
       },
       "events": [
         {
@@ -782,7 +795,9 @@
           "startDate": "2026-09-18T16:00:00Z",
           "endDate": "2026-09-18T19:00:00Z",
           "verification": "official",
-          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "last-epoch-s5-hype-week-patch-notes",
@@ -902,18 +917,20 @@
       },
       "features": {
         "en": [
-          "New seasonal mechanic: Rage of Morditas",
-          "Morditas pinnacle boss encounter and First Blood race event",
-          "Faction updates",
-          "New character skills and unique items",
-          "Extensive quality-of-life and audio mix improvements"
+          "New Seasonal Mechanic: Rage of Morditas with Blood Crystals and Gauntlet encounters",
+          "New Pinnacle Boss: Morditas, God of Bloodshed, accessible via Demigod's Ascendance",
+          "Three new class skills: Radiant Lance (Paladin), Summon Tide Elemental (Shaman), and Dreamslash (Bladedancer)",
+          "Item Faction reworks: Merchant's Guild unified UI, automatic price lowering, and removal of rank-gated purchases; Circle of Fortune Observatory reconstruction",
+          "First Blood season launch pinnacle race across Normal and Hardcore Solo modes",
+          "New chase Unique items including Gift of the Eidolon, Morditas' Vengeance, and Unbroken Legion"
         ],
         "ru": [
-          "Новая сезонная механика: Rage of Morditas",
-          "Сражение с боссом Мордитасом и испытание First Blood",
-          "Обновления фракций",
-          "Новые умения персонажей и уникальные предметы",
-          "Улучшения качества жизни и переработка звукового сопровождения"
+          "Новая сезонная механика: Ярость Мордитаса с Кровавыми кристаллами и испытанием кровью и льдом",
+          "Новый пинакл-босс: Мордитас, бог кровопролития, доступный через Возвышение полубога",
+          "Три новых умения классов: Сияющее копье (Паладин), Призыв элементаля прилива (Шаман) и Рассечение снов (Танцующий с клинками)",
+          "Обновление фракций предметов: объединенный интерфейс Базара Гильдии купцов, автоснижение цен, отмена ранговых ограничений на покупку и перестройка Обсерватории Круга фортуны",
+          "Соревновательная гонка First Blood на старте сезона в нормальном и хардкорном соло-режимах",
+          "Новые уникальные предметы высокой редкости, включая Gift of the Eidolon, Morditas' Vengeance и Unbroken Legion"
         ]
       },
       "links": {

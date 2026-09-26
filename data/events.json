@@ -1,6 +1,21 @@
 {
-  "lastCheckedAt": "2026-09-14T16:24:18.000Z",
+  "lastCheckedAt": "2026-09-26T11:35:00.000Z",
   "events": [
+    {
+      "id": "torchlight-infinite_stream_ss14-tartarus-preview",
+      "gameId": "torchlight-infinite",
+      "type": "stream",
+      "title_ru": "Превью-стрим нового сезона SS14 «Tartarus»",
+      "title_en": "SS14 \"Tartarus\" Season Preview Stream",
+      "startDate": "2026-10-09T17:00:00Z",
+      "endDate": "2026-10-09T19:00:00Z",
+      "description_ru": "Официальный прямой эфир разработчиков с презентацией нового сезона SS14 «Tartarus»: демонстрация ключевых механик, изменений баланса и оглашение точной даты запуска.",
+      "description_en": "Official developer livestream unveiling the upcoming SS14 \"Tartarus\" season: showcases core seasonal mechanics, balance changes, and reveals the official launch date.",
+      "rewards": [],
+      "sourceUrl": "https://torchlight.xd.com/",
+      "updatedAt": "2026-09-26T11:35:00.000Z",
+      "status": "upcoming"
+    },
     {
       "id": "diablo-iv_event_gift-of-the-tree-whispers",
       "gameId": "diablo-iv",

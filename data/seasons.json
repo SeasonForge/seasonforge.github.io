@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-09-27T17:03:03.572Z",
+  "lastCheckedAt": "2026-09-28T05:33:03.337Z",
   "changelog": [
     {
       "timestamp": "2026-09-26T11:35:00.000Z",
@@ -821,7 +821,9 @@
           "startDate": "2026-09-21T16:00:00Z",
           "endDate": "2026-09-25T23:59:59Z",
           "verification": "official",
-          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "last-epoch-s5-town-portal-podcast",

@@ -1,11 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { config as dotenvConfig } from 'dotenv';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const KEY = '460b5e5a2df2438686d63d88151ebec7';
+dotenvConfig({ path: path.join(__dirname, '../.env') });
+
+const KEY = process.env.INDEXNOW_KEY;
+if (!KEY) {
+  console.error('[IndexNow] Error: INDEXNOW_KEY not found in .env');
+  process.exit(1);
+}
 const HOST = process.env.INDEXNOW_HOST || 'seasonforge.online';
 const BASE_URL = process.env.BASE_URL || `https://${HOST}`;
 const KEY_LOCATION = `${BASE_URL}/${KEY}.txt`;

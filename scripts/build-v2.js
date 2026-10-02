@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import CleanCSS from 'clean-css';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -9,6 +10,7 @@ const srcDir = path.join(__dirname, '../src');
 const v2Dir = path.join(srcDir, 'styles/v2');
 const distDir = path.join(v2Dir, 'dist');
 const outputFile = path.join(distDir, 'v2-bundle.css');
+const outputMinFile = path.join(distDir, 'v2-bundle.min.css');
 
 // Ordered list of modules for predictable CSS cascade
 const modulePaths = [
@@ -58,8 +60,29 @@ function buildV2() {
     }
   }
 
+  // Write dev bundle
   fs.writeFileSync(outputFile, combinedCss, 'utf-8');
-  console.log(`\nSuccessfully bundled ${processedCount} module(s) into: ${outputFile}`);
+  const devSize = (Buffer.byteLength(combinedCss) / 1024).toFixed(1);
+
+  // Minify for production
+  const minified = new CleanCSS({
+    level: {
+      1: { specialComments: 0 },
+      2: { mergeMedia: true, restructureRules: true }
+    }
+  }).minify(combinedCss);
+
+  if (minified.errors && minified.errors.length > 0) {
+    console.error('CSS minification errors:', minified.errors);
+  }
+
+  fs.writeFileSync(outputMinFile, minified.styles, 'utf-8');
+  const minSize = (Buffer.byteLength(minified.styles) / 1024).toFixed(1);
+  const savings = ((1 - minified.styles.length / combinedCss.length) * 100).toFixed(0);
+
+  console.log(`\nBundled ${processedCount} module(s):`);
+  console.log(`  Dev:  ${outputFile} (${devSize} KB)`);
+  console.log(`  Min:  ${outputMinFile} (${minSize} KB, −${savings}%)`);
 }
 
 export { buildV2 };
@@ -67,3 +90,4 @@ export { buildV2 };
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   buildV2();
 }
+

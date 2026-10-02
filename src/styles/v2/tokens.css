@@ -2,34 +2,71 @@
 :root {
   color-scheme: dark;
 
-  /* Color Palette */
+  /* Color Palette — Core */
   --bg: #0c0915;
   --bg-deep: #08060f;
   --panel: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(10, 14, 24, 0.22) 100%);
   --panel-solid: rgba(10, 14, 24, 0.25);
   --panel-strong: rgba(10, 14, 24, 0.40);
   --panel-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Text */
   --text: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #cbd5e1;
   --text-accent: #a5b4fc;
+  --text-bright: #f1f5f9;
+  --white: #ffffff;
   --muted: #94a3b8;
   --muted-strong: #64748b;
+
+  /* Borders */
   --border: rgba(255, 255, 255, 0.10);
   --border-soft: rgba(255, 255, 255, 0.05);
   --border-subtle: rgba(255, 255, 255, 0.07);
+
+  /* Accent (Indigo) */
   --accent: #6366f1;
+  --accent-light: #818cf8;
+  --accent-lighter: #a5b4fc;
   --accent-soft: rgba(99, 102, 241, 0.08);
   --accent-glow: rgba(99, 102, 241, 0.3);
-  --gold: #f59e0b;
-  --gold-soft: rgba(245, 158, 11, 0.12);
-  --gold-glow: rgba(245, 158, 11, 0.25);
-  --green-soft: rgba(16, 185, 129, 0.1);
-  --green-text: #a7f3d0;
-  --amber-soft: rgba(245, 158, 11, 0.1);
-  --amber-text: #fef08a;
+
+  /* Purple */
   --purple: #9d70ff;
+  --purple-vivid: #a78bfa;
+  --purple-light: #c084fc;
+  --purple-deep: #8b5cf6;
+  --purple-dark: #7c3aed;
   --purple-glow: rgba(157, 112, 255, 0.6);
   --purple-gradient: linear-gradient(90deg, #8b5cf6, #a855f7);
   --purple-gradient-glow: rgba(168, 85, 247, 0.8);
+
+  /* Gold / Amber */
+  --gold: #f59e0b;
+  --gold-light: #fbbf24;
+  --gold-soft: rgba(245, 158, 11, 0.12);
+  --gold-glow: rgba(245, 158, 11, 0.25);
+  --amber-soft: rgba(245, 158, 11, 0.1);
+  --amber-text: #fef08a;
+
+  /* Green / Emerald */
+  --green: #10b981;
+  --green-light: #34d399;
+  --green-text: #a7f3d0;
+  --green-soft: rgba(16, 185, 129, 0.1);
+
+  /* Blue */
+  --blue: #60a5fa;
+  --blue-sky: #38bdf8;
+
+  /* Red */
+  --red: #f87171;
+  --red-light: #fca5a5;
+
+  /* Semantic Surface Colors */
+  --surface-card: #1b2238;
+  --surface-highlight: rgba(99, 102, 241, 0.06);
 
   /* Border Radii */
   --radius-xs: 8px;
@@ -37,6 +74,14 @@
   --radius-md: 16px;
   --radius-lg: 20px;
   --radius-xl: 24px;
+
+  /* Spacing Scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
 
   /* Typography — Strict Single Font Family */
   --font: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -60,3 +105,4 @@
   --z-modal: 1000;
   --z-tooltip: 1100;
 }
+

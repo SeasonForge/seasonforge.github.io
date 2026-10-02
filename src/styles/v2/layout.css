@@ -132,6 +132,6 @@ body.app-layout--overlay #content {
 }
 
 .app-footer__link:hover {
-  color: #ffffff;
+  color: var(--white);
   text-decoration: underline;
 }

@@ -135,10 +135,12 @@ Formatting rule: Extract dates ONLY when explicitly mentioned in the source text
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
         },
         nextSeason: {
-          name: {
-            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'ExileCon 2026 (League & 1.0 Reveal)',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'ExileCon 2026 (Анонс лиги и 1.0)'
-          },
+          name: (existingGame?.nextSeason?.verification === 'official' && existingGame?.nextSeason?.startDate && (!extracted.nextSeasonStartDate || extracted.nextSeasonStartDate === existingGame?.nextSeason?.startDate.slice(0, 10)))
+            ? existingGame.nextSeason.name
+            : {
+                en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'ExileCon 2026 (League & 1.0 Reveal)',
+                ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'ExileCon 2026 (Анонс лиги и 1.0)'
+              },
           startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
           isActive: false,
@@ -147,7 +149,7 @@ Formatting rule: Extract dates ONLY when explicitly mentioned in the source text
             en: "Official ExileCon 2026 presentation & 1.0 reveal dates",
             ru: "Официальные даты проведения ExileCon 2026 и презентации версии 1.0"
           },
-          sourceUrl: firstItem.link || 'https://www.pathofexile.com/news'
+          sourceUrl: existingGame?.nextSeason?.sourceUrl || firstItem.link || 'https://www.pathofexile.com/news'
         },
         features: {
           en: extracted.featuresEn || [],

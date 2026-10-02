@@ -36,7 +36,7 @@
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+  background: linear-gradient(135deg, var(--text), var(--text-tertiary));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -122,7 +122,7 @@
   transform: translateX(-50%);
   width: 75%;
   height: 2px;
-  background: linear-gradient(to right, transparent, #38bdf8, transparent);
+  background: linear-gradient(to right, transparent, var(--blue-sky), transparent);
   opacity: 0;
   transition: opacity var(--transition-slow);
 }
@@ -155,7 +155,7 @@
 }
 
 .app-header__meta strong {
-  color: #e2e8f0;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.75rem;
 }
@@ -222,7 +222,7 @@
   transform: translateX(-50%);
   width: 75%;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--btn-neon, #6366f1), transparent);
+  background: linear-gradient(to right, transparent, var(--btn-neon, var(--accent)), transparent);
   opacity: 0;
   transition: opacity var(--transition-slow);
 }
@@ -238,7 +238,7 @@
 .header-neon-btn:hover {
   background: rgba(255, 255, 255, 0.06);
   border-color: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .header-neon-btn:hover::before {
@@ -273,11 +273,11 @@
 
 /* Specific Neon Colors */
 .feedback-trigger-btn {
-  --btn-neon: #6366f1;
+  --btn-neon: var(--accent);
 }
 
 .mobile-app-trigger-btn {
-  --btn-neon: #10b981;
+  --btn-neon: var(--green);
 }
 
 .streamer-trigger-btn {
@@ -285,7 +285,7 @@
 }
 
 .lang-switcher__btn {
-  --btn-neon: #f59e0b;
+  --btn-neon: var(--gold);
 }
 
 /* Mobile Header Responsive Styles */

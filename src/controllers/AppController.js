@@ -2,6 +2,8 @@ import { getState, setActiveView, setActiveGame } from '../store/state.js';
 import { trackEvent } from '../utils/analytics.js';
 
 export class AppController {
+  static #trackedForecastGames = new Set();
+
   static handleViewChange(view, renderCallback) {
     setActiveView(view);
     trackEvent('view_changed', { view });
@@ -23,13 +25,14 @@ export class AppController {
     }
   }
 
-  static checkForecastViewed(trackedForecastGames = new Set()) {
+  static checkForecastViewed() {
     const state = getState();
+    const tracked = AppController.#trackedForecastGames;
     const checkGame = (g) => {
       if (!g || !g.id || !g.nextSeason) return;
       const isEstimated = g.nextSeason.verification === 'estimated' || g.nextSeason.verification === 'ai';
-      if (isEstimated && g.nextSeason.startDate && !trackedForecastGames.has(g.id)) {
-        trackedForecastGames.add(g.id);
+      if (isEstimated && g.nextSeason.startDate && !tracked.has(g.id)) {
+        tracked.add(g.id);
         trackEvent('forecast_viewed', {
           game_id: g.id,
           season_name: g.nextSeason.name?.en || g.nextSeason.name || 'Estimated Season'

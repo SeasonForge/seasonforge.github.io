@@ -35,7 +35,7 @@
   padding: 0 0.55rem;
   font-size: 0.725rem;
   font-weight: 700;
-  color: #f1f5f9;
+  color: var(--text-bright);
   border-right: 1px solid rgba(255, 255, 255, 0.06);
   box-sizing: border-box;
 }

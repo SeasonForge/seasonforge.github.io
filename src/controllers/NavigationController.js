@@ -5,6 +5,8 @@ import { trackEvent } from '../utils/analytics.js';
 let timelineMode = 'seasons';
 let isSwitchingTimelineMode = false;
 let isInitialized = false;
+/** @type {AbortController|null} */
+let navAbortController = null;
 
 export function getTimelineMode() {
   return timelineMode;
@@ -147,7 +149,7 @@ export function attachNavbarEvents({ onRender, onToast }) {
     });
   }
 
-  // Mobile Bottom Nav listeners & active class sync
+  // Mobile Bottom Nav — sync active class
   const state = getState();
   const mobTrackerBtn = document.getElementById('mob-btn-tracker');
   const mobTimelineBtn = document.getElementById('mob-btn-timeline');
@@ -160,45 +162,49 @@ export function attachNavbarEvents({ onRender, onToast }) {
   else if (state.activeView === 'games' && mobGamesBtn) mobGamesBtn.classList.add('mobile-nav__btn--active');
   else if (state.activeView === 'more' && mobMoreBtn) mobMoreBtn.classList.add('mobile-nav__btn--active');
 
-  if (mobTrackerBtn && !mobTrackerBtn.dataset.bound) {
-    mobTrackerBtn.dataset.bound = 'true';
-    mobTrackerBtn.addEventListener('click', () => {
-      setActiveView('card', true);
-      const currentState = getState();
-      if (!currentState.activeGame && currentState.games.length > 0) {
-        const lastGame = localStorage.getItem('lastGame');
-        const matched = currentState.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
-        setActiveGame(matched || currentState.games[0], true);
+  // Use shared AbortController — recreated each call to avoid duplicate listeners
+  const signal = ensureNavAbort();
+  const mobBtns = [
+    { el: mobTrackerBtn, view: 'card', restoreGame: true },
+    { el: mobTimelineBtn, view: 'timeline' },
+    { el: mobGamesBtn, view: 'games' },
+    { el: mobMoreBtn, view: 'more' }
+  ];
+  mobBtns.forEach(({ el, view, restoreGame }) => {
+    if (!el) return;
+    el.addEventListener('click', () => {
+      setActiveView(view, true);
+      if (restoreGame) {
+        const currentState = getState();
+        if (!currentState.activeGame && currentState.games.length > 0) {
+          const lastGame = localStorage.getItem('lastGame');
+          const matched = currentState.games.find(g => g.id === lastGame || g.name?.en === lastGame || g.name?.ru === lastGame);
+          setActiveGame(matched || currentState.games[0], true);
+        }
       }
       if (typeof onRender === 'function') onRender();
-    });
+    }, { signal });
+  });
+}
+
+/**
+ * Ensure AbortController exists (abort old + create new each call).
+ * @returns {AbortSignal}
+ */
+function ensureNavAbort() {
+  if (navAbortController) {
+    navAbortController.abort();
   }
-  if (mobTimelineBtn && !mobTimelineBtn.dataset.bound) {
-    mobTimelineBtn.dataset.bound = 'true';
-    mobTimelineBtn.addEventListener('click', () => {
-      setActiveView('timeline', true);
-      if (typeof onRender === 'function') onRender();
-    });
-  }
-  if (mobGamesBtn && !mobGamesBtn.dataset.bound) {
-    mobGamesBtn.dataset.bound = 'true';
-    mobGamesBtn.addEventListener('click', () => {
-      setActiveView('games', true);
-      if (typeof onRender === 'function') onRender();
-    });
-  }
-  if (mobMoreBtn && !mobMoreBtn.dataset.bound) {
-    mobMoreBtn.dataset.bound = 'true';
-    mobMoreBtn.addEventListener('click', () => {
-      setActiveView('more', true);
-      if (typeof onRender === 'function') onRender();
-    });
-  }
+  navAbortController = new AbortController();
+  return navAbortController.signal;
 }
 
 export function initGlobalNavigationListeners({ onRender, onOpenDrawer }) {
   if (isInitialized || typeof document === 'undefined') return;
   isInitialized = true;
+
+  if (!navAbortController) ensureNavAbort();
+  const signal = navAbortController.signal;
 
   document.addEventListener('click', (e) => {
     const tabSeasons = e.target.closest('#tab-mode-seasons');
@@ -243,7 +249,7 @@ export function initGlobalNavigationListeners({ onRender, onOpenDrawer }) {
       }, 160);
       return;
     }
-  });
+  }, { signal });
 
   window.addEventListener('popstate', () => {
     if (window.location.pathname.includes('/events')) {
@@ -253,9 +259,21 @@ export function initGlobalNavigationListeners({ onRender, onOpenDrawer }) {
       timelineMode = 'seasons';
     }
     if (typeof onRender === 'function') onRender();
-  });
+  }, { signal });
 
   window.addEventListener('resize', () => {
     initSwitcherSlider();
-  });
+  }, { signal });
+}
+
+/**
+ * Full cleanup: abort all navigation listeners, reset state.
+ * Call on SPA teardown or page transitions.
+ */
+export function destroyNavigation() {
+  if (navAbortController) {
+    navAbortController.abort();
+    navAbortController = null;
+  }
+  isInitialized = false;
 }

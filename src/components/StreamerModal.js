@@ -374,6 +374,10 @@ export function initStreamer(games = []) {
   }
 
   function closeModal() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
     overlay.classList.remove('streamer-modal-overlay--visible');
     setTimeout(() => {
       overlay.style.display = 'none';

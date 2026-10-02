@@ -1,7 +1,7 @@
 import { SeasonService } from './services/SeasonService.js';
 import { getState, setLanguage, setGames, setRawData } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
-import { render as renderGameCard } from './components/GameCard.js';
+import { render as renderGameCard, bindGameCardEvents } from './components/GameCard.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
@@ -27,7 +27,8 @@ const seasonService = new SeasonService(seasonsDataPath);
 
 let activeGame = null;
 let countdownTimer = null;
-let _analyticsPageSourceBound = false;
+/** @type {AbortController|null} */
+let _analyticsAbort = null;
 
 function updateSeo(game) {
   if (!game) return;
@@ -256,6 +257,7 @@ function renderApp() {
       progressBar: progressBarHtml,
       isDetailPage: true
     });
+    bindGameCardEvents(gameRoot);
   } else if (gameRoot && gameRoot.classList.contains('season-page-root')) {
     updateSeasonPageTranslations(activeLang);
   }
@@ -343,25 +345,24 @@ async function init() {
       startCountdownLoop();
     }
 
-    // Attach click listener for official date/news sources (once per module)
-    if (!_analyticsPageSourceBound) {
-      _analyticsPageSourceBound = true;
-      document.addEventListener('click', (e) => {
-        const link = e.target.closest('a[data-analytics-source="official_source"]');
-        if (link) {
-          const gId = link.getAttribute('data-game-id');
-          const sType = link.getAttribute('data-source-type');
-          const dStatus = link.getAttribute('data-date-status');
-          if (gId && sType && dStatus) {
-            trackEvent('official_source_opened', {
-              game_id: gId,
-              source_type: sType,
-              date_status: dStatus
-            });
-          }
+    // Attach click listener for official date/news sources (abort previous if re-init)
+    if (_analyticsAbort) _analyticsAbort.abort();
+    _analyticsAbort = new AbortController();
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[data-analytics-source="official_source"]');
+      if (link) {
+        const gId = link.getAttribute('data-game-id');
+        const sType = link.getAttribute('data-source-type');
+        const dStatus = link.getAttribute('data-date-status');
+        if (gId && sType && dStatus) {
+          trackEvent('official_source_opened', {
+            game_id: gId,
+            source_type: sType,
+            date_status: dStatus
+          });
         }
-      });
-    }
+      }
+    }, { signal: _analyticsAbort.signal });
 
     // Check overlay parameters
     const params = new URLSearchParams(window.location.search);

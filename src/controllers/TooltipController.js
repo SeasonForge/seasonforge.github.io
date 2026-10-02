@@ -148,23 +148,33 @@ export function attachTimelineTooltipEvents(onGameSelected) {
     tooltip.style.display = 'block';
   }, { signal });
 
+  let rafPending = false;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
+
   grid.addEventListener('mousemove', (e) => {
     if (activeTouch) return;
-    if (tooltip.style.display === 'block') {
-      const tooltipWidth = tooltip.offsetWidth || 220;
-      const tooltipHeight = tooltip.offsetHeight || 100;
-      let left = e.clientX + 15;
-      let top = e.clientY + 15;
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
+    if (!rafPending && tooltip.style.display === 'block') {
+      rafPending = true;
+      requestAnimationFrame(() => {
+        rafPending = false;
+        const tooltipWidth = tooltip.offsetWidth || 220;
+        const tooltipHeight = tooltip.offsetHeight || 100;
+        let left = lastMouseX + 15;
+        let top = lastMouseY + 15;
 
-      if (left + tooltipWidth > window.innerWidth - 10) {
-        left = Math.max(10, e.clientX - tooltipWidth - 15);
-      }
-      if (top + tooltipHeight > window.innerHeight - 10) {
-        top = Math.max(10, e.clientY - tooltipHeight - 15);
-      }
+        if (left + tooltipWidth > window.innerWidth - 10) {
+          left = Math.max(10, lastMouseX - tooltipWidth - 15);
+        }
+        if (top + tooltipHeight > window.innerHeight - 10) {
+          top = Math.max(10, lastMouseY - tooltipHeight - 15);
+        }
 
-      tooltip.style.left = `${left}px`;
-      tooltip.style.top = `${top}px`;
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+      });
     }
   }, { signal });
 

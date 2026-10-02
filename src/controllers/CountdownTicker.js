@@ -5,6 +5,37 @@ let countdownTimer = null;
 const expiredGameCountdowns = new Set();
 const expiredUpcomingCountdowns = new Set();
 
+/** @type {Map<string, Element[]>} Cached card countdown DOM elements by game ID */
+const cardElCache = new Map();
+/** @type {Map<string, Element[]>} Cached upcoming countdown DOM elements by game ID */
+const upcomingElCache = new Map();
+
+/**
+ * Invalidate cached DOM refs (call after re-render).
+ */
+export function invalidateCountdownCache() {
+  cardElCache.clear();
+  upcomingElCache.clear();
+}
+
+function getCardEls(safeGameId) {
+  if (!cardElCache.has(safeGameId)) {
+    const els = Array.from(document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`));
+    cardElCache.set(safeGameId, els);
+  }
+  return cardElCache.get(safeGameId);
+}
+
+function getUpcomingEls(safeGameId) {
+  if (!upcomingElCache.has(safeGameId)) {
+    const els = Array.from(document.querySelectorAll(
+      `.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown, .upcoming-card[data-game-countdown="${safeGameId}"] .upcoming-card__countdown, [data-game-countdown="${safeGameId}"] .upcoming-card__countdown`
+    ));
+    upcomingElCache.set(safeGameId, els);
+  }
+  return upcomingElCache.get(safeGameId);
+}
+
 export function tickCountdown(onExpire) {
   if (typeof document !== 'undefined' && !document.querySelector('[data-countdown]')) return;
   const state = getState();
@@ -32,16 +63,12 @@ export function tickCountdown(onExpire) {
     const safeGameId = typeof CSS !== 'undefined' && CSS.escape ? CSS.escape(game.id) : game.id;
 
     // Update Game Cards (Desktop & Mobile)
-    const cardEls = document.querySelectorAll(`.game-card[data-game-id="${safeGameId}"] .game-card__countdown`);
-    cardEls.forEach(cardEl => {
+    getCardEls(safeGameId).forEach(cardEl => {
       updateCountdownDOM(cardEl, countdownValues);
     });
 
     // Update Upcoming Launches Cards (Desktop, Mobile, Home)
-    const upcomingEls = document.querySelectorAll(
-      `.upcoming-card[data-game-id="${safeGameId}"] .upcoming-card__countdown, .upcoming-card[data-game-countdown="${safeGameId}"] .upcoming-card__countdown, [data-game-countdown="${safeGameId}"] .upcoming-card__countdown`
-    );
-    upcomingEls.forEach(el => {
+    getUpcomingEls(safeGameId).forEach(el => {
       updateCountdownDOM(el, countdownValues);
     });
   });
@@ -117,4 +144,15 @@ export function stopCountdownLoop() {
     clearInterval(countdownTimer);
     countdownTimer = null;
   }
+}
+
+/**
+ * Full cleanup: stop timer, clear caches and expired sets.
+ * Call on SPA page transitions to prevent leaks.
+ */
+export function destroyCountdownTicker() {
+  stopCountdownLoop();
+  invalidateCountdownCache();
+  expiredGameCountdowns.clear();
+  expiredUpcomingCountdowns.clear();
 }

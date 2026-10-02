@@ -59,7 +59,7 @@
     font-size: 1.35rem;
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: #ffffff;
+    color: var(--white);
     margin: 0;
     order: 1;
   }
@@ -94,7 +94,7 @@
   .sf-mobile-card .game-card__side-label {
     font-size: 0.64rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--muted-strong);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -104,7 +104,7 @@
     font-weight: 600;
     line-height: 1.35;
     letter-spacing: -0.01em;
-    color: #f8fafc;
+    color: var(--text);
     margin: 0;
     font-family: var(--font);
   }
@@ -114,7 +114,7 @@
     font-weight: 600;
     line-height: 1.35;
     letter-spacing: -0.01em;
-    color: #e2e8f0;
+    color: var(--text-secondary);
     margin: 0;
     font-family: var(--font);
   }
@@ -129,7 +129,7 @@
   .sf-mobile-card .game-card__meta-row,
   .sf-mobile-card .game-card__side-date-row {
     font-size: 0.82rem;
-    color: #94a3b8;
+    color: var(--muted);
     font-weight: 400;
     display: flex;
     align-items: center;
@@ -138,7 +138,7 @@
 
   .sf-mobile-card .game-card__meta-row span:last-child,
   .sf-mobile-card .game-card__side-date {
-    color: #cbd5e1;
+    color: var(--text-tertiary);
     font-weight: 500;
   }
 
@@ -154,13 +154,13 @@
   .sf-mobile-card .game-card__progress-meta {
     margin: 0;
     font-size: 0.82rem;
-    color: #94a3b8;
+    color: var(--muted);
     font-weight: 400;
     line-height: 1.2;
   }
 
   .sf-mobile-card .game-card__progress-meta span {
-    color: #94a3b8;
+    color: var(--muted);
   }
 
   .sf-mobile-card .progress-bar {
@@ -175,7 +175,7 @@
     right: 0;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--white);
     line-height: 1.2;
     text-shadow: none;
     font-family: var(--font);
@@ -205,7 +205,7 @@
   .sf-mobile-card .game-card__events-label {
     font-size: 0.62rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--muted-strong);
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
@@ -243,7 +243,7 @@
   .sf-mobile-card .game-card__event-title {
     font-size: 0.84rem;
     font-weight: 500;
-    color: #e2e8f0;
+    color: var(--text-secondary);
     line-height: 1.35;
     flex: 1;
   }
@@ -251,7 +251,7 @@
   .sf-mobile-card .game-card__event-date {
     font-size: 0.72rem;
     font-weight: 400;
-    color: #64748b;
+    color: var(--muted-strong);
     padding-left: 1.3rem;
     display: block;
   }
@@ -292,7 +292,7 @@
   .sf-mobile-card .game-card__countdown-item strong {
     font-size: 1.15rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--white);
     display: block;
     line-height: 1;
     font-family: var(--font);
@@ -303,7 +303,7 @@
   .sf-mobile-card .game-card__countdown-item span {
     font-size: 0.52rem;
     font-weight: 500;
-    color: #64748b;
+    color: var(--muted-strong);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     display: block;
@@ -338,13 +338,13 @@
     position: absolute;
     right: 1.1rem;
     font-size: 1.3rem;
-    color: #64748b;
+    color: var(--muted-strong);
     font-weight: 400;
     transition: color var(--transition-fast), transform var(--transition-fast);
   }
 
   .sf-mobile-card .game-card__developer:hover::after {
-    color: #f8fafc;
+    color: var(--text);
     transform: translateX(2px);
   }
 
@@ -356,13 +356,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #64748b;
+    color: var(--muted-strong);
     flex-shrink: 0;
     transition: color var(--transition-fast), background var(--transition-fast);
   }
 
   .sf-mobile-card .game-card__developer:hover .game-card__developer-icon {
-    color: #cbd5e1;
+    color: var(--text-tertiary);
     background: rgba(255, 255, 255, 0.1);
   }
 
@@ -375,7 +375,7 @@
   .sf-mobile-card .game-card__developer-label {
     font-size: 0.6rem;
     font-weight: 600;
-    color: #64748b;
+    color: var(--muted-strong);
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
@@ -383,12 +383,12 @@
   .sf-mobile-card .game-card__developer-name {
     font-size: 0.92rem;
     font-weight: 500;
-    color: #cbd5e1;
+    color: var(--text-tertiary);
     transition: color var(--transition-fast);
   }
 
   .sf-mobile-card .game-card__developer:hover .game-card__developer-name {
-    color: #ffffff;
+    color: var(--white);
   }
 
   .sf-mobile-card .game-card__link {
@@ -452,7 +452,7 @@
   .history-table td:nth-child(3),
   .history-table td:nth-child(4) {
     font-size: 0.82rem;
-    color: #cbd5e1;
+    color: var(--text-tertiary);
   }
 
   .history-table td[data-label]::before {

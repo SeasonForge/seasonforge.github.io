@@ -14,7 +14,7 @@ import {
 } from './store/state.js';
 import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
-import { render as renderGameCard } from './components/GameCard.js';
+import { render as renderGameCard, bindGameCardEvents } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
 import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.3';
 import { renderGamesCatalog } from './components/GamesCatalog.js';
@@ -43,7 +43,7 @@ import { AppController } from './controllers/AppController.js';
 // Extracted Specialized Controllers
 import { attachTimelineTooltipEvents } from './controllers/TooltipController.js';
 import { attachEventsDetailDrawer, openEventsDrawer } from './controllers/EventsDrawerController.js';
-import { startCountdownLoop } from './controllers/CountdownTicker.js';
+import { startCountdownLoop, invalidateCountdownCache } from './controllers/CountdownTicker.js';
 import {
   getTimelineMode,
   setTimelineMode,
@@ -123,6 +123,7 @@ function getBasePath() {
 }
 
 function renderApp() {
+  invalidateCountdownCache();
   const state = getState();
   const navbarRoot = document.getElementById('navbar');
   const contentRoot = document.getElementById('content');
@@ -202,6 +203,7 @@ function renderApp() {
         }).join('');
 
         contentRoot.innerHTML = `<div class="game-feed">${cardsHtml}</div>`;
+        bindGameCardEvents(contentRoot);
       }
     } else if (state.activeView === 'timeline') {
       if (timelineMode === 'events') {

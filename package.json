@@ -8,5 +8,8 @@
     "update": "node scripts/update-seasons.js",
     "update:events": "node scripts/update-events.js",
     "indexnow": "node scripts/indexnow.js"
+  },
+  "devDependencies": {
+    "clean-css": "^5.3.3"
   }
 }

@@ -72,7 +72,7 @@
   letter-spacing: 0.08em;
   border: 1px solid color-mix(in srgb, var(--game-color, var(--accent)) 20%, transparent);
   background: rgba(15, 23, 42, 0.4);
-  color: color-mix(in srgb, var(--game-color, var(--accent)) 85%, #94a3b8);
+  color: color-mix(in srgb, var(--game-color, var(--accent)) 85%, var(--muted));
 }
 
 .game-card__pill--just-started {
@@ -84,38 +84,38 @@
 
 .game-card__pill--in-progress {
   background: rgba(139, 92, 246, 0.15);
-  color: #a78bfa;
+  color: var(--purple-vivid);
   border-color: rgba(139, 92, 246, 0.4);
 }
 
 .game-card__pill--late-season {
   background: rgba(245, 158, 11, 0.15);
-  color: #fbbf24;
+  color: var(--gold-light);
   border-color: rgba(245, 158, 11, 0.4);
 }
 
 .game-card__pill--final-days {
   background: rgba(239, 68, 68, 0.15);
-  color: #f87171;
+  color: var(--red);
   border-color: rgba(239, 68, 68, 0.4);
 }
 
 .game-card__pill--ended {
   background: rgba(100, 116, 139, 0.15);
-  color: #94a3b8;
+  color: var(--muted);
   border-color: rgba(100, 116, 139, 0.4);
 }
 
 .game-card__pill--ptr,
 .game-card__pill--beta {
   background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
+  color: var(--blue);
   border-color: rgba(59, 130, 246, 0.4);
 }
 
 .game-card__pill--early-access {
   background: rgba(56, 189, 248, 0.15);
-  color: #38bdf8;
+  color: var(--blue-sky);
   border-color: rgba(56, 189, 248, 0.4);
 }
 
@@ -127,7 +127,7 @@
 
 .game-card__pill--in-development {
   background: rgba(168, 85, 247, 0.15);
-  color: #c084fc;
+  color: var(--purple-light);
   border-color: rgba(168, 85, 247, 0.4);
 }
 
@@ -187,7 +187,7 @@
 
 .verification-badge--estimated {
   background: rgba(245, 158, 11, 0.08);
-  color: #fbbf24;
+  color: var(--gold-light);
   border-color: rgba(245, 158, 11, 0.35);
   font-size: 0.58rem;
   padding: 0.12rem 0.45rem;
@@ -233,7 +233,7 @@
   background: rgba(15, 23, 42, 0.94);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  color: #e2e8f0;
+  color: var(--text-secondary);
   font-family: var(--font);
   font-size: 0.72rem;
   font-weight: 500;
@@ -392,7 +392,7 @@
   margin: 0 0 0.6rem;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #fff;
+  color: var(--white);
 }
 
 .game-card__meta-row {
@@ -406,7 +406,7 @@
 }
 
 .game-card__meta-row span:last-child {
-  color: #e2e8f0;
+  color: var(--text-secondary);
   font-weight: 600;
 }
 
@@ -435,7 +435,7 @@
   right: 0;
   font-size: 0.78rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
   line-height: 1;
 }
 
@@ -453,8 +453,8 @@
 .progress-bar__fill {
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--game-color, var(--gold, #f59e0b)), #f7d96a);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--game-color, var(--gold, #f59e0b)) 40%, transparent);
+  background: linear-gradient(90deg, var(--game-color, var(--gold, var(--gold))), #f7d96a);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--game-color, var(--gold, var(--gold))) 40%, transparent);
   transition: width 0.4s ease;
   position: relative;
   overflow: hidden;
@@ -494,7 +494,7 @@
 }
 
 .game-card__source-badge {
-  color: #a5b4fc;
+  color: var(--accent-lighter);
   font-weight: 600;
   background: rgba(165, 180, 252, 0.08);
   padding: 0.1rem 0.4rem;
@@ -506,7 +506,7 @@
 }
 
 .game-card__source-title {
-  color: var(--text, #cbd5e1);
+  color: var(--text, var(--text-tertiary));
   font-weight: 600;
   max-width: 280px;
   white-space: nowrap;
@@ -515,14 +515,14 @@
 }
 
 .game-card__source-link {
-  color: var(--gold, #f59e0b);
+  color: var(--gold, var(--gold));
   text-decoration: none;
   font-weight: 600;
   transition: color 0.2s ease;
 }
 
 .game-card__source-link:hover {
-  color: #fbbf24;
+  color: var(--gold-light);
   text-decoration: underline;
 }
 
@@ -553,12 +553,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #94a3b8;
+  color: var(--muted);
   margin: 0;
 }
 
 .game-card__side-season-name {
-  color: #ffffff;
+  color: var(--white);
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -570,18 +570,18 @@
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
-  color: #94a3b8;
+  color: var(--muted);
   margin-top: 0.25rem;
 }
 
 .game-card__side-date-icon {
   flex-shrink: 0;
-  color: #94a3b8;
+  color: var(--muted);
   opacity: 0.85;
 }
 
 .game-card__side-date {
-  color: #94a3b8;
+  color: var(--muted);
   font-size: 0.88rem;
   font-weight: 500;
   white-space: nowrap;
@@ -628,7 +628,7 @@
   font-family: var(--font);
   font-size: 1.25rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--white);
   line-height: 1;
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
@@ -638,7 +638,7 @@
   display: block;
   font-family: var(--font);
   font-size: 0.55rem;
-  color: #94a3b8;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-top: 0.2rem;
@@ -663,7 +663,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: var(--muted);
   flex-shrink: 0;
 }
 
@@ -677,13 +677,13 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #94a3b8;
+  color: var(--muted);
   font-weight: 700;
 }
 
 .game-card__developer-name {
   font-size: 0.88rem;
-  color: #f8fafc;
+  color: var(--text);
   font-weight: 700;
 }
 
@@ -713,7 +713,7 @@
 .game-card__features-toggle-btn {
   background: rgba(99, 102, 241, 0.12);
   border: 1px solid rgba(99, 102, 241, 0.3);
-  color: #a5b4fc;
+  color: var(--accent-lighter);
   font-family: inherit;
   font-size: 0.76rem;
   font-weight: 600;
@@ -726,20 +726,20 @@
 .game-card__features-toggle-btn:hover {
   background: rgba(99, 102, 241, 0.22);
   border-color: rgba(99, 102, 241, 0.5);
-  color: #ffffff;
+  color: var(--white);
   transform: translateY(-1px);
 }
 
 .game-card__features-toggle-btn--open {
   background: rgba(239, 68, 68, 0.12);
   border-color: rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  color: var(--red-light);
 }
 
 .game-card__features-toggle-btn--open:hover {
   background: rgba(239, 68, 68, 0.22);
   border-color: rgba(239, 68, 68, 0.5);
-  color: #ffffff;
+  color: var(--white);
 }
 
 .game-card__features-body {
@@ -784,7 +784,7 @@
 }
 
 .game-card__feature-check {
-  color: var(--gold, #f59e0b);
+  color: var(--gold, var(--gold));
   font-weight: bold;
   flex-shrink: 0;
 }
@@ -801,7 +801,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #94a3b8;
+  color: var(--muted);
   margin-bottom: 0.4rem;
   text-transform: uppercase;
 }
@@ -832,17 +832,17 @@
 }
 
 .game-card__event-item--ptr {
-  border-left: 3px solid #10b981;
+  border-left: 3px solid var(--green);
   background: linear-gradient(90deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
 }
 
 .game-card__event-item--convention {
-  border-left: 3px solid #f59e0b;
+  border-left: 3px solid var(--gold);
   background: linear-gradient(90deg, rgba(245, 158, 11, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
 }
 
 .game-card__event-item--launch {
-  border-left: 3px solid #6366f1;
+  border-left: 3px solid var(--accent);
   background: linear-gradient(90deg, rgba(99, 102, 241, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
 }
 
@@ -871,19 +871,19 @@
 .game-card__event-tag--ptr {
   background: rgba(16, 185, 129, 0.2);
   border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #34d399;
+  color: var(--green-light);
 }
 
 .game-card__event-tag--convention {
   background: rgba(245, 158, 11, 0.2);
   border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #fbbf24;
+  color: var(--gold-light);
 }
 
 .game-card__event-tag--launch {
   background: rgba(99, 102, 241, 0.2);
   border: 1px solid rgba(99, 102, 241, 0.4);
-  color: #818cf8;
+  color: var(--accent-light);
 }
 
 .game-card__ptr-chip {
@@ -897,7 +897,7 @@
 }
 
 .game-card__ptr-chip-badge {
-  background: #10b981;
+  background: var(--green);
   color: #022c22;
   font-size: 0.62rem;
   font-weight: 800;
@@ -987,7 +987,7 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #94a3b8;
+  color: var(--muted);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
@@ -1006,7 +1006,7 @@
 .game-card__cta-block:hover .game-card__cta-arrow-box {
   background: rgba(168, 85, 247, 0.18);
   border-color: rgba(168, 85, 247, 0.45);
-  color: #c084fc;
+  color: var(--purple-light);
   box-shadow: 0 0 12px rgba(168, 85, 247, 0.35);
 }
 
@@ -1110,7 +1110,7 @@
 .upcoming-card:hover {
   transform: none;
   background: rgba(26, 20, 42, 0.75);
-  border-color: color-mix(in srgb, var(--game-color, var(--gold)) 60%, #f59e0b);
+  border-color: color-mix(in srgb, var(--game-color, var(--gold)) 60%, var(--gold));
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--game-color, var(--gold)) 25%, transparent);
 }
 
@@ -1167,7 +1167,7 @@
   line-height: 1;
   user-select: none;
   background: rgba(255, 255, 255, 0.08);
-  color: #e2e8f0;
+  color: var(--text-secondary);
 }
 
 .upcoming-card__event-badge:hover {
@@ -1178,13 +1178,13 @@
 
 .upcoming-card__event-badge--event {
   background: rgba(245, 158, 11, 0.2);
-  color: #fbbf24;
+  color: var(--gold-light);
   border-color: rgba(245, 158, 11, 0.45);
 }
 
 .upcoming-card__event-badge--stream {
   background: rgba(147, 51, 234, 0.2);
-  color: #c084fc;
+  color: var(--purple-light);
   border-color: rgba(147, 51, 234, 0.45);
 }
 
@@ -1202,19 +1202,19 @@
 
 .upcoming-card__event-badge--ptr {
   background: rgba(52, 211, 153, 0.2);
-  color: #34d399;
+  color: var(--green-light);
   border-color: rgba(52, 211, 153, 0.45);
 }
 
 .upcoming-card__event-badge--collab {
   background: rgba(59, 130, 246, 0.2);
-  color: #60a5fa;
+  color: var(--blue);
   border-color: rgba(59, 130, 246, 0.45);
 }
 
 .upcoming-card__event-badge--exp {
   background: rgba(239, 68, 68, 0.2);
-  color: #f87171;
+  color: var(--red);
   border-color: rgba(239, 68, 68, 0.45);
 }
 
@@ -1226,7 +1226,7 @@
 
 .upcoming-card__hype-badge {
   background: #ea580c;
-  color: #ffffff;
+  color: var(--white);
   font-size: 0.52rem;
   font-weight: 900;
   padding: 0.1rem 0.35rem;
@@ -1239,7 +1239,7 @@
   margin: 0;
   font-size: 0.82rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--white);
   letter-spacing: -0.01em;
   white-space: nowrap;
   position: relative;
@@ -1275,7 +1275,7 @@
 .upcoming-card__season-subtext {
   font-size: 0.72rem;
   font-weight: 600;
-  color: #f1f5f9;
+  color: var(--text-bright);
   line-height: 1.35;
   margin-bottom: 0.5rem;
   display: -webkit-box;
@@ -1313,7 +1313,7 @@
 .upcoming-card__countdown-item strong {
   font-size: 0.78rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--white);
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum";
 }
@@ -1367,7 +1367,7 @@
 
 .unified-card:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--game-color, var(--gold)) 70%, #ffffff);
+  border-color: color-mix(in srgb, var(--game-color, var(--gold)) 70%, var(--white));
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px color-mix(in srgb, var(--game-color, var(--gold)) 25%, transparent);
 }
 
@@ -1420,7 +1420,7 @@
 
 .unified-card__season-info {
   font-size: 0.82rem;
-  color: #cbd5e1;
+  color: var(--text-tertiary);
   display: flex;
   align-items: center;
   gap: 0.35rem;
@@ -1433,7 +1433,7 @@
 }
 
 .unified-card__season-title {
-  color: #ffffff;
+  color: var(--white);
   font-weight: 600;
 }
 
@@ -1513,7 +1513,7 @@
 .unified-card__countdown .upcoming-card__countdown-item strong {
   font-size: 1.05rem;
   font-weight: 800;
-  color: #ffffff;
+  color: var(--white);
   display: block;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
@@ -1566,7 +1566,7 @@
   border-radius: var(--radius-xs);
   background: color-mix(in srgb, var(--game-color, var(--accent)) 20%, rgba(255, 255, 255, 0.05));
   border: 1px solid color-mix(in srgb, var(--game-color, var(--accent)) 40%, rgba(255, 255, 255, 0.15));
-  color: #ffffff;
+  color: var(--white);
   font-size: 0.75rem;
   font-weight: 600;
   text-decoration: none;
@@ -1577,7 +1577,7 @@
 
 .unified-card__arrow-btn:hover {
   background: var(--game-color, var(--accent));
-  color: #ffffff;
+  color: var(--white);
   border-color: var(--game-color, var(--accent));
   box-shadow: 0 4px 14px color-mix(in srgb, var(--game-color, var(--accent)) 45%, transparent);
 }
@@ -1629,7 +1629,7 @@
 .official-source-btn:hover {
   background: var(--accent-glow);
   border-color: var(--text-accent);
-  color: #ffffff;
+  color: var(--white);
 }
 
 /* Useful Links Grid & Cards */
@@ -1666,7 +1666,7 @@
 .game-card__link-anchor {
   font-size: 0.85rem;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--text);
   text-decoration: none;
   display: inline-flex;
   align-items: center;
@@ -1675,7 +1675,7 @@
 }
 
 .game-card__link-anchor:hover {
-  color: var(--color-primary, #a5b4fc);
+  color: var(--color-primary, var(--accent-lighter));
 }
 
 .game-card__link-anchor::after {

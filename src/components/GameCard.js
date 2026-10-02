@@ -17,6 +17,28 @@ export function render(game = {}, options = {}) {
   `;
 }
 
+/**
+ * Binds event delegation for GameCard interactive elements.
+ * Call once after rendering cards into a container.
+ * @param {HTMLElement} container - Parent element containing rendered cards
+ */
+export function bindGameCardEvents(container) {
+  if (!container || container.dataset.gcEventsBound) return;
+  container.dataset.gcEventsBound = 'true';
+
+  container.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-action="toggle-features"]');
+    if (!btn) return;
+
+    const body = btn.parentElement.nextElementSibling;
+    if (!body) return;
+
+    const isExpanded = body.classList.toggle('game-card__features-body--open');
+    btn.classList.toggle('game-card__features-toggle-btn--open', isExpanded);
+    btn.textContent = isExpanded ? btn.dataset.labelHide : btn.dataset.labelShow;
+  });
+}
+
 export function GameCard(game, options) {
   return render(game, options);
 }

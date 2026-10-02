@@ -98,7 +98,23 @@ function mergeGameData(existingGame, newGame) {
       }
     }
 
-    if (isNameEmptyOrTba(newGame.nextSeason.name)) {
+    const isNameSimilar = (n1, n2) => {
+      if (!n1 || !n2) return false;
+      const s1 = String(n1).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
+      const s2 = String(n2).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
+      return s1 === s2;
+    };
+
+    const existingEn = existingGame.nextSeason.name?.en || '';
+    const existingRu = existingGame.nextSeason.name?.ru || '';
+    const newEn = newGame.nextSeason.name?.en || '';
+    const newRu = newGame.nextSeason.name?.ru || '';
+
+    const namesPracticallySame = (existingRu && newRu && existingRu.trim().toLowerCase() === newRu.trim().toLowerCase()) ||
+      isNameSimilar(existingEn, newEn) ||
+      isNameSimilar(existingRu, newRu);
+
+    if (isNameEmptyOrTba(newGame.nextSeason.name) || namesPracticallySame) {
       merged.nextSeason.name = existingGame.nextSeason.name;
     } else if (existingGame.nextSeason.name && typeof existingGame.nextSeason.name === 'object' && typeof newGame.nextSeason.name === 'object') {
       merged.nextSeason.name = {
@@ -745,6 +761,7 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           const newCurRu = newG.currentSeason?.name?.ru || newCur;
 
           const oldNextName = oldG.nextSeason?.name?.en;
+          const oldNextNameRu = oldG.nextSeason?.name?.ru || oldNextName;
           const newNextName = newG.nextSeason?.name?.en;
           const newNextNameRu = newG.nextSeason?.name?.ru || newNextName;
 
@@ -753,6 +770,19 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
 
           const oldStatusCode = oldG.status?.code;
           const newStatusCode = newG.status?.code;
+
+          const isNextNameSimilar = (n1, n2) => {
+            if (!n1 || !n2) return false;
+            const s1 = String(n1).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
+            const s2 = String(n2).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
+            return s1 === s2;
+          };
+          const isSameSeasonName = (oldNextName === newNextName) ||
+            (oldNextNameRu && newNextNameRu && oldNextNameRu.trim().toLowerCase() === newNextNameRu.trim().toLowerCase()) ||
+            isNextNameSimilar(oldNextName, newNextName) ||
+            isNextNameSimilar(oldNextNameRu, newNextNameRu);
+
+          const isOfficialDateAlreadySet = oldG.nextSeason?.verification === 'official' && oldNextDate && oldNextDate === newNextDate;
 
           // 1. Season Launch (Active season changed, strictly within ±3 days window of launch)
           const newCurStartDate = newG.currentSeason?.startDate;
@@ -786,7 +816,7 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
             });
           }
           // 3. Next Season theme / name announced (even if date is TBA)
-          else if (oldNextName !== newNextName && newNextName && newNextName !== 'TBA') {
+          else if (!isSameSeasonName && !isOfficialDateAlreadySet && newNextName && newNextName !== 'TBA') {
             detectedDiffs.push({
               gameId: newG.id,
               url: newG.nextSeason?.sourceUrl || newG.website,

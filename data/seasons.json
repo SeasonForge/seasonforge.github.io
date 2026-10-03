@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-02T17:55:30.714Z",
+  "lastCheckedAt": "2026-10-03T05:26:55.006Z",
   "changelog": [
     {
       "timestamp": "2026-10-01T16:00:00.000Z",
@@ -754,10 +754,10 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1844751498225075",
-        "title": "Last Epoch 1.5 Patch Overview",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498225075",
-        "publishDate": "2026-09-25T16:00:06.000Z",
+        "id": "1845383656387121",
+        "title": "Last Epoch Hotfix 1.5.1.1 Notes",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656388361",
+        "publishDate": "2026-10-03T04:41:07.000Z",
         "source": "Last Epoch Steam News"
       },
       "status": {
@@ -766,7 +766,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-10-02T06:00:00.000Z"
+        "updatedAt": "2026-10-03T05:26:55.003Z"
       },
       "history": [
         {
@@ -789,13 +789,13 @@
       "currentSeason": {
         "name": {
           "en": "Season 5: Rage of the Frostborn",
-          "ru": "Сезон 5: Ярость морознорожденных"
+          "ru": "Сезон 5: Ярость рожденных морозом"
         },
-        "startDate": "2026-10-01T16:00:00.000Z",
+        "startDate": "2026-10-01T00:00:00.000Z",
         "endDate": "2027-02-05T16:00:00Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656388361"
       },
       "nextSeason": {
         "name": {
@@ -810,7 +810,7 @@
           "ru": "Расчётный прогноз на основе стандартного цикла сезонов Last Epoch (3.5–4 месяца).",
           "en": "Estimated timeline based on the typical Last Epoch 3.5–4 month cycle cadence."
         },
-        "sourceUrl": "https://forum.lastepoch.com/"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656388361"
       },
       "events": [
         {
@@ -837,7 +837,9 @@
           "startDate": "2026-09-21T16:00:00Z",
           "endDate": "2026-09-25T23:59:59Z",
           "verification": "official",
-          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "last-epoch-s5-town-portal-podcast",
@@ -849,7 +851,9 @@
           "startDate": "2026-09-30T18:00:00Z",
           "endDate": "2026-09-30T20:00:00Z",
           "verification": "official",
-          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "last-epoch-s5-twitch-drops",
@@ -873,7 +877,9 @@
           "startDate": "2026-09-30T18:00:00Z",
           "endDate": "2026-09-30T20:00:00Z",
           "verification": "official",
-          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+          "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745",
+          "isPast": true,
+          "status": "archived"
         },
         {
           "id": "last-epoch-s5-first-blood-race",
@@ -886,6 +892,17 @@
           "endDate": "2026-10-08T23:59:59Z",
           "verification": "official",
           "sourceUrl": "https://forum.lastepoch.com/t/countdown-to-season-5-rage-of-the-frostborn-hits-october-1/81745"
+        },
+        {
+          "id": "season_start-cd0876",
+          "type": "season_start",
+          "title": {
+            "en": "First Blood: The Season 5 Pinnacle Race",
+            "ru": "Гонка First Blood: соревнование за убийство Мордитаса"
+          },
+          "startDate": "2026-10-01T00:00:00.000Z",
+          "endDate": "2026-10-15T00:00:00.000Z",
+          "verification": "confirmed"
         }
       ],
       "featureCategories": {
@@ -945,20 +962,20 @@
       },
       "features": {
         "en": [
-          "New Seasonal Mechanic: Rage of Morditas with Blood Crystals and Bloodrage progression",
-          "New Pinnacle Boss: Pinnacle Morditas (God of Bloodshed)",
+          "New seasonal mechanic: Rage of Morditas arena encounters and Woven Echoes",
+          "New Pinnacle Boss encounter: God of Bloodshed (Pinnacle Morditas)",
           "Three new class skills: Radiant Lance (Paladin), Summon Tide Elemental (Shaman), and Dreamslash (Bladedancer)",
-          "Extensive Item Faction reworks for Merchant's Guild and Circle of Fortune",
-          "New unique items, including ultra-rare chase items like Gift of the Eidolon",
-          "Competitive Season Launch event: First Blood Pinnacle Race"
+          "Major Item Factions rework: Merchant's Guild UI overhaul, price suggestions, automatic price lowering, and Observatory updates for Circle of Fortune",
+          "First Blood pinnacle boss kill race for Normal and Hardcore Solo modes",
+          "Brand new Unique items including Heorot's Repose, Morditas' Vengeance, and ultra-rare Uniques like Gift of the Eidolon"
         ],
         "ru": [
-          "Новая сезонная механика: Ярость Мордитаса с Кровавыми кристаллами и механикой Кровавой ярости",
-          "Новый финальный босс: Пинакл Мордитас (Бог кровопролития)",
-          "Три новых классовых умения: Сияющее копье (Паладин), Призыв элементаля прилива (Шаман) и Рассечение снов (Танцующий с клинками)",
-          "Масштабные изменения фракций предметов: Гильдии торговцев и Круга фортуны",
-          "Новые уникальные предметы, включая сверхредкие артефакты, такие как Дар Эйдолона",
-          "Соревновательная гонка на старте сезона: First Blood"
+          "Новая сезонная механика: события «Ярость Мордитаса» и Сотканные эхо",
+          "Новый пиковый босс: Бог кровопролития (Пинакл Мордитас)",
+          "Три новые способности классов: Radiant Lance (Паладин), Summon Tide Elemental (Шаман) и Dreamslash (Танцор клинков)",
+          "Масштабная переработка игровых фракций: обновление Гильдии торговцев с автоснижением цен и реконструкция Обсерватории Круга Фортуны",
+          "Соревновательная гонка First Blood за первое убийство пикового босса в обычном и хардкорном соло-режимах",
+          "Новые уникальные предметы, включая Heorot's Repose, Morditas' Vengeance и сверхредкие предметы уровня Gift of the Eidolon"
         ]
       },
       "links": {

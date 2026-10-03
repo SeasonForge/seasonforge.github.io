@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-03T05:26:55.006Z",
+  "lastCheckedAt": "2026-10-03T16:29:15.665Z",
   "changelog": [
     {
       "timestamp": "2026-10-01T16:00:00.000Z",
@@ -185,10 +185,10 @@
       "icon": "skull",
       "website": "https://www.pathofexile.com/",
       "latestNews": {
-        "id": "https://www.pathofexile.com/forum/view-thread/4007872",
-        "title": "The Final Path of Exile 1 ExileCon Qualifier Is Going Live!",
-        "url": "https://www.pathofexile.com/forum/view-thread/4007872",
-        "publishDate": "Thu, 24 Sep 2026 20:45:00 +0000",
+        "id": "https://www.pathofexile.com/forum/view-thread/4009200",
+        "title": "ExileCon 2026 Race Qualifier VODs",
+        "url": "https://www.pathofexile.com/forum/view-thread/4009200",
+        "publishDate": "Thu, 01 Oct 2026 19:39:04 +0000",
         "source": "Path of Exile RSS"
       },
       "status": {
@@ -197,7 +197,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-09-25T05:05:34.686Z"
+        "updatedAt": "2026-10-03T16:29:14.250Z"
       },
       "history": [
         {
@@ -218,7 +218,7 @@
         "endDate": "2026-11-10T00:00:00.000Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4007872"
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4009200"
       },
       "nextSeason": {
         "name": {
@@ -229,7 +229,7 @@
         "endDate": "2027-03-15T00:00:00.000Z",
         "isActive": false,
         "verification": "estimated",
-        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4007872",
+        "sourceUrl": "https://www.pathofexile.com/forum/view-thread/4009200",
         "verificationNote": {
           "en": "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
           "ru": "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
@@ -237,14 +237,12 @@
       },
       "features": {
         "en": [
-          "ExileCon 2026 Qualifiers",
-          "Exclusive Twitch Drops cosmetic rewards",
-          "Competitive racing events"
+          "ExileCon 2026 Qualifier Races",
+          "ExileCon Twitch Drops"
         ],
         "ru": [
-          "Отборочные турниры ExileCon 2026",
-          "Эксклюзивные косметические награды Twitch Drops",
-          "Соревновательные гонки"
+          "Отборочные гонки к ExileCon 2026",
+          "Twitch Drops к ExileCon"
         ]
       },
       "links": {
@@ -363,7 +361,9 @@
           },
           "startDate": "2026-09-24T21:00:00.000Z",
           "endDate": "2026-09-25T03:00:00.000Z",
-          "verification": "official"
+          "verification": "official",
+          "isPast": true,
+          "status": "archived"
         }
       ],
       "ptr": null

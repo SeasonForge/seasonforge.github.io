@@ -1,12 +1,21 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { config as dotenvConfig } from 'dotenv';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenvConfig({ path: path.join(__dirname, '../.env') });
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const envPath = path.join(__dirname, '../.env');
+if (fs.existsSync(envPath)) {
+  if (typeof process.loadEnvFile === 'function') {
+    process.loadEnvFile(envPath);
+  } else {
+    const lines = fs.readFileSync(envPath, 'utf-8').split('\n');
+    for (const line of lines) {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1].trim()]) {
+        process.env[match[1].trim()] = match[2].trim().replace(/^['"]|['"]$/g, '');
+      }
+    }
+  }
+}
 
 const KEY = process.env.INDEXNOW_KEY;
 if (!KEY) {

@@ -35,7 +35,17 @@ export class PoEAdapter extends BaseAdapter {
         const pubDate = dateMatch ? cleanCdata(dateMatch[1]) : '';
 
         // Filter out articles specifically meant for PoE 2
-        if (title.toLowerCase().startsWith('path of exile 2:') || title.toLowerCase().startsWith('poe 2:')) {
+        const lowerTitle = title.toLowerCase();
+        const lowerDesc = description.toLowerCase();
+        const isPoE2Specific = 
+          lowerTitle.startsWith('path of exile 2:') || 
+          lowerTitle.startsWith('poe 2:') ||
+          lowerTitle.includes('path of exile 2') ||
+          lowerTitle.includes('poe 2') ||
+          lowerTitle.includes('early access') ||
+          lowerTitle.includes('druid');
+
+        if (isPoE2Specific) {
           continue;
         }
 
@@ -46,15 +56,37 @@ export class PoEAdapter extends BaseAdapter {
         throw new Error('No items found in Path of Exile RSS feed');
       }
 
-      const filteredItems = this.filterRelevantNews(items, ['league', 'expansion', 'livestream', 'teaser', 'manifesto']);
-      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : items.slice(0, 5);
+      // Filter relevant news published within the last 21 days to prevent extracting stale past events
+      const nowMs = Date.now();
+      const recentItems = items.filter(item => {
+        if (!item.pubDate) return true;
+        const d = new Date(item.pubDate);
+        return isNaN(d.getTime()) || (nowMs - d.getTime()) <= 21 * 86400000;
+      });
 
-      const firstItem = targetItems[0] || items[0];
+      const filteredItems = this.filterRelevantNews(recentItems, ['league', 'expansion', 'livestream', 'teaser', 'manifesto']);
+      const targetItems = filteredItems.length > 0 ? filteredItems.slice(0, 10) : recentItems.slice(0, 5);
+
+      const firstItem = items[0];
       const latestNewsId = firstItem.guid || firstItem.link || this.hashString(firstItem.title + firstItem.pubDate);
       
       if (existingGame && existingGame.latestNews && existingGame.latestNews.id === latestNewsId) {
         console.log(`[Orchestrator] [PoE] Latest news unchanged (id=${latestNewsId}). Skipping Gemini call.`);
         return existingGame;
+      }
+
+      if (targetItems.length === 0) {
+        console.log(`[Orchestrator] [PoE] No recent articles within 21 days to analyze. Keeping existing league data.`);
+        return {
+          ...existingGame,
+          latestNews: {
+            id: latestNewsId,
+            title: firstItem.title,
+            url: firstItem.link,
+            publishDate: firstItem.pubDate || '',
+            source: 'Path of Exile RSS'
+          }
+        };
       }
 
       console.log(`[Orchestrator] [PoE] New article detected (id=${latestNewsId}). Calling Gemini...`);
@@ -157,10 +189,12 @@ Formatting rule: Extract dates ONLY when explicitly stated in the source text. F
           sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
         },
         nextSeason: {
-          name: {
-            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'TBA'
-          },
+          name: (extracted.nextSeasonStartDate && extracted.nextSeasonNameEn)
+            ? {
+                en: extracted.nextSeasonNameEn,
+                ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn
+              }
+            : (existingGame?.nextSeason?.name || { en: '3.30 Expansion', ru: 'Дополнение 3.30' }),
           startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
           endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
           isActive: false,
@@ -169,14 +203,29 @@ Formatting rule: Extract dates ONLY when explicitly stated in the source text. F
             en: "Estimated date based on standard 3.5-4 month PoE league cycle after v3.29",
             ru: "Расчётная дата запуска на основе стандартного цикла лиг PoE (3.5–4 месяца) после v3.29"
           },
-          sourceUrl: firstItem.link || 'https://www.pathofexile.com/'
+          sourceUrl: existingGame?.nextSeason?.sourceUrl || firstItem.link || 'https://www.pathofexile.com/'
         },
         features: {
-          en: extracted.featuresEn || [],
-          ru: extracted.featuresRu || []
+          en: (extracted.featuresEn && extracted.featuresEn.length > 0) ? extracted.featuresEn : (existingGame?.features?.en || []),
+          ru: (extracted.featuresRu && extracted.featuresRu.length > 0) ? extracted.featuresRu : (existingGame?.features?.ru || [])
         },
         ptr: existingGame?.ptr || null,
-        events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),
+        events: (() => {
+          // Filter out events that belong to PoE 2 or general ExileCon convention (handled in PoE 2)
+          const validExtracted = parsedEvents.filter(ev => {
+            const title = (ev.title?.en || '').toLowerCase();
+            return !title.includes('exilecon') && !title.includes('poe 2') && !title.includes('path of exile 2');
+          });
+          const existingEvents = existingGame?.events || [];
+          const merged = [...existingEvents];
+          for (const ev of validExtracted) {
+            const exists = merged.some(ex => ex.id === ev.id || (ex.startDate && ex.startDate === ev.startDate));
+            if (!exists) {
+              merged.push(ev);
+            }
+          }
+          return merged;
+        })(),
         links: {
           official: 'https://www.pathofexile.com/',
           wiki: '',

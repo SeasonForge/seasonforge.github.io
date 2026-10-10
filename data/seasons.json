@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-08T18:54:41.000Z",
+  "lastCheckedAt": "2026-10-10T06:03:08.188Z",
   "changelog": [
     {
       "timestamp": "2026-10-01T16:00:00.000Z",
@@ -379,10 +379,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1845383656383867",
-        "title": "ExileCon 2026 Race Qualifier VODs",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1845383656383867",
-        "publishDate": "2026-10-01T20:01:14.000Z",
+        "id": "1846018067931367",
+        "title": "ExileCon 2026 Cosplay and Costume Weapons Policy",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067931367",
+        "publishDate": "2026-10-08T20:33:27.000Z",
         "source": "Path of Exile 2 Official Steam"
       },
       "status": {
@@ -391,18 +391,18 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-09-25T05:05:30.468Z"
+        "updatedAt": "2026-10-10T06:01:26.813Z"
       },
       "currentSeason": {
         "name": {
-          "en": "Forbidden Rites",
-          "ru": "Запретные обряды"
+          "en": "Early Access",
+          "ru": "Ранний доступ"
         },
         "startDate": "2026-09-04T00:00:00.000Z",
         "endDate": "2026-12-11T00:00:00.000Z",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1844751498221460"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067931367"
       },
       "nextSeason": {
         "name": {
@@ -421,20 +421,16 @@
       },
       "features": {
         "en": [
-          "Steam Deck Verified support",
-          "Forbidden Rites event league with fresh economy and challenges",
-          "New Duelist class arriving at full release",
-          "Trial of Chaos changes and improvements",
-          "Runes of Aldur added to core game",
-          "New Augment Soul Cores, Sacred Bloom fragments, and Expedition Tablets"
+          "Steam Deck Verified",
+          "Duelist class introduction for 1.0 release",
+          "Pre-release milestone registration rewards including Soulflame Weapon Effect",
+          "ExileCon 2026 race finals and keynote presentations"
         ],
         "ru": [
-          "Подтвержденная совместимость со Steam Deck (Steam Deck Verified)",
-          "Событие-лига Запретные обряды с новой экономикой и испытаниями",
-          "Новый класс Дуэлянт, выходящий с релизом 1.0",
-          "Изменения и улучшения Испытания Хаоса",
-          "Добавление Рун Алдура в основную игру",
-          "Новые предметы: Ядра душ, фрагменты Священного цвета и Скрижали экспедиции"
+          "Подтвержденная совместимость со Steam Deck",
+          "Класс Дуэлянт для версии 1.0",
+          "Награды за предварительную регистрацию перед релизом, включая эффект для оружия Soulflame",
+          "Финал гонок и презентации на ExileCon 2026"
         ]
       },
       "links": {
@@ -470,14 +466,14 @@
           "status": "archived"
         },
         {
-          "id": "poe2-exilecon-2026",
+          "id": "exilecon-2026",
           "type": "convention",
           "title": {
-            "en": "ExileCon 2026 — Auckland, New Zealand (PoE 2 v1.0 Launch & Race Finale)",
-            "ru": "ExileCon 2026 — Окленд, Новая Зеландия (Релиз 1.0 и Финал гонок)"
+            "en": "ExileCon 2026",
+            "ru": "ExileCon 2026"
           },
-          "startDate": "2026-11-07T00:00:00.000Z",
-          "endDate": "2026-11-08T23:59:59.000Z",
+          "startDate": "2026-11-06T20:00:00.000Z",
+          "endDate": "2026-11-08T00:00:00.000Z",
           "verification": "official"
         },
         {
@@ -499,6 +495,17 @@
             "ru": "Полный релиз Path of Exile 2 1.0"
           },
           "startDate": "2026-12-11T00:00:00.000Z",
+          "endDate": "",
+          "verification": "confirmed"
+        },
+        {
+          "id": "exilecon-2026-keynote",
+          "type": "livestream",
+          "title": {
+            "en": "ExileCon 2026 Livestream Keynote",
+            "ru": "Прямая трансляция ExileCon 2026"
+          },
+          "startDate": "2026-11-06T21:00:00.000Z",
           "endDate": "",
           "verification": "confirmed"
         }

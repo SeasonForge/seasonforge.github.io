@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-10T19:42:48.186Z",
+  "lastCheckedAt": "2026-10-11T08:16:09.356Z",
   "changelog": [
     {
       "timestamp": "2026-10-01T16:00:00.000Z",
@@ -1014,19 +1014,19 @@
       "icon": "zap",
       "website": "https://torchlightinfinite.com/",
       "latestNews": {
-        "id": "1838407329258272",
-        "title": "Torchlight: Infinite - \"Afterlight\" SEASON",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272",
-        "publishDate": "2026-07-17T02:00:18.000Z",
-        "source": "Torchlight Infinite Steam News"
+        "id": "1846018067936841",
+        "title": "Torchlight Infinite SS14 \"Tartarus\" Season Announced",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/PCGamesN/1846018067936841",
+        "publishDate": "2026-10-10T16:51:53.000Z",
+        "source": "Steam News / PCGamesN"
       },
       "status": {
-        "code": "just-started",
+        "code": "ending",
         "label": {
-          "en": "Just Started",
-          "ru": "Только начался"
+          "en": "Ending Soon",
+          "ru": "Завершается"
         },
-        "updatedAt": "2026-07-30T10:44:13.077Z"
+        "updatedAt": "2026-10-11T08:00:00.000Z"
       },
       "history": [
         {
@@ -1044,7 +1044,7 @@
           "ru": "SS13: Afterlight"
         },
         "startDate": "2026-07-18T02:00:00Z",
-        "endDate": "",
+        "endDate": "2026-10-16T02:00:00.000Z",
         "isActive": true,
         "verification": "official",
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1838407329258272"
@@ -1052,26 +1052,32 @@
       "nextSeason": {
         "name": {
           "en": "SS14: Tartarus",
-          "ru": "SS14: Tartarus"
+          "ru": "SS14: Тартар"
         },
-        "startDate": "2026-10-24T02:00:00Z",
-        "endDate": "",
+        "startDate": "2026-10-16T02:00:00.000Z",
+        "endDate": "2027-01-15T02:00:00.000Z",
         "isActive": false,
-        "verification": "estimated",
+        "verification": "official",
+        "verificationNote": {
+          "ru": "Официальный старт сезона SS14 «Тартар» — 16 октября 2026 года в 02:00 UTC (05:00 МСК). Длительность ~3 месяца (до середины января 2027).",
+          "en": "Official launch of SS14 Tartarus: October 16, 2026 at 02:00 UTC. Standard 3-month cycle runs until mid-January 2027."
+        },
         "sourceUrl": "https://torchlight.xd.com/"
       },
       "features": {
         "en": [
-          "Night Watch mechanic: guiding the souls of the deceased",
-          "New ultra-hard endgame mode Divine Ascent",
-          "New playable mage hero Chronos",
-          "Next-generation loot filter automation"
+          "Seasonal Mechanic: Tartarus Netherrealm prison board game with Caged Beast management",
+          "New Growth System: Four types of Caged Beast Followers (Wolf, Rat, Lion, Mammoth) as companion units",
+          "New Hero Trait: Youga 'The Ultimate One' (Spacetime Witness) with Clockwork Core and parallel selves",
+          "High-risk prison riot boss encounters with massive Flame Elementium and loot rewards",
+          "Comprehensive visual overhaul for hero models, skill animations, and stage environments"
         ],
         "ru": [
-          "Механика Ночных Стражей: проводы душ усопших",
-          "Новый сверхсложный эндгейм-режим Divine Ascent",
-          "Новый играбельный герой-маг Кронос",
-          "Автоматизация лут-фильтра нового поколения"
+          "Сезонная механика: настольная игра тюрьмы Тартара в Иномирье и отлов Заточённых зверей",
+          "Новая система развития: Последователи четырёх видов (Волк, Крыса, Лев, Мамонт) в качестве спутников",
+          "Новая черта героя: Юга «Высший» (Свидетель пространства и времени) с Заводным ядром",
+          "Сражения с тюремными бунтами и охота за ценными наградами и Пламенным элементиумом",
+          "Масштабное визуальное обновление моделей героев, анимаций умений и локаций"
         ]
       },
       "links": {
@@ -1099,6 +1105,20 @@
           },
           "startDate": "2026-10-09T17:00:00Z",
           "endDate": "2026-10-09T19:00:00Z",
+          "verification": "official",
+          "sourceUrl": "https://torchlight.xd.com/",
+          "isPast": true,
+          "status": "archived"
+        },
+        {
+          "id": "torchlight-infinite-ss14-tartarus-launch",
+          "type": "season_start",
+          "title": {
+            "en": "SS14 \"Tartarus\" Global Launch",
+            "ru": "Глобальный запуск сезона SS14 «Тартар»"
+          },
+          "startDate": "2026-10-16T02:00:00.000Z",
+          "endDate": "",
           "verification": "official",
           "sourceUrl": "https://torchlight.xd.com/"
         }

@@ -36,14 +36,19 @@ export class TorchlightAdapter extends BaseAdapter {
         `Title: ${item.title}\nDate: ${new Date(item.date * 1000).toISOString()}\nSummary: ${this.cleanHtml(item.contents)}`
       ).join('\n\n---\n\n');
 
+      const todayIso = new Date().toISOString().split('T')[0];
       const systemInstruction = `You are a data extractor for SeasonForge. Extract ARPG game season details for Torchlight Infinite:
+Today's date is: ${todayIso}.
 1. Current Season details (name EN/RU, startDate, endDate).
 2. Next Season details (name EN/RU, startDate, endDate, verification).
 3. Timeline events (Pre-season, Livestreams, Season launches) with EN/RU titles and dates.
-4. Game status: "active", "in-development", "maintenance".
+4. Game status: "active", "in-development", "maintenance", "ending".
 5. Key features list EN/RU.
 
-Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
+CRITICAL RULES:
+- If an article describes an upcoming season or season preview/teaser whose launch date is in the future relative to today (${todayIso}), it is the NEXT season, NOT the current season.
+- NEVER mark a season with a future start date as currentSeason.
+- Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
 
       const schema = {
         type: 'OBJECT',
@@ -93,6 +98,39 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
         verification: ev.verification || 'official'
       })).filter(ev => ev.startDate !== '');
 
+      const nowMs = Date.now();
+      const extractedCurrentStart = this.normalizeAndValidateDate(extracted.currentSeasonStartDate);
+      const isCurrentStartInFuture = extractedCurrentStart && new Date(extractedCurrentStart).getTime() > nowMs;
+
+      let effectiveNextSeasonName = extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'TBA';
+      let effectiveNextSeasonNameRu = extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'TBA';
+      let effectiveNextSeasonStart = this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '';
+      let effectiveNextSeasonEnd = this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '';
+      let effectiveNextVerification = extracted.nextSeasonStartDate ? (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated') : (existingGame?.nextSeason?.verification || 'estimated');
+
+      // If Gemini mistakenly returned a future start date as currentSeason, route it to nextSeason
+      if (isCurrentStartInFuture) {
+        console.warn(`[Torchlight Infinite] Gemini returned future start date (${extractedCurrentStart}) as currentSeason. Routing to nextSeason.`);
+        effectiveNextSeasonName = extracted.currentSeasonNameEn || effectiveNextSeasonName;
+        effectiveNextSeasonNameRu = extracted.currentSeasonNameRu || effectiveNextSeasonNameRu;
+        effectiveNextSeasonStart = extractedCurrentStart;
+        effectiveNextVerification = 'official';
+      }
+
+      // Calculate estimated 3-month duration (~91 days) for nextSeason if endDate is missing to avoid TBA
+      if (effectiveNextSeasonStart && (!effectiveNextSeasonEnd || effectiveNextSeasonEnd === 'TBA')) {
+        const startObj = new Date(effectiveNextSeasonStart);
+        if (!isNaN(startObj.getTime())) {
+          effectiveNextSeasonEnd = new Date(startObj.getTime() + 91 * 86400000).toISOString();
+        }
+      }
+
+      // Synchronize currentSeason endDate with nextSeason startDate if known
+      const currentStart = (!isCurrentStartInFuture && extractedCurrentStart) || existingGame?.currentSeason?.startDate || '';
+      const currentEnd = effectiveNextSeasonStart || this.normalizeAndValidateDate(extracted.currentSeasonEndDate) || existingGame?.currentSeason?.endDate || '';
+      const isEndingSoon = currentEnd && (new Date(currentEnd).getTime() - nowMs) <= 14 * 86400000 && (new Date(currentEnd).getTime() - nowMs) > 0;
+      const statusCode = isEndingSoon ? 'ending' : (extracted.status || existingGame?.status?.code || 'active');
+
       const normalized = {
         id: this.gameId,
         name: { en: 'Torchlight: Infinite', ru: 'Торчлайт: Инфинит' },
@@ -109,29 +147,29 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
           source: 'Torchlight Infinite Steam News'
         },
         status: {
-          ...this.normalizeStatus(extracted.status),
+          ...this.normalizeStatus(statusCode),
           updatedAt: new Date().toISOString()
         },
         currentSeason: {
           name: {
-            en: extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || 'TBA',
-            ru: extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.ru || 'TBA'
+            en: isCurrentStartInFuture ? (existingGame?.currentSeason?.name?.en || 'SS13: Afterlight') : (extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.en || 'TBA'),
+            ru: isCurrentStartInFuture ? (existingGame?.currentSeason?.name?.ru || 'SS13: Afterlight') : (extracted.currentSeasonNameRu || extracted.currentSeasonNameEn || existingGame?.currentSeason?.name?.ru || 'TBA')
           },
-          startDate: this.normalizeAndValidateDate(extracted.currentSeasonStartDate) || existingGame?.currentSeason?.startDate || '',
-          endDate: this.normalizeAndValidateDate(extracted.currentSeasonEndDate) || existingGame?.currentSeason?.endDate || '',
-          isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(extracted.status),
+          startDate: currentStart,
+          endDate: currentEnd,
+          isActive: ['active', 'in-progress', 'just-started', 'ending'].includes(statusCode),
           verification: 'official',
           sourceUrl: newsitems[0].url || 'https://torchlightinfinite.com/'
         },
         nextSeason: {
           name: {
-            en: extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.en || 'TBA',
-            ru: extracted.nextSeasonNameRu || extracted.nextSeasonNameEn || existingGame?.nextSeason?.name?.ru || 'TBA'
+            en: effectiveNextSeasonName,
+            ru: effectiveNextSeasonNameRu
           },
-          startDate: this.normalizeAndValidateDate(extracted.nextSeasonStartDate) || existingGame?.nextSeason?.startDate || '',
-          endDate: this.normalizeAndValidateDate(extracted.nextSeasonEndDate) || existingGame?.nextSeason?.endDate || '',
+          startDate: effectiveNextSeasonStart,
+          endDate: effectiveNextSeasonEnd,
           isActive: false,
-          verification: extracted.nextSeasonStartDate ? (extracted.nextSeasonVerification === 'official' ? 'official' : 'estimated') : (existingGame?.nextSeason?.verification || 'estimated'),
+          verification: effectiveNextVerification,
           verificationNote: existingGame?.nextSeason?.verificationNote || {
             en: "Estimated date based on standard 3-month seasonal cycle of Torchlight: Infinite",
             ru: "Расчётная дата запуска на основе стандартного 3-месячного сезонного цикла Torchlight: Infinite"
@@ -139,8 +177,8 @@ Formatting rule: Dates MUST be YYYY-MM-DD or full ISO strings.`;
           sourceUrl: newsitems[0].url || 'https://torchlightinfinite.com/'
         },
         features: {
-          en: extracted.featuresEn || [],
-          ru: extracted.featuresRu || []
+          en: (extracted.featuresEn && extracted.featuresEn.length > 0) ? extracted.featuresEn : (existingGame?.features?.en || []),
+          ru: (extracted.featuresRu && extracted.featuresRu.length > 0) ? extracted.featuresRu : (existingGame?.features?.ru || [])
         },
         ptr: existingGame?.ptr || null,
         events: parsedEvents.length > 0 ? parsedEvents : (existingGame?.events || []),

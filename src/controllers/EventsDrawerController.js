@@ -17,8 +17,8 @@ export function closeEventsDrawer() {
     drawer.setAttribute('aria-hidden', 'true');
   }
   if (container) {
-    container.querySelectorAll('.events-timeline__bar.is-selected').forEach(bar => {
-      bar.classList.remove('is-selected');
+    container.querySelectorAll('.events-timeline__bar.is-selected, .urgent-event-card.is-selected').forEach(el => {
+      el.classList.remove('is-selected');
     });
   }
 }
@@ -46,9 +46,16 @@ export function openEventsDrawer(eventId, eventsData = []) {
     container.querySelectorAll('.events-timeline__bar').forEach(bar => {
       if (bar.dataset.eventId === eventId) {
         bar.classList.add('is-selected');
-        bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
         bar.classList.remove('is-selected');
+      }
+    });
+    container.querySelectorAll('.urgent-event-card').forEach(card => {
+      if (card.dataset.eventId === eventId) {
+        card.classList.add('is-selected');
+      } else {
+        card.classList.remove('is-selected');
       }
     });
   }
@@ -68,9 +75,9 @@ export function attachEventsDetailDrawer(getEventsData) {
   const { signal } = eventsDrawerAbortController;
 
   container.addEventListener('click', (e) => {
-    const bar = e.target.closest('.events-timeline__bar[data-event-id]');
-    if (bar) {
-      const eventId = bar.dataset.eventId;
+    const trigger = e.target.closest('.events-timeline__bar[data-event-id], .urgent-event-card[data-event-id]');
+    if (trigger) {
+      const eventId = trigger.dataset.eventId;
       if (selectedEventId === eventId) {
         closeEventsDrawer();
       } else {
@@ -88,7 +95,7 @@ export function attachEventsDetailDrawer(getEventsData) {
   document.addEventListener('click', (e) => {
     if (!drawer.classList.contains('is-open')) return;
     if (drawer.contains(e.target)) return;
-    if (e.target.closest('.events-timeline__bar')) return;
+    if (e.target.closest('.events-timeline__bar, .urgent-event-card')) return;
     closeEventsDrawer();
   }, { signal });
 

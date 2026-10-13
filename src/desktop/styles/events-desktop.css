@@ -84,6 +84,13 @@
   opacity: 0 !important;
 }
 
+/* Selected Urgent Card State */
+.events-dashboard-desktop .urgent-event-card.is-selected {
+  border-color: rgba(255, 255, 255, 0.45) !important;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--card-game-color, var(--accent)) 60%, transparent), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
+  transform: translateY(-2px);
+}
+
 .events-dashboard-desktop .urgent-events-grid-desktop {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

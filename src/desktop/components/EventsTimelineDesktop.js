@@ -91,7 +91,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     }
 
     const meta = GAME_META[gameId];
-    const gameEvents = localizedEventsList.filter(e => e.gameId === gameId);
+    const gameEvents = localizedEventsList.filter(e => e.gameId === gameId || (Array.isArray(e.gameIds) && e.gameIds.includes(gameId)));
 
     const overlappingEvents = gameEvents.filter(event => {
       const eStart = new Date(event.startDate);
@@ -114,7 +114,8 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
       let leftPct = Math.max(0, ((clampedStart - windowStart.getTime()) / totalWindowMs) * 100);
       const rawWidthPct = ((clampedEnd - clampedStart) / totalWindowMs) * 100;
-      let widthPct = Math.max(7.5, rawWidthPct);
+      const typeKey = event.type || 'event';
+      let widthPct = Math.max(typeKey === 'convention' ? 12 : 7.5, rawWidthPct);
 
       if (leftPct + widthPct > 100) {
         if (widthPct > 100) {
@@ -130,7 +131,6 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
       const topPx = subTracksCount === 1 ? 2 : (2 + event.trackIndex * 27);
 
-      const typeKey = event.type || 'event';
       const typeIcon = TYPE_ICONS[typeKey] || 'calendar';
       const typeLabel = TYPE_LABELS[typeKey] ? (TYPE_LABELS[typeKey][lang] || TYPE_LABELS[typeKey].en) : (isEn ? 'Event' : 'Событие');
 
@@ -227,7 +227,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
 
   // 4. Build Desktop Urgent Cards Grid (4 Columns, ordered by nearest urgency)
   const urgentEvents = [...localizedEventsList].filter(e => {
-    if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId)) return false;
+    if (filterGames && filterGames.size > 0 && !filterGames.has(e.gameId) && (!Array.isArray(e.gameIds) || !e.gameIds.some(gid => filterGames.has(gid)))) return false;
     if (!e.endDate) return false;
     const eEnd = new Date(e.endDate).getTime();
     return eEnd >= nowMs;
@@ -244,7 +244,10 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
   }).slice(0, 8);
 
   const urgentCardsHtml = urgentEvents.length > 0 ? urgentEvents.map(event => {
-    const meta = GAME_META[event.gameId] || GAME_META['path-of-exile'];
+    const isSharedGgg = Array.isArray(event.gameIds) && event.gameIds.includes('path-of-exile') && event.gameIds.includes('path-of-exile-2');
+    const meta = isSharedGgg 
+      ? { name: isEn ? 'Path of Exile 1 & 2' : 'Path of Exile 1 и 2', icon: 'users', color: '#a855f7' }
+      : (GAME_META[event.gameId] || GAME_META['path-of-exile']);
     const title = getVal(event.title, lang) || (isEn ? event.title_en : event.title_ru) || event.title_en || event.title_ru || (typeof event.title === 'string' ? event.title : 'Event');
     const gameName = meta.name;
 
@@ -274,7 +277,7 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
     const mins = Math.floor((totalSecs % 3600) / 60);
 
     return `
-      <div class="urgent-event-card ${badgeClass}" style="--card-game-color: ${meta.color};">
+      <div class="urgent-event-card ${badgeClass}" data-event-id="${escapeAttr(event.id)}" style="--card-game-color: ${meta.color}; cursor: pointer;">
         <div class="urgent-event-card__header">
           <span class="urgent-event-card__badge ${badgeClass}">${escapeHtml(badgeText)}</span>
         </div>
@@ -408,7 +411,10 @@ export function renderEventDetailContent(event, { lang = 'en', basePath = './' }
   const now = new Date();
   const nowMs = now.getTime();
 
-  const meta = GAME_META[event.gameId] || { name: 'Unknown Game', icon: 'gamepad', color: '#6366f1' };
+  const isSharedGgg = Array.isArray(event.gameIds) && event.gameIds.includes('path-of-exile') && event.gameIds.includes('path-of-exile-2');
+  const meta = isSharedGgg 
+    ? { name: isEn ? 'Path of Exile 1 & 2 (Grinding Gear Games)' : 'Path of Exile 1 и 2 (Grinding Gear Games)', icon: 'users', color: '#a855f7' }
+    : (GAME_META[event.gameId] || { name: 'Unknown Game', icon: 'gamepad', color: '#6366f1' });
   const typeKey = event.type || 'event';
   const typeIcon = TYPE_ICONS[typeKey] || 'calendar';
   const typeLabel = TYPE_LABELS[typeKey] ? (TYPE_LABELS[typeKey][lang] || TYPE_LABELS[typeKey].en) : (isEn ? 'Event' : 'Событие');

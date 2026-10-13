@@ -389,6 +389,10 @@
     {
       "id": "path-of-exile-2_convention_exilecon-2026-auckland",
       "gameId": "path-of-exile-2",
+      "gameIds": [
+        "path-of-exile",
+        "path-of-exile-2"
+      ],
       "type": "convention",
       "title_ru": "ExileCon 2026 в Новой Зеландии (Релиз PoE 2 v1.0 и Финал гонок)",
       "title_en": "ExileCon 2026 in New Zealand (PoE 2 v1.0 Launch & Race Finale)",

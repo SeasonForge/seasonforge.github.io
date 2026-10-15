@@ -56,6 +56,7 @@ function getCleanSeasonTag(name, gameId) {
   } else if (gameId === 'last-epoch') {
     if (/(?:Shattered Omens|Разрушенные знамения)/i.test(str)) return 'C4';
   } else if (gameId === 'torchlight-infinite') {
+    if (/(?:Tartarus)/i.test(str)) return 'SS14';
     if (/(?:Afterlight)/i.test(str)) return 'SS13';
   }
 

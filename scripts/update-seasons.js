@@ -317,6 +317,124 @@ function upgradeToBilingualSchema(game) {
   return upgraded;
 }
 
+function computeEstimatedNextSeason(game, defaultTime = 'T00:00:00Z') {
+  const gameId = game.id;
+  const current = game.currentSeason;
+  if (!current) {
+    return {
+      name: { en: 'TBA', ru: 'TBA' },
+      startDate: '',
+      endDate: '',
+      isActive: false,
+      verification: 'estimated',
+      sourceUrl: game.website || ''
+    };
+  }
+
+  // Determine standard cycle duration in days
+  let cycleDays = 91;
+  if (gameId === 'last-epoch' || gameId === 'path-of-exile') {
+    cycleDays = 115; // ~3.5 - 4 months
+  } else if (gameId === 'torchlight-infinite' || gameId === 'diablo-iv' || gameId === 'path-of-exile-2') {
+    cycleDays = 91; // ~3 months
+  }
+
+  // Calculate next start date
+  let nextStartMs = 0;
+  if (current.endDate && current.endDate !== 'TBA') {
+    const endMs = new Date(current.endDate).getTime();
+    if (!Number.isNaN(endMs)) {
+      nextStartMs = endMs;
+    }
+  }
+
+  if (!nextStartMs && current.startDate && current.startDate !== 'TBA') {
+    const startMs = new Date(current.startDate).getTime();
+    if (!Number.isNaN(startMs)) {
+      nextStartMs = startMs + cycleDays * 86400000;
+    }
+  }
+
+  if (!nextStartMs) {
+    nextStartMs = Date.now() + cycleDays * 86400000;
+  }
+
+  const nextStartDate = new Date(nextStartMs).toISOString();
+  const nextEndDate = new Date(nextStartMs + cycleDays * 86400000).toISOString();
+
+  // Extract season number to calculate next season name
+  const curNameEn = (typeof current.name === 'object' ? current.name.en : current.name) || '';
+  const numMatch = curNameEn.match(/\b\d+\b/);
+  let nextNum = null;
+  if (numMatch) {
+    nextNum = parseInt(numMatch[0], 10) + 1;
+  } else if (gameId === 'torchlight-infinite' && /tartarus/i.test(curNameEn)) {
+    nextNum = 15; // Tartarus is SS14
+  } else if (gameId === 'torchlight-infinite' && /afterlight/i.test(curNameEn)) {
+    nextNum = 14;
+  } else if (gameId === 'diablo-iv' && /hell's legacy/i.test(curNameEn)) {
+    nextNum = 16;
+  }
+
+  let nextNameEn = 'Next Season';
+  let nextNameRu = 'Следующий сезон';
+
+  if (gameId === 'torchlight-infinite') {
+    nextNameEn = nextNum ? `SS${nextNum}` : 'Next Season';
+    nextNameRu = nextNum ? `SS${nextNum}` : 'Следующий сезон';
+  } else if (gameId === 'diablo-iv') {
+    nextNameEn = nextNum ? `Season ${nextNum}` : 'Next Season';
+    nextNameRu = nextNum ? `Сезон ${nextNum}` : 'Следующий сезон';
+  } else if (gameId === 'last-epoch') {
+    nextNameEn = nextNum ? `Season ${nextNum}` : 'Next Season';
+    nextNameRu = nextNum ? `Сезон ${nextNum}` : 'Следующий сезон';
+  } else if (gameId === 'path-of-exile') {
+    nextNameEn = nextNum ? `3.${nextNum} Expansion` : 'Next Expansion';
+    nextNameRu = nextNum ? `Лига 3.${nextNum}` : 'Следующая лига';
+  } else if (gameId === 'path-of-exile-2') {
+    nextNameEn = nextNum ? `1.${nextNum} League` : 'Next League';
+    nextNameRu = nextNum ? `Лига 1.${nextNum}` : 'Следующая лига';
+  }
+
+  const noteMap = {
+    'torchlight-infinite': {
+      en: 'Estimated timeline based on Torchlight: Infinite standard 3-month seasonal cycle.',
+      ru: 'Расчетный прогноз на основе стандартного 3-месячного цикла сезонов Torchlight: Infinite.'
+    },
+    'diablo-iv': {
+      en: 'Estimated date based on typical 3-month seasonal cycle.',
+      ru: 'Расчетная дата на основе типичного 3-месячного цикла сезонов.'
+    },
+    'last-epoch': {
+      en: 'Estimated timeline based on typical Last Epoch 3.5-4 month cycle cadence.',
+      ru: 'Расчетный прогноз на основе стандартного цикла сезонов Last Epoch (3.5-4 месяца).'
+    },
+    'path-of-exile': {
+      en: 'Estimated timeline based on Grinding Gear Games ~3.5-4 month league cadence.',
+      ru: 'Расчетный прогноз на основе стандартного 3.5-4 месячного цикла лиг GGG.'
+    },
+    'path-of-exile-2': {
+      en: 'Estimated timeline based on planned seasonal release cadence.',
+      ru: 'Расчетный прогноз на основе планируемого сезонного цикла.'
+    }
+  };
+
+  const verificationNote = noteMap[gameId] || {
+    en: 'Estimated date based on regular seasonal release cadence.',
+    ru: 'Расчетная дата на основе регулярного цикла выхода сезонов.'
+  };
+
+  return {
+    name: { en: nextNameEn, ru: nextNameRu },
+    startDate: nextStartDate,
+    endDate: nextEndDate,
+    isActive: false,
+    verification: 'estimated',
+    verificationNote,
+    sourceUrl: current.sourceUrl || game.website || ''
+  };
+}
+
 function normalizeGameDates(gameData, defaultTime = 'T00:00:00Z') {
   if (!gameData) return gameData;
 
@@ -353,17 +471,26 @@ function normalizeGameDates(gameData, defaultTime = 'T00:00:00Z') {
       const curStartMs = result.currentSeason?.startDate ? new Date(result.currentSeason.startDate).getTime() : 0;
 
       if (nextStartMs >= curStartMs) {
+        // Archive outgoing currentSeason into history before overwriting
+        if (result.currentSeason?.startDate && result.currentSeason?.endDate) {
+          if (!Array.isArray(result.history)) result.history = [];
+          const archived = {
+            name: result.currentSeason.name,
+            startDate: result.currentSeason.startDate,
+            endDate: result.currentSeason.endDate
+          };
+          // Avoid duplicates (same startDate already in history)
+          const isDuplicate = result.history.some(h =>
+            h.startDate === archived.startDate
+          );
+          if (!isDuplicate) {
+            result.history.push(archived);
+          }
+        }
         result.currentSeason = { ...result.nextSeason, isActive: true };
       }
 
-      result.nextSeason = {
-        name: { en: 'TBA', ru: 'TBA' },
-        startDate: '',
-        endDate: '',
-        isActive: false,
-        verification: 'estimated',
-        sourceUrl: result.currentSeason?.sourceUrl || ''
-      };
+      result.nextSeason = computeEstimatedNextSeason(result, defaultTime);
 
       if (result.status) {
         result.status.code  = 'active';

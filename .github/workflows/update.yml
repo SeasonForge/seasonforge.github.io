@@ -24,7 +24,7 @@ jobs:
           node-version: '20'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install
 
       - name: Process Approved Telegram Deployment
         if: github.event_name == 'repository_dispatch' && github.event.action == 'deploy-approved'

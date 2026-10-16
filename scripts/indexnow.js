@@ -19,8 +19,8 @@ if (fs.existsSync(envPath)) {
 
 const KEY = process.env.INDEXNOW_KEY;
 if (!KEY) {
-  console.error('[IndexNow] Error: INDEXNOW_KEY not found in .env');
-  process.exit(1);
+  console.warn('[IndexNow] Notice: INDEXNOW_KEY not set. Skipping search engine ping.');
+  process.exit(0);
 }
 const HOST = process.env.INDEXNOW_HOST || 'seasonforge.online';
 const BASE_URL = process.env.BASE_URL || `https://${HOST}`;

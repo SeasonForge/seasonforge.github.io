@@ -1,6 +1,16 @@
 {
-  "lastCheckedAt": "2026-10-15T17:08:39.958Z",
+  "lastCheckedAt": "2026-10-16T15:47:18.222Z",
   "changelog": [
+    {
+      "timestamp": "2026-10-16T02:00:00.000Z",
+      "gameId": "torchlight-infinite",
+      "url": "https://torchlight.xd.com/",
+      "type": "launch",
+      "text": {
+        "en": "Torchlight: Infinite: New season launched — \"SS14: Tartarus\"!",
+        "ru": "Torchlight: Infinite: Стартовал новый сезон — «SS14: Тартарус»!"
+      }
+    },
     {
       "timestamp": "2026-10-01T16:00:00.000Z",
       "gameId": "last-epoch",
@@ -1066,12 +1076,12 @@
         "source": "Torchlight Infinite Steam News"
       },
       "status": {
-        "code": "ending",
+        "code": "active",
         "label": {
-          "en": "Ending",
-          "ru": "Завершается"
+          "en": "Active",
+          "ru": "Активен"
         },
-        "updatedAt": "2026-10-12T21:19:34.047Z"
+        "updatedAt": "2026-10-16T02:00:00.000Z"
       },
       "history": [
         {
@@ -1081,31 +1091,43 @@
           },
           "startDate": "2026-04-18T02:00:00Z",
           "endDate": "2026-07-18T02:00:00Z"
+        },
+        {
+          "name": {
+            "en": "SS13: Afterlight",
+            "ru": "SS13: Послесвечение"
+          },
+          "startDate": "2026-07-16T00:00:00.000Z",
+          "endDate": "2026-10-16T02:00:00.000Z"
         }
       ],
       "currentSeason": {
         "name": {
-          "en": "Afterlight",
-          "ru": "Послесвечение"
-        },
-        "startDate": "2026-07-16T00:00:00.000Z",
-        "endDate": "2026-10-15T00:00:00.000Z",
-        "isActive": true,
-        "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/PlayGround.ru - официальная группа/1846018067940024"
-      },
-      "nextSeason": {
-        "name": {
-          "en": "Tartarus",
-          "ru": "Тартарус"
+          "en": "SS14: Tartarus",
+          "ru": "SS14: Тартарус"
         },
         "startDate": "2026-10-16T02:00:00.000Z",
         "endDate": "2027-01-15T02:00:00.000Z",
-        "isActive": false,
+        "isActive": true,
         "verification": "official",
         "verificationNote": {
           "ru": "Официальный старт сезона SS14 «Тартар» — 16 октября 2026 года в 02:00 UTC (05:00 МСК). Длительность ~3 месяца (до середины января 2027).",
           "en": "Official launch of SS14 Tartarus: October 16, 2026 at 02:00 UTC. Standard 3-month cycle runs until mid-January 2027."
+        },
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/PlayGround.ru - официальная группа/1846018067940024"
+      },
+      "nextSeason": {
+        "name": {
+          "en": "SS15 (Estimated)",
+          "ru": "SS15 (Прогноз)"
+        },
+        "startDate": "2027-01-15T02:00:00.000Z",
+        "endDate": "2027-04-15T02:00:00.000Z",
+        "isActive": false,
+        "verification": "estimated",
+        "verificationNote": {
+          "en": "Estimated date based on standard 3-month seasonal cycle of Torchlight: Infinite",
+          "ru": "Расчётная дата запуска на основе стандартного 3-месячного сезонного цикла Torchlight: Infinite"
         },
         "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/PlayGround.ru - официальная группа/1846018067940024"
       },
@@ -1163,7 +1185,9 @@
           "startDate": "2026-10-16T02:00:00.000Z",
           "endDate": "",
           "verification": "official",
-          "sourceUrl": "https://torchlight.xd.com/"
+          "sourceUrl": "https://torchlight.xd.com/",
+          "isPast": true,
+          "status": "archived"
         }
       ],
       "ptr": null

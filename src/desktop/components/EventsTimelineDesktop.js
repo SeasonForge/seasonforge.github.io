@@ -379,24 +379,6 @@ export function render(eventsList = [], gamesList = [], { lang = 'en', activeGam
         </div>
       </section>
 
-      <!-- Desktop Interactive Detail Drawer (Docked inside Desktop Layout) -->
-      <aside id="events-detail-drawer" class="events-detail-drawer" aria-hidden="true" role="region" aria-label="${isEn ? 'Event Details' : 'Информация о событии'}">
-        <div class="events-detail-drawer__inner">
-          <div class="events-detail-drawer__header">
-            <span class="events-detail-drawer__title">
-              ${getIconSvg('layers', { size: 15 })}
-              <span>${isEn ? 'ABOUT EVENT' : 'О СОБЫТИИ'}</span>
-            </span>
-            <button type="button" class="events-detail-drawer__close" id="events-detail-drawer-close" aria-label="${isEn ? 'Close' : 'Закрыть'}">
-              ${getIconSvg('x', { size: 16 })}
-            </button>
-          </div>
-          <div class="events-detail-drawer__content" id="events-detail-drawer-content">
-            <!-- Dynamically populated on timeline bar selection -->
-          </div>
-        </div>
-      </aside>
-
     </div>
   `.trim();
 }

@@ -6,7 +6,9 @@ let timelineMode = 'seasons';
 let isSwitchingTimelineMode = false;
 let isInitialized = false;
 /** @type {AbortController|null} */
-let navAbortController = null;
+let globalNavAbortController = null;
+/** @type {AbortController|null} */
+let navbarAbortController = null;
 
 export function getTimelineMode() {
   return timelineMode;
@@ -153,21 +155,19 @@ export function attachNavbarEvents({ onRender, onToast }) {
   const state = getState();
   const mobTrackerBtn = document.getElementById('mob-btn-tracker');
   const mobTimelineBtn = document.getElementById('mob-btn-timeline');
-  const mobGamesBtn = document.getElementById('mob-btn-games');
+  const mobChangelogBtn = document.getElementById('mob-btn-changelog');
   const mobMoreBtn = document.getElementById('mob-btn-more');
 
-  [mobTrackerBtn, mobTimelineBtn, mobGamesBtn, mobMoreBtn].forEach(b => b?.classList.remove('mobile-nav__btn--active'));
+  [mobTrackerBtn, mobTimelineBtn, mobChangelogBtn, mobMoreBtn].forEach(b => b?.classList.remove('mobile-nav__btn--active'));
   if (state.activeView === 'card' && mobTrackerBtn) mobTrackerBtn.classList.add('mobile-nav__btn--active');
   else if (state.activeView === 'timeline' && mobTimelineBtn) mobTimelineBtn.classList.add('mobile-nav__btn--active');
-  else if (state.activeView === 'games' && mobGamesBtn) mobGamesBtn.classList.add('mobile-nav__btn--active');
   else if (state.activeView === 'more' && mobMoreBtn) mobMoreBtn.classList.add('mobile-nav__btn--active');
 
-  // Use shared AbortController — recreated each call to avoid duplicate listeners
-  const signal = ensureNavAbort();
+  // Use navbar-specific AbortController — recreated each call to avoid duplicate listeners without killing global listeners
+  const signal = ensureNavbarAbort();
   const mobBtns = [
     { el: mobTrackerBtn, view: 'card', restoreGame: true },
     { el: mobTimelineBtn, view: 'timeline' },
-    { el: mobGamesBtn, view: 'games' },
     { el: mobMoreBtn, view: 'more' }
   ];
   mobBtns.forEach(({ el, view, restoreGame }) => {
@@ -188,23 +188,24 @@ export function attachNavbarEvents({ onRender, onToast }) {
 }
 
 /**
- * Ensure AbortController exists (abort old + create new each call).
+ * Ensure navbar AbortController exists (abort old + create new each call).
  * @returns {AbortSignal}
  */
-function ensureNavAbort() {
-  if (navAbortController) {
-    navAbortController.abort();
+function ensureNavbarAbort() {
+  if (navbarAbortController) {
+    navbarAbortController.abort();
   }
-  navAbortController = new AbortController();
-  return navAbortController.signal;
+  navbarAbortController = new AbortController();
+  return navbarAbortController.signal;
 }
 
 export function initGlobalNavigationListeners({ onRender, onOpenDrawer }) {
   if (isInitialized || typeof document === 'undefined') return;
   isInitialized = true;
 
-  if (!navAbortController) ensureNavAbort();
-  const signal = navAbortController.signal;
+  if (globalNavAbortController) globalNavAbortController.abort();
+  globalNavAbortController = new AbortController();
+  const signal = globalNavAbortController.signal;
 
   document.addEventListener('click', (e) => {
     const tabSeasons = e.target.closest('#tab-mode-seasons');
@@ -271,9 +272,13 @@ export function initGlobalNavigationListeners({ onRender, onOpenDrawer }) {
  * Call on SPA teardown or page transitions.
  */
 export function destroyNavigation() {
-  if (navAbortController) {
-    navAbortController.abort();
-    navAbortController = null;
+  if (globalNavAbortController) {
+    globalNavAbortController.abort();
+    globalNavAbortController = null;
+  }
+  if (navbarAbortController) {
+    navbarAbortController.abort();
+    navbarAbortController = null;
   }
   isInitialized = false;
 }

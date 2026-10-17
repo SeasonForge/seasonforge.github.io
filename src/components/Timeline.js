@@ -363,7 +363,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
     const formattedNextStart = game.nextSeason?.startDate ? formatDate(game.nextSeason.startDate, lang) : '';
 
     const logoHtml = logo 
-      ? `<img src="./assets/logos/${logo}" alt="${name}" class="timeline-map__row-logo" />`
+      ? `<img src="${cleanBase}assets/logos/${logo}" alt="${name}" class="timeline-map__row-logo" />`
       : getIconSvg(game.icon, { size: 18, class: 'timeline-map__row-svg' });
 
 
@@ -497,7 +497,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
       const icon = escapeHtml(game.icon || 'gamepad');
 
       const iconHtml = logo 
-        ? `<img src="./assets/logos/${logo}" alt="${gameName}" class="unified-card__logo" />`
+        ? `<img src="${cleanBase}assets/logos/${logo}" alt="${gameName}" class="unified-card__logo" />`
         : getIconSvg(game.icon, { size: 20, class: 'unified-card__svg' });
 
       const subtextHtml = seasonSubtext ? `
@@ -674,7 +674,7 @@ export function render(games = [], viewMode = 'all', basePath = './', customEven
           </div>
         </div>
         <div class="timeline-card__watermark">
-          <img src="./assets/logo.png" alt="SeasonForge Logo" class="timeline-card__watermark-logo" />
+          <img src="${cleanBase}assets/logo.png" alt="SeasonForge Logo" class="timeline-card__watermark-logo" />
           <span class="timeline-card__watermark-dot">•</span>
           <span class="timeline-card__watermark-text">seasonforge.online</span>
         </div>

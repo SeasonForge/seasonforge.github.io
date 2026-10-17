@@ -41,6 +41,11 @@ export class Header {
       lblUpdated.textContent = isEn ? 'Updated' : 'Обновлено';
     }
 
+    const metaLink = document.querySelector('.app-header__meta, .app-header__meta-link');
+    if (metaLink) {
+      metaLink.setAttribute('data-tooltip', t('header.changelogTooltip') || (isEn ? 'Update History ↗' : 'История обновлений ↗'));
+    }
+
     // Tool Buttons
     const lblMobileApp = document.getElementById('lbl-mobile-app-btn');
     if (lblMobileApp) {

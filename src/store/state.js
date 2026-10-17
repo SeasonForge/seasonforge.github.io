@@ -15,7 +15,7 @@ function safeSetItem(key, value) {
 
 export function detectDefaultView() {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return 'timeline';
-  return window.matchMedia('(min-width: 1025px)').matches ? 'timeline' : 'card';
+  return window.matchMedia('(min-width: 901px)').matches ? 'timeline' : 'card';
 }
 
 // Global application state.
@@ -39,7 +39,9 @@ export function setLanguage(lang) {
   if (lang === 'en' || lang === 'ru') {
     state.settings.lang = lang;
     safeSetItem('seasonforge_lang', lang);
-    document.documentElement.lang = lang;
+    if (typeof document !== 'undefined' && document.documentElement) {
+      document.documentElement.lang = lang;
+    }
   }
   return state;
 }

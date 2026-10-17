@@ -6,9 +6,6 @@ import { render as renderProgressBar } from './components/ProgressBar.js';
 import { getProgressPercent, calculateCountdown, updateCountdownDOM } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { escapeAttr, escapeHtml, initPerformanceDetection } from './utils/helpers.js';
-import { initFeedback } from './utils/initFeedback.js';
-import { initStreamer } from './utils/initStreamer.js';
-import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 import { Header } from './components/Header.js';
@@ -110,8 +107,8 @@ function renderApp() {
   if (mobLblTracker) mobLblTracker.textContent = t('navbar.btnCard');
   const mobLblTimeline = document.getElementById('mob-lbl-timeline');
   if (mobLblTimeline) mobLblTimeline.textContent = t('navbar.btnTimeline');
-  const mobLblGames = document.getElementById('mob-lbl-games');
-  if (mobLblGames) mobLblGames.textContent = t('navbar.btnGames');
+  const mobLblChangelog = document.getElementById('mob-lbl-changelog');
+  if (mobLblChangelog) mobLblChangelog.textContent = t('navbar.btnChangelog');
   const mobLblMore = document.getElementById('mob-lbl-more');
   if (mobLblMore) mobLblMore.textContent = t('navbar.btnMore');
 
@@ -443,16 +440,16 @@ function updateSeasonPageTranslations(activeLang) {
 
     // 3. Stat labels and formatted values
     const lblStart = document.getElementById('lbl-stat-start');
-    if (lblStart) lblStart.textContent = isRu ? 'Дата начала' : 'Start Date';
+    if (lblStart) lblStart.textContent = t('card.thStart') || (isRu ? 'Дата начала' : 'Start Date');
 
     const lblEnd = document.getElementById('lbl-stat-end');
-    if (lblEnd) lblEnd.textContent = isRu ? 'Дата окончания' : 'End Date';
+    if (lblEnd) lblEnd.textContent = t('card.thEnd') || (isRu ? 'Дата окончания' : 'End Date');
 
     const lblDuration = document.getElementById('lbl-stat-duration');
-    if (lblDuration) lblDuration.textContent = isRu ? 'Длительность' : 'Duration';
+    if (lblDuration) lblDuration.textContent = t('card.thDuration') || (isRu ? 'Длительность' : 'Duration');
 
     const lblLink = document.getElementById('lbl-stat-link');
-    if (lblLink) lblLink.textContent = isRu ? 'Анонс' : 'Announcement';
+    if (lblLink) lblLink.textContent = t('card.thLink') || (isRu ? 'Анонс' : 'Announcement');
 
     document.querySelectorAll('.lbl-official-source-text').forEach(el => {
       el.textContent = t('card.readUrl');
@@ -537,17 +534,23 @@ function updateSeasonPageTranslations(activeLang) {
     }
     const endFormatted = item.endDate ? new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(item.endDate)) : (item.startDate ? (isRu ? 'В процессе' : 'Ongoing') : 'TBA');
 
+    const safeSName = escapeHtml(sName);
+    const safeGName = escapeHtml(gName);
+    const safeStartFormatted = escapeHtml(startFormatted);
+    const safeDurationStr = escapeHtml(durationStr);
+    const safeEndFormatted = escapeHtml(endFormatted);
+
     const faqQ1 = document.getElementById('faq-q1');
     if (faqQ1) faqQ1.textContent = isRu ? `Когда началась ${sName}?` : `When did ${sName} start?`;
 
     const faqA1 = document.getElementById('faq-a1');
-    if (faqA1) faqA1.innerHTML = isRu ? `${sName} для ${gName} началась <strong>${startFormatted}</strong>.` : `${sName} for ${gName} started on <strong>${startFormatted}</strong>.`;
+    if (faqA1) faqA1.innerHTML = isRu ? `${safeSName} для ${safeGName} началась <strong>${safeStartFormatted}</strong>.` : `${safeSName} for ${safeGName} started on <strong>${safeStartFormatted}</strong>.`;
 
     const faqQ2 = document.getElementById('faq-q2');
     if (faqQ2) faqQ2.textContent = isRu ? `Сколько длится ${sName}?` : `How long does ${sName} last?`;
 
     const faqA2 = document.getElementById('faq-a2');
-    if (faqA2) faqA2.innerHTML = isRu ? `Длительность ${sName} составляет <strong>${durationStr}</strong> (Дата окончания: ${endFormatted}).` : `The duration for ${sName} is <strong>${durationStr}</strong> (End date: ${endFormatted}).`;
+    if (faqA2) faqA2.innerHTML = isRu ? `Длительность ${safeSName} составляет <strong>${safeDurationStr}</strong> (Дата окончания: ${safeEndFormatted}).` : `The duration for ${safeSName} is <strong>${safeDurationStr}</strong> (End date: ${safeEndFormatted}).`;
 
   } catch (e) {
     console.error('[Detail Page] Error updating season page translations:', e.message);

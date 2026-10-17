@@ -18,7 +18,6 @@ const { getProgressPercent, calculateCountdown } = await import('../src/utils/co
 const { escapeAttr, escapeHtml } = await import('../src/utils/helpers.js');
 const { SeoGenerator } = await import('../src/utils/SeoGenerator.js');
 const { formatLastUpdated } = await import('../src/utils/date.js');
-const { renderEventCard } = await import('../src/components/EventCard.js');
 const { renderEventsTimeline } = await import('../src/components/EventsTimeline.js');
 const { render: renderNavbar } = await import('../src/components/Navbar.js');
 
@@ -111,9 +110,6 @@ async function build() {
   const rootIndexHtmlPath = path.join(__dirname, '../index.html');
   if (fs.existsSync(rootIndexHtmlPath)) {
     let indexContent = fs.readFileSync(rootIndexHtmlPath, 'utf-8');
-    
-    // Clean any git conflict markers around last-checked/updated items if present
-    indexContent = indexContent.replace(/<{7}[^\n]*\n([\s\S]*?)={7}[^\n]*\n([\s\S]*?)>{7}[^\n]*\n/g, '$1');
 
     indexContent = indexContent
       .replace(/<strong id="last-checked-time">[\s\S]*?<\/strong>/g, `<strong id="last-checked-time">${lastCheckedFormatted}</strong>`)
@@ -361,6 +357,7 @@ async function build() {
 
             const seasonSeo = SeoGenerator.generateSeoData({
               type: 'season',
+              gameId,
               gameName,
               seasonName,
               description: seasonDesc,
@@ -477,6 +474,7 @@ async function build() {
 
     const seoData = SeoGenerator.generateSeoData({
       type: 'game',
+      gameId,
       gameName,
       description: dynamicDesc,
       canonicalUrl,

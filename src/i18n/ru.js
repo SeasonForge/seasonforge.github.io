@@ -3,7 +3,8 @@ export const ru = {
     subtitle: "Мониторинг текущих и будущих сезонов главных ролевых экшенов",
     lastUpdated: "Изменено",
     statusCheck: "Проверено",
-    dataSource: "Источник данных"
+    dataSource: "Источник данных",
+    changelogTooltip: "История обновлений ↗"
   },
   navbar: {
     eyebrow: "ВЫБЕРИТЕ ИГРУ",

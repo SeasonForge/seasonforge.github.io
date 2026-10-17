@@ -9,22 +9,22 @@ export function getSelectedEventId() {
 }
 
 export function closeEventsDrawer() {
-  const container = document.querySelector('.events-dashboard-desktop');
+  const containers = document.querySelectorAll('.events-dashboard-desktop, .events-dashboard-mobile');
   const drawer = document.getElementById('events-detail-drawer');
   selectedEventId = null;
   if (drawer) {
     drawer.classList.remove('is-open');
     drawer.setAttribute('aria-hidden', 'true');
   }
-  if (container) {
+  containers.forEach(container => {
     container.querySelectorAll('.events-timeline__bar.is-selected, .urgent-event-card.is-selected').forEach(el => {
       el.classList.remove('is-selected');
     });
-  }
+  });
 }
 
 export function openEventsDrawer(eventId, eventsData = []) {
-  const container = document.querySelector('.events-dashboard-desktop');
+  const containers = document.querySelectorAll('.events-dashboard-desktop, .events-dashboard-mobile');
   const drawer = document.getElementById('events-detail-drawer');
   const drawerContent = document.getElementById('events-detail-drawer-content');
 
@@ -42,7 +42,7 @@ export function openEventsDrawer(eventId, eventsData = []) {
   drawer.classList.add('is-open');
   drawer.setAttribute('aria-hidden', 'false');
 
-  if (container) {
+  containers.forEach(container => {
     container.querySelectorAll('.events-timeline__bar').forEach(bar => {
       if (bar.dataset.eventId === eventId) {
         bar.classList.add('is-selected');
@@ -58,15 +58,15 @@ export function openEventsDrawer(eventId, eventsData = []) {
         card.classList.remove('is-selected');
       }
     });
-  }
+  });
 }
 
 export function attachEventsDetailDrawer(getEventsData) {
-  const container = document.querySelector('.events-dashboard-desktop');
+  const containers = document.querySelectorAll('.events-dashboard-desktop, .events-dashboard-mobile');
   const drawer = document.getElementById('events-detail-drawer');
   const drawerContent = document.getElementById('events-detail-drawer-content');
 
-  if (!container || !drawer || !drawerContent) return;
+  if (containers.length === 0 || !drawer || !drawerContent) return;
 
   if (eventsDrawerAbortController) {
     eventsDrawerAbortController.abort();
@@ -74,7 +74,7 @@ export function attachEventsDetailDrawer(getEventsData) {
   eventsDrawerAbortController = new AbortController();
   const { signal } = eventsDrawerAbortController;
 
-  container.addEventListener('click', (e) => {
+  const handleClick = (e) => {
     const trigger = e.target.closest('.events-timeline__bar[data-event-id], .urgent-event-card[data-event-id]');
     if (trigger) {
       const eventId = trigger.dataset.eventId;
@@ -90,7 +90,11 @@ export function attachEventsDetailDrawer(getEventsData) {
     if (e.target.closest('#events-detail-drawer-close')) {
       closeEventsDrawer();
     }
-  }, { signal });
+  };
+
+  containers.forEach(container => {
+    container.addEventListener('click', handleClick, { signal });
+  });
 
   document.addEventListener('click', (e) => {
     if (!drawer.classList.contains('is-open')) return;

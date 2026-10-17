@@ -47,7 +47,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" />
 
-    <link rel="stylesheet" href="../src/styles/v2/dist/v2-bundle.css?v=2.0.0" />
+    <link rel="stylesheet" href="../src/styles/v2/dist/v2-bundle.min.css?v=2.3.12" />
     <link rel="icon" href="../assets/favicon.png" type="image/png" />
     <link rel="manifest" href="../manifest.json" />
     <meta name="theme-color" content="#0b0f19" />
@@ -82,7 +82,7 @@
         </a>
       </div>
       <div class="app-header__right-block">
-        <a href="/changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="История обновлений ↗">
+        <a href="/changelog/#latest" class="app-header__meta app-header__meta-link" data-tooltip="Update History ↗">
           <div class="app-header__meta-item">
             <span class="app-header__meta-label" id="lbl-status-check"><span class="status-dot"></span> Checked</span>
             <strong id="last-checked-time">-</strong>
@@ -248,6 +248,7 @@
           headerSubtitle: 'Мониторинг сезонов главных ролевых экшенов',
           lblStatusCheck: 'Проверено',
           lblLastUpdated: 'Изменено',
+          changelogTooltip: 'История обновлений ↗',
           btnMobileApp: 'Приложение',
           btnFeedback: 'Обратная связь',
           btnStreamer: 'OBS Виджеты',
@@ -275,6 +276,7 @@
           headerSubtitle: 'ARPG Season Tracker & Updates',
           lblStatusCheck: 'Checked',
           lblLastUpdated: 'Updated',
+          changelogTooltip: 'Update History ↗',
           btnMobileApp: 'App',
           btnFeedback: 'Feedback',
           btnStreamer: 'OBS Widgets',
@@ -315,6 +317,9 @@
 
         const lblUpdated = document.getElementById('lbl-last-updated');
         if (lblUpdated) lblUpdated.textContent = dict.lblLastUpdated;
+
+        const metaLink = document.querySelector('.app-header__meta, .app-header__meta-link');
+        if (metaLink) metaLink.setAttribute('data-tooltip', dict.changelogTooltip || 'Update History ↗');
 
         const lblMobileApp = document.getElementById('lbl-mobile-app-btn');
         if (lblMobileApp) lblMobileApp.textContent = dict.btnMobileApp;

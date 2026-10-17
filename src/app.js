@@ -16,19 +16,14 @@ import { t, getVal } from './i18n/index.js';
 import { render as renderNavbar } from './components/Navbar.js';
 import { render as renderGameCard, bindGameCardEvents } from './components/GameCard.js';
 import { render as renderTimeline } from './components/Timeline.js';
-import { renderEventsTimeline } from './components/EventsTimeline.js?v=2.0.3';
+import { renderEventsTimeline } from './components/EventsTimeline.js';
 import { renderGamesCatalog } from './components/GamesCatalog.js';
 import { render as renderProgressBar } from './components/ProgressBar.js';
 import { render as renderStatusBadge } from './components/StatusBadge.js';
-import { Modal } from './components/Modal.js';
 import { Toast } from './components/Toast.js';
 import { getProgressPercent, calculateCountdown } from './utils/countdown.js';
 import { formatLastUpdated } from './utils/date.js';
 import { initPerformanceDetection } from './utils/helpers.js';
-import { initFeedback } from './utils/initFeedback.js';
-import { initStreamer } from './utils/initStreamer.js';
-import { initWebWidget } from './utils/initWebWidget.js';
-import { initMobileAppModal } from './utils/initMobileAppModal.js';
 import { setMetaTags } from './utils/seo.js';
 import { renderLangSwitcher as renderLangSwitcherComponent } from './components/LangSwitcher.js';
 import { Header } from './components/Header.js';
@@ -54,7 +49,6 @@ import {
 
 const seasonService = new SeasonService();
 let toastTimer = null;
-let modalInstance = null;
 let toastInstance = null;
 let eventsData = [];
 const trackedForecastGames = new Set();
@@ -72,23 +66,10 @@ function renderLangSwitcher() {
   renderLangSwitcherComponent('lang-switcher', state.settings.lang, (selected) => {
     setLanguage(selected);
     updateSeo();
+    ModalManager.initAll();
     renderToast(t('toasts.gameSelected', { game: getVal(state.activeGame?.name || '') }));
     renderApp();
   });
-}
-
-function renderModal() {
-  const modalRoot = document.getElementById('modal-root');
-  if (!modalRoot) return;
-
-  if (!modalInstance) {
-    modalInstance = Modal({
-      isOpen: false,
-      title: CONFIG.projectName,
-      content: 'SeasonForge is ready.'
-    });
-  }
-  modalRoot.innerHTML = modalInstance.render();
 }
 
 function renderToast(message, type = 'info') {
@@ -142,8 +123,6 @@ function renderApp() {
     navbarRoot.innerHTML = renderNavbar(state.games, state.activeGame, state.activeView, basePath);
   }
 
-  renderModal();
-
   // Update dynamic timestamps in the page header
   const lastChecked = state.rawData?.lastCheckedAt || state.lastCheckedAt;
   const checkedEl = document.getElementById('last-checked-time');
@@ -173,7 +152,7 @@ function renderApp() {
   }
 
   // Render main content
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 900;
   const timelineMode = getTimelineMode();
 
   if (contentRoot) {
@@ -220,10 +199,6 @@ function renderApp() {
 
   // Attach controller events
   attachNavbarEvents({ onRender: renderApp, onToast: renderToast });
-  initFeedback(() => state.activeGame?.id || 'None');
-  initStreamer(state.games);
-  initWebWidget(state.games);
-  initMobileAppModal();
   
   if (state.activeView === 'timeline' || state.activeView === 'card') {
     attachTimelineTooltipEvents((gameId) => {

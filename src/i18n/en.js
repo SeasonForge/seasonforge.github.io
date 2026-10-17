@@ -3,7 +3,8 @@ export const en = {
     subtitle: "Monitoring current and upcoming seasons of major action RPGs",
     lastUpdated: "Updated",
     statusCheck: "Checked",
-    dataSource: "Data source"
+    dataSource: "Data source",
+    changelogTooltip: "Update History ↗"
   },
   navbar: {
     eyebrow: "SELECT GAME",

@@ -22,6 +22,7 @@ export class SeoGenerator {
   static generateSeoData(params) {
     const {
       type = 'game',
+      gameId = '',
       gameName = 'ARPG',
       seasonName = '',
       description = '',
@@ -74,6 +75,7 @@ export class SeoGenerator {
     }
 
     const todayISO = new Date().toISOString().split('T')[0];
+    const gameSlug = gameId || gameName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
     // Schema.org Graph
     const breadcrumbList = {
@@ -88,7 +90,7 @@ export class SeoGenerator {
         "@type": "ListItem",
         "position": 2,
         "name": gameName,
-        "item": `${baseUrl}/games/${gameName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}/`
+        "item": `${baseUrl}/games/${gameSlug}/`
       });
     }
 

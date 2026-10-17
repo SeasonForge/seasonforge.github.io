@@ -37,6 +37,36 @@ function isFeaturesEmpty(feat) {
 
 import { cleanOldLogs } from './updater/logUtils.js';
 
+function isNameSimilar(n1, n2) {
+  if (!n1 || !n2) return false;
+  const stopWords = new Set(['season', 'сезон', 'league', 'лига', 'cycle', 'цикл', 'expansion', 'дополнение', 'the', 'and', 'for', 'with', 'part']);
+  const s1 = String(n1).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean);
+  const s2 = String(n2).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean);
+  if (s1.length === 0 || s2.length === 0) return false;
+  if (s1.slice().sort().join(' ') === s2.slice().sort().join(' ')) return true;
+
+  const sig1 = s1.filter(w => !stopWords.has(w));
+  const sig2 = s2.filter(w => !stopWords.has(w));
+
+  if (sig1.length > 0 && sig2.length > 0) {
+    const sigStr1 = sig1.join(' ');
+    const sigStr2 = sig2.join(' ');
+    if (sigStr1 === sigStr2 || sigStr1.includes(sigStr2) || sigStr2.includes(sigStr1)) {
+      return true;
+    }
+    const set2 = new Set(sig2);
+    const commonSig = sig1.filter(w => (w.length >= 3 || /^\d+$/.test(w)) && set2.has(w));
+    if (commonSig.length > 0) {
+      const num1 = s1.find(w => /^\d+$/.test(w) || /^ss\d+$/i.test(w));
+      const num2 = s2.find(w => /^\d+$/.test(w) || /^ss\d+$/i.test(w));
+      if (num1 && num2 && num1 !== num2) return false;
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function mergeGameData(existingGame, newGame) {
   if (!existingGame) return newGame;
   
@@ -57,7 +87,17 @@ function mergeGameData(existingGame, newGame) {
       ...existingGame.currentSeason,
       ...newGame.currentSeason
     };
-    if (isNameEmptyOrTba(newGame.currentSeason.name)) {
+
+    const curExistingEn = existingGame.currentSeason.name?.en || '';
+    const curExistingRu = existingGame.currentSeason.name?.ru || '';
+    const curNewEn = newGame.currentSeason.name?.en || '';
+    const curNewRu = newGame.currentSeason.name?.ru || '';
+
+    const curNamesPracticallySame = (curExistingRu && curNewRu && curExistingRu.trim().toLowerCase() === curNewRu.trim().toLowerCase()) ||
+      isNameSimilar(curExistingEn, curNewEn) ||
+      isNameSimilar(curExistingRu, curNewRu);
+
+    if (isNameEmptyOrTba(newGame.currentSeason.name) || curNamesPracticallySame) {
       merged.currentSeason.name = existingGame.currentSeason.name;
     } else if (existingGame.currentSeason.name && typeof existingGame.currentSeason.name === 'object' && typeof newGame.currentSeason.name === 'object') {
       merged.currentSeason.name = {
@@ -97,13 +137,6 @@ function mergeGameData(existingGame, newGame) {
         merged.nextSeason.verificationNote = existingGame.nextSeason.verificationNote;
       }
     }
-
-    const isNameSimilar = (n1, n2) => {
-      if (!n1 || !n2) return false;
-      const s1 = String(n1).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
-      const s2 = String(n2).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
-      return s1 === s2;
-    };
 
     const existingEn = existingGame.nextSeason.name?.en || '';
     const existingRu = existingGame.nextSeason.name?.ru || '';
@@ -898,23 +931,33 @@ async function waitForTelegramApproval(draftId, messageId, timeoutMinutes = 15) 
           const oldStatusCode = oldG.status?.code;
           const newStatusCode = newG.status?.code;
 
-          const isNextNameSimilar = (n1, n2) => {
-            if (!n1 || !n2) return false;
-            const s1 = String(n1).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
-            const s2 = String(n2).toLowerCase().replace(/[^a-z0-9а-яё]/gi, ' ').split(/\s+/).filter(Boolean).sort().join(' ');
-            return s1 === s2;
-          };
+          const oldCurRu = oldG.currentSeason?.name?.ru || oldCur;
+          const isSameCurName = (oldCur === newCur) ||
+            (oldCurRu && newCurRu && oldCurRu.trim().toLowerCase() === newCurRu.trim().toLowerCase()) ||
+            isNameSimilar(oldCur, newCur) ||
+            isNameSimilar(oldCurRu, newCurRu);
+
+          const alreadyAnnouncedLaunch = existingChangelog.some(entry =>
+            entry.gameId === newG.id &&
+            entry.type === 'launch' &&
+            (
+              Math.abs(Date.now() - new Date(entry.timestamp).getTime()) < 14 * 86400000 ||
+              isNameSimilar(entry.text?.en, newCur) ||
+              isNameSimilar(entry.text?.ru, newCurRu)
+            )
+          );
+
           const isSameSeasonName = (oldNextName === newNextName) ||
             (oldNextNameRu && newNextNameRu && oldNextNameRu.trim().toLowerCase() === newNextNameRu.trim().toLowerCase()) ||
-            isNextNameSimilar(oldNextName, newNextName) ||
-            isNextNameSimilar(oldNextNameRu, newNextNameRu);
+            isNameSimilar(oldNextName, newNextName) ||
+            isNameSimilar(oldNextNameRu, newNextNameRu);
 
           const isOfficialDateAlreadySet = oldG.nextSeason?.verification === 'official' && oldNextDate && oldNextDate === newNextDate;
 
-          // 1. Season Launch (Active season changed, strictly within ±3 days window of launch)
+          // 1. Season Launch (Active season changed, strictly within ±3 days window of launch and not previously announced)
           const newCurStartDate = newG.currentSeason?.startDate;
           const isRecentlyLaunched = newCurStartDate && Math.abs(Date.now() - new Date(newCurStartDate).getTime()) < 3 * 86400000;
-          if (oldCur !== newCur && newCur && newCur !== 'TBA' && isRecentlyLaunched) {
+          if (!isSameCurName && !alreadyAnnouncedLaunch && newCur && newCur !== 'TBA' && isRecentlyLaunched) {
             detectedDiffs.push({
               gameId: newG.id,
               url: newG.currentSeason?.sourceUrl || newG.website,

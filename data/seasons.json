@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-10-20T17:18:12.828Z",
+  "lastCheckedAt": "2026-10-21T04:59:18.397Z",
   "changelog": [
     {
       "timestamp": "2026-10-16T02:00:00.000Z",
@@ -415,10 +415,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1846018067931367",
-        "title": "ExileCon 2026 Cosplay and Costume Weapons Policy",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067931367",
-        "publishDate": "2026-10-08T20:33:27.000Z",
+        "id": "1846651706692829",
+        "title": "Path of Exile 2 Full Release Registration - Sign Up and Unlock Exclusive Rewards",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846651706692829",
+        "publishDate": "2026-10-19T21:36:35.000Z",
         "source": "Path of Exile 2 Official Steam"
       },
       "status": {
@@ -427,7 +427,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-10-10T06:01:26.813Z"
+        "updatedAt": "2026-10-21T04:59:17.534Z"
       },
       "currentSeason": {
         "name": {
@@ -438,7 +438,7 @@
         "endDate": "2026-12-11T00:00:00.000Z",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067931367"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846651706692829"
       },
       "nextSeason": {
         "name": {
@@ -458,15 +458,13 @@
       "features": {
         "en": [
           "Steam Deck Verified",
-          "Duelist class introduction for 1.0 release",
-          "Pre-release milestone registration rewards including Soulflame Weapon Effect",
-          "ExileCon 2026 race finals and keynote presentations"
+          "Duelist Class playable at 1.0 Launch",
+          "Pre-registration milestone cosmetic rewards"
         ],
         "ru": [
-          "Подтвержденная совместимость со Steam Deck",
-          "Класс Дуэлянт для версии 1.0",
-          "Награды за предварительную регистрацию перед релизом, включая эффект для оружия Soulflame",
-          "Финал гонок и презентации на ExileCon 2026"
+          "Подтвержденная совместимость со Steam Deck Verified",
+          "Класс Дуэлянт доступен в релизной версии 1.0",
+          "Косметические награды за предварительную регистрацию"
         ]
       },
       "links": {
@@ -508,7 +506,7 @@
             "en": "ExileCon 2026",
             "ru": "ExileCon 2026"
           },
-          "startDate": "2026-11-06T20:00:00.000Z",
+          "startDate": "2026-11-06T00:00:00.000Z",
           "endDate": "2026-11-08T00:00:00.000Z",
           "verification": "official"
         },
@@ -543,6 +541,17 @@
           },
           "startDate": "2026-11-06T21:00:00.000Z",
           "endDate": "",
+          "verification": "confirmed"
+        },
+        {
+          "id": "exilecon-2026-race-finals",
+          "type": "tournament",
+          "title": {
+            "en": "ExileCon 2026 Race Finals",
+            "ru": "Финалы гонки ExileCon 2026"
+          },
+          "startDate": "2026-11-07T00:00:00.000Z",
+          "endDate": "2026-11-08T00:00:00.000Z",
           "verification": "confirmed"
         }
       ],

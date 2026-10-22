@@ -28,11 +28,11 @@ export function getTimelineTooltipContent(gameId, seasonType) {
 
   if (isPtrType) {
     const ptrData = game.ptr || (game.events || []).find(e => e.type === 'ptr');
-    const ptrTitle = escapeHtml(getVal(ptrData?.name) || getVal(ptrData?.title) || (lang === 'ru' ? 'PTR Патч 3.2.0' : 'PTR Patch 3.2.0'));
-    const startStr = ptrData?.startDate ? formatTooltipDate(ptrData.startDate, lang) : (lang === 'ru' ? '4 авг.' : 'Aug 4');
-    const endStr = ptrData?.endDate ? formatTooltipDate(ptrData.endDate, lang) : (lang === 'ru' ? '11 авг.' : 'Aug 11');
+    const ptrTitle = escapeHtml(getVal(ptrData?.name) || getVal(ptrData?.title) || (lang === 'ru' ? 'Тестовый сервер PTR' : 'PTR Test Realm'));
+    const startStr = ptrData?.startDate ? formatTooltipDate(ptrData.startDate, lang) : 'TBA';
+    const endStr = ptrData?.endDate ? formatTooltipDate(ptrData.endDate, lang) : 'TBA';
     const platforms = ptrData?.platforms ? escapeHtml(getVal(ptrData.platforms)) : (lang === 'ru' ? 'Только ПК (Battle.net / Game Pass)' : 'PC Only (Battle.net / Game Pass)');
-    const note = ptrData?.note ? escapeHtml(getVal(ptrData.note)) : (lang === 'ru' ? 'Часть контента S15 скрыта до BlizzCon' : 'Season 15 content held for BlizzCon');
+    const note = ptrData?.note ? escapeHtml(getVal(ptrData.note)) : '';
 
     return `
       <div class="timeline-tooltip__title" style="color: #34d399; font-weight: 700; font-family: var(--font-display);">PTR Test: ${ptrTitle}</div>
@@ -40,9 +40,10 @@ export function getTimelineTooltipContent(gameId, seasonType) {
       <div class="timeline-tooltip__detail" style="margin-top: 0.35rem;"><strong>${lang === 'ru' ? 'Старт тестов' : 'PTR Start'}:</strong> ${startStr}</div>
       <div class="timeline-tooltip__detail"><strong>${lang === 'ru' ? 'Завершение' : 'PTR End'}:</strong> ${endStr}</div>
       <div class="timeline-tooltip__detail" style="color: #94a3b8; font-size: 0.75rem; margin-top: 0.2rem; display: flex; align-items: center; gap: 4px;">${getIconSvg('gamepad', { size: 13 })} <span><strong>${lang === 'ru' ? 'Платформы' : 'Platforms'}:</strong> ${platforms}</span></div>
+      ${note ? `
       <div style="font-size: 0.72rem; color: #cbd5e1; margin-top: 0.4rem; padding-top: 0.35rem; border-top: 1px solid rgba(255,255,255,0.15); font-style: italic; display: flex; align-items: flex-start; gap: 4px;">
         <span style="flex-shrink: 0; margin-top: 1px;">${getIconSvg('info', { size: 12 })}</span> <span>${note}</span>
-      </div>
+      </div>` : ''}
     `;
   }
   let seasonName = 'TBA';

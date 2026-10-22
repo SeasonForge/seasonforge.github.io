@@ -1,6 +1,38 @@
 {
-  "lastCheckedAt": "2026-09-26T11:35:00.000Z",
+  "lastCheckedAt": "2026-10-22T20:38:00.000Z",
   "events": [
+    {
+      "id": "diablo-iv_ptr_3-3-0",
+      "gameId": "diablo-iv",
+      "type": "ptr",
+      "title_ru": "Тестирование обновления 3.3.0 (PTR Сезона 16)",
+      "title_en": "Diablo IV Update 3.3.0 Public Test Realm (Season 16 PTR)",
+      "startDate": "2026-10-27T17:00:00Z",
+      "endDate": "2026-11-03T17:00:00Z",
+      "description_ru": "Недельное публичное тестирование обновления 3.3.0 для ПК (Battle.net и PC Game Pass). В программе: тактики Военных Планов (War Plans Tactics) с древом мета-прогрессии, новая система Хорадрических предметов и талисманов, масштабный реворк Адских орд и Ямы, а также отсутствие кулдауна Адского натиска.",
+      "description_en": "Week-long PC Public Test Realm for patch 3.3.0 previewing Season 16 systems. Features the War Plans Tactics meta-progression tree, Horadric Items synergy, Infernal Hordes and Pit reworks, and permanent Helltides without cinder reset.",
+      "rewards": [
+        {
+          "ru": "Буст до 60 уровня и мгновенный доступ к эндгейму",
+          "en": "Instant Level 60 Boost & Endgame Unlocks"
+        },
+        {
+          "ru": "Тестирование системы тактик Военных Планов",
+          "en": "War Plans Tactics Progression Test"
+        },
+        {
+          "ru": "Новые Хорадрические предметы и синергия талисманов",
+          "en": "Horadric Items & Charm Synergies"
+        },
+        {
+          "ru": "Обновленные Адские орды и двойные боссы",
+          "en": "Reworked Infernal Hordes & Double Bosses"
+        }
+      ],
+      "sourceUrl": "https://news.blizzard.com/en-us/diablo4",
+      "updatedAt": "2026-10-22T17:00:00.000Z",
+      "status": "upcoming"
+    },
     {
       "id": "torchlight-infinite_stream_ss14-tartarus-preview",
       "gameId": "torchlight-infinite",

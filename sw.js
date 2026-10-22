@@ -1,4 +1,4 @@
-const CACHE_NAME = 'seasonforge-v2.3.12';
+const CACHE_NAME = 'seasonforge-v2.3.13';
 const CRITICAL_SHELL_ASSETS = [
   '/',
   '/index.html',

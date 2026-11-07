@@ -1,5 +1,5 @@
 {
-  "lastCheckedAt": "2026-11-07T06:12:30.453Z",
+  "lastCheckedAt": "2026-11-07T17:47:23.357Z",
   "changelog": [
     {
       "timestamp": "2026-10-22T17:00:00.000Z",
@@ -425,10 +425,10 @@
       "color": "#4b6e9c",
       "website": "https://pathofexile2.com",
       "latestNews": {
-        "id": "1846651706692829",
-        "title": "Path of Exile 2 Full Release Registration - Sign Up and Unlock Exclusive Rewards",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846651706692829",
-        "publishDate": "2026-10-19T21:36:35.000Z",
+        "id": "1848664643347683",
+        "title": "Path of Exile 2 Full Release on December 11 PST",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1848664643347683",
+        "publishDate": "2026-11-06T23:00:25.000Z",
         "source": "Path of Exile 2 Official Steam"
       },
       "status": {
@@ -437,7 +437,7 @@
           "en": "Early Access",
           "ru": "Ранний доступ"
         },
-        "updatedAt": "2026-10-21T04:59:17.534Z"
+        "updatedAt": "2026-11-07T17:46:56.082Z"
       },
       "currentSeason": {
         "name": {
@@ -448,7 +448,7 @@
         "endDate": "2026-12-11T00:00:00.000Z",
         "isActive": false,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846651706692829"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1848664643347683"
       },
       "nextSeason": {
         "name": {
@@ -467,14 +467,20 @@
       },
       "features": {
         "en": [
-          "Steam Deck Verified",
-          "Duelist Class playable at 1.0 Launch",
-          "Pre-registration milestone cosmetic rewards"
+          "Full release with Acts 5 and 6 completing the 6-Act Campaign",
+          "Two new classes: The Shadow and The Duelist",
+          "New weapon types and mechanics: Stealth, Traps, and Stances",
+          "Conquerors of Wraeclast Challenge League",
+          "Over 40 new Unique items and 70+ revamped existing uniques",
+          "Revamped Passive Skill Tree with Jewel sockets relocated to clusters"
         ],
         "ru": [
-          "Подтвержденная совместимость со Steam Deck Verified",
-          "Класс Дуэлянт доступен в релизной версии 1.0",
-          "Косметические награды за предварительную регистрацию"
+          "Полноценный релиз с Актами 5 и 6, завершающими кампанию из 6 Актов",
+          "Два новых класса: Тень (Shadow) и Дуэлянт (Duelist)",
+          "Новые механики и типы оружия: Скрытность (Stealth), Ловушки (Traps) и Стойки (Stances)",
+          "Лига испытаний «Покорители Рэкласта» (Conquerors of Wraeclast)",
+          "Более 40 новых уникальных предметов и переработка более 70 существующих",
+          "Масштабное обновление дерева пассивных умений с гнездами для самоцветов в кластерах"
         ]
       },
       "links": {
@@ -853,10 +859,10 @@
       "icon": "hourglass",
       "website": "https://www.lastepoch.com/",
       "latestNews": {
-        "id": "1846018067926672",
-        "title": "Last Epoch Hotfix 1.5.2.1 Notes",
-        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067933840",
-        "publishDate": "2026-10-09T16:01:51.000Z",
+        "id": "1848664643345816",
+        "title": "Eterra Monthly: October Edition 2026",
+        "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1848664643345816",
+        "publishDate": "2026-11-06T14:44:32.000Z",
         "source": "Last Epoch Steam News"
       },
       "status": {
@@ -865,7 +871,7 @@
           "en": "Active",
           "ru": "Активен"
         },
-        "updatedAt": "2026-10-11T17:42:30.755Z"
+        "updatedAt": "2026-11-07T17:47:22.823Z"
       },
       "history": [
         {
@@ -890,11 +896,11 @@
           "en": "Season 5: Rage of the Frostborn",
           "ru": "Сезон 5: Ярость рожденных морозом"
         },
-        "startDate": "2026-10-01T16:00:00.000Z",
+        "startDate": "2026-10-01T00:00:00.000Z",
         "endDate": "2027-02-05T16:00:00Z",
         "isActive": true,
         "verification": "official",
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067933840"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1848664643345816"
       },
       "nextSeason": {
         "name": {
@@ -909,7 +915,7 @@
           "ru": "Расчётный прогноз на основе стандартного цикла сезонов Last Epoch (3.5–4 месяца).",
           "en": "Estimated timeline based on the typical Last Epoch 3.5–4 month cycle cadence."
         },
-        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1846018067933840"
+        "sourceUrl": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1848664643345816"
       },
       "events": [
         {
@@ -997,13 +1003,13 @@
           "status": "archived"
         },
         {
-          "id": "season-5-launch",
+          "id": "season_start-20257b",
           "type": "season_start",
           "title": {
             "en": "Season 5: Rage of the Frostborn Launch",
             "ru": "Запуск 5-го сезона: Rage of the Frostborn"
           },
-          "startDate": "2026-10-01T16:00:00.000Z",
+          "startDate": "2026-10-01T00:00:00.000Z",
           "endDate": "",
           "verification": "confirmed",
           "isPast": true,
@@ -1019,6 +1025,19 @@
           "startDate": "2026-09-25T16:00:06.000Z",
           "endDate": "",
           "verification": "official",
+          "isPast": true,
+          "status": "archived"
+        },
+        {
+          "id": "livestream-8e8738",
+          "type": "livestream",
+          "title": {
+            "en": "Season 5 Twitch Drops Campaign",
+            "ru": "Кампания Twitch Drops к 5-му сезону"
+          },
+          "startDate": "2026-10-01T00:01:00.000Z",
+          "endDate": "2026-10-04T00:01:00.000Z",
+          "verification": "confirmed",
           "isPast": true,
           "status": "archived"
         }
@@ -1080,20 +1099,18 @@
       },
       "features": {
         "en": [
-          "Rage of Morditas seasonal encounter mechanic",
-          "Pinnacle Boss Morditas: God of Bloodshed",
-          "Three new class skills: Radiant Lance (Paladin), Summon Tide Elemental (Shaman), and Dreamslash (Bladedancer)",
-          "Merchant's Guild and Circle of Fortune major updates and UI overhauls",
-          "New Unique items including mega rare tier Uniques",
-          "First Blood competitive boss-kill race event"
+          "Rage of Morditas random encounter arenas and pinnacle boss battle against Morditas, God of Bloodshed",
+          "New abilities and skill updates for Paladin, Shaman, and Bladedancer",
+          "Extensive lineup of new Unique items, including chase mega-rare items like Gift of the Eidolon",
+          "Factions overhaul and economy improvements for Circle of Fortune and Merchant's Guild",
+          "New hub environments including Traveler's Rest and the Nexus"
         ],
         "ru": [
-          "Сезонная механика «Ярость Мордитаса»",
-          "Пиковый босс Мордитас: Бог кровопролития",
-          "Три новых классовых умения: Radiant Lance (Паладин), Summon Tide Elemental (Шаман) и Dreamslash (Танцор клинков)",
-          "Масштабная переработка Гильдии торговцев и Круга фортуны с обновлением интерфейса",
-          "Новые уникальные предметы, включая категорию ультраредких уников",
-          "Соревновательная гонка First Blood на убийство пикового босса"
+          "Случайные события «Ярость Мордитаса» и сражение с пиковым боссом Мордитасом",
+          "Новые умения и переработка способностей для Паладина, Шамана и Танцора клинков",
+          "Большая подборка новых уникальных предметов, включая сверхредкие артефакты",
+          "Переработка фракций «Круг Фортуны» и «Гильдия Купцов», улучшение торговли",
+          "Обновленные локации-хабы, включая Traveler's Rest и Nexus"
         ]
       },
       "links": {
